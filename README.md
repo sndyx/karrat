@@ -1,11 +1,12 @@
 # Karrat Minecraft server
 
-Howdy, welcome to [Karrat](https://karrat.org/)!
+Welcome to [Karrat](https://karrat.org/)!
 It is a quick, open-source Minecraft server implementation developed solely by
  [Sndy](https://sndy.moe/) and open-source contributors.
 
-* Greatly improves performance and [plugin API](#developers).
-* Supports Bukkit/Sponge plugins.
+* Simple and easy to install.
+* Greatly improves developer resources and [plugin API](#developers).
+  * No more decompiling and deobfuscating Minecraft jars.
 * Might make your dad come back from the gas station!!! (No guarantees)
 
 ## Table of contents
@@ -14,14 +15,16 @@ It is a quick, open-source Minecraft server implementation developed solely by
 
 * [Installation](#installation)
 * [Developers](#developers)
- * [Setup](#setup)
-  * [Gradle](#gradle)
-  * [Maven](#maven-not-recommended)
+  * [Setup](#setup)
+    * [Gradle](#gradle)
+    * [Maven](#maven-not-recommended)
 * [Documentation](#documentation)
 
 <!--- END -->
 
 ## Installation
+
+TODO
 
 ## Developers
 
@@ -80,6 +83,8 @@ To set up your plugin development environment, simply add the artifact to your
 ```
 
 ## Documentation
+
+TODO
 
 # License
 
