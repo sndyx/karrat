@@ -11,7 +11,7 @@ data class LoginDisconnectPacket(
     val reason: ChatComponent
     ) : Packet() {
     
-    override val id: Int = 0x00
+    override val id = 0x00
     
     constructor(data: ByteBuffer) : this(
         reason = data.readFormattedText()
