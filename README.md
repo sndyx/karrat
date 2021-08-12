@@ -18,7 +18,7 @@ It is a quick, open-source Minecraft server implementation developed solely by
   * [Setup](#setup)
     * [Gradle](#gradle)
     * [Maven](#maven-not-recommended)
-* [Documentation](#documentation)
+  * [Documentation](#documentation)
 
 <!--- END -->
 
