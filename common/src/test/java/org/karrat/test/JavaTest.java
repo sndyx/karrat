@@ -7,12 +7,4 @@ import org.karrat.util.Uuid;
 
 public class JavaTest {
     
-    HandshakePacket packet = new HandshakePacket(751, "example.com", 8080, 2);
-    
-    public void test() {
-        Uuid uuid = Uuid.randomUUID();
-        ByteBuffer buffer = new ByteBuffer();
-        PacketUtils.writeUUID(buffer, uuid);
-    }
-    
 }

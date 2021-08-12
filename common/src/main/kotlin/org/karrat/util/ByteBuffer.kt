@@ -27,20 +27,20 @@ class ByteBuffer {
     fun writeBoolean(value: Boolean) = if (value) write(1) else write(0)
     
     fun writeShort(value: Short) {
-        for (i in 1 downTo 0) write((value.toInt() shl -8 * i and 0xff).toByte())
+        for (i in 1 downTo 0) write((value.toInt() shr 8 * i).toByte())
     }
     
     fun writeInt(value: Int) {
-        for (i in 3 downTo 0) write((value shl -8 * i and 0xff).toByte())
+        for (i in 3 downTo 0) write((value shr 8 * i).toByte())
     }
     
     fun writeLong(value: Long) {
-        for (i in 7 downTo 0) write((value shl -8 * i and 0xff).toByte())
+        for (i in 7 downTo 0) write((value shr 8 * i).toByte())
     }
     
-    fun writeFloat(value: Float) = writeInt(value.toRawBits())
+    fun writeFloat(value: Float) = writeInt(value.toBits())
     
-    fun writeDouble(value: Double) = writeLong(value.toRawBits())
+    fun writeDouble(value: Double) = writeLong(value.toBits())
     
     fun writeBytes(value: ByteArray) {
         value.forEach { write(it) }

@@ -2,6 +2,6 @@
 
 ## Soon
 
-* Set up Git
+* Fix Nbt to ByteArray serialization
 
 ## Later

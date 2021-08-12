@@ -1,24 +1,21 @@
 package org.karrat.test
 
-import org.karrat.item.nbt.NbtCompound
-import org.karrat.util.ChatComponent
+import kotlinx.serialization.Serializable
+import org.karrat.serialization.Nbt
+import org.karrat.util.ByteBuffer
 
-class Test {
+fun ByteArray.toHex(): String = joinToString(separator = " ") { eachByte -> "%02x".format(eachByte) }
+
+fun main() {
     
-    fun test() {
-        val component = ChatComponent {
-            text("&eEpic &lGaming") {
-                onClickRun {
-                    println("Player clicked message!")
-                }
-                onHoverDisplayText("Text")
-            }
-            text("Quite epic.")
-        }
-        
-        val compound = NbtCompound()
-        val y = compound.get<NbtCompound>("gamers").get<String>("rise")
-        
-    }
-    
+    val test = Test(10.0)
+    val nbt = Nbt.encodeToNbt(test)
+    val bytes = Nbt.encodeToBytes(nbt)
+    println(bytes.toHex())
+    val buffer = ByteBuffer()
+    buffer.writeInt(10)
+    println(buffer.array().toHex())
 }
+
+@Serializable
+class Test(val value: Double)

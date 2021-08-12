@@ -1,0 +1,6 @@
+/build/
+/client/build/
+/common/build/
+/server/build/
+/.gradle/
+/TODO.md
