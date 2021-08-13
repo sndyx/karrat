@@ -4,13 +4,15 @@
 
 package org.karrat.network
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.karrat.Tickable
-import org.karrat.packet.play.DisconnectPacket
-import org.karrat.util.ChatComponent
 import org.karrat.util.NetSocket
 import kotlin.concurrent.thread
 
-object ServerSocket : Tickable {
+object ServerSocket : Tickable, CoroutineScope {
+    
+    override val coroutineContext = Dispatchers.IO
     
     private var sessions = mutableListOf<Session>()
     lateinit var socket: NetSocket
@@ -22,12 +24,10 @@ object ServerSocket : Tickable {
         }
     }
     
-    val disconnect by lazy { DisconnectPacket(ChatComponent("Server shutting down.")) }
-    
     fun stop() {
         sessions
             .filter { it.state == SessionState.PLAY }
-            .forEach { it.send(disconnect) }
+            .forEach { it.disconnect("Server shutting down.") }
     }
     
     override fun tick() {

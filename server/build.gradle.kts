@@ -16,7 +16,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly(project(":common"))
+    implementation(project(":common"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
 }
 
 tasks.withType<KotlinCompile> {
