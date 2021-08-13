@@ -3,3 +3,6 @@
 /common/build/
 /server/build/
 /.gradle/
+
+# idea
+.idea
