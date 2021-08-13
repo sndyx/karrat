@@ -4,10 +4,12 @@
 
 package org.karrat
 
-class Server(val port: Int) {
+import org.karrat.network.ServerSocket
+
+object Server {
     
-    fun start() {
-    
+    fun start(port: Int) {
+        ServerSocket.start(port)
     }
 
 }

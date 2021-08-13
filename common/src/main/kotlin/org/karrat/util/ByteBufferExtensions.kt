@@ -63,7 +63,7 @@ fun ByteBuffer.writeUUID(value: Uuid) {
 /**
  * Writes a [ChatComponent] to the buffer.
  */
-fun ByteBuffer.writeFormattedText(value: ChatComponent) = writeString(Json.encodeToString(value))
+fun ByteBuffer.writeChatComponent(value: ChatComponent) = writeString(Json.encodeToString(value))
 
 /**
  * Reads a [ByteArray] with its size prefixed as a variable-length Int from the buffer.
@@ -121,7 +121,7 @@ fun ByteBuffer.readUUID() = Uuid(readLong(), readLong())
 /**
  * Reads a [ChatComponent] from the buffer.
  */
-fun ByteBuffer.readFormattedText() = Json.decodeFromString<ChatComponent>(readString())
+fun ByteBuffer.readChatComponent() = Json.decodeFromString<ChatComponent>(readString())
 
 fun ByteBuffer.writeUByte(value: UByte) = write(value.toByte())
 
