@@ -15,7 +15,7 @@ Tasks that should take priority, ordered by importance.
   * Set up handshake/status handlers
 
 * Add packet read/write compression & encryption support
->See https://wiki.vg/Protocol_Encryption.
+>See https://wiki.vg/Protocol_Encryption for more details.
 
 ## Misc
 
@@ -28,7 +28,7 @@ Tasks that can be done whenever. If you aren't inspired to do anything or are
 
 * Add helpful classes & extensions to `ByteBuffer.kt` for writing different data
  types.
->See https://wiki.vg/Protocol#Data_types.
+>See https://wiki.vg/Protocol#Data_types for more details.
 
 * Add entity framework
 
