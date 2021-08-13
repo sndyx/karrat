@@ -11,8 +11,6 @@ Tasks that should take priority, ordered by importance.
 
 ---
 
-* Set up server sockets
-
 * Add net handler framework
   * Set up handshake/status handlers
 
