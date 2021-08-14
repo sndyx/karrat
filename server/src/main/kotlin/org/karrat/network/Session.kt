@@ -12,12 +12,15 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.isActive
 import org.karrat.packet.clientbound.ClientboundPacket
 import org.karrat.packet.clientbound.play.DisconnectPacket
+import org.karrat.packet.serverbound.ServerboundPacket
 import org.karrat.packet.toBytes
 import org.karrat.util.ByteBuffer
 import org.karrat.util.ChatComponent
 import org.karrat.util.readVarInt
 import java.io.OutputStream
 import java.net.Socket
+import java.util.function.Consumer
+import java.util.function.Predicate
 import kotlin.coroutines.coroutineContext
 
 class Session(private val socket: Socket) {
@@ -54,9 +57,43 @@ class Session(private val socket: Socket) {
     
     init {
         flow
-            .onEach { it.process(handler) }
+            .onEach { p ->
+                //Preprocessing packet - cancel packet processing if needed
+                preProcess.forEach { if (it.test(p)) return@onEach }
+
+                handler.process(p)
+
+                //Postprocessing packet
+                postProcess.forEach { it.accept(p) }
+            }
             .catch { disconnect("Internal error occurred.") }
             .launchIn(ServerSocket)
+    }
+
+    companion object {
+        private val preProcess = mutableListOf<Predicate<ServerboundPacket>>()
+        private val postProcess = mutableListOf<Consumer<ServerboundPacket>>()
+
+        /**
+         * Adds a preProcessing callback to before handling the packet
+         *
+         * @param toAdd predicate to use, e.g. addPreCallback(s -> s instanceof PingPacket) would cancel PingPacket
+         * processing
+         */
+        @JvmStatic
+        fun addPreCallback(toAdd : Predicate<ServerboundPacket>) {
+            preProcess.add(toAdd)
+        }
+
+        /**
+         * Adds a postProcessing callback to before handling the packet
+         *
+         * @param toAdd predicate to use,
+         */
+        @JvmStatic
+        fun addPostCallback(toAdd : Predicate<ServerboundPacket>) {
+            preProcess.add(toAdd)
+        }
     }
     
 }

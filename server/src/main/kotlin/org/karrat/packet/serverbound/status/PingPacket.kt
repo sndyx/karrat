@@ -12,8 +12,4 @@ class PingPacket(data : ByteBuffer) : ServerboundPacket {
     
     val timestamp = data.readLong()
     
-    override fun process(handler: INetHandler) {
-        TODO("Not yet implemented")
-    }
-    
 }
