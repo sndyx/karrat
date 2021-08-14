@@ -26,7 +26,7 @@ class Uuid {
             bytes[6] = bytes[6] and 0x0f
             bytes[6] = bytes[6] or 0x40
             bytes[8] = bytes[8] and 0x3f
-            bytes[8] = bytes[8] or 0x7f // There's no way this works lmfao
+            bytes[8] = bytes[8] or 0x7f // There's no way this works lmfao TODO: fix
             return Uuid(
                 ByteBuffer(bytes.copyOf(8)).readLong(),
                 ByteBuffer(bytes.copyOfRange(9, 16)).readLong()

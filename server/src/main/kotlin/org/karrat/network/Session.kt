@@ -52,7 +52,7 @@ class Session(private val socket: Socket) {
     init {
         flow
             .onEach { }
-            .catch { disconnect("Internal error: ${it.message}") }
+            .catch { disconnect("Internal error occurred.") }
             .launchIn(ServerSocket)
     }
     

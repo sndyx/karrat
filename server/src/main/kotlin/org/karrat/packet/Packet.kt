@@ -23,4 +23,6 @@ abstract class Packet {
     
     internal abstract fun write(data: ByteBuffer)
     
+    internal abstract fun process()
+    
 }
