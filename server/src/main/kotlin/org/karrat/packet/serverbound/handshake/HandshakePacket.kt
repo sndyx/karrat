@@ -16,9 +16,4 @@ class HandshakePacket(data: ByteBuffer) : ServerboundPacket {
     val port = data.readUShort()
     val nextState = data.readVarInt()
     
-    override fun process(handler: INetHandler) {
-        check(handler is NetHandlerHandshake)
-        handler.handleHandshakePacket(this)
-    }
-    
 }

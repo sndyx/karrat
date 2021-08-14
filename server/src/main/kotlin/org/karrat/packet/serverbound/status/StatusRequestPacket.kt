@@ -9,8 +9,4 @@ import org.karrat.packet.serverbound.ServerboundPacket
 
 object StatusRequestPacket : ServerboundPacket {
     
-    override fun process(handler: INetHandler) {
-        TODO("Not yet implemented")
-    }
-    
 }
