@@ -50,3 +50,6 @@ Ideas that might make the developer experience more convenient (without
 >An example of this would be the `Nbt.kt` serialization module. It is a
 > convenient and concise way to translate data to NBT using 
 > `kotlinx.serialization` without sacrificing code readability or performance.
+
+* Annotation-powered compiler plugin that automatically registers functions 
+ annotated with `@Subscribe` to the event bus.
