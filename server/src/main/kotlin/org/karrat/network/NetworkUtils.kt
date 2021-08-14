@@ -5,8 +5,7 @@
 package org.karrat.network
 
 val Session.state
-get() = when (packetAdapter) {
-    is PacketAdapterHandshake -> SessionState.HANDSHAKE
-    is PacketAdapterPlay -> SessionState.PLAY
+get() = when (handler) {
+    is NetHandlerHandshake -> SessionState.HANDSHAKE
     else -> SessionState.HANDSHAKE
 }

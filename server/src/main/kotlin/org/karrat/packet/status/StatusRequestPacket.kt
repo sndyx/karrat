@@ -4,15 +4,13 @@
 
 package org.karrat.packet.status
 
-import org.karrat.packet.Packet
-import org.karrat.packet.Serverbound
-import org.karrat.util.ByteBuffer
+import org.karrat.network.INetHandler
+import org.karrat.packet.ServerboundPacket
 
-@Serverbound
-class StatusRequestPacket : Packet() {
+object StatusRequestPacket : ServerboundPacket {
     
-    override val id = 0x00
-    
-    override fun write(data: ByteBuffer) {  }
+    override fun process(handler: INetHandler) {
+        TODO("Not yet implemented")
+    }
     
 }

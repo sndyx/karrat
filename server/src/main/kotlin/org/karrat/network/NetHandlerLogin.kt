@@ -7,8 +7,10 @@ package org.karrat.network
 import org.karrat.packet.ServerboundPacket
 import org.karrat.util.ByteBuffer
 
-interface INetHandler {
+class NetHandlerLogin(val session: Session) : INetHandler {
     
-    fun read(id: Int, data: ByteBuffer): ServerboundPacket
+    override fun read(id: Int, data: ByteBuffer): ServerboundPacket {
+        TODO("")
+    }
     
 }

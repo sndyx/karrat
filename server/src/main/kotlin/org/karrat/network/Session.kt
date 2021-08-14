@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.isActive
-import org.karrat.packet.Packet
+import org.karrat.packet.ClientboundPacket
 import org.karrat.packet.play.DisconnectPacket
+import org.karrat.packet.toBytes
 import org.karrat.util.ByteBuffer
 import org.karrat.util.ChatComponent
 import org.karrat.util.readVarInt
@@ -21,14 +22,14 @@ import kotlin.coroutines.coroutineContext
 
 class Session(private val socket: Socket) {
     
-    val flow = flow {
+    private val flow = flow {
         while (coroutineContext.isActive) {
             val buffer = ByteBuffer(readChannel.readBytes())
             if (buffer.size != 0) {
                 val length = buffer.readVarInt()
                 val payload = buffer.readStream(length)
                 val id = payload.readVarInt()
-                val packet = packetAdapter.read(id, payload)
+                val packet = handler.read(id, payload)
                 emit(packet)
             } else {
                 if (!isAlive) break
@@ -38,11 +39,13 @@ class Session(private val socket: Socket) {
     }
     
     val isAlive get() = !socket.isClosed
+    
     private val readChannel by lazy { socket.getInputStream().buffered() }
     private val writeChannel: OutputStream by lazy { socket.getOutputStream() }
-    val packetAdapter: IPacketAdapter = PacketAdapterHandshake()
     
-    fun send(packet: Packet) = writeChannel.write(packet.toBytes())
+    var handler: INetHandler = NetHandlerHandshake(this)
+    
+    fun send(packet: ClientboundPacket) = writeChannel.write(packet.toBytes())
     
     fun disconnect(reason: String) {
         send(DisconnectPacket(ChatComponent(reason)))
@@ -51,7 +54,7 @@ class Session(private val socket: Socket) {
     
     init {
         flow
-            .onEach { }
+            .onEach { it.process(handler) }
             .catch { disconnect("Internal error occurred.") }
             .launchIn(ServerSocket)
     }

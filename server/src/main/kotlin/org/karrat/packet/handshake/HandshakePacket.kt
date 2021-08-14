@@ -4,31 +4,21 @@
 
 package org.karrat.packet.handshake
 
+import org.karrat.network.INetHandler
+import org.karrat.network.NetHandlerHandshake
 import org.karrat.packet.*
 import org.karrat.util.*
 
-@Serverbound
-data class HandshakePacket(
-    val protocol: Int,
-    val address: String,
-    val port: UShort,
-    val nextState: Int
-    ) : Packet() {
+class HandshakePacket(data: ByteBuffer) : ServerboundPacket {
     
-    override val id = 0x00
+    val protocol = data.readVarInt()
+    val address = data.readString()
+    val port = data.readUShort()
+    val nextState = data.readVarInt()
     
-    constructor(data: ByteBuffer) : this(
-        protocol = data.readVarInt(),
-        address = data.readString(),
-        port = data.readUShort(),
-        nextState = data.readVarInt()
-    )
-    
-    override fun write(data: ByteBuffer) = data.run {
-        writeVarInt(protocol)
-        writeString(address)
-        writeUShort(port)
-        writeVarInt(nextState)
+    override fun process(handler: INetHandler) {
+        check(handler is NetHandlerHandshake)
+        handler.handleHandshakePacket(this)
     }
     
 }

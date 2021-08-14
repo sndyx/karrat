@@ -4,20 +4,16 @@
 
 package org.karrat.packet.status
 
-import org.karrat.packet.Packet
-import org.karrat.packet.Serverbound
+import org.karrat.network.INetHandler
+import org.karrat.packet.ServerboundPacket
 import org.karrat.util.ByteBuffer
 
-
-@Serverbound
-class PingPacket(val timestamp: Long) : Packet() {
+class PingPacket(data: ByteBuffer) : ServerboundPacket {
     
-    override val id = 0x01
+    val timestamp = data.readLong()
     
-    constructor(data: ByteBuffer) : this(
-        timestamp = data.readLong()
-    )
-    
-    override fun write(data: ByteBuffer) = data.writeLong(timestamp)
+    override fun process(handler: INetHandler) {
+        TODO("Not yet implemented")
+    }
     
 }
