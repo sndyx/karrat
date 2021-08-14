@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.isActive
-import org.karrat.packet.ClientboundPacket
-import org.karrat.packet.play.DisconnectPacket
+import org.karrat.packet.clientbound.ClientboundPacket
+import org.karrat.packet.clientbound.play.DisconnectPacket
 import org.karrat.packet.toBytes
 import org.karrat.util.ByteBuffer
 import org.karrat.util.ChatComponent

@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet
+package org.karrat.packet.serverbound
 
 import org.karrat.network.INetHandler
 

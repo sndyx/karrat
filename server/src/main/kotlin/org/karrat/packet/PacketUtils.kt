@@ -4,6 +4,7 @@
 
 package org.karrat.packet
 
+import org.karrat.packet.clientbound.ClientboundPacket
 import org.karrat.util.ByteBuffer
 import org.karrat.util.writeVarInt
 

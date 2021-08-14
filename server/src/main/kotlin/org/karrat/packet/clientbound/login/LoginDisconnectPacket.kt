@@ -2,9 +2,9 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet.login
+package org.karrat.packet.clientbound.login
 
-import org.karrat.packet.*
+import org.karrat.packet.clientbound.ClientboundPacket
 import org.karrat.util.ChatComponent
 import org.karrat.util.ByteBuffer
 import org.karrat.util.writeChatComponent

@@ -4,8 +4,8 @@
 
 package org.karrat.network
 
-import org.karrat.packet.status.PingPacket
-import org.karrat.packet.status.StatusRequestPacket
+import org.karrat.packet.serverbound.status.PingPacket
+import org.karrat.packet.serverbound.status.StatusRequestPacket
 import org.karrat.util.ByteBuffer
 
 object NetHandlerStatus : INetHandler {

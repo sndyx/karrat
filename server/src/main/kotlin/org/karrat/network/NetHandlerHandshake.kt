@@ -4,7 +4,7 @@
 
 package org.karrat.network
 
-import org.karrat.packet.handshake.HandshakePacket
+import org.karrat.packet.serverbound.handshake.HandshakePacket
 import org.karrat.util.ByteBuffer
 
 class NetHandlerHandshake(private val session: Session) : INetHandler {

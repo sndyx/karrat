@@ -2,11 +2,11 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet.handshake
+package org.karrat.packet.serverbound.handshake
 
 import org.karrat.network.INetHandler
 import org.karrat.network.NetHandlerHandshake
-import org.karrat.packet.*
+import org.karrat.packet.serverbound.ServerboundPacket
 import org.karrat.util.*
 
 class HandshakePacket(data: ByteBuffer) : ServerboundPacket {

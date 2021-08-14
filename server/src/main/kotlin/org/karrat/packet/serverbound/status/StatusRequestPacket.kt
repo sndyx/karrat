@@ -2,10 +2,10 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet.status
+package org.karrat.packet.serverbound.status
 
 import org.karrat.network.INetHandler
-import org.karrat.packet.ServerboundPacket
+import org.karrat.packet.serverbound.ServerboundPacket
 
 object StatusRequestPacket : ServerboundPacket {
     
