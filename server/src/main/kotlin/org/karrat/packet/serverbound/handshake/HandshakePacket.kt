@@ -4,8 +4,6 @@
 
 package org.karrat.packet.serverbound.handshake
 
-import org.karrat.network.INetHandler
-import org.karrat.network.NetHandlerHandshake
 import org.karrat.packet.serverbound.ServerboundPacket
 import org.karrat.util.*
 

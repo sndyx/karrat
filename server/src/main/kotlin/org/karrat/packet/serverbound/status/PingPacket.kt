@@ -4,7 +4,6 @@
 
 package org.karrat.packet.serverbound.status
 
-import org.karrat.network.INetHandler
 import org.karrat.packet.serverbound.ServerboundPacket
 import org.karrat.util.ByteBuffer
 

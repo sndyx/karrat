@@ -42,7 +42,6 @@ open class NetHandlerStatus(val session: Session) : INetHandler {
                     "description": {
                         "text": "Funny Gaming"
                     },
-                    "favicon": "data:image/png;base64,<data>"
                 }
             """
             ))
