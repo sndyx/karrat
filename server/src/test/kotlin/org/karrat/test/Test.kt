@@ -5,11 +5,24 @@
 package org.karrat.test
 
 import kotlinx.serialization.Serializable
+import org.karrat.Server
+import org.karrat.event.PacketEvent
+import org.karrat.event.on
 import org.karrat.serialization.Nbt
 
 fun ByteArray.toHex(): String = joinToString(separator = " ") { eachByte -> "%02x".format(eachByte) }
 
 fun main() {
+    NbtTest()
+}
+
+fun EventTest() {
+    Server.on<PacketEvent<*>> {
+        print("Received packet ${it.packet}")
+    }
+}
+
+fun NbtTest() {
     val mainWorld = World("MAIN_WORLD")
     val location = Location(10.0, 84.30321, 582.05, mainWorld)
     println("Original: $location")

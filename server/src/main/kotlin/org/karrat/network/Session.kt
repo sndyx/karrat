@@ -60,7 +60,7 @@ class Session(private val socket: Socket) {
     init {
         flow
             .onEach {
-                if (dispatchEvent(PacketEvent(it, player?.uuid)))
+                if (!dispatchEvent(PacketEvent(it, player?.uuid)))
                 handler.process(it) }
             .catch { disconnect("Internal error occurred.") }
             .launchIn(ServerSocket)
