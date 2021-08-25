@@ -1,5 +1,5 @@
 # Karrat Minecraft server
-![image](https://user-images.githubusercontent.com/58920010/129466132-0f962dd0-e37a-45e3-87cf-f8c5ce109fab.png)
+![image](https://user-images.githubusercontent.com/70289658/130708565-864c777b-d127-4416-a24b-efb2a59cb04f.png)
 
 Welcome to [Karrat](https://karrat.org/)!
 It is a quick, open-source Minecraft server implementation developed solely by
