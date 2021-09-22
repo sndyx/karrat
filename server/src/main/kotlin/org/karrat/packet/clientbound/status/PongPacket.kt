@@ -5,12 +5,12 @@
 package org.karrat.packet.clientbound.status
 
 import org.karrat.packet.clientbound.ClientboundPacket
-import org.karrat.util.ByteBuffer
+import org.karrat.util.DynamicByteBuffer
 
 class PongPacket(private val timestamp: Long) : ClientboundPacket {
     
     override val id = 0x01
     
-    override fun write(data: ByteBuffer) = data.writeLong(timestamp)
+    override fun write(data: DynamicByteBuffer) = data.writeLong(timestamp)
     
 }

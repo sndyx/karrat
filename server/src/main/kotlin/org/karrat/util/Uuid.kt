@@ -12,29 +12,6 @@ import kotlin.experimental.or
 @Serializable
 class Uuid {
     
-    companion object {
-    
-        private val random by lazy { SecureRandom() }
-    
-        /**
-         * Constructs a new random UUID.
-         */
-        @JvmStatic
-        fun randomUUID(): Uuid {
-            val bytes = ByteArray(16)
-            random.nextBytes(bytes)
-            bytes[6] = bytes[6] and 0x0f
-            bytes[6] = bytes[6] or 0x40
-            bytes[8] = bytes[8] and 0x3f
-            bytes[8] = bytes[8] or 0x7f // There's no way this works lmfao TODO: fix
-            return Uuid(
-                ByteBuffer(bytes.copyOf(8)).readLong(),
-                ByteBuffer(bytes.copyOfRange(9, 16)).readLong()
-            )
-        }
-        
-    }
-    
     val mostSignificantBits: Long
     val leastSignificantBits: Long
     
@@ -72,8 +49,8 @@ class Uuid {
     /**
      * If this UUID is a time-based UUID, returns the time it was generated.
      */
-    val timestamp: Long get() {
-        check(version == 1) { "Not a time-based UUID" }
+    val timestamp: Long? get() {
+        if (version != 1) return null
         return mostSignificantBits and 0x0FFFL shl 48 or (mostSignificantBits shr 16 and 0x0FFFFL shl 32) or (mostSignificantBits ushr 32)
     }
     
@@ -94,4 +71,19 @@ class Uuid {
         return (hi or (value and hi - 1)).toString(16).substring(1)
     }
     
+}
+
+private val random by lazy { SecureRandom() }
+
+fun randomUuid(): Uuid {
+    val bytes = ByteArray(16)
+    random.nextBytes(bytes)
+    bytes[6] = bytes[6] and 0x0f
+    bytes[6] = bytes[6] or 0x40
+    bytes[8] = bytes[8] and 0x3f
+    bytes[8] = bytes[8] or 0x80.toByte() // frick you kotlin!! i dont play by the rules
+    return Uuid(
+        ByteBuffer(bytes.copyOf(8)).readLong(),
+        ByteBuffer(bytes.copyOfRange(9, 16)).readLong()
+    )
 }

@@ -8,9 +8,10 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import org.karrat.Server
 import org.karrat.network.ServerSocket
+import org.karrat.server.warning
 
 internal val eventFlow =
-    MutableSharedFlow<Event>(replay = 0, onBufferOverflow = BufferOverflow.DROP_OLDEST).apply {
+    MutableSharedFlow<Event>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST).apply {
         distinctUntilChanged()
     }
 
@@ -27,5 +28,12 @@ inline fun <reified T : Event> Server.on(crossinline block: (T) -> Unit) {
     events
         .filterIsInstance<T>()
         .onEach { block.invoke(it) }
+        .catch {
+            warning("Error dispatching event ${events.last()}.")
+            it.printStackTrace() }
         .launchIn(ServerSocket)
+}
+
+fun CancellableEvent.cancel() {
+    isCancelled = true
 }

@@ -6,4 +6,8 @@ package org.karrat.packet.serverbound.status
 
 import org.karrat.packet.serverbound.ServerboundPacket
 
-object StatusRequestPacket : ServerboundPacket
+object StatusRequestPacket : ServerboundPacket {
+    
+    override fun toString() = "StatusRequestPacket"
+    
+}

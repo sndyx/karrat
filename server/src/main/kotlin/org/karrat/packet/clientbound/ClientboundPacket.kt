@@ -4,12 +4,12 @@
 
 package org.karrat.packet.clientbound
 
-import org.karrat.util.ByteBuffer
+import org.karrat.util.DynamicByteBuffer
 
 interface ClientboundPacket {
     
     val id: Int
     
-    fun write(data: ByteBuffer)
+    fun write(data: DynamicByteBuffer)
     
 }

@@ -14,4 +14,6 @@ class HandshakePacket(data: ByteBuffer) : ServerboundPacket {
     val port = data.readUShort()
     val nextState = data.readVarInt()
     
+    override fun toString() = "HandshakePacket(protocol=$protocol, address=$address, port=$port, nextState=$nextState)"
+    
 }

@@ -22,6 +22,7 @@ open class NetHandlerStatus(val session: Session) : INetHandler {
     override fun process(packet: ServerboundPacket) = when (packet) {
         is PingPacket -> session.send(PongPacket(packet.timestamp))
         is StatusRequestPacket -> {
+            println("Sending StatusResponsePacket.")
             session.send(StatusResponsePacket(
                 """
                 {
@@ -41,7 +42,7 @@ open class NetHandlerStatus(val session: Session) : INetHandler {
                     },
                     "description": {
                         "text": "Funny Gaming"
-                    },
+                    }
                 }
             """
             ))

@@ -21,16 +21,16 @@ internal class NbtEncoder(private val descriptor: SerialDescriptor) : AbstractEn
     
     override val serializersModule = EmptySerializersModule
     
-    override fun encodeBoolean(value: Boolean) = output.put(key, if (value) 1.toByte() else 0.toByte())
-    override fun encodeByte(value: Byte) = output.put(key, value)
-    override fun encodeShort(value: Short) = output.put(key, value)
-    override fun encodeInt(value: Int) = output.put(key, value)
-    override fun encodeLong(value: Long) = output.put(key, value)
-    override fun encodeFloat(value: Float) = output.put(key, value)
-    override fun encodeDouble(value: Double) = output.put(key, value)
-    override fun encodeChar(value: Char) = output.put(key, value.code)
-    override fun encodeString(value: String) = output.put(key, value)
-    override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) = output.put(key, index)
+    override fun encodeBoolean(value: Boolean) { output[key] = if (value) 1.toByte() else 0.toByte() }
+    override fun encodeByte(value: Byte) { output[key] = value }
+    override fun encodeShort(value: Short) { output[key] = value }
+    override fun encodeInt(value: Int) { output[key] = value }
+    override fun encodeLong(value: Long) { output[key] = value }
+    override fun encodeFloat(value: Float) { output[key] = value }
+    override fun encodeDouble(value: Double) { output[key] = value }
+    override fun encodeChar(value: Char) { output[key] = value.code }
+    override fun encodeString(value: String) { output[key] = value }
+    override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) { output[key] = index }
     
     override fun <T> encodeSerializableValue(serializer: SerializationStrategy<T>, value: T) {
         if (serializer.descriptor.kind == SerialKind.ENUM) {
@@ -38,7 +38,7 @@ internal class NbtEncoder(private val descriptor: SerialDescriptor) : AbstractEn
         } else {
             val encoder = NbtEncoder(serializer.descriptor)
             serializer.serialize(encoder, value)
-            output.put(key, encoder.output)
+            output[key] = encoder.output
         }
     }
     

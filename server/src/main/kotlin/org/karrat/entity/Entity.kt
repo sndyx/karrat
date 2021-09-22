@@ -4,5 +4,12 @@
 
 package org.karrat.entity
 
-interface Entity {
+import org.karrat.play.Location
+
+open class Entity(var location: Location) {
+    
+    fun remove() {
+    
+    }
+    
 }

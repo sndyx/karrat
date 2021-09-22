@@ -30,15 +30,15 @@ internal class NbtDecoder(private val input: NbtCompound, private val descriptor
     
     override fun decodeSequentially() = true
     
-    override fun decodeBoolean(): Boolean = input.get<Byte>(key) == 1.toByte()
-    override fun decodeByte(): Byte = input.get(key)
-    override fun decodeShort(): Short = input.get(key)
-    override fun decodeInt(): Int = input.get(key)
-    override fun decodeLong(): Long = input.get(key)
-    override fun decodeFloat(): Float = input.get(key)
-    override fun decodeDouble(): Double = input.get(key)
-    override fun decodeChar(): Char = input.get<Int>(key).toChar()
-    override fun decodeString(): String = input.get(key)
+    override fun decodeBoolean(): Boolean = input[key] == 1.toByte()
+    override fun decodeByte(): Byte = input[key] as Byte
+    override fun decodeShort(): Short = input[key] as Short
+    override fun decodeInt(): Int = input[key] as Int
+    override fun decodeLong(): Long = input[key] as Long
+    override fun decodeFloat(): Float = input[key] as Float
+    override fun decodeDouble(): Double = input[key] as Double
+    override fun decodeChar(): Char = (input[key] as Int).toChar()
+    override fun decodeString(): String = input[key] as String
     
     @Suppress("UNCHECKED_CAST") // heck you kotlin!!! i live life on the edge !
     override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>): T {
@@ -46,7 +46,7 @@ internal class NbtDecoder(private val input: NbtCompound, private val descriptor
             val value = decodeString().split(':')
             Class.forName(value[0]).enumConstants[value[1].toInt()] as T
         } else {
-            val compound = input.get<NbtCompound>(key)
+            val compound = input[key] as NbtCompound
             val decoder = NbtDecoder(compound, deserializer.descriptor)
             deserializer.deserialize(decoder)
         }

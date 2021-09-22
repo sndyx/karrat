@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.karrat.Tickable
 import org.karrat.util.NetSocket
+import java.net.InetAddress
 import kotlin.concurrent.thread
 
 object ServerSocket : Tickable, CoroutineScope {
@@ -18,7 +19,7 @@ object ServerSocket : Tickable, CoroutineScope {
     lateinit var socket: NetSocket
     
     fun start(port: Int) {
-        socket = NetSocket(port)
+        socket = NetSocket(port, 0, InetAddress.getLocalHost())
         thread {
             while (true) sessions.add(Session(socket.accept()))
         }

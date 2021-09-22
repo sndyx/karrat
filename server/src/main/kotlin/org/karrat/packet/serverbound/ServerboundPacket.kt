@@ -4,6 +4,4 @@
 
 package org.karrat.packet.serverbound
 
-interface ServerboundPacket {
-
-}
+interface ServerboundPacket

@@ -4,10 +4,15 @@
 
 package org.karrat.event
 
+import org.karrat.network.Session
 import org.karrat.packet.serverbound.ServerboundPacket
-import java.util.*
 
 class PacketEvent<T : ServerboundPacket>(
     val packet: T,
-    val sender: UUID?
-) : CancellableEvent()
+    val session: Session
+) : CancellableEvent() {
+    
+    override fun toString(): String =
+        "PacketEvent(packet=$packet, session=$session)"
+    
+}

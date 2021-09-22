@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.util
+package org.karrat.server
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,14 +19,14 @@ get() {
     return "$time [${Thread.currentThread().name}]"
 }
 
-fun log(message: String) {
+fun log(message: Any) {
     println("$prefix - info: $message")
 }
 
-fun warning(message: String) {
+fun warning(message: Any) {
     println("$prefix - warn: $message")
 }
 
-fun fatal(message: String) {
+fun fatal(message: Any) {
     println("$prefix - fatal: $message")
 }

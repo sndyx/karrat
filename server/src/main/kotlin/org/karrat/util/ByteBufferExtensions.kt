@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 /**
  * Writes a [ByteArray] from the buffer, prefixed with its length.
  */
-fun ByteBuffer.writePrefixed(value: ByteArray) {
+fun MutableByteBuffer.writePrefixed(value: ByteArray) {
     writeVarInt(value.size)
     writeBytes(value)
 }
@@ -20,7 +20,7 @@ fun ByteBuffer.writePrefixed(value: ByteArray) {
 /**
  * Writes a variable-length Int to the buffer.
  */
-fun ByteBuffer.writeVarInt(value: Int) {
+fun MutableByteBuffer.writeVarInt(value: Int) {
     var i = value
     do {
         var currentByte = i and 127
@@ -33,7 +33,7 @@ fun ByteBuffer.writeVarInt(value: Int) {
 /**
  * Writes a variable-length Long to the buffer.
  */
-fun ByteBuffer.writeVarLong(value: Long) {
+fun MutableByteBuffer.writeVarLong(value: Long) {
     var i = value
     do {
         var currentByte = i and 127
@@ -43,10 +43,30 @@ fun ByteBuffer.writeVarLong(value: Long) {
     } while (i != 0L)
 }
 
+fun varSizeOf(value: Int): Int {
+    if (value < 0) return 5
+    if (value < 0x80) return 1
+    if (value < 0x4000) return 2
+    if (value < 0x200000) return 3
+    return if (value < 0x10000000) 4 else 5
+}
+
+fun varSizeOf(value: Long): Int {
+    if (value < 0L) return 10
+    if (value < 0x80L) return 1
+    if (value < 0x4000L) return 2
+    if (value < 0x200000L) return 3
+    if (value < 0x10000000L) return 4
+    if (value < 0x800000000L) return 5
+    if (value < 0x40000000000L) return 6
+    if (value < 0x2000000000000L) return 7
+    return if (value < 0x100000000000000L) 8 else 9
+}
+
 /**
  * Writes a String to the buffer, prefixed with its length.
  */
-fun ByteBuffer.writeString(value: String) {
+fun MutableByteBuffer.writeString(value: String) {
     val bytes = value.encodeToByteArray()
     writeVarInt(bytes.size)
     writeBytes(bytes)
@@ -55,7 +75,7 @@ fun ByteBuffer.writeString(value: String) {
 /**
  * Writes a [Uuid] to the buffer.
  */
-fun ByteBuffer.writeUUID(value: Uuid) {
+fun MutableByteBuffer.writeUuid(value: Uuid) {
     writeLong(value.mostSignificantBits)
     writeLong(value.leastSignificantBits)
 }
@@ -63,7 +83,7 @@ fun ByteBuffer.writeUUID(value: Uuid) {
 /**
  * Writes a [ChatComponent] to the buffer.
  */
-fun ByteBuffer.writeChatComponent(value: ChatComponent) = writeString(Json.encodeToString(value))
+fun MutableByteBuffer.writeChatComponent(value: ChatComponent) = writeString(Json.encodeToString(value))
 
 /**
  * Reads a [ByteArray] with its size prefixed as a variable-length Int from the buffer.
@@ -81,11 +101,11 @@ fun ByteBuffer.readVarInt(): Int {
     var offset = 0
     var byte: Int
     do {
+        check(offset != 35) { "VarInt is too big" }
         byte = read().toInt()
         value = value or (byte and 127 shl offset)
-        check(offset == 35) { "VarLong is too big" }
         offset += 7
-    } while ((byte and 128) != 0)
+    } while (byte and 128 != 0)
     return value
 }
 
@@ -97,9 +117,9 @@ fun ByteBuffer.readVarLong(): Long {
     var offset = 0
     var byte: Long
     do {
+        check(offset != 70) { "VarLong is too big" }
         byte = read().toLong()
         value = value or (byte and 127 shl offset)
-        check(offset == 35) { "VarLong is too big" }
         offset += 7
     } while (byte and 128 != 0L)
     return value
@@ -123,13 +143,13 @@ fun ByteBuffer.readUUID() = Uuid(readLong(), readLong())
  */
 fun ByteBuffer.readChatComponent() = Json.decodeFromString<ChatComponent>(readString())
 
-fun ByteBuffer.writeUByte(value: UByte) = write(value.toByte())
+fun MutableByteBuffer.writeUByte(value: UByte) = write(value.toByte())
 
-fun ByteBuffer.writeUShort(value: UShort) = writeShort(value.toShort())
+fun MutableByteBuffer.writeUShort(value: UShort) = writeShort(value.toShort())
 
-fun ByteBuffer.writeUInt(value: UInt) = writeInt(value.toInt())
+fun MutableByteBuffer.writeUInt(value: UInt) = writeInt(value.toInt())
 
-fun ByteBuffer.writeULong(value: ULong) = writeLong(value.toLong())
+fun MutableByteBuffer.writeULong(value: ULong) = writeLong(value.toLong())
 
 fun ByteBuffer.readUByte(): UByte = read().toUByte()
 

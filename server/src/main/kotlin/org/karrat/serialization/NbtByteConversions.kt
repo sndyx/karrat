@@ -5,11 +5,10 @@
 package org.karrat.serialization
 
 import org.karrat.item.NbtCompound
-import org.karrat.util.ByteBuffer
-import org.karrat.util.readUShort
-import org.karrat.util.writeUShort
+import org.karrat.item.toNbtCompound
+import org.karrat.util.*
 
-internal fun writeNbt(buffer: ByteBuffer, value: Any) {
+internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
     buffer.apply {
         when (value) {
             is Byte -> write(value)
@@ -38,7 +37,7 @@ internal fun writeNbt(buffer: ByteBuffer, value: Any) {
                 }
             }
             is NbtCompound -> {
-                value.elements.forEach {
+                value.entries.forEach {
                     write(typeOf(it.value))
                     writeNbt(buffer, it.key)
                     writeNbt(buffer, it.value)
@@ -57,7 +56,7 @@ internal fun writeNbt(buffer: ByteBuffer, value: Any) {
                     writeLong(it)
                 }
             }
-            else -> error("Illegal NBT type: ${value::class.simpleName}.")
+            else -> error { "Illegal NBT type: ${value::class.simpleName}." }
         }
     }
 }
@@ -97,7 +96,7 @@ internal fun readNbt(buffer: ByteBuffer, type: Int): Any {
                     map[name] = readNbt(buffer, innerType)
                     innerType = read().toInt()
                 }
-                NbtCompound(map)
+                map.toNbtCompound()
             }
             11 -> {
                 val size = readInt()
@@ -115,7 +114,7 @@ internal fun readNbt(buffer: ByteBuffer, type: Int): Any {
                 }
                 data.toLongArray()
             }
-            else -> error("Illegal NBT type: $type.")
+            else -> error { "Illegal NBT type: $type." }
         }
     }
 }
@@ -133,5 +132,5 @@ private fun typeOf(value: Any): Byte = when (value) {
     is NbtCompound -> 10
     is IntArray -> 11
     is LongArray -> 12
-    else -> error("Illegal NBT type: ${value::class.simpleName}.")
+    else -> error { "Illegal NBT type: ${value::class.simpleName}." }
 }

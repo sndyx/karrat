@@ -24,8 +24,7 @@ class ChatComponent {
     
     constructor(text: String)
     
-    constructor(builder: Builder.() -> Unit) {
-    }
+    constructor(builder: Builder.() -> Unit)
     
     @Serializable
     class ClickEvent(val action: String, val value: String)
