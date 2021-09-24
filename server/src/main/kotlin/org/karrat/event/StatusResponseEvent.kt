@@ -5,6 +5,7 @@
 package org.karrat.event
 
 import org.karrat.network.Session
+import org.karrat.network.StatusResponse
 import org.karrat.packet.serverbound.ServerboundPacket
 
 class StatusResponseEvent(
