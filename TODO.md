@@ -41,7 +41,7 @@ Tasks that should be kept in mind but require prerequisites or would not be
 
 * Add play packets
 
-##Experimental Ideas
+## Experimental Ideas
 
 Ideas that might make the developer experience more convenient (without
  sacrificing performance) that don't necessarily have to be added for the server
