@@ -9,20 +9,20 @@ import org.karrat.packet.serverbound.status.StatusRequestPacket
 import org.karrat.packet.clientbound.status.PongPacket
 import org.karrat.packet.clientbound.status.StatusResponsePacket
 import org.karrat.packet.serverbound.ServerboundPacket
-import org.karrat.util.ByteBuffer
+import org.karrat.server.fatal
+import org.karrat.struct.ByteBuffer
 
 open class NetHandlerStatus(val session: Session) : INetHandler {
     
     override fun read(id: Int, data: ByteBuffer) = when (id) {
         0x00 -> StatusRequestPacket
         0x01 -> PingPacket(data)
-        else -> error { "Invalid packet id $id in state handshake." }
+        else -> fatal("Invalid packet id $id in state handshake.")
     }
 
     override fun process(packet: ServerboundPacket) = when (packet) {
         is PingPacket -> session.send(PongPacket(packet.timestamp))
         is StatusRequestPacket -> {
-            println("Sending StatusResponsePacket.")
             session.send(StatusResponsePacket(
                 """
                 {
@@ -48,7 +48,7 @@ open class NetHandlerStatus(val session: Session) : INetHandler {
             ))
             // TODO: setup status request response.
         }
-        else -> error { "Invalid packet to be handled." }
+        else -> fatal("Failed to handle packet: Invalid packet.")
 
     }
 }

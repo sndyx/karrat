@@ -6,6 +6,9 @@ package org.karrat.server
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
+import kotlin.system.exitProcess
 
 val time: String
 get() {
@@ -16,17 +19,36 @@ get() {
 
 val prefix: String
 get() {
-    return "$time [${Thread.currentThread().name}]"
+    val caller = Thread.currentThread().stackTrace[3].fileName
+    val format = "$time <$caller${if (Thread.currentThread().name == "main") "" else " @${Thread.currentThread().name}"}>"
+    return if (format.length > 40) format.substring(0, 36) + "...>"
+    else format.padEnd(40)
 }
 
-fun log(message: Any) {
-    println("$prefix - info: $message")
+fun info(message: Any) {
+    println("$prefix | info: $message")
 }
 
 fun warning(message: Any) {
-    println("$prefix - warn: $message")
+    println("$prefix | warn: $message")
 }
 
-fun fatal(message: Any) {
-    println("$prefix - fatal: $message")
+fun fatal(message: Any): Nothing {
+    println("$prefix | fatal: $message\n")
+    for (n in 2..17) {
+        println("   @ " + Thread.currentThread().stackTrace[n])
+    }
+    println()
+    exitProcess(1)
+}
+
+@OptIn(ExperimentalContracts::class)
+inline fun check(value: Boolean, lazyMessage: () -> Any) {
+    contract {
+        returns() implies value
+    }
+    if (!value) {
+        val message = lazyMessage()
+        fatal(message.toString())
+    }
 }

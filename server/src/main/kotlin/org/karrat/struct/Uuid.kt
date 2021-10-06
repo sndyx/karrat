@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.util
+package org.karrat.struct
 
 import kotlinx.serialization.Serializable
 import java.security.SecureRandom
@@ -24,7 +24,7 @@ class Uuid {
     }
     
     /**
-     * Constructs a UUID from a string.
+     * Reads a UUID from a string.
      */
     constructor(value: String) {
         val fixed = value.replace("-", "")
@@ -36,7 +36,7 @@ class Uuid {
     }
     
     /**
-     * Returns the type of UUID this is.
+     * Represents the type of UUID this is.
      * 1 - Time-based UUID
      * 2 - DCE security UUID
      * 3 - Name-based UUID
@@ -75,7 +75,7 @@ class Uuid {
 
 private val random by lazy { SecureRandom() }
 
-fun randomUuid(): Uuid {
+fun Uuid.Companion.random(): Uuid {
     val bytes = ByteArray(16)
     random.nextBytes(bytes)
     bytes[6] = bytes[6] and 0x0f

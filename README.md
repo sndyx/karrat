@@ -2,7 +2,7 @@
 ![image](https://user-images.githubusercontent.com/70289658/135740635-be07452e-614a-4416-bfe0-e7354153b176.png)
 
 Welcome to [Karrat](https://karrat.org/)!
-It is a quick, open-source Minecraft server implementation developed solely by
+It is a quick, open-source Minecraft server implementation developed by
  [Sndy](https://sndy.moe/) and open-source contributors.
 
 * Simple and easy to install.

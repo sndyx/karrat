@@ -5,8 +5,8 @@
 package org.karrat.packet.clientbound.status
 
 import org.karrat.packet.clientbound.ClientboundPacket
-import org.karrat.util.DynamicByteBuffer
-import org.karrat.util.writeString
+import org.karrat.struct.DynamicByteBuffer
+import org.karrat.struct.writeString
 
 class StatusResponsePacket(private val response: String) : ClientboundPacket {
     

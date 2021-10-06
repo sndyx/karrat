@@ -2,11 +2,10 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.util
+package org.karrat.play
 
 import kotlinx.serialization.Serializable
 import org.karrat.entity.Entity
-import org.karrat.item.ItemStack
 
 @Serializable
 class ChatComponent {

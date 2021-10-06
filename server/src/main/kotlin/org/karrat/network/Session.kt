@@ -9,10 +9,13 @@ import kotlinx.coroutines.launch
 import org.karrat.entity.Player
 import org.karrat.event.PacketEvent
 import org.karrat.event.dispatchEvent
+import org.karrat.struct.readBuffer
+import org.karrat.struct.readVarInt
+import org.karrat.struct.toByteBuffer
 import org.karrat.packet.clientbound.ClientboundPacket
 import org.karrat.packet.clientbound.play.DisconnectPacket
 import org.karrat.packet.toBytes
-import org.karrat.util.*
+import org.karrat.play.ChatComponent
 import java.io.OutputStream
 import java.net.Socket
 

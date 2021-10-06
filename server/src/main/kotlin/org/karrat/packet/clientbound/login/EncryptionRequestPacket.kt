@@ -5,9 +5,9 @@
 package org.karrat.packet.clientbound.login
 
 import org.karrat.packet.clientbound.ClientboundPacket
-import org.karrat.util.DynamicByteBuffer
-import org.karrat.util.writePrefixed
-import org.karrat.util.writeString
+import org.karrat.struct.DynamicByteBuffer
+import org.karrat.struct.writePrefixed
+import org.karrat.struct.writeString
 
 class EncryptionRequestPacket(
     private val serverId: String,

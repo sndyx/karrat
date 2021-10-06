@@ -5,10 +5,10 @@
 package org.karrat.packet.clientbound.login
 
 import org.karrat.packet.clientbound.ClientboundPacket
-import org.karrat.util.DynamicByteBuffer
-import org.karrat.util.Uuid
-import org.karrat.util.writeString
-import org.karrat.util.writeUuid
+import org.karrat.struct.DynamicByteBuffer
+import org.karrat.struct.Uuid
+import org.karrat.struct.writeString
+import org.karrat.struct.writeUuid
 
 class LoginSuccessPacket(
     private val uuid: Uuid,

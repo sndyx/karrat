@@ -2,13 +2,14 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.item
+package org.karrat.play
 
 import kotlinx.serialization.Serializable
+import org.karrat.struct.NbtCompound
 
 @Serializable
 class ItemStack(val material: Material, val amount: Int = 1) {
     
-    val meta = ItemMeta("")
+    var nbt = NbtCompound()
     
 }

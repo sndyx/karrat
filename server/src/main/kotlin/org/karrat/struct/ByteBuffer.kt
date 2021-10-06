@@ -2,7 +2,9 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.util
+package org.karrat.struct
+
+import org.karrat.server.fatal
 
 interface ByteBuffer {
     
@@ -137,7 +139,7 @@ internal open class MutableByteBufferImpl(allocation: Int) : ByteBufferImpl(Byte
     
     override fun write(value: Byte) {
         pointer++
-        check(bytes.size != pointer) { "Buffer overflow." }
+        check(bytes.size != pointer) { fatal("Buffer overflow.") }
         bytes[pointer] = value
     }
     
@@ -165,7 +167,9 @@ fun MutableByteBuffer.writeBytes(value: ByteArray) {
     value.forEach { write(it) }
 }
 
-class DynamicByteBuffer(values: ByteArray) : MutableByteBuffer by MutableByteBufferImpl(values.size) {
+class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl(values), MutableByteBuffer {
+    
+    override var pointer = -1
     
     constructor() : this(ByteArray(0))
     
@@ -177,11 +181,27 @@ class DynamicByteBuffer(values: ByteArray) : MutableByteBuffer by MutableByteBuf
         bytes[pointer] = value
     }
     
+    override fun writeBoolean(value: Boolean) = if (value) write(1) else write(0)
+    
+    override fun writeShort(value: Short) {
+        for (i in 1 downTo 0) write((value.toInt() shr 8 * i).toByte())
+    }
+    
+    override fun writeInt(value: Int) {
+        for (i in 3 downTo 0) write((value shr 8 * i).toByte())
+    }
+    
+    override fun writeLong(value: Long) {
+        for (i in 7 downTo 0) write((value shr 8 * i).toByte())
+    }
+    
+    override fun writeFloat(value: Float) = writeInt(value.toBits())
+    
+    override fun writeDouble(value: Double) = writeLong(value.toBits())
+    
     init {
-        writeBytes(values)
-        bytes.isEmpty().then {
-            bytes = ByteArray(1)
-        }
+        if (values.isEmpty()) bytes = ByteArray(1)
+        else writeBytes(values)
     }
     
 }

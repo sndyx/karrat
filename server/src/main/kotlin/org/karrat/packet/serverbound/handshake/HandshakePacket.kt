@@ -4,8 +4,11 @@
 
 package org.karrat.packet.serverbound.handshake
 
+import org.karrat.struct.ByteBuffer
+import org.karrat.struct.readString
+import org.karrat.struct.readUShort
+import org.karrat.struct.readVarInt
 import org.karrat.packet.serverbound.ServerboundPacket
-import org.karrat.util.*
 
 class HandshakePacket(data: ByteBuffer) : ServerboundPacket {
     

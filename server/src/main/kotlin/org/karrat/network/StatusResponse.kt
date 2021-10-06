@@ -5,8 +5,8 @@
 package org.karrat.network
 
 import org.karrat.entity.Player
-import org.karrat.util.ByteBuffer
-import org.karrat.util.ChatComponent
+import org.karrat.struct.ByteBuffer
+import org.karrat.play.ChatComponent
 
 data class StatusResponse(
     var version: String,

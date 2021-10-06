@@ -4,9 +4,7 @@
 
 package org.karrat.serialization
 
-import org.karrat.item.NbtCompound
-import org.karrat.item.toNbtCompound
-import org.karrat.util.*
+import org.karrat.struct.*
 
 internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
     buffer.apply {
@@ -86,7 +84,7 @@ internal fun readNbt(buffer: ByteBuffer, type: Int): Any {
                 for (i in 0 until size) {
                     list += readNbt(buffer, innerType)
                 }
-                list
+                list.toList()
             }
             10 -> {
                 val map = mutableMapOf<String, Any>()

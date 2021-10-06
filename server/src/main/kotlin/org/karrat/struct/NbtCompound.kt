@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.item
+package org.karrat.struct
 
 import kotlinx.serialization.Serializable
 
@@ -13,9 +13,7 @@ class NbtCompound : LinkedHashMap<String, Any>() {
         val builder = StringBuilder("NbtCompound(")
         entries.forEach {
             builder.append(it.key).append('=')
-            if (it.value is String) builder.append("\"")
             builder.append(it.value.toString())
-            if (it.value is String) builder.append("\"")
             builder.append(", ")
         }
         builder.setLength(builder.length - 2)
@@ -25,4 +23,13 @@ class NbtCompound : LinkedHashMap<String, Any>() {
     
 }
 
-fun MutableMap<String, Any>.toNbtCompound() = NbtCompound().also { it.putAll(this) }
+fun Map<String, Any>.toNbtCompound() = NbtCompound().also { it.putAll(this) }
+
+fun nbtOf(vararg pairs: Pair<String, Any>): NbtCompound =
+    NbtCompound().also { it.putAll(pairs) }
+
+fun nbtOf(pair: Pair<String, Any>): NbtCompound =
+    NbtCompound().also { it[pair.first] = pair.second }
+
+@Suppress("Unchecked_Cast")
+fun <T> NbtCompound.getAs(key: String): T = get(key) as T

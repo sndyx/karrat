@@ -5,7 +5,7 @@
 package org.karrat.packet.serverbound.status
 
 import org.karrat.packet.serverbound.ServerboundPacket
-import org.karrat.util.ByteBuffer
+import org.karrat.struct.ByteBuffer
 
 class PingPacket(data : ByteBuffer) : ServerboundPacket {
     

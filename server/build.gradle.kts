@@ -5,12 +5,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     kotlin("jvm")
     kotlin("plugin.serialization") version "1.5.21"
 }
 
-group = "org.karrat.common"
-version = "1.0"
+group = "org.karrat.server"
+version = "1.17.1"
+
+val main = "org.karrat.RunKt"
 
 repositories {
     mavenCentral()
@@ -19,6 +22,12 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
+    testImplementation(kotlin("test"))
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<KotlinCompile> {
@@ -27,4 +36,8 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<KotlinCompile>().forEach {
     it.kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+}
+
+application {
+    mainClass.set(main)
 }

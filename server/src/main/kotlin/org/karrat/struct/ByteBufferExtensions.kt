@@ -2,12 +2,12 @@
  * Copyright © Karrat - 2021.
  */
 
-@file:JvmName("PacketUtils")
-package org.karrat.util
+package org.karrat.struct
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.karrat.play.ChatComponent
 
 /**
  * Writes a [ByteArray] from the buffer, prefixed with its length.

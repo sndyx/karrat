@@ -4,7 +4,7 @@
 
 package org.karrat.packet.clientbound
 
-import org.karrat.util.DynamicByteBuffer
+import org.karrat.struct.DynamicByteBuffer
 
 interface ClientboundPacket {
     

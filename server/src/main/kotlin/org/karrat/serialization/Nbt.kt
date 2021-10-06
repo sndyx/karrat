@@ -7,10 +7,10 @@ package org.karrat.serialization
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
-import org.karrat.item.NbtCompound
-import org.karrat.util.ByteBuffer
-import org.karrat.util.DynamicByteBuffer
-import org.karrat.util.array
+import org.karrat.struct.ByteBuffer
+import org.karrat.struct.DynamicByteBuffer
+import org.karrat.struct.NbtCompound
+import org.karrat.struct.array
 
 object Nbt {
     
@@ -18,32 +18,29 @@ object Nbt {
      * Encodes the [value] into an equivalent [NbtCompound] using the given
      * [SerializationStrategy].
      */
-    fun <T> encodeToNbt(serializer: SerializationStrategy<T>, value: T): NbtCompound {
-        val encoder = NbtEncoder(serializer.descriptor)
-        encoder.encode(serializer, value)
-        return encoder.output
+    fun <T> encodeToNbt(value: T, serializer: SerializationStrategy<T>): NbtCompound {
+        return writeNbt(value, serializer)
     }
     
     /**
      * Decodes the [NbtCompound] into an equivalent [T] instance using the given
      * [DeserializationStrategy].
      */
-    fun <T> decodeFromNbt(deserializer: DeserializationStrategy<T>, value: NbtCompound): T {
-        val decoder = NbtDecoder(value, deserializer.descriptor)
-        return decoder.decode(deserializer)
+    fun <T> decodeFromNbt(value: NbtCompound, deserializer: DeserializationStrategy<T>): T {
+        return readNbt(value, deserializer)
     }
     
     /**
      * Encodes the given [value] into an equivalent [NbtCompound] using the
      * serializer retrieved from the reified type parameter.
      */
-    inline fun <reified T> encodeToNbt(value: T) = encodeToNbt(serializer(), value)
+    inline fun <reified T> encodeToNbt(value: T) = encodeToNbt(value ,serializer())
     
     /**
      * Decodes the given [value] into an equivalent [T] instance using the
      * serializer retrieved from the reified type parameter.
      */
-    inline fun <reified T> decodeFromNbt(value: NbtCompound) = decodeFromNbt(serializer<T>(), value)
+    inline fun <reified T> decodeFromNbt(value: NbtCompound) = decodeFromNbt(value, serializer<T>())
     
     /**
      * Serializes the given [NbtCompound] into a matching [ByteArray].
