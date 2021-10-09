@@ -9,6 +9,7 @@ import org.karrat.entity.Entity
 
 @Serializable
 class ChatComponent {
+    lateinit var text : String
     
     /*private val bold: Boolean
     private val italic: Boolean
@@ -21,7 +22,9 @@ class ChatComponent {
     private val hoverEvent: HoverEvent
     private val extra: List<ChatComponent>*/
     
-    constructor(text: String)
+    constructor(text: String) {
+        this.text = text
+    }
     
     constructor(builder: Builder.() -> Unit)
     

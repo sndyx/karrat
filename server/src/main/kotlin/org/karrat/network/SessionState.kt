@@ -9,6 +9,6 @@ enum class SessionState {
     HANDSHAKE,
     STATUS,
     LOGIN,
-    PLAY;
+    PLAY
     
 }

@@ -5,7 +5,8 @@
 package org.karrat.examples
 
 import org.karrat.Server
-import org.karrat.event.PacketEvent
+import org.karrat.event.ServerboundPacketEvent
+import org.karrat.event.StatusResponseEvent
 import org.karrat.event.on
 import org.karrat.plugin.Enable
 import org.karrat.plugin.InitializeAfter
@@ -18,7 +19,12 @@ object ExamplePlugin {
     
     @Enable
     fun enable() {
-        Server.on<PacketEvent<*>> { info(it) }
+        Server.on<ServerboundPacketEvent<*>> { info(it) }
+
+        //Lie to client pog. at least when this is implemented
+        Server.on<StatusResponseEvent> {
+            it.response.maxPlayers = 30
+        }
     }
     
 }

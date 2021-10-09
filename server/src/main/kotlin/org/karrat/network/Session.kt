@@ -7,7 +7,8 @@ package org.karrat.network
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.karrat.entity.Player
-import org.karrat.event.PacketEvent
+import org.karrat.event.ClientboundPacketEvent
+import org.karrat.event.ServerboundPacketEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.struct.readBuffer
 import org.karrat.struct.readVarInt
@@ -30,7 +31,10 @@ class Session(private val socket: Socket) {
     
     var handler: INetHandler = NetHandlerHandshake(this)
     
-    fun send(packet: ClientboundPacket) = writeChannel.write(packet.toBytes())
+    fun send(packet: ClientboundPacket) {
+        writeChannel.write(packet.toBytes())
+        dispatchEvent(ClientboundPacketEvent(packet, this))
+    }
     
     fun disconnect(reason: String) {
         send(DisconnectPacket(ChatComponent(reason)))
@@ -49,7 +53,7 @@ class Session(private val socket: Socket) {
                         val payload = buffer.readBuffer(length)
                         val id = payload.readVarInt()
                         val packet = handler.read(id, payload)
-                        if (dispatchEvent(PacketEvent(packet, this@Session))) continue
+                        if (dispatchEvent(ServerboundPacketEvent(packet, this@Session))) continue
                         handler.process(packet)
                     }
                 } else {
