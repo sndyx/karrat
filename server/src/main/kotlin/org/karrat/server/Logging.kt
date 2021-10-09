@@ -6,9 +6,6 @@ package org.karrat.server
 
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
-import kotlin.system.exitProcess
 
 val time: String
 get() {
@@ -39,16 +36,5 @@ fun fatal(message: Any): Nothing {
         println("   @ " + Thread.currentThread().stackTrace[n])
     }
     println()
-    exitProcess(1)
-}
-
-@OptIn(ExperimentalContracts::class)
-inline fun check(value: Boolean, lazyMessage: () -> Any) {
-    contract {
-        returns() implies value
-    }
-    if (!value) {
-        val message = lazyMessage()
-        fatal(message.toString())
-    }
+    throw RuntimeException()
 }

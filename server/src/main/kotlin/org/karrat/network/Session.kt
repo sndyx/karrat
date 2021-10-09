@@ -4,8 +4,6 @@
 
 package org.karrat.network
 
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.karrat.entity.Player
 import org.karrat.event.ClientboundPacketEvent
 import org.karrat.event.ServerboundPacketEvent
@@ -40,25 +38,19 @@ class Session(private val socket: Socket) {
         send(DisconnectPacket(ChatComponent(reason)))
         socket.close()
     }
-    
-    init {
-        ServerSocket.launch {
-            while (isAlive) {
-                val buffer = readChannel.readBytes().toByteBuffer()
-                if (buffer.size != 0) {
-                    if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) continue
-                    buffer.reset()
-                    while (buffer.remaining != 0) {
-                        val length = buffer.readVarInt()
-                        val payload = buffer.readBuffer(length)
-                        val id = payload.readVarInt()
-                        val packet = handler.read(id, payload)
-                        if (dispatchEvent(ServerboundPacketEvent(packet, this@Session))) continue
-                        handler.process(packet)
-                    }
-                } else {
-                    delay(10)
-                }
+
+    fun handle() {
+        val buffer = readChannel.readBytes().toByteBuffer()
+        if (buffer.size != 0) {
+            if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) return
+            buffer.reset()
+            while (buffer.remaining != 0) {
+                val length = buffer.readVarInt()
+                val payload = buffer.readBuffer(length)
+                val id = payload.readVarInt()
+                val packet = handler.read(id, payload)
+                if (dispatchEvent(ServerboundPacketEvent(packet, this))) continue
+                handler.process(packet)
             }
         }
     }

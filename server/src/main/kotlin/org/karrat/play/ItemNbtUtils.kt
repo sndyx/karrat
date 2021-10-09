@@ -4,7 +4,6 @@
 
 package org.karrat.play
 
-import org.karrat.play.ItemStack
 import org.karrat.struct.getAs
 
 var ItemStack.name: String

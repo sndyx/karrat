@@ -10,3 +10,5 @@ import org.karrat.entity.Player
 fun Server.players(): List<Player> {
     TODO()
 }
+
+fun Server.tps(): Double = TODO()
