@@ -5,9 +5,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    application
     kotlin("jvm")
     kotlin("plugin.serialization") version "1.5.21"
+    id("application")
 }
 
 group = "org.karrat.server"

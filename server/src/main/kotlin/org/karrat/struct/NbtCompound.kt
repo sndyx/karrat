@@ -5,9 +5,35 @@
 package org.karrat.struct
 
 import kotlinx.serialization.Serializable
+import org.karrat.server.fatal
 
 @Serializable
 class NbtCompound : LinkedHashMap<String, Any>() {
+    
+    override fun put(key: String, value: Any): Any? {
+        checkType(value)
+        return super.put(key, value)
+    }
+    
+    private fun checkType(value: Any) {
+        if (value is List<*>) {
+            value.firstOrNull()?.let {
+                checkType(it)
+            }
+            return
+        }
+        check(value is Byte
+            || value is Short
+            || value is Int
+            || value is Long
+            || value is Float
+            || value is Double
+            || value is ByteArray
+            || value is NbtCompound
+            || value is IntArray
+            || value is LongArray
+        ) { fatal("NbtCompound does not accept type ${value::class.simpleName}.") }
+    }
     
     override fun toString(): String {
         val builder = StringBuilder("NbtCompound(")

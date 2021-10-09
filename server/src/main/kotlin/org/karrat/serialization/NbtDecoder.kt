@@ -147,8 +147,7 @@ private class NbtListDecoder(value: Any) : AbstractNbtDecoder(value) {
     
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
         while (currentIndex < size - 1) {
-            currentIndex++
-            return currentIndex
+            return currentIndex++
         }
         return CompositeDecoder.DECODE_DONE
     }

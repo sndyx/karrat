@@ -5,7 +5,7 @@
 package org.karrat.internal
 
 internal fun <T> Collection<T>.forEach(block: IteratorItem<T>.() -> Unit) {
-    var skips: Int = 0
+    var skips = 0
     forEachIndexed { index, it ->
         if (skips != 0) {
             skips--
@@ -17,7 +17,7 @@ internal fun <T> Collection<T>.forEach(block: IteratorItem<T>.() -> Unit) {
 }
 
 internal fun <T> Array<T>.forEach(block: IteratorItem<T>.() -> Unit) {
-    var skips: Int = 0
+    var skips = 0
     forEachIndexed { index, it ->
         if (skips != 0) {
             skips--
