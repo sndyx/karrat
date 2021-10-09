@@ -8,8 +8,6 @@ import kotlinx.serialization.json.*
 import org.karrat.World
 import org.karrat.entity.FakePlayer
 import org.karrat.entity.Player
-import org.karrat.event.StatusResponseEvent
-import org.karrat.struct.ByteBuffer
 import org.karrat.play.ChatComponent
 import org.karrat.play.Location
 import org.karrat.struct.Uuid
@@ -22,7 +20,7 @@ open class StatusResponse(
     var onlinePlayers: Int,
     var samplePlayers: List<Player>,
     var description: ChatComponent, // Edit later, accepts more primitive type of ChatComponent
-    var image: ByteBuffer?
+    var image: ByteArray?
 ) {
     
     companion object {
@@ -60,7 +58,7 @@ open class StatusResponse(
                 put("text", JsonPrimitive(description.text))
             }
             image?.let {
-                put("favicon", "data:image/png;base64,${Base64.getEncoder().encode(it.bytes)}")
+                put("favicon", "data:image/png;base64,${Base64.getEncoder().encode(it)}")
             }
         }
         
