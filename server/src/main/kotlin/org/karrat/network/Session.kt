@@ -5,8 +5,7 @@
 package org.karrat.network
 
 import org.karrat.entity.Player
-import org.karrat.event.ClientboundPacketEvent
-import org.karrat.event.ServerboundPacketEvent
+import org.karrat.event.PacketEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.struct.readBuffer
 import org.karrat.struct.readVarInt
@@ -15,10 +14,12 @@ import org.karrat.packet.clientbound.ClientboundPacket
 import org.karrat.packet.clientbound.play.DisconnectPacket
 import org.karrat.packet.toBytes
 import org.karrat.play.ChatComponent
+import org.karrat.server.info
+import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import java.net.Socket
 
-class Session(private val socket: Socket) {
+class Session(val socket: Socket) {
     
     private val player: Player? = null
     
@@ -31,7 +32,7 @@ class Session(private val socket: Socket) {
     
     fun send(packet: ClientboundPacket) {
         writeChannel.write(packet.toBytes())
-        dispatchEvent(ClientboundPacketEvent(packet, this))
+        dispatchEvent(PacketEvent(this, packet))
     }
     
     fun disconnect(reason: String) {
@@ -40,7 +41,9 @@ class Session(private val socket: Socket) {
     }
 
     fun handle() {
-        val buffer = readChannel.readBytes().toByteBuffer()
+        val bytes = ByteArrayOutputStream(readChannel.available())
+        readChannel.copyTo(bytes)
+        val buffer = bytes.toByteArray().toByteBuffer()
         if (buffer.size != 0) {
             if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) return
             buffer.reset()
@@ -49,10 +52,13 @@ class Session(private val socket: Socket) {
                 val payload = buffer.readBuffer(length)
                 val id = payload.readVarInt()
                 val packet = handler.read(id, payload)
-                if (dispatchEvent(ServerboundPacketEvent(packet, this))) continue
+                if (dispatchEvent(PacketEvent(this, packet))) continue
                 handler.process(packet)
             }
         }
     }
+    
+    override fun toString(): String =
+        "Session(ip=${socket.inetAddress.hostAddress})"
     
 }

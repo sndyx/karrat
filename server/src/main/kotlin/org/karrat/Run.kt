@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
                 val parsed = (args[index + 1].toShortOrNull())?.toInt()
                 port = if (parsed == null) {
                     warning("usage: Karrat [-port <Short>]")
-                    25565
+                    port
                 } else {
                     parsed
                 }

@@ -13,6 +13,7 @@ open class Player(val uuid: Uuid, location: Location) : EntityLiving(location) {
     
     override var maxHealth = 20.0
     open val name : String = TODO()
+    
 }
 
 //Temporary for now ig

@@ -5,31 +5,16 @@
 package org.karrat.event
 
 import org.karrat.network.Session
-import org.karrat.packet.clientbound.ClientboundPacket
-import org.karrat.packet.serverbound.ServerboundPacket
-
-interface PacketEvent
 
 /**
- * Event called when a packet is recieved from a client
+ * [Event] fired when a packet is sent or received by the server.
  */
-class ServerboundPacketEvent<T : ServerboundPacket>(
-    val packet: T,
-    val session: Session
-) : CancellableEvent(), PacketEvent {
+class PacketEvent<T>(
+    val session: Session,
+    val packet: T
+    ) : CancellableEvent() {
     
     override fun toString(): String =
-        "ServerPacketEvent(packet=$packet, session=$session)"
-}
-
-/**
- * Event called when a packet is sent to a client
- */
-class ClientboundPacketEvent<T : ClientboundPacket>(
-    val packet: T,
-    val session: Session
-) : CancellableEvent(), PacketEvent {
-
-    override fun toString(): String =
-        "ClientPacketEvent(packet=$packet, session=$session)"
+        "PacketEvent(session=$session, packet=$packet)"
+    
 }

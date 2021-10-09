@@ -12,4 +12,5 @@ interface INetHandler {
     fun read(id: Int, data: ByteBuffer): ServerboundPacket
 
     fun process(packet : ServerboundPacket)
+    
 }
