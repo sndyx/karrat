@@ -4,6 +4,6 @@
 
 package org.karrat.packet.serverbound
 
-interface ServerboundPacket {
-    override fun toString(): String
-}
+import org.karrat.packet.Packet
+
+interface ServerboundPacket : Packet

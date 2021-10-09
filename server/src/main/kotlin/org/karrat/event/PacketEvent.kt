@@ -5,11 +5,12 @@
 package org.karrat.event
 
 import org.karrat.network.Session
+import org.karrat.packet.Packet
 
 /**
  * [Event] fired when a packet is sent or received by the server.
  */
-class PacketEvent<T>(
+class PacketEvent<T : Packet>(
     val session: Session,
     val packet: T
     ) : CancellableEvent() {

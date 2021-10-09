@@ -4,10 +4,10 @@
 
 package org.karrat.packet.clientbound
 
+import org.karrat.packet.Packet
 import org.karrat.struct.DynamicByteBuffer
 
-interface ClientboundPacket {
-    override fun toString() : String
+interface ClientboundPacket : Packet {
     
     val id: Int
     
