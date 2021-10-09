@@ -31,8 +31,8 @@ class Session(val socket: Socket) {
     var handler: INetHandler = NetHandlerHandshake(this)
     
     fun send(packet: ClientboundPacket) {
+        if (dispatchEvent(PacketEvent(this, packet))) return
         writeChannel.write(packet.toBytes())
-        dispatchEvent(PacketEvent(this, packet))
     }
     
     fun disconnect(reason: String) {
