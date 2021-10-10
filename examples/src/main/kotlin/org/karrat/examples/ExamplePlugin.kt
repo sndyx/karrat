@@ -13,6 +13,8 @@ import org.karrat.plugin.Enable
 import org.karrat.plugin.InitializeAfter
 import org.karrat.plugin.Plugin
 import org.karrat.server.info
+import kotlin.io.path.Path
+import kotlin.io.path.readBytes
 
 @Plugin(name="Example Plugin", version="1.17.1")
 @InitializeAfter("Essentials", "WorldEdit")
@@ -25,6 +27,7 @@ object ExamplePlugin {
         //Lie to client pog. at least when this is implemented
         Server.on<StatusResponseEvent> {
             it.response.maxPlayers = 30
+            it.response.image = Path("/image.png").readBytes()
         }
     }
     
