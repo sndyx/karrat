@@ -14,7 +14,6 @@ import org.karrat.packet.clientbound.ClientboundPacket
 import org.karrat.packet.clientbound.play.DisconnectPacket
 import org.karrat.packet.toBytes
 import org.karrat.play.ChatComponent
-import org.karrat.server.info
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import java.net.Socket

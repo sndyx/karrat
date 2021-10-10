@@ -11,11 +11,14 @@ import org.karrat.server.info
 import java.net.InetAddress
 import java.net.ServerSocket
 import kotlin.concurrent.thread
+import kotlin.system.measureTimeMillis
 
 object Server {
     
     var sessions = mutableListOf<Session>()
     lateinit var socket: ServerSocket
+    
+    internal var tickTimeMillis: Long = 0L
     
     fun start(port: Int) {
         info("Server starting.")
@@ -30,12 +33,11 @@ object Server {
         }
         thread(name="tick") {
             while (true) {
-                // Add tick stuffs and link to Server::tps()
-                sessions.forEach {
-                    if (!it.isAlive) sessions.remove(it)
-                    it.handle()
-                }
-                Thread.sleep(50)
+                tickTimeMillis =
+                    measureTimeMillis {
+                        tick()
+                    }
+                Thread.sleep(maxOf(0L, 50L - tickTimeMillis))
             }
         }
     }
@@ -45,6 +47,13 @@ object Server {
         sessions
             .filter { it.state == SessionState.PLAY }
             .forEach { it.disconnect("Server shutting down.") }
+    }
+    
+    fun tick() {
+        sessions.forEach {
+            if (!it.isAlive) sessions.remove(it)
+            it.handle()
+        }
     }
 
 }
