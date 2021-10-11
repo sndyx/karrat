@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet.login
+package org.karrat.packet.login.clientbound
 
 import org.karrat.packet.ClientboundPacket
 import org.karrat.struct.DynamicByteBuffer
