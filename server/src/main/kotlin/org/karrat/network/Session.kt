@@ -65,10 +65,31 @@ class Session(val socket: Socket) {
         if (buffer.size != 0) {
             //Decryption
             encryptionHandler?.decipher(buffer)
-            //TODO compression
 
-            //TODO find out what this is for lmao
-            if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) return
+            //Legacy client ping
+            if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) {
+                val response = DynamicByteBuffer()
+                response.write(0xff.toByte())
+
+                val builder = ArrayList<String>()
+
+                builder.add("127") //Protocol Version
+                builder.add("1.17.1") //Minecraft Server Version
+                builder.add("Legacy Client!!!") //MOTD
+                builder.add("0") //Current Player Count
+                builder.add("0") //Max Player Count
+
+                //Delimit with null
+                val result = builder.joinToString("\u0000")
+
+                //size
+                response.writeShort(result.length.toShort())
+
+                //stuff
+                response.writeBytes(result.toByteArray(Charsets.UTF_16BE))
+                return
+            }
+
             buffer.reset()
             while (buffer.remaining != 0) {
                 //Splitting && Decompression
