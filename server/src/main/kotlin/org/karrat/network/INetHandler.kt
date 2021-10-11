@@ -4,7 +4,7 @@
 
 package org.karrat.network
 
-import org.karrat.packet.serverbound.ServerboundPacket
+import org.karrat.packet.ServerboundPacket
 import org.karrat.struct.ByteBuffer
 
 interface INetHandler {

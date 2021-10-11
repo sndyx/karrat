@@ -5,7 +5,6 @@
 package org.karrat.packet
 
 import org.karrat.struct.*
-import org.karrat.packet.clientbound.ClientboundPacket
 
 fun ClientboundPacket.toBytes(): ByteArray {
     val buffer = DynamicByteBuffer()

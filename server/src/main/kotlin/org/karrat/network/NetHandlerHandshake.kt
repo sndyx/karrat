@@ -4,8 +4,8 @@
 
 package org.karrat.network
 
-import org.karrat.packet.serverbound.ServerboundPacket
-import org.karrat.packet.serverbound.handshake.HandshakePacket
+import org.karrat.packet.ServerboundPacket
+import org.karrat.packet.handshake.HandshakePacket
 import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
 

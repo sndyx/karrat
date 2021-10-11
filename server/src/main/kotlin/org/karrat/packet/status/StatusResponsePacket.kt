@@ -2,9 +2,9 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet.clientbound.status
+package org.karrat.packet.status
 
-import org.karrat.packet.clientbound.ClientboundPacket
+import org.karrat.packet.ClientboundPacket
 import org.karrat.struct.DynamicByteBuffer
 import org.karrat.struct.writeString
 

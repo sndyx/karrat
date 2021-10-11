@@ -10,8 +10,8 @@ import org.karrat.event.dispatchEvent
 import org.karrat.struct.readBuffer
 import org.karrat.struct.readVarInt
 import org.karrat.struct.toByteBuffer
-import org.karrat.packet.clientbound.ClientboundPacket
-import org.karrat.packet.clientbound.play.DisconnectPacket
+import org.karrat.packet.ClientboundPacket
+import org.karrat.packet.play.DisconnectPacket
 import org.karrat.packet.toBytes
 import org.karrat.play.ChatComponent
 import java.io.ByteArrayOutputStream

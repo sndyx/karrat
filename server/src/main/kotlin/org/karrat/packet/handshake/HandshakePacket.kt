@@ -2,13 +2,13 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet.serverbound.handshake
+package org.karrat.packet.handshake
 
 import org.karrat.struct.ByteBuffer
 import org.karrat.struct.readString
 import org.karrat.struct.readUShort
 import org.karrat.struct.readVarInt
-import org.karrat.packet.serverbound.ServerboundPacket
+import org.karrat.packet.ServerboundPacket
 
 class HandshakePacket(data: ByteBuffer) : ServerboundPacket {
     

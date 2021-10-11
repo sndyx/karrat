@@ -8,7 +8,7 @@ import org.karrat.Server
 import org.karrat.event.PacketEvent
 import org.karrat.event.StatusResponseEvent
 import org.karrat.event.on
-import org.karrat.packet.serverbound.ServerboundPacket
+import org.karrat.packet.ServerboundPacket
 import org.karrat.plugin.Enable
 import org.karrat.plugin.InitializeAfter
 import org.karrat.plugin.Plugin
