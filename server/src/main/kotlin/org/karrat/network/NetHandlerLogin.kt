@@ -4,12 +4,11 @@
 
 package org.karrat.network
 
-import CryptManager
+import org.karrat.utils.CryptManager
 import org.karrat.Server
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.login.clientbound.EncryptionRequestPacket
 import org.karrat.packet.login.clientbound.LoginSuccessPacket
-import org.karrat.packet.login.clientbound.SetCompressionPacket
 import org.karrat.packet.login.serverbound.EncryptionResponsePacket
 import org.karrat.packet.login.serverbound.LoginStartPacket
 import org.karrat.server.fatal
@@ -24,7 +23,7 @@ import javax.crypto.SecretKey
 import kotlin.random.Random
 
 
-open class NetHandlerLogin(val session: Session) : INetHandler {
+open class NetHandlerLogin(val session: Session) : NetHandler {
 
     private var state: LoginState = LoginState.Inital;
 
@@ -57,7 +56,7 @@ open class NetHandlerLogin(val session: Session) : INetHandler {
 
             val hash = BigInteger(CryptManager.getServerIdHash("", Server.keyPair.public, sharedSecret)).toString(16)
 
-            session.activateEncryption(encrypter, decrypter)
+            session.enableEncryption(encrypter, decrypter)
 
             state = LoginState.AUTHENTICATING;
 
@@ -78,7 +77,7 @@ open class NetHandlerLogin(val session: Session) : INetHandler {
 
             val network_compression_threshold = 64;
 
-            session.activateCompression(network_compression_threshold)
+            session.enableCompression(network_compression_threshold)
             session.send(LoginSuccessPacket(TODO(), username))
         }
         else -> fatal("Invalid packet to be handled.")

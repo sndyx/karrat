@@ -7,7 +7,7 @@ package org.karrat.network
 import org.karrat.packet.ServerboundPacket
 import org.karrat.struct.ByteBuffer
 
-interface INetHandler {
+interface NetHandler {
     
     fun read(id: Int, data: ByteBuffer): ServerboundPacket
 

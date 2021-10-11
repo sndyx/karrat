@@ -1,3 +1,5 @@
+package org.karrat.utils
+
 import org.karrat.server.fatal
 import java.io.UnsupportedEncodingException
 import java.security.*
@@ -13,19 +15,17 @@ object CryptManager {
             keyPairGen.initialize(1024)
             keyPairGen.generateKeyPair()
         } catch (e : NoSuchAlgorithmException) {
-            e.printStackTrace()
-            fatal { "Key pair generation failed!"}
+            fatal("Key pair generation failed!")
         }
     }
 
-    fun getServerIdHash (serverId: String, publicKey: PublicKey, secretKey: SecretKey): ByteArray? {
+    fun getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): ByteArray? {
         return try {
             digestOperation(
                 "SHA-1",
-                serverId.toByteArray(charset("ISO_8859_1")), secretKey.encoded, publicKey.encoded
+                serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
             )
         } catch (e : UnsupportedEncodingException) {
-            e.printStackTrace()
             fatal("Digest creation failed!")
         }
     }
@@ -38,7 +38,6 @@ object CryptManager {
             }
             digest.digest()
         } catch (e : NoSuchAlgorithmException) {
-            e.printStackTrace()
             fatal("Digest creation failed!")
         }
     }

@@ -5,7 +5,7 @@
 package org.karrat.network
 
 val Session.state
-get() = when (packetHandler) {
+get() = when (netHandler) {
     is NetHandlerHandshake -> SessionState.HANDSHAKE
     else -> SessionState.HANDSHAKE
 }

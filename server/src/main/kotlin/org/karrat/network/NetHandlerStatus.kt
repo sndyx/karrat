@@ -14,7 +14,7 @@ import org.karrat.packet.ServerboundPacket
 import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
 
-open class NetHandlerStatus(val session: Session) : INetHandler {
+open class NetHandlerStatus(val session: Session) : NetHandler {
     
     override fun read(id: Int, data: ByteBuffer) = when (id) {
         0x00 -> StatusRequestPacket

@@ -79,7 +79,7 @@ internal open class ByteBufferImpl(override var bytes: ByteArray) : ByteBuffer {
     
 }
 
-fun ByteBuffer.readBytes(amount: Int = size - remaining): ByteArray {
+fun ByteBuffer.readBytes(amount: Int = remaining): ByteArray {
     val value = bytes.copyOfRange(pos, pos + amount)
     pos += amount
     return value
