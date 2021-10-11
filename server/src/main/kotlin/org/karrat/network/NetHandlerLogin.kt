@@ -6,6 +6,7 @@ package org.karrat.network
 
 import org.karrat.utils.CryptManager
 import org.karrat.Server
+import org.karrat.ServerConfigs
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.login.clientbound.EncryptionRequestPacket
 import org.karrat.packet.login.clientbound.LoginSuccessPacket
@@ -75,9 +76,7 @@ open class NetHandlerLogin(val session: Session) : NetHandler {
             //TODO authenticate :)
             state = LoginState.READY_TO_ACCEPT
 
-            val network_compression_threshold = 64;
-
-            session.enableCompression(network_compression_threshold)
+            session.enableCompression()
             session.send(LoginSuccessPacket(TODO(), username))
         }
         else -> fatal("Invalid packet to be handled.")

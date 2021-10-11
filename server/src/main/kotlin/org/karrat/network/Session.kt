@@ -4,6 +4,7 @@
 
 package org.karrat.network
 
+import org.karrat.ServerConfigs
 import org.karrat.entity.Player
 import org.karrat.event.PacketEvent
 import org.karrat.event.dispatchEvent
@@ -78,10 +79,9 @@ class Session(val socket: Socket) {
     
     fun enableCompression() {
         compression = true
-        send(SetCompressionPacket(1000)) // TODO: Read value from config
+        send(SetCompressionPacket(ServerConfigs.network_compression_threshold)) // TODO: Read value from config
     }
     
     override fun toString(): String =
         "Session(ip=${socket.inetAddress.hostAddress})"
-    
 }

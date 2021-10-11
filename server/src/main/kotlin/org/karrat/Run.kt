@@ -26,3 +26,7 @@ fun main(args: Array<String>) {
     }
     Server.start(port)
 }
+
+object ServerConfigs {
+    const val network_compression_threshold = 128
+}

@@ -4,12 +4,13 @@
 
 package org.karrat.network
 
+import org.karrat.ServerConfigs
 import org.karrat.server.fatal
 import org.karrat.struct.*
 import java.util.zip.Deflater
 import java.util.zip.Inflater
 
-private const val compressionThreshold: Int = 1000 // TODO: Read value from config
+private const val compressionThreshold: Int = ServerConfigs.network_compression_threshold // TODO: Read value from config
 
 private val inflater by lazy { Inflater() }
 private val deflater by lazy { Deflater() }
