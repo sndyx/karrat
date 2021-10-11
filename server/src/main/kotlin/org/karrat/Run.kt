@@ -29,4 +29,5 @@ fun main(args: Array<String>) {
 
 object ServerConfigs {
     const val network_compression_threshold = 128
+    const val prevent_proxy_connections: Boolean = false
 }

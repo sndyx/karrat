@@ -62,9 +62,8 @@ open class NetHandlerLogin(val session: Session) : NetHandler {
             state = LoginState.AUTHENTICATING;
 
             //TODO settings
-            val prevent_proxy_connections: Boolean = false;
             val socketaddress: SocketAddress = session.socket.remoteSocketAddress
-            val ip: InetAddress? = if (prevent_proxy_connections && socketaddress is InetSocketAddress) socketaddress.address else null
+            val ip: InetAddress? = if (ServerConfigs.prevent_proxy_connections && socketaddress is InetSocketAddress) socketaddress.address else null
 
             lateinit var url: URL
             if (ip != null) {
