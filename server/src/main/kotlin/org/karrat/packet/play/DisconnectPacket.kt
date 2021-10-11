@@ -14,5 +14,4 @@ class DisconnectPacket(private val message: ChatComponent) : ClientboundPacket {
     override val id = 0x1A
     
     override fun write(data: DynamicByteBuffer) = data.writeChatComponent(message)
-    
 }

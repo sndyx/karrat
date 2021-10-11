@@ -10,13 +10,14 @@ import org.karrat.network.state
 import org.karrat.server.info
 import java.net.InetAddress
 import java.net.ServerSocket
+import java.security.KeyPair
 import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 object Server {
-    
     var sessions = mutableListOf<Session>()
     lateinit var socket: ServerSocket
+    lateinit var keyPair: KeyPair
     
     internal var tickTimeMillis: Long = 0L
     
@@ -26,11 +27,13 @@ object Server {
         info("Binded to ip ${socket.inetAddress.hostAddress} on port $port.")
         thread(name="socket") {
             while (true) {
-                val session = Session(socket.accept())
+                val session = Session(this, socket.accept())
                 sessions.add(session)
                 info("Accepted session @${session.socket.inetAddress.hostAddress}.")
             }
         }
+        info("Generating key pair")
+        keyPair = CryptManager.generateKeyPair()
         thread(name="tick") {
             while (true) {
                 tickTimeMillis =

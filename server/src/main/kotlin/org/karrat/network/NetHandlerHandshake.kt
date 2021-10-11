@@ -18,8 +18,8 @@ open class NetHandlerHandshake(private val session: Session) : INetHandler {
     
     override fun process(packet: ServerboundPacket) = when (packet) {
             is HandshakePacket -> when (packet.nextState) {
-                1 -> session.handler = NetHandlerStatus(session)
-                2 -> session.handler = NetHandlerLogin(session)
+                1 -> session.packetHandler = NetHandlerStatus(session)
+                2 -> session.packetHandler = NetHandlerLogin(session)
                 else -> fatal { "Invalid handshake packet state to be handled." }
             }
             else -> fatal("Invalid packet to be handled.")

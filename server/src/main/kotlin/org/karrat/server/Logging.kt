@@ -30,7 +30,7 @@ fun warning(message: Any) {
     println("$prefix | warn: $message")
 }
 
-fun fatal(message: Any): Nothing {
+fun fatal(message: Any) : Nothing {
     println("$prefix | fatal: $message\n")
     for (n in 2..17) {
         println("   @ " + Thread.currentThread().stackTrace[n])
