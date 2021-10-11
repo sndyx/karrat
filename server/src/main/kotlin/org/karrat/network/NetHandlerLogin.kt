@@ -5,6 +5,7 @@
 package org.karrat.network
 
 import CryptManager
+import org.karrat.Server
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.login.clientbound.EncryptionRequestPacket
 import org.karrat.packet.login.clientbound.LoginSuccessPacket
@@ -43,19 +44,18 @@ open class NetHandlerLogin(val session: Session) : INetHandler {
             username = packet.username;
             state = LoginState.READY_FOR_ENCYPTION;
 
-            session.send(EncryptionRequestPacket("", session.keyPair.public.encoded, verificationToken))
+            session.send(EncryptionRequestPacket("", Server.keyPair.public.encoded, verificationToken))
         }
         is EncryptionResponsePacket -> {
             check(state == LoginState.READY_FOR_ENCYPTION) { "Unexpected Encryption Response Packet!" }
-            check(verificationToken.contentEquals(packet.decodeVerificationToken(session.keyPair.private))) { "Invalid verification return!" }
+            check(verificationToken.contentEquals(packet.decodeVerificationToken(Server.keyPair.private))) { "Invalid verification return!" }
 
-            val sharedSecret : SecretKey = packet.decodeSharedSecret(session.keyPair.private)
-            //TODO cipher
+            val sharedSecret : SecretKey = packet.decodeSharedSecret(Server.keyPair.private)
 
             val encrypter: Cipher = CryptManager.generateAESInstance(1, sharedSecret)
             val decrypter: Cipher = CryptManager.generateAESInstance(2, sharedSecret)
 
-            val hash = BigInteger(CryptManager.getServerIdHash("", session.keyPair.public, sharedSecret)).toString(16)
+            val hash = BigInteger(CryptManager.getServerIdHash("", Server.keyPair.public, sharedSecret)).toString(16)
 
             session.activateEncryption(encrypter, decrypter)
 

@@ -27,7 +27,7 @@ object Server {
         info("Binded to ip ${socket.inetAddress.hostAddress} on port $port.")
         thread(name="socket") {
             while (true) {
-                val session = Session(this, socket.accept())
+                val session = Session(socket.accept())
                 sessions.add(session)
                 info("Accepted session @${session.socket.inetAddress.hostAddress}.")
             }

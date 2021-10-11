@@ -16,17 +16,13 @@ import org.karrat.struct.*
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import java.net.Socket
-import java.security.KeyPair
 import javax.crypto.Cipher
 
-class Session(val server: Server, val socket: Socket) {
+class Session(val socket: Socket) {
     
     private val player: Player? = null
     
     val isAlive get() = !socket.isClosed
-
-    val keyPair : KeyPair
-        get () = server.keyPair
 
     private val readChannel = socket.getInputStream().buffered()
     private val writeChannel: OutputStream by lazy { socket.getOutputStream() }
