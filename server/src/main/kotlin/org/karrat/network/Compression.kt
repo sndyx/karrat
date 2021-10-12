@@ -1,6 +1,7 @@
 /*
  * Copyright © Karrat - 2021.
  */
+@file:Suppress("Unused")
 
 package org.karrat.network
 
@@ -15,7 +16,7 @@ private const val compressionThreshold: Int = ServerConfigs.network_compression_
 private val inflater by lazy { Inflater() }
 private val deflater by lazy { Deflater() }
 
-internal fun decompress(buffer : ByteBuffer) {
+internal fun Session.decompress(buffer : ByteBuffer) {
     val uncompressedLength = buffer.readVarInt()
     if (uncompressedLength == 0) return
     if (uncompressedLength < compressionThreshold) {
@@ -33,7 +34,7 @@ internal fun decompress(buffer : ByteBuffer) {
     buffer.reset()
 }
 
-internal fun compress(buffer : ByteBuffer) {
+internal fun Session.compress(buffer : ByteBuffer) {
     val length = buffer.size
 
     val result = DynamicByteBuffer()

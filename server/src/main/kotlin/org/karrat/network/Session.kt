@@ -20,17 +20,24 @@ import javax.crypto.Cipher
 
 class Session(val socket: Socket) {
     
-    private val player: Player? = null
-    
+    /**
+     * Player linked to this session instance, if in state Play.
+     */
+    val player: Player? = null
     val isAlive get() = !socket.isClosed
     
-    private val readChannel = socket.getInputStream().buffered()
-    private val writeChannel: OutputStream by lazy { socket.getOutputStream() }
-    
-    private var encryptionHandler: EncryptionHandler? = null
-    var compression = false
+    val readChannel = socket.getInputStream().buffered()
+    val writeChannel: OutputStream by lazy { socket.getOutputStream() }
     
     var netHandler: NetHandler = NetHandlerHandshake(this)
+    
+    var compression = false
+    var encryption = false
+    
+    /**
+     * Pair of encryption and decryption ciphers used for packet encryption.
+     */
+    lateinit var ciphers: Pair<Cipher, Cipher>
     
     fun send(packet: ClientboundPacket) { // (Packet) -> (Encoder - format into bytes) -> (Compress) -> (Prepended) -> (Encrypt) -> Bytes
         if (dispatchEvent(PacketEvent(this, packet))) return
@@ -40,7 +47,7 @@ class Session(val socket: Socket) {
         if (compression) compress(buffer)
         val prefixedBuffer = MutableByteBuffer(buffer.size + varSizeOf(buffer.size)) // Prepend
         prefixedBuffer.writePrefixed(buffer.array())
-        encryptionHandler?.cipher(prefixedBuffer) // Encrypt
+        if (encryption) cipher(prefixedBuffer) // Encrypt
         writeChannel.write(prefixedBuffer.array())
     }
     
@@ -54,10 +61,10 @@ class Session(val socket: Socket) {
         readChannel.copyTo(bytes)
         val buffer = bytes.toByteArray().toByteBuffer()
         if (buffer.size != 0) {
-            encryptionHandler?.decipher(buffer)
+            if (encryption) decipher(buffer)
             // TODO compression
             if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) { // Check for legacy packet
-                handleLegacyPacket()
+                handleLegacyPacket() // Get out of here, you fool!!!
                 return
             }
             buffer.reset()
@@ -73,8 +80,9 @@ class Session(val socket: Socket) {
         }
     }
     
-    fun enableEncryption(encrypter: Cipher, decrypter: Cipher) {
-        encryptionHandler = EncryptionHandler(encrypter, decrypter)
+    fun enableEncryption(encryptCipher: Cipher, decryptCipher: Cipher) {
+        encryption = true
+        ciphers = Pair(encryptCipher, decryptCipher)
     }
     
     fun enableCompression() {

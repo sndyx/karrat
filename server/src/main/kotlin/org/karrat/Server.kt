@@ -6,9 +6,9 @@ package org.karrat
 
 import org.karrat.network.Session
 import org.karrat.network.SessionState
+import org.karrat.network.generateKeyPair
 import org.karrat.network.state
 import org.karrat.server.info
-import org.karrat.utils.CryptManager
 import java.net.InetAddress
 import java.net.ServerSocket
 import java.security.KeyPair
@@ -16,9 +16,10 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 object Server {
+    
     var sessions = mutableListOf<Session>()
     lateinit var socket: ServerSocket
-    val keyPair: KeyPair by lazy { CryptManager.generateKeyPair() }
+    internal val keyPair: KeyPair by lazy { generateKeyPair() }
     
     internal var tickTimeMillis: Long = 0L
     

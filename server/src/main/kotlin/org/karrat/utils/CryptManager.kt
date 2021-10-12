@@ -9,15 +9,6 @@ import javax.crypto.spec.SecretKeySpec
 
 //Literally minecraft's :)
 object CryptManager {
-    fun generateKeyPair(): KeyPair {
-        return try {
-            val keyPairGen = KeyPairGenerator.getInstance("RSA")
-            keyPairGen.initialize(1024)
-            keyPairGen.generateKeyPair()
-        } catch (e : NoSuchAlgorithmException) {
-            fatal("Key pair generation failed!")
-        }
-    }
 
     fun getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): ByteArray? {
         return try {
