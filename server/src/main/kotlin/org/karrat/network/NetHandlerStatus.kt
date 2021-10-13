@@ -7,6 +7,7 @@ package org.karrat.network
 import org.karrat.Server
 import org.karrat.event.StatusResponseEvent
 import org.karrat.event.dispatchEvent
+import org.karrat.network.entity.StatusResponse
 import org.karrat.packet.status.PingPacket
 import org.karrat.packet.status.StatusRequestPacket
 import org.karrat.packet.status.PongPacket

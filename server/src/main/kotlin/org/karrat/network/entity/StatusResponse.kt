@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.network
+package org.karrat.network.entity
 
 import kotlinx.serialization.json.*
 import org.karrat.World

@@ -4,8 +4,8 @@
 
 package org.karrat.network
 
+import org.karrat.Config
 import org.karrat.Server
-import org.karrat.ServerConfigs
 import org.karrat.entity.Player
 import org.karrat.event.PacketEvent
 import org.karrat.event.dispatchEvent
@@ -33,12 +33,12 @@ public class Session(public val socket: Socket) {
     
     public var netHandler: NetHandler = NetHandlerHandshake(this)
     
-    public var compression: Boolean = false
-    public var encryption: Boolean = false
+    public var isCompressed: Boolean = false
+    public var isEncrypted: Boolean = false
     
     /**
      * Pair of encryption and decryption ciphers used for packet encryption.
-     * Only initialized once [encryption] is true.
+     * Only initialized once [isEncrypted] is true.
      */
     public lateinit var ciphers: Pair<Cipher, Cipher>
     
@@ -47,11 +47,11 @@ public class Session(public val socket: Socket) {
         val buffer = DynamicByteBuffer()
         buffer.writeVarInt(packet.id)
         packet.write(buffer)
-        if (compression) compress(buffer)
+        if (isCompressed) compress(buffer)
         val prefixedBuffer = MutableByteBuffer(buffer.size // Prepend
                 + varSizeOf(buffer.size))
         prefixedBuffer.writePrefixed(buffer.array())
-        if (encryption) cipher(prefixedBuffer) // Encrypt
+        if (isEncrypted) cipher(prefixedBuffer) // Encrypt
         writeChannel.write(prefixedBuffer.array())
     }
     
@@ -65,7 +65,7 @@ public class Session(public val socket: Socket) {
         readChannel.copyTo(bytes)
         val buffer = bytes.toByteArray().toByteBuffer()
         if (buffer.size != 0) {
-            if (encryption) decipher(buffer)
+            if (isEncrypted) decipher(buffer)
             // TODO find out what "TODO compression" means VVV
                 // TODO compression
             if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) { // Check for legacy packet
@@ -76,7 +76,7 @@ public class Session(public val socket: Socket) {
             while (buffer.remaining != 0) { // Splitting and decompressing
                 val length = buffer.readVarInt()
                 val payload = buffer.readBuffer(length)
-                if (compression) decompress(payload)
+                if (isCompressed) decompress(payload)
                 val id = payload.readVarInt() // Decoding
                 val packet = netHandler.read(id, payload)
                 if (Server.dispatchEvent(PacketEvent(this, packet)))
@@ -87,13 +87,13 @@ public class Session(public val socket: Socket) {
     }
     
     public fun enableEncryption(encryptCipher: Cipher, decryptCipher: Cipher) {
-        encryption = true
+        isEncrypted = true
         ciphers = Pair(encryptCipher, decryptCipher)
     }
     
     public fun enableCompression() {
-        compression = true
-        send(SetCompressionPacket(ServerConfigs.network_compression_threshold)) // TODO: Read value from config
+        isCompressed = true
+        send(SetCompressionPacket(Config.compressionThreshold)) // TODO: Read value from config
     }
     
     override fun toString(): String =

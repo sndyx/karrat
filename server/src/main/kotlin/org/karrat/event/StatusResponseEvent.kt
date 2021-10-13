@@ -5,7 +5,7 @@
 package org.karrat.event
 
 import org.karrat.network.Session
-import org.karrat.network.StatusResponse
+import org.karrat.network.entity.StatusResponse
 
 /**
  * Event called when a Status Response is sent to the client

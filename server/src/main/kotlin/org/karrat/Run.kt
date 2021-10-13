@@ -26,8 +26,3 @@ private fun main(args: Array<String>) {
     }
     Server.start(port)
 }
-
-internal object ServerConfigs {
-    const val network_compression_threshold = 128
-    const val prevent_proxy_connections: Boolean = false
-}
