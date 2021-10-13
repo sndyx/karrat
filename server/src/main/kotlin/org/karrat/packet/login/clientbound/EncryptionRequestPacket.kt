@@ -23,4 +23,8 @@ public class EncryptionRequestPacket(
         writePrefixed(verifyToken)
     }
     
+    override fun toString(): String = "EncryptionRequestPacket(" +
+            "serverId=$serverId, publicKey=$publicKey," +
+            " verifyToken=$verifyToken)"
+    
 }

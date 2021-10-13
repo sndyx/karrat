@@ -134,9 +134,10 @@ public interface MutableByteBuffer : ByteBuffer {
 
 public fun MutableByteBuffer(allocation: Int): MutableByteBuffer = MutableByteBufferImpl(allocation)
 
-internal open class MutableByteBufferImpl(allocation: Int) : ByteBufferImpl(ByteArray(allocation)), MutableByteBuffer {
+internal class MutableByteBufferImpl(allocation: Int) : ByteBufferImpl(ByteArray(allocation)), MutableByteBuffer {
     
     override var pointer = -1
+    override val size get() = pointer + 1
     
     override fun write(value: Byte) {
         pointer++
@@ -171,13 +172,14 @@ public fun MutableByteBuffer.writeBytes(value: ByteArray) {
 public class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl(values), MutableByteBuffer {
     
     override var pointer: Int = -1
+    override val size: Int get() = pointer + 1
     
     public constructor() : this(ByteArray(0))
     
     override fun write(value: Byte) {
         pointer++
         if (bytes.size == pointer) {
-            bytes = bytes.copyOf(size + (size shl 1))
+            bytes = bytes.copyOf(bytes.size + (bytes.size shl 1))
         }
         bytes[pointer] = value
     }

@@ -10,7 +10,8 @@ import org.karrat.network.generateKeyPair
 import org.karrat.network.state
 import org.karrat.server.info
 import java.net.InetAddress
-import java.net.ServerSocket
+import java.net.InetSocketAddress
+import java.nio.channels.ServerSocketChannel
 import java.security.KeyPair
 import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
@@ -18,20 +19,22 @@ import kotlin.system.measureTimeMillis
 public object Server {
     
     public var sessions: MutableList<Session> = mutableListOf()
-    public lateinit var socket: ServerSocket
+    public lateinit var socket: ServerSocketChannel
     
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
     internal var tickTimeMillis: Long = 0L
     
     public fun start(port: Int) {
         info("Server starting.")
-        socket = ServerSocket(port, 0, InetAddress.getLocalHost())
-        info("Bound to ip ${socket.inetAddress.hostAddress} on port $port.")
+        socket = ServerSocketChannel.open()
+        socket.bind(InetSocketAddress(InetAddress.getLocalHost(), port))
+        socket.configureBlocking(true)
+        info("Bound to ip ${socket.localAddress} on port $port.")
         thread(name="socket") {
             while (true) {
                 val session = Session(socket.accept())
                 sessions.add(session)
-                info("Accepted session @${session.socket.inetAddress.hostAddress}.")
+                info("Accepted session @${session.socket.remoteAddress}.")
             }
         }
         thread(name="tick") {
@@ -53,10 +56,13 @@ public object Server {
     }
     
     public fun tick() {
-        sessions.removeIf {
-            if (!it.isAlive) return@removeIf true
-            it.handle()
-            false
+        sessions.removeAll {
+            return@removeAll if (!it.isAlive) {
+                true
+            } else {
+                it.handle()
+                false
+            }
         }
     }
 

@@ -6,6 +6,7 @@ package org.karrat.network
 
 import org.karrat.struct.DynamicByteBuffer
 import org.karrat.struct.array
+import org.karrat.struct.nio
 import org.karrat.struct.writeBytes
 
 internal fun Session.handleLegacyPacket() {
@@ -21,5 +22,5 @@ internal fun Session.handleLegacyPacket() {
     val result = builder.joinToString("\u0000") // Delimit with null
     response.writeShort(result.length.toShort()) // Size
     response.writeBytes(result.toByteArray(Charsets.UTF_16BE)) // Stuff?
-    this.socket.getOutputStream().write(response.array())
+    this.socket.write(response.nio())
 }

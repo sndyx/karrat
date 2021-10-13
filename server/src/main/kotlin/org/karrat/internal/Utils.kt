@@ -37,3 +37,5 @@ internal fun postRequest(url: String, requestProperties: Map<String, String>): S
 }
 
 internal data class RequestResult(val error: Boolean, val result: String)
+
+internal typealias NioByteBuffer = java.nio.ByteBuffer
