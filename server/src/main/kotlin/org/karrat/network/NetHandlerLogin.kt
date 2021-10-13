@@ -103,7 +103,8 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                     uuid = response.uuid
                     state = LoginState.READY_TO_ACCEPT
 
-                    session.player = Player(uuid)
+                    session.player = Player(uuid, Config.spawnLocation)
+                    Config.spawnLocation.world.entities.add(session.player)
                     response.properties.firstOrNull { it.name == "textures" }
                         ?.let { session.player.skin = it.value }
 

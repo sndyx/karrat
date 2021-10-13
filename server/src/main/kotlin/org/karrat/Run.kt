@@ -6,7 +6,7 @@ package org.karrat
 
 import org.karrat.server.warning
 
-private fun main(args: Array<String>) {
+internal fun main(args: Array<String>) {
     var port = 25565
     var i = 0
     while (i < args.size) {

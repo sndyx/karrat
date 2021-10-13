@@ -11,7 +11,7 @@ public class World(
     public val dimension: Any
 ) {
     
-    public val entities: List<Entity> = emptyList()
+    public val entities: MutableList<Entity> = mutableListOf()
     
 }
 

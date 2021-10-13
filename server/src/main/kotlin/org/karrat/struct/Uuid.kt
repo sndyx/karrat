@@ -7,6 +7,7 @@ package org.karrat.struct
 import kotlinx.serialization.Serializable
 import org.karrat.server.fatal
 import java.security.SecureRandom
+import java.util.*
 import kotlin.experimental.and
 import kotlin.experimental.or
 
@@ -29,11 +30,18 @@ public class Uuid {
      */
     public constructor (value: String) {
         val fixed = value.replace("-", "")
-        check(fixed.length != 32) { "Not a valid Uuid." }
-        val first = value.substring(0, 16)
-        val last = value.substring(17)
-        mostSignificantBits = first.toLongOrNull(16) ?: throw IllegalStateException("Not a valid Uuid.")
-        leastSignificantBits = last.toLongOrNull(16) ?: throw IllegalStateException("Not a valid Uuid.")
+        check(fixed.length == 32) { fatal("Not a valid Uuid.") }
+        val buffer = ByteBuffer(fixed.decodeHex())
+        mostSignificantBits = buffer.readLong()
+        leastSignificantBits = buffer.readLong()
+    }
+    
+    private fun String.decodeHex(): ByteArray {
+        check(length % 2 == 0) { "Must have an even length" }
+        
+        return chunked(2)
+            .map { it.toInt(16).toByte() }
+            .toByteArray()
     }
     
     public companion object {

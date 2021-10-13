@@ -53,9 +53,10 @@ public object Server {
     }
     
     public fun tick() {
-        sessions.forEach {
-            if (!it.isAlive) sessions.remove(it)
+        sessions.removeIf {
+            if (!it.isAlive) return@removeIf true
             it.handle()
+            false
         }
     }
 
