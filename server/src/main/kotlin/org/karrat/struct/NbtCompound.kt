@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 import org.karrat.server.fatal
 
 @Serializable
-class NbtCompound : LinkedHashMap<String, Any>() {
+public class NbtCompound : LinkedHashMap<String, Any>() {
     
     override fun put(key: String, value: Any): Any? {
         checkType(value)
@@ -49,13 +49,15 @@ class NbtCompound : LinkedHashMap<String, Any>() {
     
 }
 
-fun Map<String, Any>.toNbtCompound() = NbtCompound().also { it.putAll(this) }
+public fun Map<String, Any>.toNbtCompound(): NbtCompound =
+    NbtCompound().also { it.putAll(this) }
 
-fun nbtOf(vararg pairs: Pair<String, Any>): NbtCompound =
+public fun nbtOf(vararg pairs: Pair<String, Any>): NbtCompound =
     NbtCompound().also { it.putAll(pairs) }
 
-fun nbtOf(pair: Pair<String, Any>): NbtCompound =
+public fun nbtOf(pair: Pair<String, Any>): NbtCompound =
     NbtCompound().also { it[pair.first] = pair.second }
 
-@Suppress("Unchecked_Cast")
-fun <T> NbtCompound.getAs(key: String): T = get(key) as T
+@Suppress("Unchecked")
+public fun <T> NbtCompound.getValue(key: String): T =
+    get(key) as T

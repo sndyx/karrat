@@ -15,15 +15,15 @@ import java.security.KeyPair
 import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
-object Server {
+public object Server {
     
-    var sessions = mutableListOf<Session>()
-    lateinit var socket: ServerSocket
+    public var sessions: MutableList<Session> = mutableListOf()
+    public lateinit var socket: ServerSocket
+    
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
-    
     internal var tickTimeMillis: Long = 0L
     
-    fun start(port: Int) {
+    public fun start(port: Int) {
         info("Server starting.")
         socket = ServerSocket(port, 0, InetAddress.getLocalHost())
         info("Bound to ip ${socket.inetAddress.hostAddress} on port $port.")
@@ -45,14 +45,14 @@ object Server {
         }
     }
     
-    fun stop() {
+    public fun stop() {
         info("Terminating sessions.")
         sessions
             .filter { it.state == SessionState.PLAY }
             .forEach { it.disconnect("Server shutting down.") }
     }
     
-    fun tick() {
+    public fun tick() {
         sessions.forEach {
             if (!it.isAlive) sessions.remove(it)
             it.handle()

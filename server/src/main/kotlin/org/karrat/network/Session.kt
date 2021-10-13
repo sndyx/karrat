@@ -4,6 +4,7 @@
 
 package org.karrat.network
 
+import org.karrat.Server
 import org.karrat.ServerConfigs
 import org.karrat.entity.Player
 import org.karrat.event.PacketEvent
@@ -13,56 +14,60 @@ import org.karrat.packet.login.clientbound.SetCompressionPacket
 import org.karrat.packet.play.DisconnectPacket
 import org.karrat.play.ChatComponent
 import org.karrat.struct.*
+import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import java.net.Socket
 import javax.crypto.Cipher
 
-class Session(val socket: Socket) {
+public class Session(public val socket: Socket) {
     
     /**
      * Player linked to this session instance, if in state Play.
      */
-    val player: Player? = null
-    val isAlive get() = !socket.isClosed
+    public val player: Player? = null
+    public val isAlive: Boolean get() = !socket.isClosed
     
-    val readChannel = socket.getInputStream().buffered()
-    val writeChannel: OutputStream by lazy { socket.getOutputStream() }
+    public val readChannel: BufferedInputStream = socket.getInputStream().buffered()
+    public val writeChannel: OutputStream by lazy { socket.getOutputStream() }
     
-    var netHandler: NetHandler = NetHandlerHandshake(this)
+    public var netHandler: NetHandler = NetHandlerHandshake(this)
     
-    var compression = false
-    var encryption = false
+    public var compression: Boolean = false
+    public var encryption: Boolean = false
     
     /**
      * Pair of encryption and decryption ciphers used for packet encryption.
+     * Only initialized once [encryption] is true.
      */
-    lateinit var ciphers: Pair<Cipher, Cipher>
+    public lateinit var ciphers: Pair<Cipher, Cipher>
     
-    fun send(packet: ClientboundPacket) { // (Packet) -> (Encoder - format into bytes) -> (Compress) -> (Prepended) -> (Encrypt) -> Bytes
-        if (dispatchEvent(PacketEvent(this, packet))) return
+    public fun send(packet: ClientboundPacket) { // (Packet) -> (Encoder - format into bytes) -> (Compress) -> (Prepended) -> (Encrypt) -> Bytes
+        if (Server.dispatchEvent(PacketEvent(this, packet))) return
         val buffer = DynamicByteBuffer()
         buffer.writeVarInt(packet.id)
         packet.write(buffer)
         if (compression) compress(buffer)
-        val prefixedBuffer = MutableByteBuffer(buffer.size + varSizeOf(buffer.size)) // Prepend
+        val prefixedBuffer = MutableByteBuffer(buffer.size // Prepend
+                + varSizeOf(buffer.size))
         prefixedBuffer.writePrefixed(buffer.array())
         if (encryption) cipher(prefixedBuffer) // Encrypt
         writeChannel.write(prefixedBuffer.array())
     }
     
-    fun disconnect(reason: String) {
+    public fun disconnect(reason: String) {
         send(DisconnectPacket(ChatComponent(reason)))
         socket.close()
     }
     
-    fun handle() { // Bytes -> (Decrypt) -> (Splitter) -> (Decompress) -> (Decoder - format into packet) -> (Packet)
+    public fun handle() { // Bytes -> (Decrypt) -> (Splitter) -> (Decompress) -> (Decoder - format into packet) -> (Packet)
         val bytes = ByteArrayOutputStream(readChannel.available())
         readChannel.copyTo(bytes)
         val buffer = bytes.toByteArray().toByteBuffer()
         if (buffer.size != 0) {
             if (encryption) decipher(buffer)
-            // TODO compression
+            // TODO find out what "TODO compression" means VVV
+                // TODO compression
             if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) { // Check for legacy packet
                 handleLegacyPacket() // Get out of here, you fool!!!
                 return
@@ -74,18 +79,19 @@ class Session(val socket: Socket) {
                 if (compression) decompress(payload)
                 val id = payload.readVarInt() // Decoding
                 val packet = netHandler.read(id, payload)
-                if (dispatchEvent(PacketEvent(this, packet))) continue
+                if (Server.dispatchEvent(PacketEvent(this, packet)))
+                    continue
                 netHandler.process(packet)
             }
         }
     }
     
-    fun enableEncryption(encryptCipher: Cipher, decryptCipher: Cipher) {
+    public fun enableEncryption(encryptCipher: Cipher, decryptCipher: Cipher) {
         encryption = true
         ciphers = Pair(encryptCipher, decryptCipher)
     }
     
-    fun enableCompression() {
+    public fun enableCompression() {
         compression = true
         send(SetCompressionPacket(ServerConfigs.network_compression_threshold)) // TODO: Read value from config
     }

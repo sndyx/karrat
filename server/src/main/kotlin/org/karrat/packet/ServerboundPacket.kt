@@ -4,4 +4,4 @@
 
 package org.karrat.packet
 
-interface ServerboundPacket : Packet
+public interface ServerboundPacket : Packet

@@ -7,10 +7,10 @@ package org.karrat.network
 import org.karrat.packet.ServerboundPacket
 import org.karrat.struct.ByteBuffer
 
-interface NetHandler {
+public interface NetHandler {
     
-    fun read(id: Int, data: ByteBuffer): ServerboundPacket
+    public fun read(id: Int, data: ByteBuffer): ServerboundPacket
 
-    fun process(packet : ServerboundPacket)
+    public fun process(packet : ServerboundPacket)
     
 }

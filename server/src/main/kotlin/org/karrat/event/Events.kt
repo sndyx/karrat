@@ -12,7 +12,8 @@ import kotlin.reflect.KClass
  * [CancellableEvent.isCancelled] is true, caller should handle accordingly.
  * Otherwise, will always return false.
  */
-fun dispatchEvent(event: Event): Boolean {
+@Suppress("Unused")
+public fun Server.dispatchEvent(event: Event): Boolean {
     consumers
         .filter { it.first.isInstance(event) }
         .map { it.second }
@@ -21,13 +22,14 @@ fun dispatchEvent(event: Event): Boolean {
     else false
 }
 
-val consumers = mutableListOf<Pair<KClass<*>, (Event) -> Unit>>()
+@PublishedApi
+internal val consumers: MutableList<Pair<KClass<*>, (Event) -> Unit>> = mutableListOf()
 
 @Suppress("Unchecked_Cast")
-inline fun <reified T : Event> Server.on(noinline consumer: (T) -> Unit) {
+public inline fun <reified T : Event> Server.on(noinline consumer: (T) -> Unit) {
     consumers.add(Pair(T::class, consumer as (Event) -> Unit))
 }
 
-fun CancellableEvent.cancel() {
+public fun CancellableEvent.cancel() {
     isCancelled = true
 }

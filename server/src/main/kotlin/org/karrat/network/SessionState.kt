@@ -4,7 +4,7 @@
 
 package org.karrat.network
 
-enum class SessionState {
+public enum class SessionState {
     
     HANDSHAKE,
     STATUS,

@@ -8,8 +8,8 @@ import kotlinx.serialization.Serializable
 import org.karrat.entity.Entity
 
 @Serializable
-class ChatComponent {
-    lateinit var text : String
+public class ChatComponent {
+    public lateinit var text : String
     
     /*private val bold: Boolean
     private val italic: Boolean
@@ -22,70 +22,53 @@ class ChatComponent {
     private val hoverEvent: HoverEvent
     private val extra: List<ChatComponent>*/
     
-    constructor(text: String) {
+    public constructor(text: String) {
         this.text = text
     }
     
-    constructor(builder: Builder.() -> Unit)
+    public constructor(builder: Builder.() -> Unit)
     
     @Serializable
-    class ClickEvent(val action: String, val value: String)
+    public class ClickEvent(public val action: String, public val value: String)
     
     @Serializable
-    class HoverEvent(val action: String, val value: String)
+    public class HoverEvent(public val action: String, public val value: String)
     
-    class Builder {
+    public class Builder {
         
-        val black = "§0"
-        val blue = "§1"
-        val green = "§2"
-        val darkAqua = "§3"
-        val red = "§4"
-        val purple = "§5"
-        val gold = "§6"
-        val lightGray = "§7"
-        val gray = "§8"
-        val lightBlue = "§9"
-        val lime = "§a"
-        val aqua = "§b"
-        val lightRed = "§c"
-        val magenta = "§d"
-        val yellow = "§e"
-        val white = "§f"
-        
-        fun text(text: String, attributes: TextAttributes.() -> Unit = { }) {
+        public fun text(text: String, attributes: TextAttributes.() -> Unit = { }) {
         
         }
         
     }
     
-    class TextAttributes {
+    public class TextAttributes {
     
-        fun onHoverDisplayText(text: String) {
+        public fun onHoverDisplayText(text: String) {
         
         }
         
-        fun onHoverDisplayItem(item: ItemStack) {
+        public fun onHoverDisplayItem(item: ItemStack) {
         
         }
         
-        fun onHoverDisplayEntity(entity: Entity) {
+        public fun onHoverDisplayEntity(entity: Entity) {
         
         }
         
-        fun onClickOpenUrl(url: String) {
+        public fun onClickOpenUrl(url: String) {
         
         }
         
-        fun onClickSendMessage(message: String) {
+        public fun onClickSendMessage(message: String) {
         
         }
         
-        fun onClickSuggestCommand(suggestion: String) {
+        public fun onClickSuggestCommand(suggestion: String) {
         
         }
         
-        fun onClickRun(block: () -> Unit) {
+        public fun onClickRun(block: () -> Unit) {
         
         }
         

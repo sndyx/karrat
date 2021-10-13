@@ -12,13 +12,16 @@ import org.karrat.struct.DynamicByteBuffer
 import org.karrat.struct.NbtCompound
 import org.karrat.struct.array
 
-object Nbt {
+public object Nbt {
     
     /**
      * Encodes the [value] into an equivalent [NbtCompound] using the given
      * [SerializationStrategy].
      */
-    fun <T> encodeToNbt(value: T, serializer: SerializationStrategy<T>): NbtCompound {
+    public fun <T> encodeToNbt(
+        value: T,
+        serializer: SerializationStrategy<T>
+    ): NbtCompound {
         return writeNbt(value, serializer)
     }
     
@@ -26,7 +29,10 @@ object Nbt {
      * Decodes the [NbtCompound] into an equivalent [T] instance using the given
      * [DeserializationStrategy].
      */
-    fun <T> decodeFromNbt(value: NbtCompound, deserializer: DeserializationStrategy<T>): T {
+    public fun <T> decodeFromNbt(
+        value: NbtCompound,
+        deserializer: DeserializationStrategy<T>
+    ): T {
         return readNbt(value, deserializer)
     }
     
@@ -34,18 +40,20 @@ object Nbt {
      * Encodes the given [value] into an equivalent [NbtCompound] using the
      * serializer retrieved from the reified type parameter.
      */
-    inline fun <reified T> encodeToNbt(value: T) = encodeToNbt(value ,serializer())
+    public inline fun <reified T> encodeToNbt(value: T): NbtCompound =
+        encodeToNbt(value, serializer())
     
     /**
      * Decodes the given [value] into an equivalent [T] instance using the
      * serializer retrieved from the reified type parameter.
      */
-    inline fun <reified T> decodeFromNbt(value: NbtCompound) = decodeFromNbt(value, serializer<T>())
+    public inline fun <reified T> decodeFromNbt(value: NbtCompound): T =
+        decodeFromNbt(value, serializer())
     
     /**
      * Serializes the given [NbtCompound] into a matching [ByteArray].
      */
-    fun encodeToBytes(value: NbtCompound): ByteArray {
+    public fun encodeToBytes(value: NbtCompound): ByteArray {
         val buffer = DynamicByteBuffer()
         writeNbt(buffer, value)
         return buffer.array()
@@ -54,7 +62,7 @@ object Nbt {
     /**
      * Deserializes the given [ByteArray] into a [NbtCompound].
      */
-    fun decodeFromBytes(value: ByteArray): NbtCompound {
+    public fun decodeFromBytes(value: ByteArray): NbtCompound {
         val buffer = ByteBuffer(value)
         return readNbt(buffer, 10) as NbtCompound
     }

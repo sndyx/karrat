@@ -6,4 +6,4 @@ package org.karrat.plugin
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Enable
+public annotation class Enable

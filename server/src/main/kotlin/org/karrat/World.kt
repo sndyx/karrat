@@ -5,15 +5,14 @@
 package org.karrat
 
 import org.karrat.entity.Entity
-import org.karrat.entity.Player
 
-class World(
-    val name: String,
-    val dimension: Any
+public class World(
+    public val name: String,
+    public val dimension: Any
 ) {
     
-    val entities = emptyList<Entity>()
+    public val entities: List<Entity> = emptyList()
     
 }
 
-fun World(name: String) = World(name, "TODO")
+public fun World(name: String): World = World(name, "TODO")

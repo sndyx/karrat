@@ -6,8 +6,8 @@ package org.karrat.command
 
 import org.karrat.entity.Player
 
-interface ICommand {
+public interface ICommand {
     
-    fun execute(sender: Player)
+    public fun execute(sender: Player)
     
 }

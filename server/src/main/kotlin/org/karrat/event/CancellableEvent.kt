@@ -4,8 +4,8 @@
 
 package org.karrat.event
 
-open class CancellableEvent : Event {
+public open class CancellableEvent : Event {
     
-    var isCancelled = false
+    public var isCancelled: Boolean = false
     
 }

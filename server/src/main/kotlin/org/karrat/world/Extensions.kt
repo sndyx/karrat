@@ -7,4 +7,4 @@ package org.karrat.world
 import org.karrat.World
 import org.karrat.entity.Player
 
-fun World.players(): List<Player> = entities.filterIsInstance<Player>()
+public fun World.players(): List<Player> = entities.filterIsInstance<Player>()

@@ -14,7 +14,7 @@ internal fun Session.handleLegacyPacket() {
     val builder = ArrayList<String>()
     builder.add("127") // Protocol version
     builder.add("1.17.1") // Minecraft server version
-    builder.add("Legacy Clients suck!!! Switch to a newer versiony ou loser") // MOTD
+    builder.add("Legacy Clients suck!!! Switch to a newer version y ou loser") // MOTD
     builder.add("0") // Current player count
     builder.add("0") // Max player count
     val result = builder.joinToString("\u0000") // Delimit with null

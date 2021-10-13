@@ -6,11 +6,13 @@
 package org.karrat.network
 
 import org.karrat.Server
+import org.karrat.packet.login.serverbound.EncryptionResponsePacket
 import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.NoSuchAlgorithmException
+import java.security.*
+import javax.crypto.*
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 internal fun Session.cipher(buffer: ByteBuffer) {
     buffer.bytes = ciphers.first.update(buffer.bytes, 0, buffer.size)
@@ -20,7 +22,6 @@ internal fun Session.decipher(buffer: ByteBuffer) {
     buffer.bytes = ciphers.second.update(buffer.bytes, 0, buffer.size)
 }
 
-@Suppress("Unused")
 internal fun Server.generateKeyPair(): KeyPair {
     return try {
         val keyPairGen = KeyPairGenerator.getInstance("RSA")
@@ -28,5 +29,63 @@ internal fun Server.generateKeyPair(): KeyPair {
         keyPairGen.generateKeyPair()
     } catch (e : NoSuchAlgorithmException) {
         fatal("Key pair generation failed!")
+    }
+}
+
+private fun cipherOperation(key: PrivateKey, bytes: ByteArray): ByteArray {
+    runCatching {
+        return createCipherInstance(key.algorithm, key).doFinal(bytes)
+    }
+    fatal("Cipher data failed!")
+}
+
+private fun createCipherInstance(algorithm: String, key: PrivateKey): Cipher {
+    runCatching {
+        val cipher = Cipher.getInstance(algorithm)
+        cipher.init(2, key, IvParameterSpec(key.encoded))
+        return cipher
+    }
+    fatal("Cipher creation failed!")
+}
+
+private fun decryptData(key: PrivateKey, bytes: ByteArray): ByteArray {
+    return cipherOperation(key, bytes)
+}
+
+public fun EncryptionResponsePacket.decodeSharedSecret(key: PrivateKey): SecretKey {
+    return SecretKeySpec(decryptData(key, sharedSecret), "AES")
+}
+
+public fun EncryptionResponsePacket.decodeVerificationToken(privateKey: PrivateKey): ByteArray {
+    return decryptData(privateKey, verifyToken)
+}
+
+internal fun NetHandlerLogin.generateAESInstance(opMode: Int, key: Key): Cipher {
+    runCatching {
+        val var2 = Cipher.getInstance("AES/CFB8/NoPadding")
+        var2.init(opMode, key, IvParameterSpec(key.encoded))
+        return var2
+    }
+    fatal("AES creation failed!")
+}
+
+internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): ByteArray? {
+    runCatching {
+        digestOperation(
+            serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
+        )
+    }
+    fatal("Digest creation failed!")
+}
+
+private fun digestOperation(vararg hashed: ByteArray): ByteArray? {
+    return try {
+        val digest = MessageDigest.getInstance("SHA-1")
+        for (element in hashed) {
+            digest.update(element)
+        }
+        digest.digest()
+    } catch (e : NoSuchAlgorithmException) {
+        fatal("Digest creation failed!")
     }
 }

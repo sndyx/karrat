@@ -4,22 +4,22 @@
 
 package org.karrat
 
-import org.karrat.internal.forEach
 import org.karrat.server.warning
 
-fun main(args: Array<String>) {
+private fun main(args: Array<String>) {
     var port = 25565
-    args.forEach {
-        when (it) {
+    var i = 0
+    while (i < args.size) {
+        when (args[i]) {
             "-port" -> {
-                val parsed = (args[index + 1].toShortOrNull())?.toInt()
+                val parsed = (args[i + 1].toShortOrNull())?.toInt()
                 port = if (parsed == null) {
                     warning("usage: Karrat [-port <Short>]")
                     port
                 } else {
                     parsed
                 }
-                skip(1)
+                i++
             }
             else -> warning("usage: Karrat [-port <Short>]")
         }
@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
     Server.start(port)
 }
 
-object ServerConfigs {
+internal object ServerConfigs {
     const val network_compression_threshold = 128
     const val prevent_proxy_connections: Boolean = false
 }

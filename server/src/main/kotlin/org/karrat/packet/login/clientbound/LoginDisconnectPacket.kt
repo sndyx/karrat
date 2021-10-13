@@ -9,10 +9,13 @@ import org.karrat.play.ChatComponent
 import org.karrat.struct.DynamicByteBuffer
 import org.karrat.struct.writeChatComponent
 
-class LoginDisconnectPacket(private val reason: ChatComponent) : ClientboundPacket {
+public class LoginDisconnectPacket(
+    private val reason: ChatComponent,
+) : ClientboundPacket {
     
-    override val id = 0x00
+    override val id: Int = 0x00
     
-    override fun write(data: DynamicByteBuffer) = data.writeChatComponent(reason)
+    override fun write(data: DynamicByteBuffer): Unit =
+        data.writeChatComponent(reason)
     
 }

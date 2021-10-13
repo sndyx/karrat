@@ -20,9 +20,11 @@ internal fun Session.decompress(buffer : ByteBuffer) {
     val uncompressedLength = buffer.readVarInt()
     if (uncompressedLength == 0) return
     if (uncompressedLength < compressionThreshold) {
-        fatal("Badly compressed packet - size of $uncompressedLength is below server threshold of $compressionThreshold")
+        fatal("Badly compressed packet - size of $uncompressedLength is below" +
+                " server threshold of $compressionThreshold")
     } else if (uncompressedLength > 8388608) {
-        fatal("Badly compressed packet - size of $uncompressedLength is larger than protocol maximum of 8388608")
+        fatal("Badly compressed packet - size of $uncompressedLength is" +
+                " larger than protocol maximum of 8388608")
     }
     
     val compressed = buffer.readBytes()

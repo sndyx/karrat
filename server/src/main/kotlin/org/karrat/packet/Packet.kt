@@ -4,4 +4,4 @@
 
 package org.karrat.packet
 
-interface Packet
+public interface Packet

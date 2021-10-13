@@ -4,4 +4,4 @@
 
 package org.karrat.event
 
-interface Event
+public interface Event

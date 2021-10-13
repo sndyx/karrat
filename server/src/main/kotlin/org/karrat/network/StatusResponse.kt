@@ -13,18 +13,19 @@ import org.karrat.play.Location
 import org.karrat.struct.Uuid
 import java.util.*
 
-open class StatusResponse(
-    var version: String,
-    var protocol: Int,
-    var maxPlayers: Int,
-    var onlinePlayers: Int,
-    var samplePlayers: List<Player>,
-    var description: ChatComponent, // Edit later, accepts more primitive type of ChatComponent
-    var image: ByteArray?
+public open class StatusResponse(
+    public var version: String,
+    public var protocol: Int,
+    public var maxPlayers: Int,
+    public var onlinePlayers: Int,
+    public var samplePlayers: List<Player>,
+    public var description: ChatComponent, // Edit later, accepts more primitive type of ChatComponent
+    public var image: ByteArray?
 ) {
     
-    companion object {
-        fun default() = StatusResponse( // TODO: Change to actual values later
+    public companion object {
+        
+        public fun default(): StatusResponse = StatusResponse( // TODO: Change to actual values later
             "Karrat 1.17.1",
             756,
             1,
@@ -33,9 +34,10 @@ open class StatusResponse(
             ChatComponent("Funny Gaming"),
             null
         )
+        
     }
     
-    fun compile(): JsonObject {
+    public fun compile(): JsonObject {
         
         return buildJsonObject {
             putJsonObject("version") {
@@ -65,6 +67,8 @@ open class StatusResponse(
     }
 
     override fun toString(): String =
-        "StatusResponse(version=$version, protocol=$protocol, maxPlayers=$maxPlayers, onlinePlayers=$onlinePlayers, samplePlayers=$samplePlayers, description=$description)"
+        "StatusResponse(version=$version, protocol=$protocol," +
+                " maxPlayers=$maxPlayers, onlinePlayers=$onlinePlayers," +
+                " samplePlayers=$samplePlayers, description=$description)"
 
 }

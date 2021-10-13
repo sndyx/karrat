@@ -4,7 +4,7 @@
 
 package org.karrat.network
 
-val Session.state
+public val Session.state: SessionState
 get() = when (netHandler) {
     is NetHandlerHandshake -> SessionState.HANDSHAKE
     else -> SessionState.HANDSHAKE

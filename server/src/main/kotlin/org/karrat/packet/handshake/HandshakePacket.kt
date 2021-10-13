@@ -10,13 +10,15 @@ import org.karrat.struct.readUShort
 import org.karrat.struct.readVarInt
 import org.karrat.packet.ServerboundPacket
 
-class HandshakePacket(data: ByteBuffer) : ServerboundPacket {
+public class HandshakePacket(data: ByteBuffer) : ServerboundPacket {
     
-    val protocol = data.readVarInt()
-    val address = data.readString()
-    val port = data.readUShort()
-    val nextState = data.readVarInt()
+    public val protocol: Int = data.readVarInt()
+    public val address: String = data.readString()
+    public val port: UShort = data.readUShort()
+    public val nextState: Int = data.readVarInt()
     
-    override fun toString() = "HandshakePacket(protocol=$protocol, address=$address, port=$port, nextState=$nextState)"
+    override fun toString(): String =
+        "HandshakePacket(protocol=$protocol, address=$address, port=$port," +
+                " nextState=$nextState)"
     
 }

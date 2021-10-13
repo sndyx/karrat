@@ -9,16 +9,19 @@ import org.karrat.play.Location
 import org.karrat.server.players
 import org.karrat.struct.Uuid
 
-open class Player(val uuid: Uuid, location: Location) : EntityLiving(location) {
+public open class Player(
+    public val uuid: Uuid,
+    location: Location
+) : EntityLiving(location) {
     
-    override var maxHealth = 20.0
-    open val name : String = TODO()
+    override var maxHealth: Double = 20.0
+    public open val name : String = TODO()
     
 }
 
 //Temporary for now ig
-class FakePlayer(uuid: Uuid, override val name: String, location: Location) : Player(uuid, location)
+public class FakePlayer(uuid: Uuid, override val name: String, location: Location) : Player(uuid, location)
 
-fun Player(uuid: Uuid): Player {
+public fun Player(uuid: Uuid): Player {
     return Server.players().firstOrNull { it.uuid == uuid } ?: error { "Player does not exist." }
 }

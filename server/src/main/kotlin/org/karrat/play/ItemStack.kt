@@ -8,8 +8,11 @@ import kotlinx.serialization.Serializable
 import org.karrat.struct.NbtCompound
 
 @Serializable
-class ItemStack(val material: Material, val amount: Int = 1) {
+public class ItemStack(
+    public val material: Material,
+    public val amount: Int = 1
+) {
     
-    var nbt = NbtCompound()
+    public var nbt: NbtCompound = NbtCompound()
     
 }

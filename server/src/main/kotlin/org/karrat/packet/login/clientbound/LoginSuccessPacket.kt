@@ -10,14 +10,14 @@ import org.karrat.struct.Uuid
 import org.karrat.struct.writeString
 import org.karrat.struct.writeUuid
 
-class LoginSuccessPacket(
+public class LoginSuccessPacket(
     private val uuid: Uuid,
-    private val username: String
-    ) : ClientboundPacket {
+    private val username: String,
+) : ClientboundPacket {
     
-    override val id = 0x02
+    override val id: Int = 0x02
     
-    override fun write(data: DynamicByteBuffer) = data.run {
+    override fun write(data: DynamicByteBuffer): Unit = data.run {
         writeUuid(uuid)
         writeString(username)
     }

@@ -11,15 +11,15 @@ import kotlin.experimental.and
 import kotlin.experimental.or
 
 @Serializable
-class Uuid {
+public class Uuid {
     
-    val mostSignificantBits: Long
-    val leastSignificantBits: Long
+    public val mostSignificantBits: Long
+    public val leastSignificantBits: Long
     
     /**
      * Constructs a Uuid from two Longs.
      */
-    constructor (mostSignificantBits: Long, leastSignificantBits: Long) {
+    public constructor (mostSignificantBits: Long, leastSignificantBits: Long) {
         this.mostSignificantBits = mostSignificantBits
         this.leastSignificantBits = leastSignificantBits
     }
@@ -27,7 +27,7 @@ class Uuid {
     /**
      * Reads a Uuid from a string.
      */
-    constructor(value: String) {
+    public constructor (value: String) {
         val fixed = value.replace("-", "")
         check(fixed.length != 32) { "Not a valid Uuid." }
         val first = value.substring(0, 16)
@@ -36,11 +36,11 @@ class Uuid {
         leastSignificantBits = last.toLongOrNull(16) ?: throw IllegalStateException("Not a valid Uuid.")
     }
     
-    companion object {
+    public companion object {
     
         private val random by lazy { SecureRandom() }
     
-        fun random(): Uuid {
+        public fun random(): Uuid {
             val bytes = ByteArray(16)
             random.nextBytes(bytes)
             bytes[6] = bytes[6] and 0x0f
@@ -62,21 +62,21 @@ class Uuid {
      * 3 - Name-based Uuid
      * 4 - Randomly generated Uuid
      */
-    val version: Int get() {
+    public val version: Int get() {
         return (mostSignificantBits shr 12 and 0x0f).toInt()
     }
     
     /**
      * If this Uuid is a time-based Uuid, returns the time it was generated.
      */
-    val timestamp: Long get() {
+    public val timestamp: Long get() {
         check(version == 1) { fatal("Uuid is not a time-based Uuid. See Uuid::version.") }
         return mostSignificantBits and 0x0FFFL shl 48 or (mostSignificantBits shr 16 and 0x0FFFFL shl 32) or (mostSignificantBits ushr 32)
     }
     
-    override fun toString() = toString(false)
+    override fun toString(): String = toString(false)
     
-    fun toString(hyphenated: Boolean): String {
+    public fun toString(hyphenated: Boolean): String {
         return if (hyphenated) {
             digits(mostSignificantBits shr 32, 8) + "-" +
                     digits(mostSignificantBits shr 16, 4) + "-" +

@@ -10,9 +10,9 @@ import org.karrat.network.StatusResponse
 /**
  * Event called when a Status Response is sent to the client
  */
-class StatusResponseEvent(
-    val session: Session,
-    var response: StatusResponse
+public class StatusResponseEvent(
+    public val session: Session,
+    public var response: StatusResponse
 ) : CancellableEvent() {
     
     override fun toString(): String =

@@ -4,16 +4,16 @@
 
 package org.karrat.play
 
-import org.karrat.struct.getAs
+import org.karrat.struct.getValue
 
-var ItemStack.name: String
-    get() = nbt.getAs("name")
+public var ItemStack.name: String
+    get() = nbt.getValue("name")
     set(value) {
         nbt["name"] = value
     }
 
-var ItemStack.lore: List<String>
-    get() = nbt.getAs("list") ?: listOf()
+public var ItemStack.lore: List<String>
+    get() = nbt.getValue("list") ?: listOf()
     set(value) {
         nbt["list"] = value
     }

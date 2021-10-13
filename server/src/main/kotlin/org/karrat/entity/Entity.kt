@@ -6,9 +6,9 @@ package org.karrat.entity
 
 import org.karrat.play.Location
 
-abstract class Entity(var location: Location) {
+public abstract class Entity(public var location: Location) {
     
-    fun remove() {
+    public open fun remove() {
     
     }
     

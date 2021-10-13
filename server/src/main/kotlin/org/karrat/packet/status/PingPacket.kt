@@ -7,10 +7,10 @@ package org.karrat.packet.status
 import org.karrat.packet.ServerboundPacket
 import org.karrat.struct.ByteBuffer
 
-class PingPacket(data : ByteBuffer) : ServerboundPacket {
+public class PingPacket(data : ByteBuffer) : ServerboundPacket {
     
-    val timestamp = data.readLong()
+    public val timestamp: Long = data.readLong()
     
-    override fun toString() = "PingPacket(timestamp=$timestamp)"
+    override fun toString(): String = "PingPacket(timestamp=$timestamp)"
     
 }
