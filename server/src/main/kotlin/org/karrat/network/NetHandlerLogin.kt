@@ -50,7 +50,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         else -> fatal("Invalid packet to be handled.")
     }
     
-    internal fun handleLoginStartPacket(packet: LoginStartPacket) {
+    private fun handleLoginStartPacket(packet: LoginStartPacket) {
         check(state == LoginState.INITIAL) {
             fatal("Unexpected Login Start Packet!")
         }
@@ -61,7 +61,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
             verificationToken))
     }
     
-    internal fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {
+    private fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {
         check(state == LoginState.READY_FOR_ENCRYPTION) {
             fatal("Unexpected Encryption Response Packet!")
         }
@@ -83,7 +83,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         authenticate(hash)
     }
     
-    internal fun authenticate(hash: String) {
+    private fun authenticate(hash: String) {
         state = LoginState.AUTHENTICATING
     
         val socketAddress: SocketAddress = session.socket.remoteSocketAddress
@@ -103,7 +103,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                     uuid = response.uuid
                     state = LoginState.READY_TO_ACCEPT
 
-                    session.player = Player(uuid, Config.spawnLocation)
+                    session.player = Player(uuid, username, Config.spawnLocation)
                     Config.spawnLocation.world.entities.add(session.player)
                     response.properties.firstOrNull { it.name == "textures" }
                         ?.let { session.player.skin = it.value }

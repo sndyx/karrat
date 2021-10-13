@@ -12,18 +12,18 @@ import org.karrat.struct.Uuid
 
 public open class Player(
     public val uuid: Uuid,
+    public open var name : String,
     location: Location,
     public var skin: String = ""
 ) : EntityLiving(location) {
 
     //TODO steve texture
     override var maxHealth: Double = 20.0
-    public open var name : String = "sndy"
-    
+
 }
 
 //Temporary for now ig
-public class FakePlayer(uuid: Uuid, override var name: String) : Player(uuid, Location(World("Main_World"), 0.0, 0.0, 0.0))
+public class FakePlayer(uuid: Uuid, name: String) : Player(uuid, name, Location(World("Main_World"), 0.0, 0.0, 0.0))
 
 public fun Player(uuid: Uuid): Player {
     return Server.players().first { it.uuid == uuid }
