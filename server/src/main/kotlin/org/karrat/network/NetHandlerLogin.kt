@@ -93,7 +93,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
             val url = URL("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" }}")
             val content = url.openStream().use { it.readBytes().decodeToString() }
             val response = Json.decodeFromString<SessionServerResponse>(content)
-            // TODO handle bad requests maybe? Please??? :) :) uwu :3 *nuzzles*
+            // TODO handle bad requests maybe? Please??? :) :)
             uuid = response.uuid
             state = LoginState.READY_TO_ACCEPT
             
