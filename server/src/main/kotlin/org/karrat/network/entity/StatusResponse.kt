@@ -11,7 +11,9 @@ import org.karrat.entity.Player
 import org.karrat.play.ChatComponent
 import org.karrat.play.Location
 import org.karrat.struct.Uuid
+import java.io.File
 import java.util.*
+import kotlin.io.path.Path
 
 public open class StatusResponse(
     public var version: String,
@@ -32,7 +34,7 @@ public open class StatusResponse(
             1,
             listOf(FakePlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
             ChatComponent("Funny Gaming"),
-            null
+            File("./icon.png").readBytes()
         )
         
     }
