@@ -10,6 +10,7 @@ import org.karrat.entity.FakePlayer
 import org.karrat.entity.Player
 import org.karrat.play.ChatComponent
 import org.karrat.play.Location
+import org.karrat.server.info
 import org.karrat.struct.Uuid
 import java.io.File
 import java.util.*
@@ -34,12 +35,14 @@ public open class StatusResponse(
             1,
             listOf(FakePlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
             ChatComponent("Funny Gaming"),
-            File("./icon.png").readBytes()
+            StatusResponse::class.java.getResource("/icon.png")?.readBytes()
         )
         
     }
     
     public fun compile(): JsonObject {
+
+        info() {image}
         
         return buildJsonObject {
             putJsonObject("version") {
@@ -61,8 +64,10 @@ public open class StatusResponse(
             putJsonObject("description") {
                 put("text", JsonPrimitive(description.text))
             }
+
             image?.let {
-                put("favicon", "data:image/png;base64,${Base64.getEncoder().encode(it)}")
+                info {"E: " + Base64.getEncoder().encode(it)}
+                put("favicon", "data:image/png;base64,${Base64.getEncoder().encodeToString(it)}")
             }
         }
         

@@ -3,3 +3,4 @@
 /gradle/wrapper/gradle-wrapper.jar
 .gradle/*
 .DS_STORE
+/server/out
