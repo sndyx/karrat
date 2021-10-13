@@ -12,6 +12,7 @@ internal fun Session.handleLegacyPacket() {
     val response = DynamicByteBuffer()
     response.write(0xff.toByte())
     val builder = ArrayList<String>()
+    builder.add("§1") //Don't ask
     builder.add("127") // Protocol version
     builder.add("1.17.1") // Minecraft server version
     builder.add("Legacy Clients suck!!! Switch to a newer version y ou loser") // MOTD
