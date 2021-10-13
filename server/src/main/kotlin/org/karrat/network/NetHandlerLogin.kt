@@ -120,7 +120,6 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
 
             session.disconnect("Authentication servers are down. Please try again later, sorry!")
         }
-        }
     }
     
     public enum class LoginState {
