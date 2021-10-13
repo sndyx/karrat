@@ -34,7 +34,7 @@ public object Server {
             while (true) {
                 val session = Session(socket.accept())
                 sessions.add(session)
-                info("Accepted session @${session.socket.remoteAddress}.")
+                info("Accepted $session.")
             }
         }
         thread(name="tick") {

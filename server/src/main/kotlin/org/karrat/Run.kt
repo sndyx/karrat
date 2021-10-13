@@ -4,6 +4,8 @@
 
 package org.karrat
 
+import org.karrat.event.PacketEvent
+import org.karrat.event.on
 import org.karrat.server.warning
 
 internal fun main(args: Array<String>) {
@@ -25,4 +27,7 @@ internal fun main(args: Array<String>) {
         }
     }
     Server.start(port)
+    Server.on<PacketEvent<*>> {
+        println(it)
+    }
 }

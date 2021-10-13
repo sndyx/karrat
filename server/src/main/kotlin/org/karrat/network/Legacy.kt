@@ -4,6 +4,7 @@
 
 package org.karrat.network
 
+import org.karrat.server.info
 import org.karrat.struct.DynamicByteBuffer
 import org.karrat.struct.array
 import org.karrat.struct.nio
@@ -23,4 +24,6 @@ internal fun Session.handleLegacyPacket() {
     response.writeShort(result.length.toShort()) // Size
     response.writeBytes(result.toByteArray(Charsets.UTF_16BE)) // Stuff?
     this.socket.write(response.nio())
+    info("Session $this attempted to log in with a legacy client.")
+    this.socket.close()
 }

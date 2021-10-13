@@ -16,10 +16,13 @@ import org.karrat.packet.play.DisconnectPacket
 import org.karrat.play.ChatComponent
 import org.karrat.server.info
 import org.karrat.struct.*
+import java.net.SocketAddress
 import java.nio.channels.SocketChannel
 import javax.crypto.Cipher
 
 public class Session(public val socket: SocketChannel) {
+    
+    public val address: SocketAddress = socket.remoteAddress
     
     /**
      * Player linked to this session instance, if in state Play.
@@ -48,7 +51,9 @@ public class Session(public val socket: SocketChannel) {
                 + varSizeOf(buffer.size))
         prefixedBuffer.writePrefixed(buffer.array())
         if (isEncrypted) cipher(prefixedBuffer) // Encrypt
-        socket.write(prefixedBuffer.nio())
+        val nioBuffer = prefixedBuffer.nio()
+        nioBuffer.flip()
+        socket.write(nioBuffer)
         info(prefixedBuffer)
         info("Decoded: ${prefixedBuffer.array().decodeToString()}")
     }
@@ -70,8 +75,10 @@ public class Session(public val socket: SocketChannel) {
             }
             buffer.reset()
             while (buffer.remaining != 0) { // Splitting and decompressing
+                info(buffer)
                 val length = buffer.readVarInt()
                 val payload = buffer.readBuffer(length)
+                info(payload)
                 if (isCompressed) decompress(payload)
                 val id = payload.readVarInt() // Decoding
                 val packet = netHandler.read(id, payload)
@@ -93,6 +100,6 @@ public class Session(public val socket: SocketChannel) {
     }
     
     override fun toString(): String =
-        "Session(ip=${socket.remoteAddress})"
+        "Session(address=$address)"
     
 }
