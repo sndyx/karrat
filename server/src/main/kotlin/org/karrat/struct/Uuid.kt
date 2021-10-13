@@ -7,7 +7,6 @@ package org.karrat.struct
 import kotlinx.serialization.Serializable
 import org.karrat.server.fatal
 import java.security.SecureRandom
-import java.util.*
 import kotlin.experimental.and
 import kotlin.experimental.or
 
@@ -82,16 +81,12 @@ public class Uuid {
         return mostSignificantBits and 0x0FFFL shl 48 or (mostSignificantBits shr 16 and 0x0FFFFL shl 32) or (mostSignificantBits ushr 32)
     }
     
-    override fun toString(): String = toString(false)
-    
-    public fun toString(hyphenated: Boolean): String {
-        return if (hyphenated) {
-            digits(mostSignificantBits shr 32, 8) + "-" +
-                    digits(mostSignificantBits shr 16, 4) + "-" +
-                    digits(mostSignificantBits, 4) + "-" +
-                    digits(leastSignificantBits shr 48, 4) + "-" +
-                    digits(leastSignificantBits, 12)
-        } else "${mostSignificantBits.toString(16)}${leastSignificantBits.toString(16)}"
+    public override fun toString(): String {
+        return digits(mostSignificantBits shr 32, 8) + "-" +
+                digits(mostSignificantBits shr 16, 4) + "-" +
+                digits(mostSignificantBits, 4) + "-" +
+                digits(leastSignificantBits shr 48, 4) + "-" +
+                digits(leastSignificantBits, 12)
     }
     
     private fun digits(value: Long, digits: Int): String {
