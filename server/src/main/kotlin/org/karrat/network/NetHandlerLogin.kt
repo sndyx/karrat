@@ -105,13 +105,13 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
 
                     session.player = Player(uuid)
                     response.properties.firstOrNull { it.name == "textures" }
-                        ?.let { session.player.texture = it.value }
+                        ?.let { session.player.skin = it.value }
 
                     session.enableCompression()
                     session.send(LoginSuccessPacket(uuid, username))
                 } else {
                     session.disconnect("Failed to verify username!")
-                    info("Username \'$username\' tried to join with an invalid session")
+                    info("Username '$username' tried to join with an invalid session")
                 }
             } catch (e: Exception) {
                 //TODO make sure it stops throwing exceptions

@@ -8,30 +8,27 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
-internal fun request(url: String, requestProperties: Map<String, String>): RequestResult {
+internal fun request(url: String, vararg properties: Pair<String, String>): RequestResult {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.connectTimeout = 15000
     connection.readTimeout = 15000
-    for (entry: Map.Entry<String, String> in requestProperties.entries) {
-        connection.addRequestProperty(entry.key, entry.value)
+    properties.forEach {
+        connection.addRequestProperty(it.first, it.second)
     }
-
-    try {
-        return RequestResult(false, connection.inputStream.readBytes().decodeToString())
+    
+    return try {
+        RequestResult(false, connection.inputStream.readBytes().decodeToString())
     } catch (e : IOException) {
-        return RequestResult(false, connection.errorStream.readBytes().decodeToString())
+        RequestResult(true, connection.errorStream.readBytes().decodeToString())
     }
 }
 
 internal fun request(url: String): RequestResult {
     val connection = URL(url).openConnection() as HttpURLConnection
-    connection.connectTimeout = 15000
-    connection.readTimeout = 15000
-
-    try {
-        return RequestResult(false, connection.inputStream.readBytes().decodeToString())
-    } catch (e : IOException) {
-        return RequestResult(false, connection.errorStream.readBytes().decodeToString())
+    return try {
+        RequestResult(false, connection.inputStream.readBytes().decodeToString())
+    } catch (exception: IOException) {
+        RequestResult(true, connection.errorStream.readBytes().decodeToString())
     }
 }
 

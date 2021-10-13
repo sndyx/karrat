@@ -7,7 +7,8 @@ package org.karrat.entity
 import org.karrat.play.Location
 import org.karrat.server.fatal
 
-public abstract class EntityLiving : Entity() {
+public abstract class EntityLiving(location: Location) : Entity(location) {
+    
     public abstract var maxHealth: Double
     public var health: Double = maxHealth
     
