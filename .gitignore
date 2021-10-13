@@ -1,4 +1,4 @@
 /build/
 /server/build/
 /gradle/wrapper/gradle-wrapper.jar
-.gradle
+.gradle/*
