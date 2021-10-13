@@ -10,18 +10,20 @@ import org.karrat.server.players
 import org.karrat.struct.Uuid
 
 public open class Player(
-    public val uuid: Uuid,
-    location: Location
-) : EntityLiving(location) {
-    
+    public val uuid: Uuid
+) : EntityLiving() {
+
+    //TODO steve texture
+    public lateinit var texture: String
+
     override var maxHealth: Double = 20.0
     public open val name : String = TODO()
     
 }
 
 //Temporary for now ig
-public class FakePlayer(uuid: Uuid, override val name: String, location: Location) : Player(uuid, location)
+public class FakePlayer(uuid: Uuid, override val name: String) : Player(uuid,)
 
-public fun Player(uuid: Uuid): Player {
-    return Server.players().firstOrNull { it.uuid == uuid } ?: error { "Player does not exist." }
+public fun findPlayer(uuid: Uuid): Player? {
+    return Server.players().firstOrNull { it.uuid == uuid }
 }

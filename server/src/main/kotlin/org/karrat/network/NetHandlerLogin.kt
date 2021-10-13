@@ -8,6 +8,8 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.karrat.Config
 import org.karrat.Server
+import org.karrat.entity.Player
+import org.karrat.internal.request
 import org.karrat.network.entity.SessionServerResponse
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.login.clientbound.EncryptionRequestPacket
@@ -15,8 +17,10 @@ import org.karrat.packet.login.clientbound.LoginSuccessPacket
 import org.karrat.packet.login.serverbound.EncryptionResponsePacket
 import org.karrat.packet.login.serverbound.LoginStartPacket
 import org.karrat.server.fatal
+import org.karrat.server.info
 import org.karrat.struct.ByteBuffer
 import org.karrat.struct.Uuid
+import java.io.IOException
 import java.net.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -90,15 +94,32 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
             else null
     
         thread(name="auth") {
-            val url = URL("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" }}")
-            val content = url.openStream().use { it.readBytes().decodeToString() }
-            val response = Json.decodeFromString<SessionServerResponse>(content)
-            // TODO handle bad requests maybe? Please??? :) :)
-            uuid = response.uuid
-            state = LoginState.READY_TO_ACCEPT
-            
-            session.enableCompression()
-            session.send(LoginSuccessPacket(uuid, username))
+            try {
+                val content = request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" }}")
+
+                if (!content.error) {
+                    val response = Json.decodeFromString<SessionServerResponse>(content.result)
+                    //TODO add properties to player
+                    uuid = response.uuid
+                    state = LoginState.READY_TO_ACCEPT
+
+                    session.player = Player(uuid)
+                    response.properties.firstOrNull { it.name == "textures" }
+                        ?.let { session.player.texture = it.value }
+
+                    session.enableCompression()
+                    session.send(LoginSuccessPacket(uuid, username))
+                } else {
+                    session.disconnect("Failed to verify username!")
+                    info("Username \'$username\' tried to join with an invalid session")
+                }
+            } catch (e: Exception) {
+                //TODO make sure it stops throwing exceptions
+                e.printStackTrace()
+            }
+
+            session.disconnect("Authentication servers are down. Please try again later, sorry!")
+        }
         }
     }
     

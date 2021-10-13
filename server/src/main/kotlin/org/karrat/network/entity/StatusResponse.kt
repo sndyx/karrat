@@ -30,7 +30,7 @@ public open class StatusResponse(
             756,
             1,
             1,
-            listOf(FakePlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy", Location(World(("TODO")), 0.0, 0.0, 0.0))),
+            listOf(FakePlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
             ChatComponent("Funny Gaming"),
             null
         )

@@ -25,7 +25,7 @@ public class Session(public val socket: Socket) {
     /**
      * Player linked to this session instance, if in state Play.
      */
-    public val player: Player? = null
+    public lateinit var player: Player
     public val isAlive: Boolean get() = !socket.isClosed
     
     public val readChannel: BufferedInputStream = socket.getInputStream().buffered()
