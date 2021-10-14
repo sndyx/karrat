@@ -56,7 +56,6 @@ public class Session(public val socket: SocketChannel) {
         socket.write(nioBuffer)
         info("Sent Packet: ${packet.javaClass.name}")
         info("Encoded: $prefixedBuffer")
-        info("Decoded: ${prefixedBuffer.array().decodeToString()}")
     }
     
     public fun disconnect(reason: String) {
@@ -76,17 +75,15 @@ public class Session(public val socket: SocketChannel) {
             }
             buffer.reset()
             while (buffer.remaining != 0) { // Splitting and decompressing
-                info(buffer)
                 val length = buffer.readVarInt()
                 val payload = buffer.readBuffer(length)
-                info(payload)
                 if (isCompressionEnabled) decompress(payload)
                 val id = payload.readVarInt() // Decoding
                 val packet = netHandler.read(id, payload)
                 if (Server.dispatchEvent(PacketEvent(this, packet)))
                     continue
 
-                info("Recieved Packet: ${packet.javaClass.name}")
+                info("Received Packet: ${packet.javaClass.name}")
                 netHandler.process(packet)
             }
         }
