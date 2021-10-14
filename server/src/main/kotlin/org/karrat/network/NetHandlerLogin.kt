@@ -119,6 +119,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                 }
             
                 session.enableCompression()
+                session.netHandler = NetHandlerPlay()
                 session.send(LoginSuccessPacket(uuid, username))
             } else {
                 session.disconnect("Failed to verify username!")
