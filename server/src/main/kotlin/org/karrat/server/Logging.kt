@@ -6,6 +6,7 @@ package org.karrat.server
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.min
 
 private val time: String
 get() {
@@ -33,8 +34,11 @@ public fun warning(message: Any) {
 
 public fun fatal(message: Any) : Nothing {
     println("$prefix | fatal: $message\n")
-    for (n in 2..17) {
-        println("   @ " + Thread.currentThread().stackTrace[n])
+
+    val stackTrace = Thread.currentThread().stackTrace
+
+    for (n in 2..min(17, stackTrace.size)) {
+        println("   @ " + stackTrace[n])
     }
     println()
     throw RuntimeException()

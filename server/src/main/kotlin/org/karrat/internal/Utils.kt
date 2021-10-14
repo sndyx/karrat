@@ -5,6 +5,7 @@
 package org.karrat.internal
 
 import java.io.IOException
+import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -15,27 +16,47 @@ internal fun request(url: String, vararg properties: Pair<String, String>): Requ
     properties.forEach {
         connection.addRequestProperty(it.first, it.second)
     }
-    
-    return try {
-        RequestResult(false, connection.inputStream.readBytes().decodeToString())
-    } catch (e : IOException) {
-        RequestResult(true, connection.errorStream.readBytes().decodeToString())
-    }
-}
 
-internal fun request(url: String): RequestResult {
-    val connection = URL(url).openConnection() as HttpURLConnection
-    return try {
-        RequestResult(false, connection.inputStream.readBytes().decodeToString())
-    } catch (exception: IOException) {
-        RequestResult(true, connection.errorStream.readBytes().decodeToString())
+    var result : String
+    var activeInputStream: InputStream? = null
+
+    try {
+        activeInputStream = connection.inputStream
+        result = activeInputStream.readBytes().decodeToString()
+        activeInputStream.close()
+        return RequestResult(ResponseState.SUCCESS, result)
+    } catch (e : IOException) {
+        e.printStackTrace()
     }
+
+    //Failed inputStream, trying errorStream
+    activeInputStream?.close()
+
+    try {
+        activeInputStream = connection.errorStream
+        result = activeInputStream.readBytes().decodeToString()
+        activeInputStream.close()
+        return RequestResult(ResponseState.ERROR, result)
+    } catch (e : IOException) {
+        e.printStackTrace()
+    }
+
+    activeInputStream?.close()
+
+    //Yo everything failed
+    return RequestResult(ResponseState.FAILED, "")
 }
 
 internal fun postRequest(url: String, requestProperties: Map<String, String>): String {
     TODO() //when a post request is needed >:)
 }
 
-internal data class RequestResult(val error: Boolean, val result: String)
+internal data class RequestResult(val resultState: ResponseState, val result: String)
+
+internal enum class ResponseState {
+    SUCCESS,
+    ERROR,
+    FAILED
+}
 
 internal typealias NioByteBuffer = java.nio.ByteBuffer

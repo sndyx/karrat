@@ -32,12 +32,12 @@ public class Session(public val socket: SocketChannel) {
     
     public var netHandler: NetHandler = NetHandlerHandshake(this)
     
-    public var isCompressed: Boolean = false
-    public var isEncrypted: Boolean = false
+    public var compressionEnabled: Boolean = false
+    public var encryptionEnabled: Boolean = false
     
     /**
      * Pair of encryption and decryption ciphers used for packet encryption.
-     * Only initialized once [isEncrypted] is true.
+     * Only initialized once [encryptionEnabled] is true.
      */
     public lateinit var ciphers: Pair<Cipher, Cipher>
     
@@ -46,11 +46,11 @@ public class Session(public val socket: SocketChannel) {
         val buffer = DynamicByteBuffer()
         buffer.writeVarInt(packet.id)
         packet.write(buffer)
-        if (isCompressed) compress(buffer)
+        if (compressionEnabled) compress(buffer)
         val prefixedBuffer = MutableByteBuffer(buffer.size // Prepend
                 + varSizeOf(buffer.size))
         prefixedBuffer.writePrefixed(buffer.array())
-        if (isEncrypted) cipher(prefixedBuffer) // Encrypt
+        if (encryptionEnabled) cipher(prefixedBuffer) // Encrypt
         val nioBuffer = prefixedBuffer.nio()
         nioBuffer.flip()
         socket.write(nioBuffer)
@@ -68,7 +68,7 @@ public class Session(public val socket: SocketChannel) {
         socket.read(nioBuffer)
         val buffer = nioBuffer.array().copyOf(1028 - nioBuffer.remaining()).toByteBuffer()
         if (buffer.size != 0) {
-            if (isEncrypted) decipher(buffer)
+            if (encryptionEnabled) decipher(buffer)
             if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) { // Check for legacy packet
                 handleLegacyPacket() // Get out of here, you fool!!!
                 return
@@ -79,7 +79,7 @@ public class Session(public val socket: SocketChannel) {
                 val length = buffer.readVarInt()
                 val payload = buffer.readBuffer(length)
                 info(payload)
-                if (isCompressed) decompress(payload)
+                if (compressionEnabled) decompress(payload)
                 val id = payload.readVarInt() // Decoding
                 val packet = netHandler.read(id, payload)
                 if (Server.dispatchEvent(PacketEvent(this, packet)))
@@ -90,12 +90,12 @@ public class Session(public val socket: SocketChannel) {
     }
     
     public fun enableEncryption(encryptCipher: Cipher, decryptCipher: Cipher) {
-        isEncrypted = true
+        encryptionEnabled = true
         ciphers = Pair(encryptCipher, decryptCipher)
     }
     
     public fun enableCompression() {
-        isCompressed = true
+        compressionEnabled = true
         send(SetCompressionPacket(Config.compressionThreshold)) // TODO: Read value from config
     }
     

@@ -57,11 +57,17 @@ public object Server {
     
     public fun tick() {
         sessions.removeAll {
-            return@removeAll if (!it.isAlive) {
-                true
+            if (!it.isAlive) {
+                return@removeAll true
             } else {
-                it.handle()
-                false
+                try {
+                    it.handle()
+                } catch (e : Exception) {
+                    info("$it disconnected. Reason: ${e.message}")
+                    return@removeAll true //Connection Reset by peer, along with others
+                }
+
+                return@removeAll false
             }
         }
     }

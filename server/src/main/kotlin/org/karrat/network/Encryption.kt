@@ -9,6 +9,7 @@ import org.karrat.Server
 import org.karrat.packet.login.serverbound.EncryptionResponsePacket
 import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
+import java.math.BigInteger
 import java.security.*
 import javax.crypto.*
 import javax.crypto.spec.IvParameterSpec
@@ -28,24 +29,29 @@ internal fun Server.generateKeyPair(): KeyPair {
         keyPairGen.initialize(1024)
         keyPairGen.generateKeyPair()
     } catch (e : NoSuchAlgorithmException) {
+        e.printStackTrace()
         fatal("Key pair generation failed!")
     }
 }
 
 private fun cipherOperation(key: PrivateKey, bytes: ByteArray): ByteArray {
-    runCatching {
-        return createCipherInstance(key.algorithm, key).doFinal(bytes)
+    return try {
+        createCipherInstance(key.algorithm, key).doFinal(bytes)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        fatal("Cipher data failed!")
     }
-    fatal("Cipher data failed!")
 }
 
 private fun createCipherInstance(algorithm: String, key: PrivateKey): Cipher {
-    runCatching {
+    return try {
         val cipher = Cipher.getInstance(algorithm)
-        cipher.init(2, key, IvParameterSpec(key.encoded))
+        cipher.init(2, key)
         return cipher
+    } catch (e: Exception) {
+        e.printStackTrace()
+        fatal("Cipher creation failed!")
     }
-    fatal("Cipher creation failed!")
 }
 
 private fun decryptData(key: PrivateKey, bytes: ByteArray): ByteArray {
@@ -61,21 +67,24 @@ public fun EncryptionResponsePacket.decodeVerificationToken(privateKey: PrivateK
 }
 
 internal fun NetHandlerLogin.generateAESInstance(opMode: Int, key: Key): Cipher {
-    runCatching {
-        val var2 = Cipher.getInstance("AES/CFB8/NoPadding")
-        var2.init(opMode, key, IvParameterSpec(key.encoded))
-        return var2
+    return try {
+        val instance = Cipher.getInstance("AES/CFB8/NoPadding")
+        instance.init(opMode, key, IvParameterSpec(key.encoded))
+        instance
+    } catch (e : Exception) {
+        e.printStackTrace()
+        fatal("AES creation failed!")
     }
-    fatal("AES creation failed!")
 }
 
-internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): ByteArray? {
-    runCatching {
-        digestOperation(
+internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): String {
+    return try {
+        BigInteger(digestOperation(
             serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
-        )
+        )).toString(16)
+    } catch (e : Exception) {
+        fatal("Digest creation failed!")
     }
-    fatal("Digest creation failed!")
 }
 
 private fun digestOperation(vararg hashed: ByteArray): ByteArray? {
@@ -86,6 +95,6 @@ private fun digestOperation(vararg hashed: ByteArray): ByteArray? {
         }
         digest.digest()
     } catch (e : NoSuchAlgorithmException) {
-        fatal("Digest creation failed!")
+        fatal("Digest creation failed, No such algorithm of SHA-1?")
     }
 }

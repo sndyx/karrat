@@ -27,7 +27,6 @@ object ExamplePlugin {
         //Lie to client pog. at least when this is implemented
         Server.on<StatusResponseEvent> {
             it.response.maxPlayers = 30
-            it.response.image = Path("/image.png").readBytes()
         }
     }
     
