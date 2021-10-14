@@ -6,49 +6,90 @@ package org.karrat.serialization
 
 import org.karrat.struct.*
 
-internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
+/**
+ * Writes a nameless NbtCompound to a buffer
+ */
+internal fun writeNBTCompound(buffer: MutableByteBuffer, value: NbtCompound) {
+    writeNbt(buffer, value)
+}
+
+/**
+ * Writes a nameless NBTList to a buffer
+ */
+internal fun writeNBTList(buffer: MutableByteBuffer, value: List<*>) {
+    writeNbt(buffer, value)
+}
+
+private fun writeNbt(buffer: MutableByteBuffer, value: Any, needsId : Boolean = true) {
     buffer.apply {
         when (value) {
-            is Byte -> write(value)
-            is Short -> writeShort(value)
-            is Int -> writeInt(value)
-            is Long -> writeLong(value)
-            is Float -> writeFloat(value)
-            is Double -> writeDouble(value)
+            is Byte -> {
+                if (needsId) write(1)
+                write(value)
+            }
+            is Short -> {
+                if (needsId) write(2)
+                writeShort(value)
+            }
+            is Int -> {
+                if (needsId) write(3)
+                writeInt(value)
+            }
+            is Long -> {
+                if (needsId) write(4)
+                writeLong(value)
+            }
+            is Float -> {
+                if (needsId) write(5)
+                writeFloat(value)
+            }
+            is Double -> {
+                if (needsId) write(6)
+                writeDouble(value)
+            }
             is ByteArray -> {
+                if (needsId) write(7)
                 writeInt(value.size)
                 writeBytes(value)
             }
             is String -> {
+                if (needsId) write(8)
                 val bytes = value.encodeToByteArray()
                 writeUShort(bytes.size.toUShort())
                 writeBytes(bytes)
             }
             is List<*> -> {
+                if (needsId) write(9)
                 value.firstOrNull()?.let { first ->
                     val type = typeOf(first)
                     write(type)
-                    writeInt(value.size)
-                    value.filterNotNull().forEach {
-                        writeNbt(buffer, it)
+
+                    val list = listOfNotNull(value)
+
+                    writeInt(list.size)
+                    list.forEach {
+                        writeNbt(buffer, it, needsId = false)
                     }
                 }
             }
             is NbtCompound -> {
+                if (needsId) write(10)
                 value.entries.forEach {
-                    write(typeOf(it.value))
-                    writeNbt(buffer, it.key)
-                    writeNbt(buffer, it.value)
+                    write(typeOf(value))
+                    writeNbt(buffer, it.key, needsId = false)
+                    writeNbt(buffer, it.value, needsId = false)
                 }
                 write(0)
             }
             is IntArray -> {
+                if (needsId) write(11)
                 writeInt(value.size)
                 value.forEach {
                     writeInt(it)
                 }
             }
             is LongArray -> {
+                if (needsId) write(12)
                 writeInt(value.size)
                 value.forEach {
                     writeLong(it)
@@ -59,7 +100,14 @@ internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
     }
 }
 
-internal fun readNbt(buffer: ByteBuffer, type: Int): Any {
+/**
+ * Reads a nameless Nbt Compound value
+ */
+internal fun readNbtValue(buffer: ByteBuffer): Any {
+    return readNbt(buffer, buffer.read().toInt())
+}
+
+private fun readNbt(buffer: ByteBuffer, type: Int = -1): Any {
     buffer.apply {
         return when (type) {
             1 -> read()
