@@ -100,7 +100,9 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                 val content = request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" } ?: ""}")
                 
                 if (content.isSuccess) {
-                    val response = Json.decodeFromString<SessionServerResponse>(content.getOrThrow().decodeToString())
+                    val response = Json.decodeFromString<SessionServerResponse>(
+                        content.getOrThrow().decodeToString()
+                    )
                     //TODO add properties to player
                     uuid = response.uuid
                     state = LoginState.READY_TO_ACCEPT
