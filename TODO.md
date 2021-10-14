@@ -11,8 +11,9 @@ Tasks that should take priority, ordered by importance.
 
 ---
 
-* Add net handler framework
-  * Set up handshake/status handlers
+* Setup basic play packets so that players can join the world
+* Complete entity framework
+* Complete world-related tasks
 
 ## Misc
 
@@ -23,12 +24,6 @@ Tasks that can be done whenever. If you aren't inspired to do anything or are
 
 * Come up with intuitive item NBT system
 
-* Add helpful classes & extensions to `ByteBuffer.kt` for writing different data
- types
->See https://wiki.vg/Protocol#Data_types for more details.
-
-* Add entity framework
-
 ## Later
 
 Tasks that should be kept in mind but require prerequisites or would not be
@@ -36,7 +31,7 @@ Tasks that should be kept in mind but require prerequisites or would not be
 
 ---
 
-* Add play packets
+...
 
 ## Experimental Ideas
 
@@ -49,4 +44,10 @@ Ideas that might make the developer experience more convenient (without
 > `kotlinx.serialization` without sacrificing code readability or performance.
 
 * Annotation-powered compiler plugin that automatically registers functions 
- annotated with `@Subscribe` to the event bus.
+ annotated with `@Subscribe` to the event bus
+
+* Domain-based plugin repository allowing players to quickly install plugins via
+ `/plugin install <namespace>`
+> An example of this format: `/plugin install org.karrat.plugins.ranks`.
+>  "Featured plugins" (quality handpicked plugins) would also be provided with 
+>  shorthand names such as: `/plugin install ranks`.
