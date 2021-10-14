@@ -20,46 +20,37 @@ internal fun writeNBTList(buffer: MutableByteBuffer, value: List<*>) {
     writeNbt(buffer, value)
 }
 
-private fun writeNbt(buffer: MutableByteBuffer, value: Any, needsId : Boolean = true) {
+private fun writeNbt(buffer: MutableByteBuffer, value: Any) {
     buffer.apply {
         when (value) {
             is Byte -> {
-                if (needsId) write(1)
                 write(value)
             }
             is Short -> {
-                if (needsId) write(2)
                 writeShort(value)
             }
             is Int -> {
-                if (needsId) write(3)
                 writeInt(value)
             }
             is Long -> {
-                if (needsId) write(4)
                 writeLong(value)
             }
             is Float -> {
-                if (needsId) write(5)
                 writeFloat(value)
             }
             is Double -> {
-                if (needsId) write(6)
                 writeDouble(value)
             }
             is ByteArray -> {
-                if (needsId) write(7)
                 writeInt(value.size)
                 writeBytes(value)
             }
             is String -> {
-                if (needsId) write(8)
                 val bytes = value.encodeToByteArray()
                 writeUShort(bytes.size.toUShort())
                 writeBytes(bytes)
             }
             is List<*> -> {
-                if (needsId) write(9)
                 value.firstOrNull()?.let { first ->
                     val type = typeOf(first)
                     write(type)
@@ -68,28 +59,25 @@ private fun writeNbt(buffer: MutableByteBuffer, value: Any, needsId : Boolean = 
 
                     writeInt(list.size)
                     list.forEach {
-                        writeNbt(buffer, it, needsId = false)
+                        writeNbt(buffer, it)
                     }
                 }
             }
             is NbtCompound -> {
-                if (needsId) write(10)
                 value.entries.forEach {
                     write(typeOf(value))
-                    writeNbt(buffer, it.key, needsId = false)
-                    writeNbt(buffer, it.value, needsId = false)
+                    writeNbt(buffer, it.key)
+                    writeNbt(buffer, it.value)
                 }
                 write(0)
             }
             is IntArray -> {
-                if (needsId) write(11)
                 writeInt(value.size)
                 value.forEach {
                     writeInt(it)
                 }
             }
             is LongArray -> {
-                if (needsId) write(12)
                 writeInt(value.size)
                 value.forEach {
                     writeLong(it)
