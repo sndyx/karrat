@@ -121,6 +121,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                     session.disconnect("Failed to verify username!")
                     info("Username '$username' tried to join with an invalid session")
                 }
+                return@thread
             } catch (e: Exception) {
                 //TODO make sure it stops throwing exceptions
                 e.printStackTrace()
