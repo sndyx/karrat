@@ -91,45 +91,39 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         val socketAddress: SocketAddress = session.socket.remoteAddress
         val ip: InetAddress? =
             if (Config.preventProxyConnections
-                && socketAddress is InetSocketAddress)
+                && socketAddress is InetSocketAddress
+            )
                 socketAddress.address
             else null
     
-        thread(name="auth") {
-            try {
-                val content = request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" } ?: ""}")
-                
-                if (content.isSuccess) {
-                    val response = Json.decodeFromString<SessionServerResponse>(
-                        content.getOrThrow().decodeToString()
-                    )
-                    //TODO add properties to player
-                    uuid = response.uuid
-                    state = LoginState.READY_TO_ACCEPT
-
-                    session.player = Player(uuid, username, Config.spawnLocation)
-                    response.properties.firstOrNull { it.name == "textures" }
-                        ?.let { session.player.skin = it.value }
-
-                    val event = PlayerLoginEvent(session.player)
-                    if (Server.dispatchEvent(event)) {
-                        session.disconnect(event.kickReason)
-                        return@thread
-                    }
-
-                    session.enableCompression()
-                    session.send(LoginSuccessPacket(uuid, username))
-                } else {
-                    session.disconnect("Failed to verify username!")
-                    info("Username '$username' tried to join with an invalid session")
+        thread(name = "auth") {
+            val content =
+                request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" } ?: ""}")
+        
+            if (content.isSuccess) {
+                val response = Json.decodeFromString<SessionServerResponse>(
+                    content.getOrThrow().decodeToString()
+                )
+                //TODO add properties to player
+                uuid = response.uuid
+                state = LoginState.READY_TO_ACCEPT
+            
+                session.player = Player(uuid, username, Config.spawnLocation)
+                response.properties.firstOrNull { it.name == "textures" }
+                    ?.let { session.player.skin = it.value }
+            
+                val event = PlayerLoginEvent(session.player)
+                if (Server.dispatchEvent(event)) {
+                    session.disconnect(event.kickReason)
+                    return@thread
                 }
-                return@thread
-            } catch (e: Exception) {
-                //TODO make sure it stops throwing exceptions
-                e.printStackTrace()
+            
+                session.enableCompression()
+                session.send(LoginSuccessPacket(uuid, username))
+            } else {
+                session.disconnect("Failed to verify username!")
+                info("Username '$username' tried to join with an invalid session")
             }
-
-            session.disconnect("Authentication servers are down. Please try again later, sorry!")
         }
     }
     
