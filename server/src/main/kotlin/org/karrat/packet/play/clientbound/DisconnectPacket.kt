@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet.play
+package org.karrat.packet.play.clientbound
 
 import org.karrat.packet.ClientboundPacket
 import org.karrat.play.ChatComponent

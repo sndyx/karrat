@@ -12,7 +12,7 @@ import org.karrat.event.dispatchEvent
 import org.karrat.internal.NioByteBuffer
 import org.karrat.packet.ClientboundPacket
 import org.karrat.packet.login.clientbound.SetCompressionPacket
-import org.karrat.packet.play.DisconnectPacket
+import org.karrat.packet.play.clientbound.DisconnectPacket
 import org.karrat.play.ChatComponent
 import org.karrat.server.info
 import org.karrat.struct.*
