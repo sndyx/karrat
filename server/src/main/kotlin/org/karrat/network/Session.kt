@@ -54,7 +54,8 @@ public class Session(public val socket: SocketChannel) {
         val nioBuffer = prefixedBuffer.nio()
         nioBuffer.flip()
         socket.write(nioBuffer)
-        info(prefixedBuffer)
+        info("Sent Packet: ${packet.javaClass.name}")
+        info("Encoded: $prefixedBuffer")
         info("Decoded: ${prefixedBuffer.array().decodeToString()}")
     }
     
@@ -84,6 +85,8 @@ public class Session(public val socket: SocketChannel) {
                 val packet = netHandler.read(id, payload)
                 if (Server.dispatchEvent(PacketEvent(this, packet)))
                     continue
+
+                info("Recieved Packet: ${packet.javaClass.name}")
                 netHandler.process(packet)
             }
         }

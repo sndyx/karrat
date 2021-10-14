@@ -27,7 +27,4 @@ internal fun main(args: Array<String>) {
         }
     }
     Server.start(port)
-    Server.on<PacketEvent<*>> {
-        println(it)
-    }
 }
