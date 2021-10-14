@@ -23,7 +23,7 @@ public open class StatusResponse(
     public var onlinePlayers: Int,
     public var samplePlayers: List<Player>,
     public var description: ChatComponent, // Edit later, accepts more primitive type of ChatComponent
-    public var image: ByteArray?
+    public var image: ByteArray? = null
 ) {
     
     public companion object {
@@ -66,7 +66,6 @@ public open class StatusResponse(
             }
 
             image?.let {
-                info {"E: " + Base64.getEncoder().encode(it)}
                 put("favicon", "data:image/png;base64,${Base64.getEncoder().encodeToString(it)}")
             }
         }

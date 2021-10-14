@@ -9,7 +9,6 @@ import kotlinx.serialization.json.Json
 import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.Player
-import org.karrat.internal.ResponseState
 import org.karrat.internal.request
 import org.karrat.network.entity.SessionServerResponse
 import org.karrat.packet.ServerboundPacket
@@ -21,7 +20,7 @@ import org.karrat.server.fatal
 import org.karrat.server.info
 import org.karrat.struct.ByteBuffer
 import org.karrat.struct.Uuid
-import java.math.BigInteger
+import java.io.IOException
 import java.net.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -79,7 +78,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         session.enableEncryption(encryptCipher, decryptCipher)
     
         val hash = getServerIdHash("",
-            Server.keyPair.public, sharedSecret)
+            Server.keyPair.public, sharedSecret).contentToString()
     
         authenticate(hash)
     }
@@ -96,13 +95,9 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
     
         thread(name="auth") {
             try {
-                val content =
-                    if (ip != null)
-                        request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash&ip=$ip")
-                    else
-                        request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash")
+                val content = request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" }}")
 
-                if (content.resultState == ResponseState.SUCCESS) {
+                if (!content.error) {
                     val response = Json.decodeFromString<SessionServerResponse>(content.result)
                     //TODO add properties to player
                     uuid = response.uuid
@@ -112,15 +107,12 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                     response.properties.firstOrNull { it.name == "textures" }
                         ?.let { session.player.skin = it.value }
 
-                    //TODO make sure player isn't banned, prevent duplicate players, etc.
                     session.enableCompression()
-                    info("Username \'$username\' logging in...")
                     session.send(LoginSuccessPacket(uuid, username))
                 } else {
-                    info("Username \'$username\' tried to join with an invalid session")
                     session.disconnect("Failed to verify username!")
+                    info("Username '$username' tried to join with an invalid session")
                 }
-                return@thread
             } catch (e: Exception) {
                 //TODO make sure it stops throwing exceptions
                 e.printStackTrace()
