@@ -9,6 +9,7 @@ import org.karrat.Server
 import org.karrat.packet.login.serverbound.EncryptionResponsePacket
 import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
+import java.math.BigInteger
 import java.security.*
 import javax.crypto.*
 import javax.crypto.spec.IvParameterSpec
@@ -72,11 +73,11 @@ internal fun NetHandlerLogin.generateAESInstance(opMode: Int, key: Key): Cipher 
     }
 }
 
-internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): ByteArray? {
+internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): String {
     return runCatching {
-        digestOperation(
+        BigInteger(digestOperation(
             serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
-        )
+        )).toString(16)
     }.getOrElse {
         fatal("Digest creation failed!")
     }

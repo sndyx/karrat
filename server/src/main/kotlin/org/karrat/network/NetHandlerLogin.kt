@@ -78,7 +78,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         session.enableEncryption(encryptCipher, decryptCipher)
     
         val hash = getServerIdHash("",
-            Server.keyPair.public, sharedSecret).contentToString()
+            Server.keyPair.public, sharedSecret)
     
         authenticate(hash)
     }
@@ -95,10 +95,10 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
     
         thread(name="auth") {
             try {
-                val content = request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" }}")
-
-                if (!content.error) {
-                    val response = Json.decodeFromString<SessionServerResponse>(content.result)
+                val content = request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" } ?: ""}")
+                
+                if (content.isSuccess) {
+                    val response = Json.decodeFromString<SessionServerResponse>(content.getOrThrow().decodeToString())
                     //TODO add properties to player
                     uuid = response.uuid
                     state = LoginState.READY_TO_ACCEPT

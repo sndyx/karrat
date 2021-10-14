@@ -16,18 +16,21 @@ internal fun request(url: String, vararg properties: Pair<String, String>): Resu
         connection.addRequestProperty(it.first, it.second)
     }
     
-    return try {
-        Result.success(connection.inputStream.readBytes())
-    } catch (e : IOException) {
+    return runCatching {
+        connection.inputStream
+            .use { Result.success(it.readBytes()) }
+    }.getOrElse {
         Result.failure(Exception())
     }
 }
 
 internal fun request(url: String): Result<ByteArray> {
     val connection = URL(url).openConnection() as HttpURLConnection
-    return try {
-        Result.success(connection.inputStream.readBytes())
-    } catch (e : IOException) {
+    
+    return runCatching {
+        connection.inputStream
+            .use { Result.success(it.readBytes()) }
+    }.getOrElse {
         Result.failure(Exception())
     }
 }
