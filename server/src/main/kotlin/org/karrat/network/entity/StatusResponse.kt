@@ -40,36 +40,30 @@ public open class StatusResponse(
         
     }
     
-    public fun compile(): JsonObject {
-
-        info() {image}
-        
-        return buildJsonObject {
-            putJsonObject("version") {
-                put("name", JsonPrimitive(version))
-                put("protocol", JsonPrimitive(protocol))
-            }
-            putJsonObject("players") {
-                put("max", JsonPrimitive(maxPlayers))
-                put("online", JsonPrimitive(onlinePlayers))
-                putJsonArray("sample") {
-                    samplePlayers.forEach {
-                        addJsonObject {
-                            put("name", JsonPrimitive(it.name))
-                            put("id", JsonPrimitive(it.uuid.toString()))
-                        }
+    public fun compile(): JsonObject = buildJsonObject {
+        putJsonObject("version") {
+            put("name", JsonPrimitive(version))
+            put("protocol", JsonPrimitive(protocol))
+        }
+        putJsonObject("players") {
+            put("max", JsonPrimitive(maxPlayers))
+            put("online", JsonPrimitive(onlinePlayers))
+            putJsonArray("sample") {
+                samplePlayers.forEach {
+                    addJsonObject {
+                        put("name", JsonPrimitive(it.name))
+                        put("id", JsonPrimitive(it.uuid.toString()))
                     }
                 }
             }
-            putJsonObject("description") {
-                put("text", JsonPrimitive(description.text))
-            }
-
-            image?.let {
-                put("favicon", "data:image/png;base64,${Base64.getEncoder().encodeToString(it)}")
-            }
+        }
+        putJsonObject("description") {
+            put("text", JsonPrimitive(description.text))
         }
         
+        image?.let {
+            put("favicon", "data:image/png;base64,${Base64.getEncoder().encodeToString(it)}")
+        }
     }
 
     override fun toString(): String =

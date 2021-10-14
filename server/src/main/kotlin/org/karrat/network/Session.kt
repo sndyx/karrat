@@ -55,7 +55,6 @@ public class Session(public val socket: SocketChannel) {
         nioBuffer.flip()
         socket.write(nioBuffer)
         info("Sent Packet: ${packet.javaClass.name}")
-        info("Encoded: $prefixedBuffer")
     }
     
     public fun disconnect(reason: String) {
@@ -83,7 +82,7 @@ public class Session(public val socket: SocketChannel) {
                 if (Server.dispatchEvent(PacketEvent(this, packet)))
                     continue
 
-                info("Received Packet: ${packet.javaClass.name}")
+                info("Recieved Packet: ${packet.javaClass.name}")
                 netHandler.process(packet)
             }
         }

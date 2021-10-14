@@ -1,16 +1,19 @@
 /*
  * Copyright © Karrat - 2021.
  */
+@file:UseSerializers(Uuid.PrimitiveSerializer::class)
 
 package org.karrat.network.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 import org.karrat.struct.Uuid
 
 @Serializable
 public data class SessionServerResponse(
-    @SerialName("id") val uuid: Uuid,
+    @SerialName("id")
+    val uuid: Uuid,
     val name: String,
     val properties: List<SessionServerProperty>
 )
