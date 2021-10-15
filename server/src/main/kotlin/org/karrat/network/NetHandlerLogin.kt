@@ -109,7 +109,8 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                 state = LoginState.READY_TO_ACCEPT
 
                 if (uuid in Config.bannedPlayers) {
-                    session.disconnect("You are banned from this server")
+                    session.disconnect("You are banned from this server.")
+                    return@thread
                 }
             
                 session.player = Player(uuid, username, Config.spawnLocation)
