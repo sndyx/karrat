@@ -107,6 +107,10 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                 //TODO add properties to player
                 uuid = response.uuid
                 state = LoginState.READY_TO_ACCEPT
+
+                if (uuid in Config.bannedPlayers) {
+                    session.disconnect("You are banned from this server")
+                }
             
                 session.player = Player(uuid, username, Config.spawnLocation)
                 response.properties.firstOrNull { it.name == "textures" }
