@@ -9,4 +9,5 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":server"))
+    implementation(project(":context"))
 }

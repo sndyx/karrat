@@ -13,8 +13,6 @@ import org.karrat.plugin.Enable
 import org.karrat.plugin.InitializeAfter
 import org.karrat.plugin.Plugin
 import org.karrat.server.info
-import kotlin.io.path.Path
-import kotlin.io.path.readBytes
 
 @Plugin(name="Example Plugin", version="1.17.1")
 @InitializeAfter("Essentials", "WorldEdit")

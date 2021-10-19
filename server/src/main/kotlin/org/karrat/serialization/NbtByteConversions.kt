@@ -9,18 +9,18 @@ import org.karrat.struct.*
 /**
  * Writes a nameless NbtCompound to a buffer
  */
-internal fun writeNBTCompound(buffer: MutableByteBuffer, value: NbtCompound) {
+internal fun writeNbtCompound(buffer: MutableByteBuffer, value: NbtCompound) {
     writeNbt(buffer, value)
 }
 
 /**
  * Writes a nameless NBTList to a buffer
  */
-internal fun writeNBTList(buffer: MutableByteBuffer, value: List<*>) {
+internal fun writeNbtList(buffer: MutableByteBuffer, value: List<*>) {
     writeNbt(buffer, value)
 }
 
-private fun writeNbt(buffer: MutableByteBuffer, value: Any) {
+internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
     buffer.apply {
         when (value) {
             is Byte -> {
@@ -95,7 +95,7 @@ internal fun readNbtValue(buffer: ByteBuffer): Any {
     return readNbt(buffer, buffer.read().toInt())
 }
 
-private fun readNbt(buffer: ByteBuffer, type: Int = -1): Any {
+internal fun readNbt(buffer: ByteBuffer, type: Int = -1): Any {
     buffer.apply {
         return when (type) {
             1 -> read()

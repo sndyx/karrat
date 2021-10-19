@@ -113,7 +113,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                     return@thread
                 }
             
-                session.player = Player(uuid, username, Config.spawnLocation)
+                session.player = Player(uuid, username, location=Config.spawnLocation)
                 response.properties.firstOrNull { it.name == "textures" }
                     ?.let { session.player.skin = it.value }
             

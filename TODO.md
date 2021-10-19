@@ -51,3 +51,5 @@ Ideas that might make the developer experience more convenient (without
 > An example of this format: `/plugin install org.karrat.plugins.ranks`.
 >  "Featured plugins" (quality handpicked plugins) would also be provided with 
 >  shorthand names such as: `/plugin install ranks`.
+
+* `org.karrat.context`, a library for advanced clientside manipulation.

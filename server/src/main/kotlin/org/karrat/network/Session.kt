@@ -27,7 +27,7 @@ public class Session(public val socket: SocketChannel) {
     /**
      * Player linked to this session instance, if in state Play.
      */
-    public lateinit var player: Player
+    public var player: Player? = null
     public val isAlive: Boolean get() = socket.isOpen
     
     public var netHandler: NetHandler = NetHandlerHandshake(this)
