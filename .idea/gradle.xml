@@ -11,9 +11,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/context" />
             <option value="$PROJECT_DIR$/examples" />
             <option value="$PROJECT_DIR$/server" />
+            <option value="$PROJECT_DIR$/sided" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -5,4 +5,4 @@
 rootProject.name = "karrat"
 include("server")
 include("examples")
-include("context")
+include("sided")

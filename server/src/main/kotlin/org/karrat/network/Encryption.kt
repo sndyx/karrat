@@ -6,7 +6,7 @@
 package org.karrat.network
 
 import org.karrat.Server
-import org.karrat.packet.login.serverbound.EncryptionResponsePacket
+import org.karrat.packet.login.EncryptionResponsePacket
 import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
 import java.math.BigInteger

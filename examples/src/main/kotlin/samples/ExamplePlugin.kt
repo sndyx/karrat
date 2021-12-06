@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.examples
+package samples
 
 import org.karrat.Server
 import org.karrat.event.PacketEvent

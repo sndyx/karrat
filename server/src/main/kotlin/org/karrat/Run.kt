@@ -4,8 +4,6 @@
 
 package org.karrat
 
-import org.karrat.event.PacketEvent
-import org.karrat.event.on
 import org.karrat.server.warning
 
 internal fun main(args: Array<String>) {
@@ -16,14 +14,14 @@ internal fun main(args: Array<String>) {
             "-port" -> {
                 val parsed = (args[i + 1].toShortOrNull())?.toInt()
                 port = if (parsed == null) {
-                    warning("usage: Karrat [-port <Short>]")
+                    warning("Usage: Karrat [-port <Short>]")
                     port
                 } else {
                     parsed
                 }
                 i++
             }
-            else -> warning("usage: Karrat [-port <Short>]")
+            else -> warning("Usage: Karrat [-port <Short>]")
         }
     }
     Server.start(port)

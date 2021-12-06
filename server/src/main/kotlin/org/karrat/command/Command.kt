@@ -13,7 +13,7 @@ public inline fun command(literal: String, structure: Command.() -> Unit = { }):
 }
 
 public fun CommandScope.respond(response: String) {
-    sender.sendMessage(response)
+    // sender.sendMessage(response)
 }
 
 public open class Command(public val literal: String) {
@@ -27,7 +27,6 @@ public open class Command(public val literal: String) {
         subCommands.add(command)
         return command
     }
-    
     
     public inline fun <reified T> argument(
         label: String = T::class.simpleName ?: "Argument",
@@ -62,36 +61,10 @@ public class Arguments(
     
 }
 
-
 public class CommandArgument(
     type: KClass<*>,
     label: String,
     completions: List<String>
-) : Command("LiteralCommand") {
+) : Command("\$literal") {
 
-}
-
-internal val currentPlugins = listOf("Essentials", "WorldEdit")
-internal val featuredPlugins = listOf("essentials", "worldedit", "fawe", "mythicmobs", "luckperms", "worldguard")
-
-public fun pluginCommand(): Command {
-    return command("plugin") {
-        
-        command("list")
-            .run {
-                respond(currentPlugins.toString())
-            }
-        
-        command("install") {
-            argument<String>(label = "plugin", completions = featuredPlugins)
-                .run {
-                    installPlugin(args.get(0))
-                }
-        }
-        
-    }
-}
-
-internal fun installPlugin(plugin: String) {
-    pluginCommand()
 }

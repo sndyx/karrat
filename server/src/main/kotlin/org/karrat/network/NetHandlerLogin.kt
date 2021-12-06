@@ -14,15 +14,14 @@ import org.karrat.event.dispatchEvent
 import org.karrat.internal.request
 import org.karrat.network.entity.SessionServerResponse
 import org.karrat.packet.ServerboundPacket
-import org.karrat.packet.login.clientbound.EncryptionRequestPacket
-import org.karrat.packet.login.clientbound.LoginSuccessPacket
-import org.karrat.packet.login.serverbound.EncryptionResponsePacket
-import org.karrat.packet.login.serverbound.LoginStartPacket
+import org.karrat.packet.login.EncryptionRequestPacket
+import org.karrat.packet.login.LoginSuccessPacket
+import org.karrat.packet.login.EncryptionResponsePacket
+import org.karrat.packet.login.LoginStartPacket
 import org.karrat.server.fatal
 import org.karrat.server.info
 import org.karrat.struct.ByteBuffer
 import org.karrat.struct.Uuid
-import java.io.IOException
 import java.net.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -58,9 +57,11 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         }
         username = packet.username
         state = LoginState.READY_FOR_ENCRYPTION
-        session.send(EncryptionRequestPacket("",
+        session.send(
+            EncryptionRequestPacket("",
             Server.keyPair.public.encoded,
-            verificationToken))
+            verificationToken)
+        )
     }
     
     internal fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {
@@ -104,7 +105,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                 val response = Json.decodeFromString<SessionServerResponse>(
                     content.getOrThrow().decodeToString()
                 )
-                //TODO add properties to player
+                // TODO add properties to player
                 uuid = response.uuid
                 state = LoginState.READY_TO_ACCEPT
 
@@ -115,9 +116,9 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
             
                 session.player = Player(uuid, username, location=Config.spawnLocation)
                 response.properties.firstOrNull { it.name == "textures" }
-                    ?.let { session.player.skin = it.value }
+                    ?.let { session.player!!.skin = it.value }
             
-                val event = PlayerLoginEvent(session.player)
+                val event = PlayerLoginEvent(session.player!!)
                 if (Server.dispatchEvent(event)) {
                     session.disconnect(event.kickReason)
                     return@thread

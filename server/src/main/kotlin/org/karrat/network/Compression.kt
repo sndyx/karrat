@@ -11,17 +11,15 @@ import org.karrat.struct.*
 import java.util.zip.Deflater
 import java.util.zip.Inflater
 
-private const val compressionThreshold: Int = Config.compressionThreshold
-
 private val inflater by lazy { Inflater() }
 private val deflater by lazy { Deflater() }
 
 internal fun Session.decompress(buffer : ByteBuffer) {
     val uncompressedLength = buffer.readVarInt()
     if (uncompressedLength == 0) return
-    if (uncompressedLength < compressionThreshold) {
+    if (uncompressedLength < Config.compressionThreshold) {
         fatal("Badly compressed packet - size of $uncompressedLength is below" +
-                " server threshold of $compressionThreshold")
+                " server threshold of ${Config.compressionThreshold}")
     } else if (uncompressedLength > 8388608) {
         fatal("Badly compressed packet - size of $uncompressedLength is" +
                 " larger than protocol maximum of 8388608")
@@ -40,7 +38,7 @@ internal fun Session.compress(buffer : ByteBuffer) {
     val length = buffer.size
 
     val result = DynamicByteBuffer()
-    if (length < compressionThreshold) {
+    if (length < Config.compressionThreshold) {
         result.writeVarInt(0)
         result.writeBytes(buffer.bytes)
     } else {

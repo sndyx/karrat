@@ -45,7 +45,7 @@ public fun MutableByteBuffer.writeVarLong(value: Long) {
 }
 
 /**
- * Writes an Identifier to the buffer. (minecraft:thing)
+ * Writes an [Identifier] to the buffer.
  */
 public fun MutableByteBuffer.writeIdentifier(value: Identifier) {
     writeString(value.toString())

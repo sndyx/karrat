@@ -1,4 +1,4 @@
-package org.karrat.packet.login.clientbound
+package org.karrat.packet.login
 
 import org.karrat.packet.ClientboundPacket
 import org.karrat.struct.DynamicByteBuffer

@@ -8,6 +8,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.min
 
+private const val reset = "\u001B[0m"
+private const val red = "\u001b[38;5;9m"
+private const val yellow = "\u001b[38;5;178m"
+
 private val time: String
 get() {
     val time = Calendar.getInstance().time
@@ -29,10 +33,13 @@ public fun info(message: Any) {
 }
 
 public fun warning(message: Any) {
+    print(yellow)
     println("$prefix | warn: $message")
+    print(reset)
 }
 
 public fun fatal(message: Any) : Nothing {
+    print(red)
     println("$prefix | fatal: $message\n")
 
     val stackTrace = Thread.currentThread().stackTrace
@@ -41,5 +48,6 @@ public fun fatal(message: Any) : Nothing {
         println("   @ " + stackTrace[n])
     }
     println()
+    print(reset)
     throw RuntimeException()
 }

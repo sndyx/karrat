@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "org.karrat"
+group = "org.karrat.sided"
 version = "1.17.1"
 
 repositories {

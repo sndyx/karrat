@@ -6,20 +6,25 @@ package org.karrat
 
 import org.karrat.entity.Entity
 import org.karrat.struct.Identifier
+import org.karrat.world.Chunk
+import org.karrat.world.WorldData
 
 public class World(
     public val identifier: Identifier,
-    public val dimension: Any
+    public val dimension: Any,
+    public val seed: Long,
 ) {
 
     public val name: String
-    get() = identifier.id
+        get() = identifier.name
     
-    public val entities: MutableList<Entity> = mutableListOf()
-
-    public var seed: Long = 0L
-    public var debug: Boolean = false
-    public var flat: Boolean = false
+    public val chunks: MutableSet<Chunk> = mutableSetOf()
+    public val entities: MutableSet<Entity> = mutableSetOf()
+    public val data: WorldData = WorldData()
+    
 }
 
-public fun World(identifier: Identifier): World = World(identifier, "TODO")
+/**
+ * Fetches a [World] from its [Identifier]. Throws an Exception if not found.
+ */
+public fun World(identifier: Identifier): World = World(identifier, "TODO", 0L)

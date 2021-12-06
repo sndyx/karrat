@@ -8,7 +8,7 @@ import org.karrat.Server
 import org.karrat.World
 import org.karrat.play.Location
 import org.karrat.server.players
-import org.karrat.struct.Identifier
+import org.karrat.struct.id
 import org.karrat.struct.Uuid
 
 public open class Player(
@@ -18,7 +18,7 @@ public open class Player(
     location: Location
     ) : EntityLiving(location) {
 
-    //TODO steve texture
+    // TODO steve texture
     override var maxHealth: Double = 20.0
 
     public fun sendMessage(message: String) {
@@ -27,8 +27,8 @@ public open class Player(
     
 }
 
-//Temporary for now ig
-public class FakePlayer(uuid: Uuid, name: String) : Player(uuid, name, location = Location(World(Identifier("TestNameSpace", "Main_World")), 0.0, 0.0, 0.0))
+// Temporary for now ig
+public class FakePlayer(uuid: Uuid, name: String) : Player(uuid, name, location = Location(World(id("TestNameSpace", "Main_World")), 0.0, 0.0, 0.0))
 
 public fun Player(uuid: Uuid): Player {
     return Server.players().first { it.uuid == uuid }

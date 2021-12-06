@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.packet.play.clientbound
+package org.karrat.packet.play
 
 import org.karrat.World
 import org.karrat.packet.ClientboundPacket
@@ -38,8 +38,8 @@ public class JoinGamePacket(
         data.writeInt(maxPlayers) //Unused
         data.writeInt(viewDistance)
         data.writeBoolean(reducedDebugInfo)
-        data.writeBoolean(playerWorld.debug)
-        data.writeBoolean(playerWorld.flat)
+        //data.writeBoolean(playerWorld.debug)
+        //data.writeBoolean(playerWorld.flat) later
     }
 
 

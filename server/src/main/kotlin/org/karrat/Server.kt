@@ -4,6 +4,10 @@
 
 package org.karrat
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.karrat.network.Session
 import org.karrat.network.SessionState
 import org.karrat.network.generateKeyPair
@@ -30,20 +34,20 @@ public object Server {
         socket.bind(InetSocketAddress(InetAddress.getLocalHost(), port))
         socket.configureBlocking(true)
         info("Bound to ip ${socket.localAddress} on port $port.")
-        thread(name="socket") {
+        thread(name = "socket") {
             while (true) {
                 val session = Session(socket.accept())
                 sessions.add(session)
                 info("Accepted $session.")
             }
         }
-        thread(name="tick") {
-            while (true) {
+        runBlocking {
+            while (isActive) {
                 tickTimeMillis =
                     measureTimeMillis {
-                        tick()
+                        tick() // Run game tick
                     }
-                Thread.sleep(maxOf(0L, 50L - tickTimeMillis))
+                delay(maxOf(0L, (1000 / Config.tps) - tickTimeMillis))
             }
         }
     }
@@ -55,20 +59,23 @@ public object Server {
             .forEach { it.disconnect("Server shutting down.") }
     }
     
-    public fun tick() {
+    public fun tick(): Unit = runBlocking {
         sessions.removeAll {
-            if (!it.isAlive) {
-                return@removeAll true
-            } else {
-                try {
-                    it.handle()
-                } catch (e : Exception) {
-                    info("$it disconnected. Reason: ${e.message}")
-                    return@removeAll true //Connection Reset by peer, along with others
+            var remove = false
+            launch {
+                if (!it.isAlive) {
+                    remove = true
+                } else {
+                    try {
+                        it.handle()
+                    } catch (e: Exception) {
+                        info("$it disconnected. Reason: ${e.message}")
+                        remove = true // Connection Reset by peer, along with others
+                    }
+                    remove = false
                 }
-
-                return@removeAll false
             }
+            return@removeAll remove
         }
     }
 

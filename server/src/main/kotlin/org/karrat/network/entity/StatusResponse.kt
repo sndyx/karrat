@@ -32,9 +32,9 @@ public open class StatusResponse(
             "Karrat 1.17.1",
             756,
             1,
-            1,
+            1000000000,
             listOf(FakePlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
-            ChatComponent("Funny Gaming"),
+            ChatComponent("Hello Kevster109"),
             StatusResponse::class.java.getResource("/icon.png")?.readBytes()
         )
         

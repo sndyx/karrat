@@ -11,10 +11,9 @@ import org.karrat.event.PacketEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.internal.NioByteBuffer
 import org.karrat.packet.ClientboundPacket
-import org.karrat.packet.login.clientbound.SetCompressionPacket
-import org.karrat.packet.play.clientbound.DisconnectPacket
+import org.karrat.packet.login.SetCompressionPacket
+import org.karrat.packet.play.DisconnectPacket
 import org.karrat.play.ChatComponent
-import org.karrat.server.info
 import org.karrat.struct.*
 import java.net.SocketAddress
 import java.nio.channels.SocketChannel
@@ -41,7 +40,7 @@ public class Session(public val socket: SocketChannel) {
      */
     public lateinit var ciphers: Pair<Cipher, Cipher>
     
-    public fun send(packet: ClientboundPacket) { // (Packet) -> (Encoder - format into bytes) -> (Compress) -> (Prepended) -> (Encrypt) -> Bytes
+    public fun send(packet: ClientboundPacket) { // Packet -> Encoder -> Compress -> Prepended -> Encrypt -> Bytes
         if (Server.dispatchEvent(PacketEvent(this, packet))) return
         val buffer = DynamicByteBuffer()
         buffer.writeVarInt(packet.id)
@@ -54,7 +53,6 @@ public class Session(public val socket: SocketChannel) {
         val nioBuffer = prefixedBuffer.nio()
         nioBuffer.flip()
         socket.write(nioBuffer)
-        info("Sent Packet: ${packet.javaClass.name}")
     }
     
     public fun disconnect(reason: String) {
@@ -62,7 +60,7 @@ public class Session(public val socket: SocketChannel) {
         socket.close()
     }
     
-    public fun handle() { // Bytes -> (Decrypt) -> (Splitter) -> (Decompress) -> (Decoder - format into packet) -> (Packet)
+    public fun handle() { // Bytes -> Decrypt -> Splitter -> Decompress -> Decoder -> Packet
         val nioBuffer = NioByteBuffer.allocate(1028)
         socket.read(nioBuffer)
         val buffer = nioBuffer.array().copyOf(1028 - nioBuffer.remaining()).toByteBuffer()
@@ -81,8 +79,6 @@ public class Session(public val socket: SocketChannel) {
                 val packet = netHandler.read(id, payload)
                 if (Server.dispatchEvent(PacketEvent(this, packet)))
                     continue
-
-                info("Recieved Packet: ${packet.javaClass.name}")
                 netHandler.process(packet)
             }
         }
@@ -95,7 +91,7 @@ public class Session(public val socket: SocketChannel) {
     
     public fun enableCompression() {
         isCompressionEnabled = true
-        send(SetCompressionPacket(Config.compressionThreshold)) // TODO: Read value from config
+        send(SetCompressionPacket(Config.compressionThreshold))
     }
     
     override fun toString(): String =
