@@ -37,5 +37,3 @@ internal fun request(url: String): Result<ByteArray> {
 internal fun postRequest(url: String, requestProperties: Map<String, String>): String {
     TODO() //when a post request is needed >:)
 }
-
-internal typealias NioByteBuffer = java.nio.ByteBuffer

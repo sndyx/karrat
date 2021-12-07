@@ -5,6 +5,7 @@
 package org.karrat
 
 import org.karrat.entity.Entity
+import org.karrat.entity.Player
 import org.karrat.struct.Identifier
 import org.karrat.world.Chunk
 import org.karrat.world.WorldData
@@ -20,6 +21,9 @@ public class World(
     
     public val chunks: MutableSet<Chunk> = mutableSetOf()
     public val entities: MutableSet<Entity> = mutableSetOf()
+    public val players: List<Player>
+        get() = entities.filterIsInstance<Player>()
+
     public val data: WorldData = WorldData()
     
 }

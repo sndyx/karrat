@@ -8,6 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.karrat.entity.Player
 import org.karrat.network.Session
 import org.karrat.network.SessionState
 import org.karrat.network.generateKeyPair
@@ -21,6 +22,18 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 public object Server {
+    public var worlds : MutableList<World> = mutableListOf()
+
+    public val players: Set<Player>
+        get() {
+            val result : MutableSet<Player> = mutableSetOf()
+
+            worlds.forEach {
+                result.addAll(it.players)
+            }
+
+            return result
+        }
     
     public var sessions: MutableList<Session> = mutableListOf()
     public lateinit var socket: ServerSocketChannel

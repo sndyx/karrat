@@ -33,14 +33,6 @@ internal fun Server.generateKeyPair(): KeyPair {
     }
 }
 
-private fun cipherOperation(key: PrivateKey, bytes: ByteArray): ByteArray {
-    return runCatching {
-        createCipherInstance(key.algorithm, key).doFinal(bytes)
-    }.getOrElse {
-        fatal(it)
-    }
-}
-
 private fun createCipherInstance(algorithm: String, key: PrivateKey): Cipher {
     return runCatching {
         val cipher = Cipher.getInstance(algorithm)
@@ -52,7 +44,11 @@ private fun createCipherInstance(algorithm: String, key: PrivateKey): Cipher {
 }
 
 private fun decryptData(key: PrivateKey, bytes: ByteArray): ByteArray {
-    return cipherOperation(key, bytes)
+    return runCatching {
+        createCipherInstance(key.algorithm, key).doFinal(bytes)
+    }.getOrElse {
+        fatal(it)
+    }
 }
 
 public fun EncryptionResponsePacket.decodeSharedSecret(key: PrivateKey): SecretKey {

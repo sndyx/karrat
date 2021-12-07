@@ -34,7 +34,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
     private var state: LoginState = LoginState.INITIAL
     private lateinit var username : String
     private lateinit var uuid: Uuid
-    private val verificationToken: ByteArray = Random.nextBytes(4)
+    private val verificationToken: ByteArray by lazy { Random.nextBytes(4) }
     
     override fun read(
         id: Int,
