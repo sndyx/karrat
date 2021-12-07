@@ -14,5 +14,4 @@ public class SetCompressionPacket(
         writeVarInt(compressionThreshold)
     }
 
-
 }

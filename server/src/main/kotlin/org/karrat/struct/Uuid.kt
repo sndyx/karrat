@@ -97,20 +97,10 @@ public class Uuid {
                 digits(mostSignificantBits shr 16, 4) + "-" +
                 digits(mostSignificantBits, 4) + "-" +
                 digits(leastSignificantBits shr 48, 4) + "-" +
-                digits(leastSignificantBits, 12) + "EEEE" +
-                digits2(mostSignificantBits shr 32, 8) + "-" +
-                digits2(mostSignificantBits shr 16, 4) + "-" +
-                digits2(mostSignificantBits, 4) + "-" +
-                digits2(leastSignificantBits shr 48, 4) + "-" +
-                digits2(leastSignificantBits, 12)
+                digits(leastSignificantBits, 12)
     }
     
     private fun digits(value: Long, digits: Int): String {
-        val hi = 1L shl digits * 4
-        return (hi or (value and hi - 1)).toString(16).substring(1)
-    }
-
-    private fun digits2(value: Long, digits: Int): String {
         val mask = 1L shl digits * 4 - 1
         return (value and mask).toString(16)//.substring(1)
     }
