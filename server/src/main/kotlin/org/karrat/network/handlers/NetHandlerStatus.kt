@@ -2,11 +2,12 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.network
+package org.karrat.network.handlers
 
 import org.karrat.Server
 import org.karrat.event.StatusResponseEvent
 import org.karrat.event.dispatchEvent
+import org.karrat.network.Session
 import org.karrat.network.entity.StatusResponse
 import org.karrat.packet.status.PingPacket
 import org.karrat.packet.status.StatusRequestPacket

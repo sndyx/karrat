@@ -3,7 +3,7 @@
  */
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package org.karrat.serialization
+package org.karrat.serialization.nbt
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi

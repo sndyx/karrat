@@ -3,9 +3,11 @@
  */
 @file:Suppress("Unused")
 
-package org.karrat.network
+package org.karrat.network.pipeline
 
 import org.karrat.Server
+import org.karrat.network.Session
+import org.karrat.network.handlers.NetHandlerLogin
 import org.karrat.packet.login.EncryptionResponsePacket
 import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
@@ -71,9 +73,11 @@ internal fun NetHandlerLogin.generateAESInstance(opMode: Int, key: Key): Cipher 
 
 internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): String {
     return runCatching {
-        BigInteger(digestOperation(
+        BigInteger(
+            digestOperation(
             serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
-        )).toString(16)
+        )
+        ).toString(16)
     }.getOrElse {
         fatal("Digest creation failed!")
     }

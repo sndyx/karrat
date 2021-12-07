@@ -6,6 +6,7 @@ package org.karrat.network.entity
 
 import kotlinx.serialization.json.*
 import org.karrat.Config
+import org.karrat.Server
 import org.karrat.World
 import org.karrat.entity.FakePlayer
 import org.karrat.entity.Player
@@ -30,10 +31,10 @@ public open class StatusResponse(
     public companion object {
         
         public fun default(): StatusResponse = StatusResponse( // TODO: Change to actual values later
-            "Karrat 1.17.1",
+            "Karrat 1.18.1",
             756,
             1,
-            1000000000,
+            Server.players.size,
             listOf(FakePlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
             ChatComponent(Config.motd),
             StatusResponse::class.java.getResource("/icon.png")?.readBytes()

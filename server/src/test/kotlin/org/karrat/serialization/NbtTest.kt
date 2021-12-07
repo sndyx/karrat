@@ -5,7 +5,7 @@
 package org.karrat.serialization
 
 import kotlinx.serialization.Serializable
-import org.karrat.server.info
+import org.karrat.serialization.nbt.Nbt
 import org.karrat.struct.nbtOf
 import kotlin.test.Test
 import kotlin.test.assertEquals

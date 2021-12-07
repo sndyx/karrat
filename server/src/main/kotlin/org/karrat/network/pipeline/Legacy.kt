@@ -2,12 +2,12 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.network
+package org.karrat.network.pipeline
 
 import org.karrat.Config
+import org.karrat.network.Session
 import org.karrat.server.info
 import org.karrat.struct.DynamicByteBuffer
-import org.karrat.struct.array
 import org.karrat.struct.nio
 import org.karrat.struct.writeBytes
 

@@ -21,7 +21,6 @@ public open class Player(
     override var maxHealth: Double = 20.0
 
     public fun sendMessage(message: String) {
-    
     }
     
 }

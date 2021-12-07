@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 import org.karrat.entity.Player
 import org.karrat.network.Session
 import org.karrat.network.SessionState
-import org.karrat.network.generateKeyPair
+import org.karrat.network.pipeline.generateKeyPair
 import org.karrat.network.state
 import org.karrat.server.info
 import java.net.InetAddress

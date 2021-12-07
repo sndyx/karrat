@@ -5,4 +5,7 @@
 package org.karrat.world
 
 public class WorldData {
+    public var isDebug: Boolean = false
+    public var isFlat: Boolean = false
+
 }

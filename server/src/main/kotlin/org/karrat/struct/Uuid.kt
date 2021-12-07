@@ -61,10 +61,13 @@ public class Uuid {
             bytes[6] = bytes[6] and 0x0f
             bytes[6] = bytes[6] or 0x40
             bytes[8] = bytes[8] and 0x3f
-            bytes[8] = bytes[8] or 0x80.toByte() // frick you kotlin!! i dont play by the rules
+            bytes[8] = bytes[8] or -0x80 //.toByte() // frick you kotlin!! i dont play by the rules
+
+            val buffer = ByteBuffer(bytes)
+
             return Uuid(
-                ByteBuffer(bytes.copyOf(8)).readLong(),
-                ByteBuffer(bytes.copyOfRange(9, 16)).readLong()
+                buffer.readLong(),
+                buffer.readLong()
             )
         }
         
@@ -94,12 +97,22 @@ public class Uuid {
                 digits(mostSignificantBits shr 16, 4) + "-" +
                 digits(mostSignificantBits, 4) + "-" +
                 digits(leastSignificantBits shr 48, 4) + "-" +
-                digits(leastSignificantBits, 12)
+                digits(leastSignificantBits, 12) + "EEEE" +
+                digits2(mostSignificantBits shr 32, 8) + "-" +
+                digits2(mostSignificantBits shr 16, 4) + "-" +
+                digits2(mostSignificantBits, 4) + "-" +
+                digits2(leastSignificantBits shr 48, 4) + "-" +
+                digits2(leastSignificantBits, 12)
     }
     
     private fun digits(value: Long, digits: Int): String {
         val hi = 1L shl digits * 4
         return (hi or (value and hi - 1)).toString(16).substring(1)
+    }
+
+    private fun digits2(value: Long, digits: Int): String {
+        val mask = 1L shl digits * 4 - 1
+        return (value and mask).toString(16)//.substring(1)
     }
     
     @OptIn(ExperimentalSerializationApi::class)

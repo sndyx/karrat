@@ -3,9 +3,10 @@
  */
 @file:Suppress("Unused")
 
-package org.karrat.network
+package org.karrat.network.pipeline
 
 import org.karrat.Config
+import org.karrat.network.Session
 import org.karrat.server.fatal
 import org.karrat.struct.*
 import java.util.zip.Deflater

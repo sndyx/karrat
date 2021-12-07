@@ -53,7 +53,8 @@ public class Arguments(
     public val values: List<Any>,
 ) {
     
-    public val size: Int = values.size
+    public val size: Int
+        get() = values.size
     
     public inline fun <reified T> get(index: Int): T {
         return values[index] as T
