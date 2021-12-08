@@ -7,14 +7,21 @@ package org.karrat.internal
 import java.net.HttpURLConnection
 import java.net.URL
 
-internal fun request(url: String, vararg properties: Pair<String, String>): Result<ByteArray> {
-    val connection = URL(url).openConnection() as HttpURLConnection
-    connection.connectTimeout = 15000
-    connection.readTimeout = 15000
-    properties.forEach {
-        connection.addRequestProperty(it.first, it.second)
+internal fun request(url: String, vararg parameters: Pair<String, String?>): Result<ByteArray> {
+    buildString {
+        append(url)
+        append('?')
+        parameters
+            .filterNot { it.second == null }
+            .forEach {
+                append(it.first)
+                append('=')
+                append(it.second)
+                append('&')
+            }
+        setLength(length - 1)
     }
-    
+    val connection = openHttpConnection(url)
     return runCatching {
         connection.inputStream
             .use { Result.success(it.readBytes()) }
@@ -24,14 +31,20 @@ internal fun request(url: String, vararg properties: Pair<String, String>): Resu
 }
 
 internal fun request(url: String): Result<ByteArray> {
-    val connection = URL(url).openConnection() as HttpURLConnection
-    
+    val connection = openHttpConnection(url)
     return runCatching {
         connection.inputStream
             .use { Result.success(it.readBytes()) }
     }.getOrElse {
         Result.failure(Exception())
     }
+}
+
+private fun openHttpConnection(url: String): HttpURLConnection {
+    val connection = URL(url).openConnection() as HttpURLConnection
+    connection.connectTimeout = 15000
+    connection.readTimeout = 15000
+    return connection
 }
 
 internal fun postRequest(url: String, requestProperties: Map<String, String>): String {

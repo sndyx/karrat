@@ -3,7 +3,7 @@
  */
 @file:Suppress("Unused")
 
-package org.karrat.network.pipeline
+package org.karrat.network.translation
 
 import org.karrat.Config
 import org.karrat.network.Session

@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.network.handlers
+package org.karrat.network.handler
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -14,10 +14,10 @@ import org.karrat.event.dispatchEvent
 import org.karrat.internal.request
 import org.karrat.network.*
 import org.karrat.network.entity.SessionServerResponse
-import org.karrat.network.pipeline.decodeSharedSecret
-import org.karrat.network.pipeline.decodeVerificationToken
-import org.karrat.network.pipeline.generateAESInstance
-import org.karrat.network.pipeline.getServerIdHash
+import org.karrat.network.translation.decodeSharedSecret
+import org.karrat.network.translation.decodeVerificationToken
+import org.karrat.network.translation.generateAESInstance
+import org.karrat.network.translation.getServerIdHash
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.login.EncryptionRequestPacket
 import org.karrat.packet.login.LoginSuccessPacket
@@ -33,10 +33,9 @@ import javax.crypto.SecretKey
 import kotlin.concurrent.thread
 import kotlin.random.Random
 
-
 public open class NetHandlerLogin(public val session: Session) : NetHandler {
 
-    private var state: LoginState = LoginState.INITIAL
+    private var state: LoginState = LoginState.Initial
     private lateinit var username : String
     private lateinit var uuid: Uuid
     private val verificationToken: ByteArray by lazy { Random.nextBytes(4) }
@@ -57,11 +56,11 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
     }
     
     internal fun handleLoginStartPacket(packet: LoginStartPacket) {
-        check(state == LoginState.INITIAL) {
+        check(state == LoginState.Initial) {
             fatal("Unexpected Login Start Packet!")
         }
         username = packet.username
-        state = LoginState.READY_FOR_ENCRYPTION
+        state = LoginState.ReadyForEncryption
         session.send(
             EncryptionRequestPacket("",
             Server.keyPair.public.encoded,
@@ -70,7 +69,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
     }
     
     internal fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {
-        check(state == LoginState.READY_FOR_ENCRYPTION) {
+        check(state == LoginState.ReadyForEncryption) {
             fatal("Unexpected Encryption Response Packet!")
         }
         check(verificationToken contentEquals packet.decodeVerificationToken(Server.keyPair.private)) {
@@ -92,7 +91,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
     }
     
     internal fun authenticate(hash: String) {
-        state = LoginState.AUTHENTICATING
+        state = LoginState.Authenticating
     
         val socketAddress: SocketAddress = session.socket.remoteAddress
         val ip: InetAddress? =
@@ -104,15 +103,17 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
     
         thread(name = "auth") {
             val content =
-                request("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=$username&serverId=$hash${ip?.let { "&ip=$ip" } ?: ""}")
-        
+                request("${Config.sessionServer}/session/minecraft/hasJoined",
+                    "username" to username,
+                    "serverId" to hash,
+                    "ip" to ip?.hostAddress)
             if (content.isSuccess) {
                 val response = Json.decodeFromString<SessionServerResponse>(
                     content.getOrThrow().decodeToString()
                 )
                 // TODO add properties to player
                 uuid = response.uuid
-                state = LoginState.READY_TO_ACCEPT
+                state = LoginState.ReadyToAccept
 
                 if (uuid in Config.bannedPlayers) {
                     session.disconnect("You are banned from this server.")
@@ -140,11 +141,11 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
     }
     
     public enum class LoginState {
-        INITIAL,
-        READY_FOR_ENCRYPTION,
-        AUTHENTICATING,
-        READY_TO_ACCEPT,
-        ACCEPTED;
+        Initial,
+        ReadyForEncryption,
+        Authenticating,
+        ReadyToAccept,
+        Accepted;
     }
     
 }

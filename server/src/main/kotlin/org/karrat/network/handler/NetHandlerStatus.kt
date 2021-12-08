@@ -2,11 +2,12 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.network.handlers
+package org.karrat.network.handler
 
 import org.karrat.Server
 import org.karrat.event.StatusResponseEvent
 import org.karrat.event.dispatchEvent
+import org.karrat.network.NetHandler
 import org.karrat.network.Session
 import org.karrat.network.entity.StatusResponse
 import org.karrat.packet.status.PingPacket
@@ -35,6 +36,6 @@ public open class NetHandlerStatus(public val session: Session) : NetHandler {
             else Unit // frick you kotlin!!!!
         }
         else -> fatal("Failed to handle packet: Invalid packet.")
-
     }
+    
 }

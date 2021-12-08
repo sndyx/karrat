@@ -4,10 +4,10 @@
 
 package org.karrat.network
 
-import org.karrat.network.handlers.NetHandlerHandshake
-import org.karrat.network.handlers.NetHandlerLogin
-import org.karrat.network.handlers.NetHandlerPlay
-import org.karrat.network.handlers.NetHandlerStatus
+import org.karrat.network.handler.NetHandlerHandshake
+import org.karrat.network.handler.NetHandlerLogin
+import org.karrat.network.handler.NetHandlerPlay
+import org.karrat.network.handler.NetHandlerStatus
 
 public val Session.state: SessionState
 get() = when (netHandler) {

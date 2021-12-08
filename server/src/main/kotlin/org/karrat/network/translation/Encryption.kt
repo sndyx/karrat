@@ -3,11 +3,11 @@
  */
 @file:Suppress("Unused")
 
-package org.karrat.network.pipeline
+package org.karrat.network.translation
 
 import org.karrat.Server
 import org.karrat.network.Session
-import org.karrat.network.handlers.NetHandlerLogin
+import org.karrat.network.handler.NetHandlerLogin
 import org.karrat.packet.login.EncryptionResponsePacket
 import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
@@ -57,8 +57,8 @@ public fun EncryptionResponsePacket.decodeSharedSecret(key: PrivateKey): SecretK
     return SecretKeySpec(decryptData(key, sharedSecret), "AES")
 }
 
-public fun EncryptionResponsePacket.decodeVerificationToken(privateKey: PrivateKey): ByteArray {
-    return decryptData(privateKey, verifyToken)
+public fun EncryptionResponsePacket.decodeVerificationToken(key: PrivateKey): ByteArray {
+    return decryptData(key, verifyToken)
 }
 
 internal fun NetHandlerLogin.generateAESInstance(opMode: Int, key: Key): Cipher {

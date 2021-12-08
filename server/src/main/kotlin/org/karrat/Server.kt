@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 import org.karrat.entity.Player
 import org.karrat.network.Session
 import org.karrat.network.SessionState
-import org.karrat.network.pipeline.generateKeyPair
+import org.karrat.network.translation.generateKeyPair
 import org.karrat.network.state
 import org.karrat.server.info
 import java.net.InetAddress
@@ -82,7 +82,8 @@ public object Server {
                     try {
                         it.handle()
                     } catch (e: Exception) {
-                        info("$it disconnected. Reason: ${e.message}")
+                        info("$it disconnected; internal error: ${e.message}")
+                        it.disconnect("Internal error: ${e.message}")
                         remove = true // Connection Reset by peer, along with others
                     }
                     remove = false

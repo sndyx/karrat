@@ -10,13 +10,8 @@ import org.karrat.entity.Player
 import org.karrat.event.PacketEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.internal.NioByteBuffer
-import org.karrat.network.handlers.NetHandler
-import org.karrat.network.handlers.NetHandlerHandshake
-import org.karrat.network.pipeline.*
-import org.karrat.network.pipeline.cipher
-import org.karrat.network.pipeline.decipher
-import org.karrat.network.pipeline.decompress
-import org.karrat.network.pipeline.handleLegacyPacket
+import org.karrat.network.handler.NetHandlerHandshake
+import org.karrat.network.translation.*
 import org.karrat.packet.ClientboundPacket
 import org.karrat.packet.login.SetCompressionPacket
 import org.karrat.packet.play.DisconnectPacket
