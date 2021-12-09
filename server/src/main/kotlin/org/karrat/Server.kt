@@ -35,7 +35,7 @@ public object Server {
             return result
         }
     
-    public var sessions: MutableList<Session> = mutableListOf()
+    private var sessions: MutableList<Session> = mutableListOf()
     public lateinit var socket: ServerSocketChannel
     
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
@@ -80,6 +80,23 @@ public object Server {
                     remove = true
                 } else {
                     try {
+                        //TODO
+                        /*
+                         - Test if remove working (I tested something equivalent to
+                         runBlocking {
+                            var remove = false
+                            launch {
+                                remove = true
+                            }
+
+                            println(remove)
+                         }
+
+                         and got false)
+
+                         - Make sure if a fix is required that the fact the socket channel is nonblocking is a non problem
+                         )
+                         */
                         it.handle()
                     } catch (e: Exception) {
                         info("$it disconnected; internal error: ${e.message}")
