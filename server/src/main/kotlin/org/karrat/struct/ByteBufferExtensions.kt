@@ -166,7 +166,3 @@ public fun ByteBuffer.readUShort(): UShort = readShort().toUShort()
 public fun ByteBuffer.readUInt(): UInt = readInt().toUInt()
 
 public fun ByteBuffer.readULong(): ULong = readLong().toULong()
-
-internal fun ByteBuffer.nio(): NioByteBuffer {
-    return NioByteBuffer.allocate(size).also { it.put(array()) }
-}

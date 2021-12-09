@@ -8,7 +8,6 @@ import org.karrat.Config
 import org.karrat.Server
 import org.karrat.server.info
 import org.karrat.struct.DynamicByteBuffer
-import org.karrat.struct.nio
 import org.karrat.struct.writeBytes
 
 /**
@@ -27,7 +26,7 @@ internal fun Session.handleLegacyPacket() {
     val result = builder.joinToString("\u0000") // Delimit with null
     response.writeShort(result.length.toShort()) // Size
     response.writeBytes(result.toByteArray(Charsets.UTF_16BE)) // Stuff?
-    this.socket.write(response.nio())
+    send(response)
 
     info("Session $this attempted to log in with a legacy client.")
     this.socket.close()

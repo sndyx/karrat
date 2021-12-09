@@ -8,7 +8,13 @@ import kotlinx.serialization.Serializable
 import org.karrat.entity.Entity
 
 @Serializable
-public class ChatComponent {
+public sealed class ChatComponentBase {
+    public val extra: List<ChatComponent> = arrayListOf()
+}
+
+
+@Serializable
+public class ChatComponent: ChatComponentBase {
     public lateinit var text : String
     
     /*private val bold: Boolean
@@ -20,7 +26,7 @@ public class ChatComponent {
     private val insertion: String
     private val clickEvent: ClickEvent
     private val hoverEvent: HoverEvent
-    private val extra: List<ChatComponent>*/
+    */
     
     public constructor(text: String) {
         this.text = text

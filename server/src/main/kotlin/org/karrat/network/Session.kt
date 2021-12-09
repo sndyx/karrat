@@ -52,9 +52,7 @@ public class Session(public val socket: SocketChannel) {
                 + varSizeOf(buffer.size))
         prefixedBuffer.writePrefixed(buffer.array())
         if (isEncryptionEnabled) cipher(prefixedBuffer) // Encrypt
-        val nioBuffer = prefixedBuffer.nio()
-        nioBuffer.flip()
-        socket.write(nioBuffer)
+        send(prefixedBuffer)
     }
     
     public fun disconnect(reason: String) {
@@ -94,6 +92,12 @@ public class Session(public val socket: SocketChannel) {
     public fun enableCompression() {
         isCompressionEnabled = true
         send(SetCompressionPacket(Config.compressionThreshold))
+    }
+
+    internal fun send(buffer: ByteBuffer) {
+        val nioBuffer = NioByteBuffer.allocate(buffer.size).also { it.put(buffer.array()) }
+        nioBuffer.flip()
+        socket.write(nioBuffer)
     }
     
     override fun toString(): String =
