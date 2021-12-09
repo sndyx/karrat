@@ -22,6 +22,7 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 public object Server {
+    
     public var worlds : MutableList<World> = mutableListOf()
 
     public val players: Set<Player>
@@ -35,7 +36,7 @@ public object Server {
             return result
         }
     
-    private var sessions: MutableList<Session> = mutableListOf()
+    public var sessions: MutableList<Session> = mutableListOf()
     public lateinit var socket: ServerSocketChannel
     
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
