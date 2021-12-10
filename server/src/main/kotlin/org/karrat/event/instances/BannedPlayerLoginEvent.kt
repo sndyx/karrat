@@ -2,19 +2,20 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.event
+package org.karrat.event.instances
 
+import org.karrat.event.CancellableEvent
 import org.karrat.struct.Uuid
 
 /*
-    Event that fires when a player is banned
-
-    - Provided Info
-    - uuid, which is the player's uuid
-    - username, which is the player's username
-    - message, which is the default ban message and can be changed
-
-    - When Cancelled: player is not banned
+ * [Event] When a player is banned
+ *
+ * Parameters
+ * - [Uuid] uuid, the player's uuid
+ * - [String] username, the player's username
+ * - [c] [String] message, the ban message
+ *
+ * Can be cancelled
  */
 public class BannedPlayerLoginEvent(public val uuid: Uuid, public val username: String) : CancellableEvent() {
     

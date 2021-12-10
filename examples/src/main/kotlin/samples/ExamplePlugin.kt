@@ -5,8 +5,8 @@
 package samples
 
 import org.karrat.Server
-import org.karrat.event.PacketEvent
-import org.karrat.event.StatusResponseEvent
+import org.karrat.event.instances.PacketEvent
+import org.karrat.event.instances.StatusResponseEvent
 import org.karrat.event.on
 import org.karrat.packet.ServerboundPacket
 import org.karrat.plugin.Enable

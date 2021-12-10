@@ -5,7 +5,7 @@
 package org.karrat.network.handler
 
 import org.karrat.Server
-import org.karrat.event.StatusResponseEvent
+import org.karrat.event.instances.StatusResponseEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.network.NetHandler
 import org.karrat.network.Session
@@ -34,6 +34,9 @@ public open class NetHandlerStatus(public val session: Session) : NetHandler {
                 session.send(StatusResponsePacket(event.response.compile().toString()))
             }
             else Unit // frick you kotlin!!!!
+
+            //TODO this probably shouldn't belong here but how does the session reset after NetHandlerStatus
+            
         }
         else -> fatal("Failed to handle packet: Invalid packet.")
     }

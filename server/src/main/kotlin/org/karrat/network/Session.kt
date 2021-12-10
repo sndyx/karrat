@@ -7,7 +7,7 @@ package org.karrat.network
 import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.Player
-import org.karrat.event.PacketEvent
+import org.karrat.event.instances.PacketEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.network.handler.NetHandlerHandshake
 import org.karrat.network.translation.*

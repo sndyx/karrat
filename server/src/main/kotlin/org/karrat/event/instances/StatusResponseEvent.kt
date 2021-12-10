@@ -2,13 +2,20 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.event
+package org.karrat.event.instances
 
+import org.karrat.event.CancellableEvent
 import org.karrat.network.Session
 import org.karrat.network.entity.StatusResponse
 
-/**
- * Event called when a Status Response is sent to the client
+/*
+ * [Event] When a Status Response (Server Info) is sent to a client
+ *
+ * Parameters
+ * - [Session] session, relevant session
+ * - [c] [StatusResponse] response, relavant Status Response
+ *
+ * Can be Cancelled
  */
 public class StatusResponseEvent(
     public val session: Session,
