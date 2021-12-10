@@ -7,77 +7,77 @@ package org.karrat.struct
 import org.karrat.server.fatal
 
 public interface ByteBuffer {
-    
+
     public var bytes: ByteArray
     public var pos: Int
     public val size: Int
     public val remaining: Int
-    
+
     public fun read(): Byte
-    
+
     public fun readBoolean(): Boolean
-    
+
     public fun readShort(): Short
-    
+
     public fun readInt(): Int
-    
+
     public fun readLong(): Long
-    
+
     public fun readFloat(): Float
-    
+
     public fun readDouble(): Double
-    
+
     public fun reset()
-    
+
     public operator fun iterator(): ByteIterator
-    
+
 }
 
 public fun ByteBuffer(values: ByteArray): ByteBuffer = ByteBufferImpl(values)
 
 internal open class ByteBufferImpl(override var bytes: ByteArray) : ByteBuffer {
-    
+
     override var pos = 0
     override val size get() = bytes.size
     override val remaining get() = size - pos
-    
+
     override fun read(): Byte {
         val value = bytes[pos]
         pos++
         return value
     }
-    
+
     override fun readBoolean() = read() == 1.toByte()
-    
+
     override fun readShort() = (read().toInt() and 0xff shl 8 or (read().toInt() and 0xff)).toShort()
-    
+
     override fun readInt(): Int {
         var value = 0
         for (i in 3 downTo 0) value = value or (read().toInt() and 0xff shl (8 * i))
         return value
     }
-    
+
     override fun readLong(): Long {
         var value = 0L
         for (i in 7 downTo 0) value = value or (read().toLong() and 0xff shl (8 * i))
         return value
     }
-    
+
     override fun readFloat() = Float.fromBits(readInt())
-    
+
     override fun readDouble() = Double.fromBits(readLong())
-    
+
     override fun reset() {
         pos = 0
     }
-    
+
     override fun toString() = "ByteBuffer(bytes=[" +
             bytes.copyOfRange(size - remaining, size)
                 .joinToString(", ") { "%02x".format(it) } + "])"
-    
+
     override fun iterator(): ByteIterator =
         bytes.iterator()
-    
+
 }
 
 public fun ByteBuffer.readBytes(amount: Int = remaining): ByteArray {
@@ -113,56 +113,56 @@ public fun ByteArray.toByteBuffer(): ByteBuffer = ByteBuffer(this)
 public fun Collection<Byte>.toByteBuffer(): ByteBuffer = toByteArray().toByteBuffer()
 
 public interface MutableByteBuffer : ByteBuffer {
-    
+
     public var pointer: Int
-    
+
     public fun write(value: Byte)
-    
+
     public fun writeBoolean(value: Boolean)
-    
+
     public fun writeShort(value: Short)
-    
+
     public fun writeInt(value: Int)
-    
+
     public fun writeLong(value: Long)
-    
+
     public fun writeFloat(value: Float)
-    
+
     public fun writeDouble(value: Double)
-    
+
 }
 
 public fun MutableByteBuffer(allocation: Int): MutableByteBuffer = MutableByteBufferImpl(allocation)
 
 internal class MutableByteBufferImpl(allocation: Int) : ByteBufferImpl(ByteArray(allocation)), MutableByteBuffer {
-    
+
     override var pointer = -1
     override val size get() = pointer + 1
-    
+
     override fun write(value: Byte) {
         pointer++
         check(bytes.size != pointer) { fatal("Buffer overflow.") }
         bytes[pointer] = value
     }
-    
+
     override fun writeBoolean(value: Boolean) = if (value) write(1) else write(0)
-    
+
     override fun writeShort(value: Short) {
         for (i in 1 downTo 0) write((value.toInt() shr 8 * i).toByte())
     }
-    
+
     override fun writeInt(value: Int) {
         for (i in 3 downTo 0) write((value shr 8 * i).toByte())
     }
-    
+
     override fun writeLong(value: Long) {
         for (i in 7 downTo 0) write((value shr 8 * i).toByte())
     }
-    
+
     override fun writeFloat(value: Float) = writeInt(value.toBits())
-    
+
     override fun writeDouble(value: Double) = writeLong(value.toBits())
-    
+
 }
 
 public fun MutableByteBuffer.writeBytes(value: ByteArray) {
@@ -170,12 +170,12 @@ public fun MutableByteBuffer.writeBytes(value: ByteArray) {
 }
 
 public class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl(values), MutableByteBuffer {
-    
+
     override var pointer: Int = -1
     override val size: Int get() = pointer + 1
-    
+
     public constructor() : this(ByteArray(0))
-    
+
     override fun write(value: Byte) {
         pointer++
         if (bytes.size == pointer) {
@@ -183,29 +183,29 @@ public class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl
         }
         bytes[pointer] = value
     }
-    
+
     override fun writeBoolean(value: Boolean): Unit =
         if (value) write(1) else write(0)
-    
+
     override fun writeShort(value: Short) {
         for (i in 1 downTo 0) write((value.toInt() shr 8 * i).toByte())
     }
-    
+
     override fun writeInt(value: Int) {
         for (i in 3 downTo 0) write((value shr 8 * i).toByte())
     }
-    
+
     override fun writeLong(value: Long) {
         for (i in 7 downTo 0) write((value shr 8 * i).toByte())
     }
-    
+
     override fun writeFloat(value: Float): Unit = writeInt(value.toBits())
-    
+
     override fun writeDouble(value: Double): Unit = writeLong(value.toBits())
-    
+
     init {
         if (values.isEmpty()) bytes = ByteArray(1)
         else writeBytes(values)
     }
-    
+
 }

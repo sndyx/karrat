@@ -14,17 +14,17 @@ public class EncryptionRequestPacket(
     private val publicKey: ByteArray,
     private val verifyToken: ByteArray,
 ) : ClientboundPacket {
-    
+
     override val id: Int = 0x01
-    
+
     override fun write(data: DynamicByteBuffer): Unit = data.run {
         writeString(serverId)
         writePrefixed(publicKey)
         writePrefixed(verifyToken)
     }
-    
+
     override fun toString(): String = "EncryptionRequestPacket(" +
             "serverId=$serverId, publicKey=$publicKey," +
             " verifyToken=$verifyToken)"
-    
+
 }

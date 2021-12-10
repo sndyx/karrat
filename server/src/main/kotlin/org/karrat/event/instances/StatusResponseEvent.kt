@@ -21,8 +21,8 @@ public class StatusResponseEvent(
     public val session: Session,
     public var response: StatusResponse
 ) : CancellableEvent() {
-    
+
     override fun toString(): String =
         "StatusResponseEvent(session=$session, response=$response)"
-    
+
 }

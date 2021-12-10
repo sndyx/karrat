@@ -9,12 +9,12 @@ import org.karrat.server.fatal
 
 @Serializable
 public class NbtCompound : LinkedHashMap<String, Any>() {
-    
+
     override fun put(key: String, value: Any): Any? {
         checkType(value)
         return super.put(key, value)
     }
-    
+
     private fun checkType(value: Any) {
         if (value is List<*>) {
             value.firstOrNull()?.let {
@@ -22,19 +22,20 @@ public class NbtCompound : LinkedHashMap<String, Any>() {
             }
             return
         }
-        check(value is Byte
-            || value is Short
-            || value is Int
-            || value is Long
-            || value is Float
-            || value is Double
-            || value is ByteArray
-            || value is NbtCompound
-            || value is IntArray
-            || value is LongArray
+        check(
+            value is Byte
+                    || value is Short
+                    || value is Int
+                    || value is Long
+                    || value is Float
+                    || value is Double
+                    || value is ByteArray
+                    || value is NbtCompound
+                    || value is IntArray
+                    || value is LongArray
         ) { fatal("NbtCompound does not accept type ${value::class.simpleName}.") }
     }
-    
+
     override fun toString(): String {
         val builder = StringBuilder("NbtCompound(")
         entries.forEach {
@@ -46,7 +47,7 @@ public class NbtCompound : LinkedHashMap<String, Any>() {
         builder.append(')')
         return builder.toString()
     }
-    
+
 }
 
 public fun Map<String, Any>.toNbtCompound(): NbtCompound =

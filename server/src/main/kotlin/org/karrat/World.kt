@@ -18,14 +18,14 @@ public class World(
 
     public val name: String
         get() = identifier.name
-    
+
     public val chunks: MutableSet<Chunk> = mutableSetOf()
     public val entities: MutableSet<Entity> = mutableSetOf()
     public val players: List<Player>
         get() = entities.filterIsInstance<Player>()
 
     public val data: WorldData = WorldData()
-    
+
 }
 
 /**

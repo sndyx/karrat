@@ -13,7 +13,7 @@ import org.karrat.struct.NbtCompound
 import org.karrat.struct.array
 
 public object Nbt {
-    
+
     /**
      * Encodes the [value] into an equivalent [NbtCompound] using the given
      * [SerializationStrategy].
@@ -24,7 +24,7 @@ public object Nbt {
     ): NbtCompound {
         return writeNbt(value, serializer)
     }
-    
+
     /**
      * Decodes the [NbtCompound] into an equivalent [T] instance using the given
      * [DeserializationStrategy].
@@ -35,21 +35,21 @@ public object Nbt {
     ): T {
         return readNbt(value, deserializer)
     }
-    
+
     /**
      * Encodes the given [value] into an equivalent [NbtCompound] using the
      * serializer retrieved from the reified type parameter.
      */
     public inline fun <reified T> encodeToNbt(value: T): NbtCompound =
         encodeToNbt(value, serializer())
-    
+
     /**
      * Decodes the given [value] into an equivalent [T] instance using the
      * serializer retrieved from the reified type parameter.
      */
     public inline fun <reified T> decodeFromNbt(value: NbtCompound): T =
         decodeFromNbt(value, serializer())
-    
+
     /**
      * Serializes the given [NbtCompound] into a matching [ByteArray].
      */
@@ -58,7 +58,7 @@ public object Nbt {
         writeNbtCompound(buffer, value)
         return buffer.array()
     }
-    
+
     /**
      * Deserializes the given [ByteArray] into a [NbtCompound].
      */
@@ -66,5 +66,5 @@ public object Nbt {
         val buffer = ByteBuffer(value)
         return readNbtValue(buffer) as NbtCompound
     }
-    
+
 }

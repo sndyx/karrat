@@ -4,7 +4,6 @@
 
 package org.karrat.internal
 
-import org.karrat.server.info
 import java.net.HttpURLConnection
 import java.net.URL
 

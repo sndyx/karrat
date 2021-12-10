@@ -19,7 +19,7 @@ import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
 
 public open class NetHandlerStatus(public val session: Session) : NetHandler {
-    
+
     override fun read(id: Int, data: ByteBuffer): ServerboundPacket = when (id) {
         0x00 -> StatusRequestPacket
         0x01 -> PingPacket(data)
@@ -32,13 +32,12 @@ public open class NetHandlerStatus(public val session: Session) : NetHandler {
             val event = StatusResponseEvent(session, StatusResponse.default())
             if (!Server.dispatchEvent(event)) {
                 session.send(StatusResponsePacket(event.response.compile().toString()))
-            }
-            else Unit // frick you kotlin!!!!
+            } else Unit // frick you kotlin!!!!
 
             //TODO this probably shouldn't belong here but how does the session reset after NetHandlerStatus
-            
+
         }
         else -> fatal("Failed to handle packet: Invalid packet.")
     }
-    
+
 }

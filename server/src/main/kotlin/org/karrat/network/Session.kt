@@ -7,10 +7,13 @@ package org.karrat.network
 import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.Player
-import org.karrat.event.instances.PacketEvent
 import org.karrat.event.dispatchEvent
+import org.karrat.event.instances.PacketEvent
 import org.karrat.network.handler.NetHandlerHandshake
-import org.karrat.network.translation.*
+import org.karrat.network.translation.cipher
+import org.karrat.network.translation.compress
+import org.karrat.network.translation.decipher
+import org.karrat.network.translation.decompress
 import org.karrat.packet.ClientboundPacket
 import org.karrat.packet.login.SetCompressionPacket
 import org.karrat.packet.play.DisconnectPacket
@@ -20,44 +23,46 @@ import java.net.SocketAddress
 import javax.crypto.Cipher
 
 public class Session(public val socket: SocketWrapper) {
-    
+
     public val address: SocketAddress = socket.remoteAddress
-    
+
     /**
      * Player linked to this session instance, if in state Play.
      */
     public var player: Player? = null
     public val isAlive: Boolean get() = socket.isOpen
-    
+
     public var netHandler: NetHandler = NetHandlerHandshake(this)
-    
+
     public var isCompressionEnabled: Boolean = false
     public var isEncryptionEnabled: Boolean = false
-    
+
     /**
      * Pair of encryption and decryption ciphers used for packet encryption.
      * Only initialized once [isEncryptionEnabled] is true.
      */
     public lateinit var ciphers: Pair<Cipher, Cipher>
-    
+
     public fun send(packet: ClientboundPacket) { // Packet -> Encoder -> Compress -> Prepended -> Encrypt -> Bytes
         if (Server.dispatchEvent(PacketEvent(this, packet))) return
         val buffer = DynamicByteBuffer()
         buffer.writeVarInt(packet.id)
         packet.write(buffer)
         if (isCompressionEnabled) compress(buffer)
-        val prefixedBuffer = MutableByteBuffer(buffer.size // Prepend
-                + varSizeOf(buffer.size))
+        val prefixedBuffer = MutableByteBuffer(
+            buffer.size // Prepend
+                    + varSizeOf(buffer.size)
+        )
         prefixedBuffer.writePrefixed(buffer.array())
         if (isEncryptionEnabled) cipher(prefixedBuffer) // Encrypt
         socket.write(prefixedBuffer)
     }
-    
+
     public fun disconnect(reason: String) {
         send(DisconnectPacket(ChatComponent(reason)))
         socket.close()
     }
-    
+
     public fun handle() { // Bytes -> Decrypt -> Splitter -> Decompress -> Decoder -> Packet
         val buffer = socket.read()
         if (buffer.size != 0) {
@@ -79,18 +84,18 @@ public class Session(public val socket: SocketWrapper) {
             }
         }
     }
-    
+
     public fun enableEncryption(encryptCipher: Cipher, decryptCipher: Cipher) {
         isEncryptionEnabled = true
         ciphers = Pair(encryptCipher, decryptCipher)
     }
-    
+
     public fun enableCompression() {
         isCompressionEnabled = true
         send(SetCompressionPacket(Config.compressionThreshold))
     }
-    
+
     override fun toString(): String =
         "Session(address=$address)"
-    
+
 }

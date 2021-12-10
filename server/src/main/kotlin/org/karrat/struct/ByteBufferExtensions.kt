@@ -7,7 +7,6 @@ package org.karrat.struct
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.karrat.internal.NioByteBuffer
 import org.karrat.play.ChatComponent
 
 /**

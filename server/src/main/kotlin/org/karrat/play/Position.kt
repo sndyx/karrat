@@ -7,29 +7,29 @@ package org.karrat.play
 import org.karrat.World
 
 public interface Vec3 {
-    
+
     public var x: Double
     public var y: Double
     public var z: Double
-    
+
 }
 
 internal open class Vec3Impl(
     override var x: Double,
     override var y: Double,
     override var z: Double
-    ) : Vec3 {
-    
+) : Vec3 {
+
     constructor(other: Vec3) : this(other.x, other.y, other.z)
-    
+
 }
 
 public class BlockPos(
     x: Int,
     y: Int,
     z: Int
-): Vec3 by Vec3Impl(x.toDouble(), y.toDouble(), z.toDouble()) {
-    
+) : Vec3 by Vec3Impl(x.toDouble(), y.toDouble(), z.toDouble()) {
+
     public var posX: Int
         get() = x.toInt()
         set(value) {
@@ -45,7 +45,7 @@ public class BlockPos(
         set(value) {
             z = value.toDouble()
         }
-    
+
 }
 
 public class Location(

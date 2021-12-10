@@ -5,9 +5,9 @@
 package org.karrat.play
 
 public enum class Dimension {
-    
+
     OVERWORLD,
     NETHER,
     END;
-    
+
 }

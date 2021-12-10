@@ -7,7 +7,10 @@ package org.karrat.packet.play
 import org.karrat.World
 import org.karrat.packet.ClientboundPacket
 import org.karrat.play.GameMode
-import org.karrat.struct.*
+import org.karrat.struct.DynamicByteBuffer
+import org.karrat.struct.NbtCompound
+import org.karrat.struct.writeIdentifier
+import org.karrat.struct.writeVarInt
 
 public class JoinGamePacket(
     public val entityId: Int,
@@ -15,8 +18,8 @@ public class JoinGamePacket(
     public val gamemode: GameMode,
     public val previousGamemode: GameMode, //What even is this? technically a UByte but it doesn't matter and pain
     public val worlds: List<World>,
-    public val dimensionCodec : NbtCompound,
-    public val dimension : NbtCompound,
+    public val dimensionCodec: NbtCompound,
+    public val dimension: NbtCompound,
     public val playerWorld: World,
     public val seed: Long,
     public val maxPlayers: Int,

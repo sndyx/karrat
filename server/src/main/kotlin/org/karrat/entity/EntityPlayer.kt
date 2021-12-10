@@ -7,5 +7,4 @@ package org.karrat.entity
 public class EntityPlayer {
 
 
-
 }

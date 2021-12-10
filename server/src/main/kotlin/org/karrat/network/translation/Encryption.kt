@@ -13,7 +13,8 @@ import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
 import java.math.BigInteger
 import java.security.*
-import javax.crypto.*
+import javax.crypto.Cipher
+import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
@@ -75,8 +76,8 @@ internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: Public
     return runCatching {
         BigInteger(
             digestOperation(
-            serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
-        )
+                serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
+            )
         ).toString(16)
     }.getOrElse {
         fatal("Digest creation failed!")

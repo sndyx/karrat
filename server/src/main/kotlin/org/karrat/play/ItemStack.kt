@@ -12,9 +12,8 @@ public class ItemStack(
     public val material: Material,
     public val amount: Int = 1
 ) {
-    
-    
-    
+
+
     public var nbt: NbtCompound = NbtCompound()
-    
+
 }

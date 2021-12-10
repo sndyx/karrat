@@ -5,9 +5,6 @@
 package org.karrat
 
 import org.karrat.server.warning
-import org.karrat.struct.Uuid
-import kotlin.math.atan
-import kotlin.math.sin
 
 internal fun main(args: Array<String>) {
     var port = 25565

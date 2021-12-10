@@ -14,12 +14,12 @@ public class LoginSuccessPacket(
     private val uuid: Uuid,
     private val username: String,
 ) : ClientboundPacket {
-    
+
     override val id: Int = 0x02
-    
+
     override fun write(data: DynamicByteBuffer): Unit = data.run {
         writeUuid(uuid)
         writeString(username)
     }
-    
+
 }

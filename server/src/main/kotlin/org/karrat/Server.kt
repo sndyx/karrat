@@ -12,8 +12,8 @@ import org.karrat.entity.Player
 import org.karrat.network.Session
 import org.karrat.network.SessionState
 import org.karrat.network.SocketWrapper
-import org.karrat.network.translation.generateKeyPair
 import org.karrat.network.state
+import org.karrat.network.translation.generateKeyPair
 import org.karrat.server.info
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -23,12 +23,12 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 public object Server {
-    
-    public var worlds : MutableList<World> = mutableListOf()
+
+    public var worlds: MutableList<World> = mutableListOf()
 
     public val players: Set<Player>
         get() {
-            val result : MutableSet<Player> = mutableSetOf()
+            val result: MutableSet<Player> = mutableSetOf()
 
             worlds.forEach {
                 result.addAll(it.players)
@@ -36,13 +36,13 @@ public object Server {
 
             return result
         }
-    
+
     public var sessions: MutableList<Session> = mutableListOf()
     public lateinit var socket: ServerSocketChannel
-    
+
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
     internal var tickTimeMillis: Long = 0L
-    
+
     public fun start(port: Int) {
         info("Server starting.")
         socket = ServerSocketChannel.open()
@@ -66,14 +66,14 @@ public object Server {
             }
         }
     }
-    
+
     public fun stop() {
         info("Terminating sessions.")
         sessions
             .filter { it.state == SessionState.PLAY }
             .forEach { it.disconnect("Server shutting down.") }
     }
-    
+
     public fun tick(): Unit = runBlocking {
         sessions.removeIf { !it.isAlive }
         sessions.forEach { session ->

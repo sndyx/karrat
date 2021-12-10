@@ -18,10 +18,10 @@ import org.karrat.struct.Uuid
  * Can be cancelled
  */
 public class BannedPlayerLoginEvent(public val uuid: Uuid, public val username: String) : CancellableEvent() {
-    
+
     public var message: String = "You are banned from this server."
-    
+
     override fun toString(): String =
         "BannedPlayerLoginEvent(uuid=$uuid)"
-    
+
 }

@@ -9,8 +9,8 @@ import org.karrat.struct.ByteBuffer
 import org.karrat.struct.readPrefixed
 
 public class EncryptionResponsePacket(data: ByteBuffer) : ServerboundPacket {
-    
+
     public val sharedSecret: ByteArray = data.readPrefixed()
     public val verifyToken: ByteArray = data.readPrefixed()
-    
+
 }

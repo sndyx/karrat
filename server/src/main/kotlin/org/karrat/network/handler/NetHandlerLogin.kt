@@ -9,20 +9,29 @@ import kotlinx.serialization.json.Json
 import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.Player
+import org.karrat.event.dispatchEvent
 import org.karrat.event.instances.BannedPlayerLoginEvent
 import org.karrat.event.instances.PlayerLoginEvent
-import org.karrat.event.dispatchEvent
 import org.karrat.internal.request
-import org.karrat.network.*
+import org.karrat.network.NetHandler
+import org.karrat.network.Session
 import org.karrat.network.entity.SessionServerResponse
-import org.karrat.network.translation.*
+import org.karrat.network.translation.decodeSharedSecret
+import org.karrat.network.translation.decodeVerificationToken
+import org.karrat.network.translation.generateAESInstance
+import org.karrat.network.translation.getServerIdHash
 import org.karrat.packet.ServerboundPacket
-import org.karrat.packet.login.*
+import org.karrat.packet.login.EncryptionRequestPacket
+import org.karrat.packet.login.EncryptionResponsePacket
+import org.karrat.packet.login.LoginStartPacket
+import org.karrat.packet.login.LoginSuccessPacket
 import org.karrat.server.fatal
 import org.karrat.server.info
 import org.karrat.struct.ByteBuffer
 import org.karrat.struct.Uuid
-import java.net.*
+import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.SocketAddress
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import kotlin.concurrent.thread
@@ -31,10 +40,10 @@ import kotlin.random.Random
 public open class NetHandlerLogin(public val session: Session) : NetHandler {
 
     private var state: LoginState = LoginState.Initial
-    private lateinit var username : String
+    private lateinit var username: String
     private lateinit var uuid: Uuid
     private val verificationToken: ByteArray by lazy { Random.nextBytes(4) }
-    
+
     override fun read(
         id: Int,
         data: ByteBuffer
@@ -49,7 +58,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         is EncryptionResponsePacket -> handleEncryptionResponsePacket(packet)
         else -> fatal("Invalid packet to be handled.")
     }
-    
+
     internal fun handleLoginStartPacket(packet: LoginStartPacket) {
         check(state == LoginState.Initial) {
             fatal("Unexpected Login Start Packet!")
@@ -57,12 +66,14 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         username = packet.username
         state = LoginState.ReadyForEncryption
         session.send(
-            EncryptionRequestPacket("",
-            Server.keyPair.public.encoded,
-            verificationToken)
+            EncryptionRequestPacket(
+                "",
+                Server.keyPair.public.encoded,
+                verificationToken
+            )
         )
     }
-    
+
     internal fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {
         check(state == LoginState.ReadyForEncryption) {
             fatal("Unexpected Encryption Response Packet!")
@@ -72,22 +83,24 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         }
         val sharedSecret: SecretKey =
             packet.decodeSharedSecret(Server.keyPair.private)
-    
+
         val encryptCipher: Cipher =
             generateAESInstance(1, sharedSecret)
         val decryptCipher: Cipher =
             generateAESInstance(2, sharedSecret)
         session.enableEncryption(encryptCipher, decryptCipher)
-    
-        val hash = getServerIdHash("",
-            Server.keyPair.public, sharedSecret)
-    
+
+        val hash = getServerIdHash(
+            "",
+            Server.keyPair.public, sharedSecret
+        )
+
         authenticate(hash)
     }
-    
+
     internal fun authenticate(hash: String) {
         state = LoginState.Authenticating
-    
+
         val socketAddress: SocketAddress = session.socket.remoteAddress
         val ip: InetAddress? =
             if (Config.preventProxyConnections
@@ -95,13 +108,15 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
             )
                 socketAddress.address
             else null
-    
+
         thread(name = "auth") {
             val content =
-                request("${Config.sessionServer}/session/minecraft/hasJoined",
+                request(
+                    "${Config.sessionServer}/session/minecraft/hasJoined",
                     "username" to username,
                     "serverId" to hash,
-                    "ip" to ip?.hostAddress)
+                    "ip" to ip?.hostAddress
+                )
             if (content.isSuccess) {
                 val response = Json.decodeFromString<SessionServerResponse>(
                     content.getOrThrow().decodeToString()
@@ -118,16 +133,16 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                         return@thread
                     }
                 }
-            
-                session.player = Player(uuid, username, location=Config.spawnLocation)
+
+                session.player = Player(uuid, username, location = Config.spawnLocation)
                 response.properties.firstOrNull { it.name == "textures" }
                     ?.let { session.player!!.skin = it.value }
-            
+
                 if (Server.dispatchEvent(PlayerLoginEvent(session.player!!))) {
                     session.disconnect("Unable to join server.")
                     return@thread
                 }
-            
+
                 session.enableCompression()
                 session.netHandler = NetHandlerPlay()
                 session.send(LoginSuccessPacket(uuid, username))
@@ -137,7 +152,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
             }
         }
     }
-    
+
     public enum class LoginState {
         Initial,
         ReadyForEncryption,
@@ -145,5 +160,5 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
         ReadyToAccept,
         Accepted;
     }
-    
+
 }

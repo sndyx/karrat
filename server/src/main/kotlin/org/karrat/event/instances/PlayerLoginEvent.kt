@@ -19,5 +19,5 @@ public class PlayerLoginEvent(public val player: Player) : CancellableEvent() {
 
     override fun toString(): String =
         "PlayerLoginEvent(player=$player)"
-    
+
 }

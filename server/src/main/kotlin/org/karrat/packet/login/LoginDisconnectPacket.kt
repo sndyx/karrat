@@ -12,10 +12,10 @@ import org.karrat.struct.writeChatComponent
 public class LoginDisconnectPacket(
     private val reason: ChatComponent,
 ) : ClientboundPacket {
-    
+
     override val id: Int = 0x00
-    
+
     override fun write(data: DynamicByteBuffer): Unit =
         data.writeChatComponent(reason)
-    
+
 }
