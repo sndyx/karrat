@@ -15,7 +15,7 @@ import java.net.SocketAddress
 /*
     A wrapper for the NioSocketChannel with relevant reading and write tools
  */
-public class SocketWrapper(private val socket: NioSocketChannel) : Closeable {
+public class SocketChannel(private val socket: NioSocketChannel) : Closeable {
     
     public val remoteAddress: SocketAddress get() = socket.remoteAddress
     public val isOpen: Boolean get() = socket.isOpen

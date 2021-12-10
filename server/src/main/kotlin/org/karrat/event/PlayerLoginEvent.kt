@@ -2,18 +2,14 @@
  * Copyright © Karrat - 2021.
  */
 
-package org.karrat.event.instances
+package org.karrat.event
 
 import org.karrat.entity.Player
 import org.karrat.event.CancellableEvent
 
-/*
- * [Event] When a player logins, meaning that the login packets will be sent after
- *
- * Parameters
- * - [Player] player, relevant player
- *
- * Can be cancelled
+/**
+ * A [CancellableEvent] that fires whenever a [player] joins the server.
+ * Cancelling this event will stop the player from joining the server.
  */
 public class PlayerLoginEvent(public val player: Player) : CancellableEvent() {
 
