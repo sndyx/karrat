@@ -13,7 +13,7 @@ import java.io.Closeable
 import java.net.SocketAddress
 
 /*
-    A wrapper for the NioSocketChannel with
+    A wrapper for the NioSocketChannel with relevant reading and write tools
  */
 public class SocketWrapper(private val socket: NioSocketChannel) : Closeable {
     
