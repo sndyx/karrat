@@ -4,13 +4,12 @@
 
 package org.karrat.internal
 
-import org.karrat.struct.ByteBuffer
-import org.karrat.struct.array
+import org.karrat.server.info
 import java.net.HttpURLConnection
 import java.net.URL
 
 internal fun request(url: String, vararg parameters: Pair<String, String?>): Result<ByteArray> {
-    buildString {
+    val urlWithParameters = buildString {
         append(url)
         append('?')
         parameters
@@ -23,7 +22,7 @@ internal fun request(url: String, vararg parameters: Pair<String, String?>): Res
             }
         setLength(length - 1)
     }
-    val connection = openHttpConnection(url)
+    val connection = openHttpConnection(urlWithParameters)
     return runCatching {
         connection.inputStream
             .use { Result.success(it.readBytes()) }

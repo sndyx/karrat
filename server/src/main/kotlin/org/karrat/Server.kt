@@ -81,7 +81,7 @@ public object Server {
                 runCatching { session.handle() }
                     .onFailure {
                         info("$session disconnected; internal error: ${it.message}")
-                        session.disconnect("Internal error: ${it.message}")
+                        runCatching { session.disconnect("Internal error: ${it.message}") }
                         sessions.remove(session)
                     }
             }
