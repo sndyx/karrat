@@ -34,13 +34,10 @@ Parameters
 
 Can be cancelled
 - Cancelling involves annihilating the cookie from existence, and may
-destroy other nenarby things
+destroy other nearby things
 
 Notes: Cookies are tasty
 
 ```
-
-
-
 
 By Incompleteusern
