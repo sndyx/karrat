@@ -31,7 +31,7 @@ public open class StatusResponse(
     public companion object {
         
         public fun default(): StatusResponse = StatusResponse( // TODO: Change to actual values later
-            "Karrat 1.18.1",
+            Config.versionName,
             756,
             1,
             Server.players.size,

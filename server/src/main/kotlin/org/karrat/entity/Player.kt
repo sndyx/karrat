@@ -6,11 +6,13 @@ package org.karrat.entity
 
 import org.karrat.Server
 import org.karrat.World
+import org.karrat.network.Session
 import org.karrat.play.Location
 import org.karrat.struct.id
 import org.karrat.struct.Uuid
 
 public open class Player(
+    // public val session: Session, (after more impl)
     public val uuid: Uuid,
     public open var name : String,
     public var skin: String = "",
@@ -21,6 +23,11 @@ public open class Player(
     override var maxHealth: Double = 20.0
 
     public fun sendMessage(message: String) {
+    
+    }
+    
+    public fun disconnect(message: String) {
+        // session.disconnect(message)
     }
     
 }

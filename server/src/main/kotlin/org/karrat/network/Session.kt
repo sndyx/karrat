@@ -9,7 +9,6 @@ import org.karrat.Server
 import org.karrat.entity.Player
 import org.karrat.event.PacketEvent
 import org.karrat.event.dispatchEvent
-import org.karrat.internal.NioByteBuffer
 import org.karrat.network.handler.NetHandlerHandshake
 import org.karrat.network.translation.*
 import org.karrat.packet.ClientboundPacket
@@ -18,7 +17,6 @@ import org.karrat.packet.play.DisconnectPacket
 import org.karrat.play.ChatComponent
 import org.karrat.struct.*
 import java.net.SocketAddress
-import java.nio.channels.SocketChannel
 import javax.crypto.Cipher
 
 public class Session(public val socket: SocketChannel) {
@@ -52,7 +50,7 @@ public class Session(public val socket: SocketChannel) {
                 + varSizeOf(buffer.size))
         prefixedBuffer.writePrefixed(buffer.array())
         if (isEncryptionEnabled) cipher(prefixedBuffer) // Encrypt
-        send(prefixedBuffer)
+        socket.write(prefixedBuffer)
     }
     
     public fun disconnect(reason: String) {
@@ -61,9 +59,7 @@ public class Session(public val socket: SocketChannel) {
     }
     
     public fun handle() { // Bytes -> Decrypt -> Splitter -> Decompress -> Decoder -> Packet
-        val nioBuffer = NioByteBuffer.allocate(1028)
-        socket.read(nioBuffer)
-        val buffer = nioBuffer.array().copyOf(1028 - nioBuffer.remaining()).toByteBuffer()
+        val buffer = socket.read()
         if (buffer.size != 0) {
             if (isEncryptionEnabled) decipher(buffer)
             if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) { // Check for legacy packet
@@ -92,12 +88,6 @@ public class Session(public val socket: SocketChannel) {
     public fun enableCompression() {
         isCompressionEnabled = true
         send(SetCompressionPacket(Config.compressionThreshold))
-    }
-
-    internal fun send(buffer: ByteBuffer) {
-        val nioBuffer = NioByteBuffer.allocate(buffer.size).also { it.put(buffer.array()) }
-        nioBuffer.flip()
-        socket.write(nioBuffer)
     }
     
     override fun toString(): String =

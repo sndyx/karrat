@@ -25,6 +25,8 @@ public object Config {
     public var tps: Int = 20
 
     public var maxPlayers: Int = 100
+    public var versionName: String = "1.18.1"
     public var motd: String = "Hello Kevster109"
-    public var legacymotd: String = "Legacy Clients suck!!! Switch to a newer version y ou loser"
+    public var legacyMotd: String = "Legacy Clients suck!!! Switch to a newer version y ou loser"
+    
 }

@@ -4,6 +4,8 @@
 
 package org.karrat.internal
 
+import org.karrat.struct.ByteBuffer
+import org.karrat.struct.array
 import java.net.HttpURLConnection
 import java.net.URL
 

@@ -11,8 +11,6 @@ import org.karrat.entity.Player
  */
 public class PlayerLoginEvent(public val player: Player) : CancellableEvent() {
 
-    public val kickReason: String = "You have been disconnected."
-
     override fun toString(): String =
         "PlayerLoginEvent(player=$player)"
     
