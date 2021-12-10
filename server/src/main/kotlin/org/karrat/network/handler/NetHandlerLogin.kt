@@ -116,8 +116,9 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                 uuid = response.uuid
                 state = LoginState.ReadyToAccept
 
+                //TODO make a json so server can auto write to it and /ban can be implemented
                 if (uuid in Config.bannedPlayers) {
-                    val event = BannedPlayerLoginEvent(uuid)
+                    val event = BannedPlayerLoginEvent(uuid, username)
                     if (Server.dispatchEvent(event)) {
                         session.disconnect(event.message)
                         return@thread

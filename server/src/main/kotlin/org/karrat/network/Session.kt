@@ -19,7 +19,7 @@ import org.karrat.struct.*
 import java.net.SocketAddress
 import javax.crypto.Cipher
 
-public class Session(public val socket: SocketChannel) {
+public class Session(public val socket: SocketWrapper) {
     
     public val address: SocketAddress = socket.remoteAddress
     
