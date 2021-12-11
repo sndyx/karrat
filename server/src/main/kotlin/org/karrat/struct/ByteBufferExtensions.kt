@@ -141,6 +141,13 @@ public fun ByteBuffer.readString(): String {
 }
 
 /**
+ * Reads an [Identifier] to the buffer.
+ */
+public fun ByteBuffer.readIdentifier(): Identifier {
+    return Identifier(readString())
+}
+
+/**
  * Reads a [Uuid] from the buffer.
  */
 public fun ByteBuffer.readUuid(): Uuid = Uuid(readLong(), readLong())
