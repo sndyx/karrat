@@ -10,8 +10,8 @@ import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.Player
 import org.karrat.event.dispatchEvent
-import org.karrat.event.instances.BannedPlayerLoginEvent
-import org.karrat.event.instances.PlayerLoginEvent
+import org.karrat.event.BannedPlayerLoginEvent
+import org.karrat.event.PlayerLoginEvent
 import org.karrat.internal.request
 import org.karrat.network.NetHandler
 import org.karrat.network.Session

@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 import org.karrat.entity.Player
 import org.karrat.network.Session
 import org.karrat.network.SessionState
-import org.karrat.network.SocketWrapper
+import org.karrat.network.SocketChannel
 import org.karrat.network.state
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.server.info
@@ -51,7 +51,7 @@ public object Server {
         info("Bound to ip ${socket.localAddress} on port $port.")
         thread(name = "socket") {
             while (true) {
-                val session = Session(SocketWrapper(socket.accept()))
+                val session = Session(SocketChannel(socket.accept()))
                 sessions.add(session)
                 info("Accepted $session.")
             }

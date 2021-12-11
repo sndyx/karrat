@@ -5,7 +5,7 @@
 package org.karrat.network.handler
 
 import org.karrat.Server
-import org.karrat.event.instances.StatusResponseEvent
+import org.karrat.event.StatusResponseEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.network.NetHandler
 import org.karrat.network.Session

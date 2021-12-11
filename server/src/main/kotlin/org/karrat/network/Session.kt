@@ -8,7 +8,7 @@ import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.Player
 import org.karrat.event.dispatchEvent
-import org.karrat.event.instances.PacketEvent
+import org.karrat.event.PacketEvent
 import org.karrat.network.handler.NetHandlerHandshake
 import org.karrat.network.translation.cipher
 import org.karrat.network.translation.compress
@@ -22,7 +22,7 @@ import org.karrat.struct.*
 import java.net.SocketAddress
 import javax.crypto.Cipher
 
-public class Session(public val socket: SocketWrapper) {
+public class Session(public val socket: SocketChannel) {
 
     public val address: SocketAddress = socket.remoteAddress
 

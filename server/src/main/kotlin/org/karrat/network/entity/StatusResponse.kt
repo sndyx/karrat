@@ -13,6 +13,11 @@ import org.karrat.play.ChatComponent
 import org.karrat.struct.Uuid
 import java.util.*
 
+/**
+ * Represents the data sent to display a server banner on a client's server list
+ * gui. Includes information such as the server [version], [image], and
+ * [description].
+ */
 public open class StatusResponse(
     public var version: String,
     public var protocol: Int,
