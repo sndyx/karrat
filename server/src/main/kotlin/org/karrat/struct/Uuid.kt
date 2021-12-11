@@ -102,9 +102,12 @@ public class Uuid {
                 digits(leastSignificantBits, 12)
     }
 
+    /**
+     * Gets the first [digits] bytes of [value] as a string padded to length twice [digits]
+     */
     private fun digits(value: Long, digits: Int): String {
-        val mask = 1L shl digits * 4 - 1
-        return (value and mask).toString(16)//.substring(1)
+        val mask = (1L shl (digits * 4)) - 1
+        return (value and mask).toString(16).padStart(digits, '0')
     }
 
     @OptIn(ExperimentalSerializationApi::class)
