@@ -183,17 +183,6 @@ public fun MutableByteBuffer.writeBytes(value: ByteArray) {
     value.forEach { write(it) }
 }
 
-public fun grow(array: ByteArray, length: Int, preserve: Int): ByteArray {
-    if (length > array.size) {
-        val newLength = (array.size * 2).coerceIn(length, Integer.MAX_VALUE - 8)
-        val t = ByteArray(newLength)
-        array.copyInto(t)
-        System.arraycopy(array, 0, t, 0, preserve)
-        return t
-    }
-    return array
-}
-
 public class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl(values), MutableByteBuffer {
 
     override var pointer: Int = -1
