@@ -77,7 +77,21 @@ internal open class ByteBufferImpl(override var bytes: ByteArray) : ByteBuffer {
 
     override fun iterator(): ByteIterator =
         bytes.iterator()
-
+    
+    override fun equals(other: Any?): Boolean {
+        if (other !is ByteBuffer) return false
+        var i = other.size
+        if (size != i) return false
+        while(i-- != 0) if ((bytes[i]) != (other.bytes[i])) return false
+        return true
+    }
+    
+    override fun hashCode(): Int {
+        var result = bytes.contentHashCode()
+        result = 31 * result + pos
+        return result
+    }
+    
 }
 
 public fun ByteBuffer.readBytes(amount: Int = remaining): ByteArray {
@@ -169,17 +183,28 @@ public fun MutableByteBuffer.writeBytes(value: ByteArray) {
     value.forEach { write(it) }
 }
 
+public fun grow(array: ByteArray, length: Int, preserve: Int): ByteArray {
+    if (length > array.size) {
+        val newLength = (array.size * 2).coerceIn(length, Integer.MAX_VALUE - 8)
+        val t = ByteArray(newLength)
+        array.copyInto(t)
+        System.arraycopy(array, 0, t, 0, preserve)
+        return t
+    }
+    return array
+}
+
 public class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl(values), MutableByteBuffer {
 
     override var pointer: Int = -1
     override val size: Int get() = pointer + 1
 
-    public constructor() : this(ByteArray(0))
+    public constructor() : this(ByteArray(16))
 
     override fun write(value: Byte) {
         pointer++
         if (bytes.size == pointer) {
-            bytes = bytes.copyOf(bytes.size + (bytes.size shl 1))
+            bytes = bytes.copyOf((bytes.size * 2).coerceIn(bytes.size + 1, Integer.MAX_VALUE - 8))
         }
         bytes[pointer] = value
     }
@@ -204,8 +229,8 @@ public class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl
     override fun writeDouble(value: Double): Unit = writeLong(value.toBits())
 
     init {
-        if (values.isEmpty()) bytes = ByteArray(1)
-        else writeBytes(values)
+        bytes = ByteArray(16)
+        writeBytes(values)
     }
 
 }
