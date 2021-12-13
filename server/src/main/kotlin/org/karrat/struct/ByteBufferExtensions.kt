@@ -10,11 +10,19 @@ import kotlinx.serialization.json.Json
 import org.karrat.play.ChatComponent
 
 /**
- * Writes a [ByteArray] from the buffer, prefixed with its length.
+ * Writes a prefixed [ByteArray] from the buffer, prefixed with its length.
  */
 public fun MutableByteBuffer.writePrefixed(value: ByteArray) {
     writeVarInt(value.size)
     writeBytes(value)
+}
+
+/**
+ * Reads a prefixed [ByteArray] from the buffer.
+ */
+public fun ByteBuffer.readPrefixed(): ByteArray {
+    val length = readVarInt()
+    return readBytes(length)
 }
 
 /**
@@ -28,76 +36,6 @@ public fun MutableByteBuffer.writeVarInt(value: Int) {
         if (i != 0) currentByte = currentByte or 128
         write(currentByte.toByte())
     } while (i != 0)
-}
-
-/**
- * Writes a variable-length Long to the buffer.
- */
-public fun MutableByteBuffer.writeVarLong(value: Long) {
-    var i = value
-    do {
-        var currentByte = i and 127
-        i = i ushr 7
-        if (i != 0L) currentByte = currentByte or 128
-        write(currentByte.toByte())
-    } while (i != 0L)
-}
-
-/**
- * Writes an [Identifier] to the buffer.
- */
-public fun MutableByteBuffer.writeIdentifier(value: Identifier) {
-    writeString(value.toString())
-}
-
-public fun varSizeOf(value: Int): Int {
-    if (value < 0) return 5
-    if (value < 0x80) return 1
-    if (value < 0x4000) return 2
-    if (value < 0x200000) return 3
-    return if (value < 0x10000000) 4 else 5
-}
-
-public fun varSizeOf(value: Long): Int {
-    if (value < 0L) return 10
-    if (value < 0x80L) return 1
-    if (value < 0x4000L) return 2
-    if (value < 0x200000L) return 3
-    if (value < 0x10000000L) return 4
-    if (value < 0x800000000L) return 5
-    if (value < 0x40000000000L) return 6
-    if (value < 0x2000000000000L) return 7
-    return if (value < 0x100000000000000L) 8 else 9
-}
-
-/**
- * Writes a String to the buffer, prefixed with its length.
- */
-public fun MutableByteBuffer.writeString(value: String) {
-    val bytes = value.encodeToByteArray()
-    writeVarInt(bytes.size)
-    writeBytes(bytes)
-}
-
-/**
- * Writes a [Uuid] to the buffer.
- */
-public fun MutableByteBuffer.writeUuid(value: Uuid) {
-    writeLong(value.mostSignificantBits)
-    writeLong(value.leastSignificantBits)
-}
-
-/**
- * Writes a [ChatComponent] to the buffer.
- */
-public fun MutableByteBuffer.writeChatComponent(value: ChatComponent): Unit = writeString(Json.encodeToString(value))
-
-/**
- * Reads a [ByteArray] with its size prefixed as a variable-length Int from the buffer.
- */
-public fun ByteBuffer.readPrefixed(): ByteArray {
-    val length = readVarInt()
-    return readBytes(length)
 }
 
 /**
@@ -117,6 +55,19 @@ public fun ByteBuffer.readVarInt(): Int {
 }
 
 /**
+ * Writes a variable-length Long to the buffer.
+ */
+public fun MutableByteBuffer.writeVarLong(value: Long) {
+    var i = value
+    do {
+        var currentByte = i and 127
+        i = i ushr 7
+        if (i != 0L) currentByte = currentByte or 128
+        write(currentByte.toByte())
+    } while (i != 0L)
+}
+
+/**
  * Reads a variable-length Long from the buffer.
  */
 public fun ByteBuffer.readVarLong(): Long {
@@ -133,6 +84,26 @@ public fun ByteBuffer.readVarLong(): Long {
 }
 
 /**
+ * Reads/Writes an [Identifier] to the buffer.
+ */
+public fun MutableByteBuffer.writeIdentifier(value: Identifier) {
+    writeString(value.toString())
+}
+
+public fun ByteBuffer.readIdentifier(): Identifier {
+    return Identifier(readString())
+}
+
+/**
+ * Writes a String to the buffer, prefixed with its length.
+ */
+public fun MutableByteBuffer.writeString(value: String) {
+    val bytes = value.encodeToByteArray()
+    writeVarInt(bytes.size)
+    writeBytes(bytes)
+}
+
+/**
  * Reads a String from the buffer.
  */
 public fun ByteBuffer.readString(): String {
@@ -141,10 +112,11 @@ public fun ByteBuffer.readString(): String {
 }
 
 /**
- * Reads an [Identifier] to the buffer.
+ * Writes a [Uuid] to the buffer.
  */
-public fun ByteBuffer.readIdentifier(): Identifier {
-    return Identifier(readString())
+public fun MutableByteBuffer.writeUuid(value: Uuid) {
+    writeLong(value.mostSignificantBits)
+    writeLong(value.leastSignificantBits)
 }
 
 /**
@@ -153,22 +125,74 @@ public fun ByteBuffer.readIdentifier(): Identifier {
 public fun ByteBuffer.readUuid(): Uuid = Uuid(readLong(), readLong())
 
 /**
+ * Writes a [ChatComponent] to the buffer.
+ */
+public fun MutableByteBuffer.writeChatComponent(value: ChatComponent): Unit = writeString(Json.encodeToString(value))
+
+/**
  * Reads a [ChatComponent] from the buffer.
  */
 public fun ByteBuffer.readChatComponent(): ChatComponent = Json.decodeFromString(readString())
 
+/**
+ * Writes a [UByte] from the buffer.
+ */
 public fun MutableByteBuffer.writeUByte(value: UByte): Unit = write(value.toByte())
 
-public fun MutableByteBuffer.writeUShort(value: UShort): Unit = writeShort(value.toShort())
-
-public fun MutableByteBuffer.writeUInt(value: UInt): Unit = writeInt(value.toInt())
-
-public fun MutableByteBuffer.writeULong(value: ULong): Unit = writeLong(value.toLong())
-
+/**
+  Reads a [UByte] from the buffer.
+ */
 public fun ByteBuffer.readUByte(): UByte = read().toUByte()
 
+/**
+ * Writes a [UShort] from the buffer.
+ */
+public fun MutableByteBuffer.writeUShort(value: UShort): Unit = writeShort(value.toShort())
+
+/**
+  Reads a [UShort] from the buffer.
+ */
 public fun ByteBuffer.readUShort(): UShort = readShort().toUShort()
 
+/**
+ * Writes a [UInt] from the buffer.
+ */
+public fun MutableByteBuffer.writeUInt(value: UInt): Unit = writeInt(value.toInt())
+
+/**
+  Reads a [UInt] from the buffer.
+ */
 public fun ByteBuffer.readUInt(): UInt = readInt().toUInt()
 
+/**
+ * Writes a [ULong] from the buffer.
+ */
+public fun MutableByteBuffer.writeULong(value: ULong): Unit = writeLong(value.toLong())
+
+/**
+  Reads a [ULong] from the buffer.
+ */
 public fun ByteBuffer.readULong(): ULong = readLong().toULong()
+
+/**
+ * Gets the varSize of a number when encoded as a varInt
+ */
+public fun varSizeOf(value: Int): Int {
+    if (value < 0) return 5
+    if (value < 0x80) return 1
+    if (value < 0x4000) return 2
+    if (value < 0x200000) return 3
+    return if (value < 0x10000000) 4 else 5
+}
+
+public fun varSizeOf(value: Long): Int {
+    if (value < 0L) return 10
+    if (value < 0x80L) return 1
+    if (value < 0x4000L) return 2
+    if (value < 0x200000L) return 3
+    if (value < 0x10000000L) return 4
+    if (value < 0x800000000L) return 5
+    if (value < 0x40000000000L) return 6
+    if (value < 0x2000000000000L) return 7
+    return if (value < 0x100000000000000L) 8 else 9
+}

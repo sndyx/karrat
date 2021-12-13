@@ -80,10 +80,9 @@ internal open class ByteBufferImpl(override var bytes: ByteArray) : ByteBuffer {
     
     override fun equals(other: Any?): Boolean {
         if (other !is ByteBuffer) return false
-        var i = other.size
-        if (size != i) return false
-        while(i-- != 0) if ((bytes[i]) != (other.bytes[i])) return false
-        return true
+        if (pos != other.pos) return false
+        if (size != other.size) return false
+        return bytes.contentEquals(other.bytes)
     }
     
     override fun hashCode(): Int {

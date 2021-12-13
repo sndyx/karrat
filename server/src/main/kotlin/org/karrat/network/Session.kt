@@ -24,13 +24,15 @@ import javax.crypto.Cipher
 
 public class Session(public val socket: SocketChannel) {
 
-    public val address: SocketAddress = socket.remoteAddress
+    public val address: SocketAddress
+        get() = socket.remoteAddress
 
     /**
      * Player linked to this session instance, if in state Play.
      */
-    public var player: Player? = null
-    public val isAlive: Boolean get() = socket.isOpen
+    public lateinit var player: Player
+    public val isAlive: Boolean
+        get() = socket.isOpen
 
     public var netHandler: NetHandler = NetHandlerHandshake(this)
 
