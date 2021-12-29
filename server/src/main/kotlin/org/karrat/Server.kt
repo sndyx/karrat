@@ -29,11 +29,9 @@ public object Server {
     public val players: Set<Player>
         get() {
             val result: MutableSet<Player> = mutableSetOf()
-
             worlds.forEach {
                 result.addAll(it.players)
             }
-
             return result
         }
 

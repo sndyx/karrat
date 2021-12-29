@@ -4,13 +4,14 @@
 
 package org.karrat.server
 
+import org.karrat.Config
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.min
 
-private const val reset = "\u001B[0m"
-private const val red = "\u001b[38;5;9m"
-private const val yellow = "\u001b[38;5;178m"
+private val reset: String by lazy { if (Config.colorOutput) "\u001b[0m" else "" }
+private val red: String by lazy { if (Config.colorOutput) "\u001b[38;5;9m" else "" }
+private val yellow: String by lazy { if (Config.colorOutput) "\u001b[38;5;178m" else "" }
 
 private val time: String
     get() {

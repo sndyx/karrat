@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 internal class ByteBufferKtTest {
-
+    
     @Test
     fun readingAndWriting() {
         val buffer = DynamicByteBuffer()
@@ -52,4 +52,5 @@ internal class ByteBufferKtTest {
         assertArrayEquals(buffer.readBytes(5), byteArrayOf(32, 10, 40, 32, 18))
         assertArrayEquals(buffer.readPrefixed(), byteArrayOf(32, 10, 40, 32, 18))
     }
+    
 }
