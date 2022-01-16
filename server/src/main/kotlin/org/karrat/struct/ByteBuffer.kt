@@ -77,20 +77,20 @@ internal open class ByteBufferImpl(override var bytes: ByteArray) : ByteBuffer {
 
     override fun iterator(): ByteIterator =
         bytes.iterator()
-    
+
     override fun equals(other: Any?): Boolean {
         if (other !is ByteBuffer) return false
         if (pos != other.pos) return false
         if (size != other.size) return false
         return bytes.contentEquals(other.bytes)
     }
-    
+
     override fun hashCode(): Int {
         var result = bytes.contentHashCode()
         result = 31 * result + pos
         return result
     }
-    
+
 }
 
 public fun ByteBuffer.readBytes(amount: Int = remaining): ByteArray {

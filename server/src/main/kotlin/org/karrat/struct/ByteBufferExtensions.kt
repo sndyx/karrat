@@ -7,7 +7,6 @@ package org.karrat.struct
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.karrat.play.ChatComponent
 
 /**
  * Writes a prefixed [ByteArray] from the buffer, prefixed with its length.
@@ -140,7 +139,7 @@ public fun ByteBuffer.readChatComponent(): ChatComponent = Json.decodeFromString
 public fun MutableByteBuffer.writeUByte(value: UByte): Unit = write(value.toByte())
 
 /**
-  Reads a [UByte] from the buffer.
+Reads a [UByte] from the buffer.
  */
 public fun ByteBuffer.readUByte(): UByte = read().toUByte()
 
@@ -150,7 +149,7 @@ public fun ByteBuffer.readUByte(): UByte = read().toUByte()
 public fun MutableByteBuffer.writeUShort(value: UShort): Unit = writeShort(value.toShort())
 
 /**
-  Reads a [UShort] from the buffer.
+Reads a [UShort] from the buffer.
  */
 public fun ByteBuffer.readUShort(): UShort = readShort().toUShort()
 
@@ -160,7 +159,7 @@ public fun ByteBuffer.readUShort(): UShort = readShort().toUShort()
 public fun MutableByteBuffer.writeUInt(value: UInt): Unit = writeInt(value.toInt())
 
 /**
-  Reads a [UInt] from the buffer.
+Reads a [UInt] from the buffer.
  */
 public fun ByteBuffer.readUInt(): UInt = readInt().toUInt()
 
@@ -170,7 +169,7 @@ public fun ByteBuffer.readUInt(): UInt = readInt().toUInt()
 public fun MutableByteBuffer.writeULong(value: ULong): Unit = writeLong(value.toLong())
 
 /**
-  Reads a [ULong] from the buffer.
+Reads a [ULong] from the buffer.
  */
 public fun ByteBuffer.readULong(): ULong = readLong().toULong()
 

@@ -66,6 +66,4 @@ public class CommandArgument(
     type: KClass<*>,
     label: String,
     completions: List<String>
-) : Command("\$literal") {
-
-}
+) : Command("\$literal")

@@ -9,9 +9,9 @@ import kotlinx.serialization.json.Json
 import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.Player
-import org.karrat.event.dispatchEvent
 import org.karrat.event.BannedPlayerLoginEvent
 import org.karrat.event.PlayerLoginEvent
+import org.karrat.event.dispatchEvent
 import org.karrat.internal.request
 import org.karrat.network.NetHandler
 import org.karrat.network.Session
@@ -136,9 +136,9 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
 
                 session.player = Player(uuid, username, location = Config.spawnLocation)
                 response.properties.firstOrNull { it.name == "textures" }
-                    ?.let { session.player!!.skin = it.value }
+                    ?.let { session.player.skin = it.value }
 
-                if (Server.dispatchEvent(PlayerLoginEvent(session.player!!))) {
+                if (Server.dispatchEvent(PlayerLoginEvent(session.player))) {
                     session.disconnect("Unable to join server.")
                     return@thread
                 }

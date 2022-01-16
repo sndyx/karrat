@@ -4,8 +4,4 @@
 
 package org.karrat.world
 
-public class Chunk {
-
-
-
-}
+public class Chunk

@@ -26,7 +26,7 @@ public class JoinGamePacket(
     public val viewDistance: Int,
     public val reducedDebugInfo: Boolean,
 ) : ClientboundPacket {
-    override val id: Int = 0x26;
+    override val id: Int = 0x26
 
     override fun write(data: DynamicByteBuffer) {
         data.writeVarInt(entityId)

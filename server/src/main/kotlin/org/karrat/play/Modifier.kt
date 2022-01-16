@@ -4,5 +4,4 @@
 
 package org.karrat.play
 
-public interface Modifier {
-}
+public interface Modifier

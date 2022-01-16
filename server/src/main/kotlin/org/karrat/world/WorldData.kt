@@ -4,6 +4,4 @@
 
 package org.karrat.world
 
-public class WorldData {
-
-}
+public class WorldData

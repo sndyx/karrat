@@ -16,7 +16,7 @@ public object Config {
     public var spawnLocation: Location = Location(World(id("minecraft:Main_World")), 0.0, 0.0, 0.0)
     public var bannedPlayers: MutableList<Uuid> = mutableListOf(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"))
     public var tps: Int = 20
-    
+
     public var maxPlayers: Int = 100
     public var versionName: String = "1.18.1"
     public var motd: String = "Hello Kevster109"
@@ -24,5 +24,5 @@ public object Config {
 
     public var colorOutput: Boolean = false
     public var port: Int = 25565
-    
+
 }

@@ -12,8 +12,8 @@ internal fun main(args: Array<String>) {
     while (i < args.size) {
         when (args[i]) {
             "--color-output", "-c" -> argumentColorOutput()
-            "--help",         "-h" -> argumentHelp()
-            "--port",         "-p" -> argumentPort(args)
+            "--help", "-h" -> argumentHelp()
+            "--port", "-p" -> argumentPort(args)
             else -> printHelp()
         }
     }
@@ -21,12 +21,14 @@ internal fun main(args: Array<String>) {
 }
 
 private fun printHelp() {
-    println("""
+    println(
+        """
         Usage: karrat [options...]
          -c, --color-output    Color codes logging messages
          -h, --help            This help text
          -p, --port            Sets the port to listen on
-    """.trimIndent())
+    """.trimIndent()
+    )
 }
 
 private fun argumentColorOutput() {

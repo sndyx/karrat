@@ -41,7 +41,7 @@ public sealed class ChatComponent {
 public class ChatComponentBase : ChatComponent() {
     public val extra: MutableList<ChatComponent> = mutableListOf()
 
-    public fun append(component: ChatComponent) : ChatComponentBase {
+    public fun append(component: ChatComponent): ChatComponentBase {
         extra.add(component)
         return this
     }
@@ -94,14 +94,14 @@ public class ScoreComponent : ChatComponent {
     public constructor (
         name: String,
         objective: String,
-        ) : super() {
+    ) : super() {
         this.name = name
         this.objective = objective
     }
 
     public fun value(value: String): ScoreComponent {
         this.value = value
-        return this;
+        return this
     }
 
 }
@@ -145,11 +145,16 @@ public class ClickEvent(public val action: ClickAction, public val value: String
 
 @Serializable
 public enum class ClickAction {
-    @SerialName("open_url") OpenURL,
-    @SerialName("run_command") RunCommand,
-    @SerialName("suggest_command") SuggestCommand,
-    @SerialName("change_page") ChangePage,
-    @SerialName("copy_to_clipboard") CopyToClipboard
+    @SerialName("open_url")
+    OpenURL,
+    @SerialName("run_command")
+    RunCommand,
+    @SerialName("suggest_command")
+    SuggestCommand,
+    @SerialName("change_page")
+    ChangePage,
+    @SerialName("copy_to_clipboard")
+    CopyToClipboard
 }
 
 @Serializable
@@ -159,8 +164,10 @@ public class HoverEvent(public val action: HoverAction, public val value: String
 public enum class HoverAction {
     @SerialName("show_text")
     DisplayText,
+
     @SerialName("show_item")
     DisplayItem,
+
     @SerialName("show_entity")
     DisplayEntity
 }
@@ -178,27 +185,27 @@ public class Style {
     public var obfuscated: Boolean? = null
     public var color: String? = null
 
-    public fun bold(bold: Boolean) : Style {
+    public fun bold(bold: Boolean): Style {
         this.bold = bold
         return this
     }
 
-    public fun italic(italic: Boolean) : Style {
+    public fun italic(italic: Boolean): Style {
         this.italic = italic
         return this
     }
 
-    public fun underlined(underlined: Boolean) : Style {
+    public fun underlined(underlined: Boolean): Style {
         this.underlined = underlined
         return this
     }
 
-    public fun strikethrough(strikethrough: Boolean) : Style {
+    public fun strikethrough(strikethrough: Boolean): Style {
         this.strikethrough = strikethrough
         return this
     }
 
-    public fun obfuscated(obfuscated: Boolean) : Style {
+    public fun obfuscated(obfuscated: Boolean): Style {
         this.obfuscated = obfuscated
         return this
     }
