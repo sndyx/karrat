@@ -189,6 +189,10 @@ public class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl
 
     public constructor() : this(ByteArray(16))
 
+    override fun toString(): String = "ByteBuffer(bytes=[" +
+            bytes.copyOf(size)
+                .joinToString(", ") { "%02x".format(it) } + "])"
+
     override fun write(value: Byte) {
         pointer++
         if (bytes.size == pointer) {
@@ -217,8 +221,7 @@ public class DynamicByteBuffer(values: ByteArray) : ByteBuffer by ByteBufferImpl
     override fun writeDouble(value: Double): Unit = writeLong(value.toBits())
 
     init {
-        bytes = ByteArray(16)
-        writeBytes(values)
+        bytes = values
     }
 
 }

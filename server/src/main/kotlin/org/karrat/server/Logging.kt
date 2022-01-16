@@ -52,5 +52,5 @@ public fun fatal(message: Any): Nothing {
     }
     println()
     print(reset)
-    throw RuntimeException()
+    throw RuntimeException(message.toString())
 }

@@ -4,6 +4,7 @@
 
 package org.karrat.serialization.nbt
 
+import org.karrat.server.fatal
 import org.karrat.struct.*
 
 /**
@@ -51,21 +52,23 @@ internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
                 writeBytes(bytes)
             }
             is List<*> -> {
-                value.firstOrNull()?.let { first ->
-                    val type = typeOf(first)
-                    write(type)
+                val filteredVal = value.filterNotNull()
 
-                    val list = listOfNotNull(value)
+                if (filteredVal.isNotEmpty()) {
+                    filteredVal.first().let { first ->
+                        val type = typeOf(first)
+                        write(type)
+                    }
 
-                    writeInt(list.size)
-                    list.forEach {
+                    writeInt(filteredVal.size)
+                    filteredVal.forEach {
                         writeNbt(buffer, it)
                     }
                 }
             }
             is NbtCompound -> {
                 value.entries.forEach {
-                    write(typeOf(value))
+                    write(typeOf(it.value))
                     writeNbt(buffer, it.key)
                     writeNbt(buffer, it.value)
                 }
@@ -91,8 +94,8 @@ internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
 /**
  * Reads a nameless Nbt Compound value
  */
-internal fun readNbtValue(buffer: ByteBuffer): Any {
-    return readNbt(buffer, buffer.read().toInt())
+internal fun readNbtCompound(buffer: ByteBuffer): Any {
+    return readNbt(buffer, 10)
 }
 
 internal fun readNbt(buffer: ByteBuffer, type: Int = -1): Any {

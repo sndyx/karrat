@@ -29,6 +29,7 @@ public class NbtCompound : LinkedHashMap<String, Any>() {
                     || value is Long
                     || value is Float
                     || value is Double
+                    || value is String
                     || value is ByteArray
                     || value is NbtCompound
                     || value is IntArray
@@ -38,12 +39,12 @@ public class NbtCompound : LinkedHashMap<String, Any>() {
 
     override fun toString(): String {
         val builder = StringBuilder("NbtCompound(")
-        entries.forEach {
+        entries.forEachIndexed {index, it ->
             builder.append(it.key).append('=')
             builder.append(it.value.toString())
             builder.append(", ")
         }
-        builder.setLength(builder.length - 2)
+        if (entries.isNotEmpty()) builder.setLength(builder.length - 2)
         builder.append(')')
         return builder.toString()
     }

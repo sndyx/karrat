@@ -64,7 +64,7 @@ public object Nbt {
      */
     public fun decodeFromBytes(value: ByteArray): NbtCompound {
         val buffer = ByteBuffer(value)
-        return readNbtValue(buffer) as NbtCompound
+        return readNbtCompound(buffer) as NbtCompound
     }
 
 }
