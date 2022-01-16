@@ -26,18 +26,12 @@ internal fun request(url: String, vararg parameters: Pair<String, String?>): Res
         connection.inputStream
             .use { Result.success(it.readBytes()) }
     }.getOrElse {
-        Result.failure(Exception())
+        Result.failure(it)
     }
 }
 
 internal fun request(url: String): Result<ByteArray> {
-    val connection = openHttpConnection(url)
-    return runCatching {
-        connection.inputStream
-            .use { Result.success(it.readBytes()) }
-    }.getOrElse {
-        Result.failure(Exception())
-    }
+    return request(url, parameters = emptyArray())
 }
 
 private fun openHttpConnection(url: String): HttpURLConnection {
