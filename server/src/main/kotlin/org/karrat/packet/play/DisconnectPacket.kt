@@ -5,7 +5,7 @@
 package org.karrat.packet.play
 
 import org.karrat.packet.ClientboundPacket
-import org.karrat.play.ChatComponent
+import org.karrat.struct.ChatComponent
 import org.karrat.struct.DynamicByteBuffer
 import org.karrat.struct.writeChatComponent
 

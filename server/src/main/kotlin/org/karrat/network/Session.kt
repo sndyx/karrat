@@ -17,7 +17,6 @@ import org.karrat.network.translation.decompress
 import org.karrat.packet.ClientboundPacket
 import org.karrat.packet.login.SetCompressionPacket
 import org.karrat.packet.play.DisconnectPacket
-import org.karrat.play.ChatComponent
 import org.karrat.struct.*
 import java.net.SocketAddress
 import javax.crypto.Cipher
@@ -61,7 +60,7 @@ public class Session(public val socket: SocketChannel) {
     }
 
     public fun disconnect(reason: String) {
-        send(DisconnectPacket(ChatComponent(reason)))
+        send(DisconnectPacket(TextComponent(reason)))
         socket.close()
     }
 

@@ -5,7 +5,6 @@
 package org.karrat.event
 
 import org.karrat.entity.Player
-import org.karrat.event.CancellableEvent
 
 /**
  * A [CancellableEvent] that fires whenever a [player] joins the server.
