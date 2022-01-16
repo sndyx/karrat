@@ -39,7 +39,7 @@ public class NbtCompound : LinkedHashMap<String, Any>() {
 
     override fun toString(): String {
         val builder = StringBuilder("NbtCompound(")
-        entries.forEachIndexed {index, it ->
+        entries.forEach {
             builder.append(it.key).append('=')
             builder.append(it.value.toString())
             builder.append(", ")
