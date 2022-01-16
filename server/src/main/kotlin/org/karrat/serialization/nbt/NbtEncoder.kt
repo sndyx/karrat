@@ -158,7 +158,7 @@ private abstract class AbstractNbtEncoder(
 
     override fun encodeInline(inlineDescriptor: SerialDescriptor): Encoder = this.apply { push(pop()) }
     override fun encodeInlineElement(descriptor: SerialDescriptor, index: Int): Encoder = this.apply {
-        encodeElement(descriptor.getElementName(index), index)
+        push(descriptor.getElementName(index))
     }
 
     private val tags = mutableListOf<String>()

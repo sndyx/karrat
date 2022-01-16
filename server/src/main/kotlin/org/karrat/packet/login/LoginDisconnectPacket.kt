@@ -5,12 +5,12 @@
 package org.karrat.packet.login
 
 import org.karrat.packet.ClientboundPacket
-import org.karrat.play.ChatComponent
 import org.karrat.struct.DynamicByteBuffer
+import org.karrat.struct.TextComponent
 import org.karrat.struct.writeChatComponent
 
 public class LoginDisconnectPacket(
-    private val reason: ChatComponent,
+    private val reason: TextComponent,
 ) : ClientboundPacket {
 
     override val id: Int = 0x00

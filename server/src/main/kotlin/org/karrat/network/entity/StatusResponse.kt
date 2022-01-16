@@ -9,7 +9,8 @@ import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.FakePlayer
 import org.karrat.entity.Player
-import org.karrat.play.ChatComponent
+import org.karrat.struct.ChatComponent
+import org.karrat.struct.TextComponent
 import org.karrat.struct.Uuid
 import java.util.*
 
@@ -24,7 +25,7 @@ public open class StatusResponse(
     public var maxPlayers: Int,
     public var onlinePlayers: Int,
     public var samplePlayers: List<Player>,
-    public var description: ChatComponent, // Edit later, accepts more primitive type of ChatComponent
+    public var description: TextComponent, // Edit later, accepts more primitive type of ChatComponent
     public var image: ByteArray? = null
 ) {
 
@@ -36,7 +37,7 @@ public open class StatusResponse(
             1,
             Server.players.size,
             listOf(FakePlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
-            ChatComponent(Config.motd),
+            TextComponent(Config.motd),
             StatusResponse::class.java.getResource("/icon.png")?.readBytes()
         )
 
