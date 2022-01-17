@@ -9,17 +9,11 @@ import kotlinx.serialization.Serializable
 
 //TODO custom optimized serialization
 @Serializable
-public sealed class ChatComponent {
-    public var style: Style? = null
+public sealed class ChatComponent: Style() {
     public var clickEvent: ClickEvent? = null
     public var hoverEvent: HoverEvent? = null
 
     public val attributes: TextAttributes = TextAttributes()
-
-    public fun style(style: Style): ChatComponent {
-        this.style = style
-        return this
-    }
 
     public fun clickEvent(clickEvent: ClickEvent): ChatComponent {
         this.clickEvent = clickEvent
@@ -35,13 +29,17 @@ public sealed class ChatComponent {
         modifier(attributes)
         return this
     }
+
+    public open fun append(component: ChatComponent): ChatComponent {
+        return ChatComponentBase().append(this).append(component)
+    }
 }
 
 @Serializable
 public class ChatComponentBase : ChatComponent() {
     public val extra: MutableList<ChatComponent> = mutableListOf()
 
-    public fun append(component: ChatComponent): ChatComponentBase {
+    override fun append(component: ChatComponent): ChatComponentBase {
         extra.add(component)
         return this
     }
@@ -172,8 +170,10 @@ public enum class HoverAction {
     DisplayEntity
 }
 
+//TODO color enforcement
+
 @Serializable
-public class Style {
+public open class Style {
     public companion object Empty {
         public val Empty: Style = Style()
     }
@@ -208,5 +208,14 @@ public class Style {
     public fun obfuscated(obfuscated: Boolean): Style {
         this.obfuscated = obfuscated
         return this
+    }
+
+    public fun copy(other: Style) {
+        this.bold = other.bold
+        this.italic = other.italic
+        this.underlined = other.underlined
+        this.strikethrough = other.strikethrough
+        this.obfuscated = other.obfuscated
+        this.color = other.color
     }
 }
