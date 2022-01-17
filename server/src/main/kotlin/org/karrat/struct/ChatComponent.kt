@@ -10,20 +10,7 @@ import kotlinx.serialization.Serializable
 //TODO custom optimized serialization
 @Serializable
 public sealed class ChatComponent: Style() {
-    public var clickEvent: ClickEvent? = null
-    public var hoverEvent: HoverEvent? = null
-
     public val attributes: TextAttributes = TextAttributes()
-
-    public fun clickEvent(clickEvent: ClickEvent): ChatComponent {
-        this.clickEvent = clickEvent
-        return this
-    }
-
-    public fun hoverEvent(hoverEvent: HoverEvent): ChatComponent {
-        this.hoverEvent = hoverEvent
-        return this
-    }
 
     public fun attributes(modifier: TextAttributes.() -> Unit): ChatComponent {
         modifier(attributes)
@@ -119,23 +106,11 @@ public class SelectorComponent : ChatComponent {
 @Serializable
 public class TextAttributes {
     public var insertion: String? = null
+        private set
     public var hoverEvent: HoverEvent? = null
+        private set
     public var clickEvent: ClickEvent? = null
-
-    public fun onShiftClick(insertion: String): TextAttributes {
-        this.insertion = insertion
-        return this
-    }
-
-    public fun onHover(hoverEvent: HoverEvent): TextAttributes {
-        this.hoverEvent = hoverEvent
-        return this
-    }
-
-    public fun onClick(clickEvent: ClickEvent): TextAttributes {
-        this.clickEvent = clickEvent
-        return this
-    }
+        private set
 }
 
 @Serializable
@@ -174,8 +149,8 @@ public enum class HoverAction {
 
 @Serializable
 public open class Style {
-    private companion object Empty {
-        val Empty: Style = Style()
+    public companion object Empty {
+        public val Empty: Style = Style()
     }
 
     public var bold: Boolean? = null
@@ -184,31 +159,6 @@ public open class Style {
     public var strikethrough: Boolean? = null
     public var obfuscated: Boolean? = null
     public var color: String? = null
-
-    public fun bold(bold: Boolean): Style {
-        this.bold = bold
-        return this
-    }
-
-    public fun italic(italic: Boolean): Style {
-        this.italic = italic
-        return this
-    }
-
-    public fun underlined(underlined: Boolean): Style {
-        this.underlined = underlined
-        return this
-    }
-
-    public fun strikethrough(strikethrough: Boolean): Style {
-        this.strikethrough = strikethrough
-        return this
-    }
-
-    public fun obfuscated(obfuscated: Boolean): Style {
-        this.obfuscated = obfuscated
-        return this
-    }
 
     public fun copy(other: Style) {
         this.bold = other.bold

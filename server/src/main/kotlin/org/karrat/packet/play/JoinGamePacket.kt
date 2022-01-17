@@ -6,11 +6,8 @@ package org.karrat.packet.play
 
 import org.karrat.World
 import org.karrat.packet.ClientboundPacket
-import org.karrat.play.GameMode
-import org.karrat.struct.DynamicByteBuffer
-import org.karrat.struct.NbtCompound
-import org.karrat.struct.writeIdentifier
-import org.karrat.struct.writeVarInt
+import org.karrat.world.dimensions.GameMode
+import org.karrat.struct.*
 
 public class JoinGamePacket(
     public val entityId: Int,
@@ -22,7 +19,7 @@ public class JoinGamePacket(
     public val dimension: NbtCompound,
     public val playerWorld: World,
     public val seed: Long,
-    public val maxPlayers: Int,
+    //public val maxPlayers: Int,
     public val viewDistance: Int,
     public val reducedDebugInfo: Boolean,
 ) : ClientboundPacket {
@@ -31,14 +28,17 @@ public class JoinGamePacket(
     override fun write(data: DynamicByteBuffer) {
         data.writeVarInt(entityId)
         data.writeBoolean(hardcore)
+        data.write(gamemode.toId()) //technically a ubyte
+        data.write(previousGamemode.toId())
         data.writeVarInt(worlds.size)
         worlds.forEach {
             data.writeIdentifier(it.identifier)
         }
+        //data.writeVarInt()
         TODO() //NBT
         data.writeIdentifier(playerWorld.identifier)
         data.writeLong(playerWorld.seed)
-        data.writeInt(maxPlayers) //Unused
+        data.writeInt(0) //Unused
         data.writeInt(viewDistance)
         data.writeBoolean(reducedDebugInfo)
         //data.writeBoolean(playerWorld.debug)
