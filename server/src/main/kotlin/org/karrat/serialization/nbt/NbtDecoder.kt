@@ -164,10 +164,10 @@ private class NbtDecoder(value: Any) : AbstractNbtDecoder(value) {
 private class NbtListDecoder(value: Any) : AbstractNbtDecoder(value) {
 
     private val size = (value as List<*>).size
-    private var currentIndex = -1
+    private var currentIndex = 0
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-        while (currentIndex < size - 1) {
+        if (currentIndex < size) {
             return currentIndex++
         }
         return CompositeDecoder.DECODE_DONE
