@@ -69,7 +69,7 @@ public class Session(public val socket: SocketChannel) {
         if (buffer.size != 0) {
             if (isEncryptionEnabled) decipher(buffer)
             if (buffer.read() == 0xfe.toByte() && buffer.read() == 0x01.toByte()) { // Check for legacy packet
-                handleLegacyPacket() // Get out of here, you fool!!!
+                handleLegacyPing() // Get out of here, you fool!!!
                 return
             }
             buffer.reset()

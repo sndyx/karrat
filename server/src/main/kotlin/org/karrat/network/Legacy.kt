@@ -12,8 +12,9 @@ import org.karrat.struct.writeBytes
 
 /**
  * Handles Legacy Clients by sending a kick packet, allowing customization of response
+ * Ironically Modern Clients can also send this packet as a backup for the normal ping failing
  */
-internal fun Session.handleLegacyPacket() {
+internal fun Session.handleLegacyPing() {
     val response = DynamicByteBuffer()
     response.write(0xff.toByte())
     val builder = ArrayList<String>()

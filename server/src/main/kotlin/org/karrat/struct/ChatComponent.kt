@@ -174,8 +174,8 @@ public enum class HoverAction {
 
 @Serializable
 public open class Style {
-    public companion object Empty {
-        public val Empty: Style = Style()
+    private companion object Empty {
+        val Empty: Style = Style()
     }
 
     public var bold: Boolean? = null
