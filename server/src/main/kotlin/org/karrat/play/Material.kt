@@ -19,6 +19,8 @@ public value class Material(public val identifier: Identifier) {
         public val AcaciaFence: Material = Material(id("acacia_fence"))
         public val AcaciaFenceGate: Material = Material(id("acacia_fence_gate"))
         public val AcaciaLeaves: Material = Material(id("acacia_leaves"))
+        
+        // TODO: Gruelingly type out every single material in the game
 
     }
 
