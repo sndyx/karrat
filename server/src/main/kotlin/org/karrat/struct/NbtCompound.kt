@@ -61,5 +61,10 @@ public fun nbtOf(pair: Pair<String, Any>): NbtCompound =
     NbtCompound().also { it[pair.first] = pair.second }
 
 @Suppress("Unchecked")
-public fun <T> NbtCompound.getValue(key: String): T =
-    get(key) as T
+public fun <T> NbtCompound.getValue(key: String): T = get(key) as T
+
+@Suppress("Unchecked")
+public fun <T> NbtCompound.getValueOrDefault(key: String, default: T): T =
+    get(key) as? T ?: default
+
+public fun NbtCompound.getCompound(key: String): NbtCompound = getValue(key)
