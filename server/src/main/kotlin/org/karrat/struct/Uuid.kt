@@ -4,21 +4,14 @@
 
 package org.karrat.struct
 
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
+import org.karrat.serialization.serializer.PrimitiveUuidSerializer
 import org.karrat.server.fatal
 import java.security.SecureRandom
 import kotlin.experimental.and
 import kotlin.experimental.or
 
-@Serializable
+@Serializable(with = PrimitiveUuidSerializer::class)
 public class Uuid {
 
     public val mostSignificantBits: Long
@@ -108,23 +101,6 @@ public class Uuid {
     private fun digits(value: Long, digits: Int): String {
         val mask = (1L shl (digits * 4)) - 1
         return (value and mask).toString(16).padStart(digits, '0')
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
-    @Serializer(forClass = Uuid::class)
-    public object PrimitiveSerializer : KSerializer<Uuid> {
-
-        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Uuid", PrimitiveKind.STRING)
-
-        override fun serialize(encoder: Encoder, value: Uuid) {
-            val string = value.toString()
-            encoder.encodeString(string)
-        }
-
-        override fun deserialize(decoder: Decoder): Uuid {
-            val string = decoder.decodeString()
-            return Uuid(string)
-        }
     }
 
 }
