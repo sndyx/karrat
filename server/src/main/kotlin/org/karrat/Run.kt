@@ -10,11 +10,23 @@ private var i = 0
 
 internal fun main(args: Array<String>) {
     while (i < args.size) {
-        when (args[i]) {
-            "--color-output", "-c" -> argumentColorOutput()
-            "--help", "-h" -> argumentHelp()
-            "--port", "-p" -> argumentPort(args)
-            else -> printHelp()
+        if (args[i].startsWith("--")) {
+            when (args[i]) {
+                "--color-output" -> argumentColorOutput()
+                "--help" -> argumentHelp()
+                "--port" -> argumentPort(args[i + 1])
+                else -> printHelp()
+            }
+        } else if (args[i].startsWith('-')) {
+            args[i].removePrefix("-").forEach {
+                when (it) {
+                    'c' -> argumentColorOutput()
+                    'h' -> argumentHelp()
+                    'p' -> argumentPort(args[i + 1])
+                }
+            }
+        } else {
+            printHelp()
         }
     }
     Server.start(Config.port)
@@ -40,8 +52,8 @@ private fun argumentHelp() {
     exitProcess(0)
 }
 
-private fun argumentPort(args: Array<String>) {
-    val parsed = (args[i + 1].toShortOrNull())?.toInt()
+private fun argumentPort(next: String) {
+    val parsed = next.toShortOrNull()?.toInt()
     Config.port = if (parsed == null) {
         printHelp()
         Config.port
