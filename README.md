@@ -25,7 +25,8 @@ It is a quick, open-source Minecraft server implementation developed by
 
 ## Installation
 
-TODO
+To install Karrat, simply replace your `server.jar` file with the Karrat jar file.
+ You must also conform to the [Karrat run arguments](/todo).
 
 ## Developers
 
