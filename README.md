@@ -86,7 +86,7 @@ To set up your plugin development environment, simply add the artifact to your
 
 ## Documentation
 
-TODO
+Documentation can be found [here](/documentation/introduction.md).
 
 # License
 
