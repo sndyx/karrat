@@ -14,12 +14,12 @@ It is a quick, open-source Minecraft server implementation developed by
 
 <!--- TOC -->
 
-* [Installation](#installation)
-* [Developers](#developers)
-  * [Setup](#setup)
-    * [Gradle](#gradle)
-    * [Maven](#maven-not-recommended)
-  * [Documentation](#documentation)
+- [Installation](#installation)
+- [Developers](#developers)
+  - [Setup](#setup)
+    - [Gradle](#gradle)
+    - [Maven](#maven-not-recommended)
+  - [Documentation](#documentation)
 
 <!--- END -->
 
