@@ -41,10 +41,9 @@ public fun id(namespace: String, id: String): Identifier {
     return Identifier("$namespace:$id")
 }
 
-public fun id(identifier: String): Identifier =
-    Identifier(
-        identifier.takeIf { it.matches(Regex("[^:]+:.[^:]+")) }
-            ?: identifier.takeUnless { it.contains(":") }
-                ?.let { "minecraft:$it" }
-            ?: (fatal("':' character not allowed in id."))
-    )
+public fun id(identifier: String): Identifier {
+    check(identifier.matches(Regex("[^:]+:[^:]+"))) {
+        fatal("Identifier must contain two strings separated by a colon.")
+    }
+    return Identifier(identifier)
+}

@@ -6,9 +6,9 @@ package org.karrat.play
 
 public enum class Difficulty {
 
-    PEACEFUL,
-    EASY,
-    NORMAL,
-    HARD
+    Peaceful,
+    Easy,
+    Normal,
+    Hard;
 
 }

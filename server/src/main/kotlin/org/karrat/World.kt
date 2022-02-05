@@ -8,11 +8,12 @@ import org.karrat.entity.Entity
 import org.karrat.entity.Player
 import org.karrat.struct.Identifier
 import org.karrat.world.Chunk
+import org.karrat.world.Dimension
 import org.karrat.world.WorldData
 
 public class World(
     public val identifier: Identifier,
-    public val dimension: Any,
+    public val dimension: Dimension,
     public val seed: Long,
 ) {
 
@@ -31,4 +32,4 @@ public class World(
 /**
  * Fetches a [World] from its [Identifier]. Throws an Exception if not found.
  */
-public fun World(identifier: Identifier): World = World(identifier, "TODO", 0L)
+public fun World(identifier: Identifier): World = World(identifier, Dimension.Overworld, 0L)

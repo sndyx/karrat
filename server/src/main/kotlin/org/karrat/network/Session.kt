@@ -43,7 +43,7 @@ public class Session(public val socket: SocketChannel) {
      * Only initialized once [isEncryptionEnabled] is true.
      */
     public lateinit var ciphers: Pair<Cipher, Cipher>
-
+    
     public fun send(packet: ClientboundPacket) { // Packet -> Encoder -> Compress -> Prepended -> Encrypt -> Bytes
         if (Server.dispatchEvent(PacketEvent(this, packet))) return
         val buffer = DynamicByteBuffer()

@@ -4,11 +4,11 @@
 
 package org.karrat.play
 
-public enum class GameMode(val id: Int) {
+public enum class GameMode(public val id: Int) {
 
-    SURVIVAL(0),
-    ADVENTURE(1),
-    SPECTATOR(2),
-    CREATIVE(3);
+    Survival(0),
+    Adventure(1),
+    Spectator(2),
+    Creative(3);
 
 }

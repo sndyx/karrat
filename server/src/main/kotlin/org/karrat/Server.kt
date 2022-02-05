@@ -34,9 +34,7 @@ public object Server {
             }
             return result
         }
-
-    public val codec: DimensionCodec = DimensionCodec()
-
+    
     public var sessions: MutableList<Session> = mutableListOf()
     public lateinit var socket: ServerSocketChannel
 
