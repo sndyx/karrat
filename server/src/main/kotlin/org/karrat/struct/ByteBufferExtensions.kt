@@ -7,6 +7,7 @@ package org.karrat.struct
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.karrat.serialization.nbt.Nbt
 
 /**
  * Writes a prefixed [ByteArray] from the buffer, prefixed with its length.
@@ -109,6 +110,19 @@ public fun ByteBuffer.readString(): String {
     val length = readVarInt()
     return readBytes(length).decodeToString()
 }
+
+/**
+ * Writes an [NbtCompound] to the buffer.
+ */
+public fun MutableByteBuffer.writeNbt(value: NbtCompound) {
+    writePrefixed(Nbt.encodeToBytes(value))
+}
+
+/**
+ * Reads an [NbtCompound] from the buffer.
+ */
+public fun ByteBuffer.readNbt(): NbtCompound =
+    Nbt.decodeFromBytes(readPrefixed())
 
 /**
  * Writes a [Uuid] to the buffer.

@@ -6,8 +6,12 @@ package org.karrat.internal
 
 import java.net.HttpURLConnection
 import java.net.URL
+import java.security.MessageDigest
 
-internal fun request(url: String, vararg parameters: Pair<String, String?>): Result<ByteArray> {
+internal fun request(
+    url: String,
+    vararg parameters: Pair<String, String?> = emptyArray()
+): Result<ByteArray> {
     val urlWithParameters = buildString {
         append(url)
         append('?')
@@ -30,10 +34,6 @@ internal fun request(url: String, vararg parameters: Pair<String, String?>): Res
     }
 }
 
-internal fun request(url: String): Result<ByteArray> {
-    return request(url, parameters = emptyArray())
-}
-
 private fun openHttpConnection(url: String): HttpURLConnection {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.connectTimeout = 15000
@@ -43,4 +43,9 @@ private fun openHttpConnection(url: String): HttpURLConnection {
 
 internal fun postRequest(url: String, requestProperties: Map<String, String>): String {
     TODO() //when a post request is needed >:)
+}
+
+internal fun hash(data: ByteArray): ByteArray {
+    val digest = MessageDigest.getInstance("SHA-256")
+    return digest.digest(data)
 }

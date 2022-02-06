@@ -6,43 +6,48 @@ package org.karrat.packet.play
 
 import org.karrat.World
 import org.karrat.packet.ClientboundPacket
-import org.karrat.world.dimensions.GameMode
+import org.karrat.play.GameMode
 import org.karrat.struct.*
 
 public class JoinGamePacket(
     public val entityId: Int,
-    public val hardcore: Boolean,
-    public val gamemode: GameMode,
-    public val previousGamemode: GameMode, //What even is this? technically a UByte but it doesn't matter and pain
+    public val isHardcore: Boolean,
+    public val gameMode: GameMode,
+    public val previousGameMode: GameMode,
     public val worlds: List<World>,
     public val dimensionCodec: NbtCompound,
     public val dimension: NbtCompound,
-    public val playerWorld: World,
-    public val seed: Long,
-    //public val maxPlayers: Int,
+    public val world: World,
+    // public val maxPlayers: Int, **Unused by minecraft, ignore.**
     public val viewDistance: Int,
+    public val simulationDistance: Int,
     public val reducedDebugInfo: Boolean,
+    public val enableRespawnScreen: Boolean,
+    public val isDebug: Boolean,
+    public val isFlat: Boolean
 ) : ClientboundPacket {
     override val id: Int = 0x26
 
-    override fun write(data: DynamicByteBuffer) {
-        data.writeVarInt(entityId)
-        data.writeBoolean(hardcore)
-        data.write(gamemode.toId()) //technically a ubyte
-        data.write(previousGamemode.toId())
-        data.writeVarInt(worlds.size)
+    override fun write(data: DynamicByteBuffer): Unit = data.run {
+        writeVarInt(entityId)
+        writeBoolean(isHardcore)
+        writeUByte(gameMode.id.toUByte())
+        write(previousGameMode.id.toByte())
+        writeVarInt(worlds.size)
         worlds.forEach {
             data.writeIdentifier(it.identifier)
         }
-        //data.writeVarInt()
-        TODO() //NBT
-        data.writeIdentifier(playerWorld.identifier)
-        data.writeLong(playerWorld.seed)
-        data.writeInt(0) //Unused
-        data.writeInt(viewDistance)
-        data.writeBoolean(reducedDebugInfo)
-        //data.writeBoolean(playerWorld.debug)
-        //data.writeBoolean(playerWorld.flat) later
+        writeNbt(dimensionCodec)
+        writeNbt(dimension)
+        writeIdentifier(world.identifier)
+        writeLong(world.hashedSeed)
+        writeVarInt(0) //Unused
+        writeVarInt(viewDistance)
+        writeVarInt(simulationDistance)
+        writeBoolean(reducedDebugInfo)
+        writeBoolean(enableRespawnScreen)
+        data.writeBoolean(isDebug)
+        data.writeBoolean(isFlat)
     }
 
 

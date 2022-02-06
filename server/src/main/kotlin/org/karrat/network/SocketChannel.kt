@@ -18,11 +18,11 @@ public class SocketChannel(private val socket: NioSocketChannel) : Closeable {
     public val isOpen: Boolean get() = socket.isOpen
 
     public fun read(): ByteBuffer {
-        val buffer = NioByteBuffer.allocate(1028)
+        val buffer = NioByteBuffer.allocate(1024)
         socket.read(buffer)
         return buffer
             .array()
-            .copyOf(1028 - buffer.remaining())
+            .copyOf(1024 - buffer.remaining())
             .toByteBuffer()
     }
 
