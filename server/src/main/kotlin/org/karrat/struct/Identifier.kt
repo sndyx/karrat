@@ -5,7 +5,6 @@
 package org.karrat.struct
 
 import kotlinx.serialization.Serializable
-import org.karrat.server.fatal
 
 @JvmInline
 @Serializable
@@ -23,27 +22,27 @@ public value class Identifier internal constructor(private val value: String) {
 
 public fun id(values: Pair<String, String>): Identifier {
     check(!values.first.contains(':')) {
-        fatal("':' character not allowed in namespace.")
+        "':' character not allowed in namespace."
     }
     check(!values.second.contains(':')) {
-        fatal("':' character not allowed in id.")
+        "':' character not allowed in id."
     }
     return Identifier("${values.second}:${values.first}")
 }
 
 public fun id(namespace: String, id: String): Identifier {
     check(!namespace.contains(':')) {
-        fatal("':' character not allowed in namespace.")
+        "':' character not allowed in namespace."
     }
     check(!id.contains(':')) {
-        fatal("':' character not allowed in id.")
+        "':' character not allowed in id."
     }
     return Identifier("$namespace:$id")
 }
 
 public fun id(identifier: String): Identifier {
     check(identifier.matches(Regex("[^:]+:[^:]+"))) {
-        fatal("Identifier must contain two strings separated by a colon.")
+        "Identifier must contain two strings separated by a colon."
     }
     return Identifier(identifier)
 }

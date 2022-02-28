@@ -5,7 +5,6 @@
 package org.karrat.struct
 
 import kotlinx.serialization.Serializable
-import org.karrat.server.fatal
 
 @Serializable
 public class NbtCompound : LinkedHashMap<String, Any>() {
@@ -34,7 +33,7 @@ public class NbtCompound : LinkedHashMap<String, Any>() {
                     || value is NbtCompound
                     || value is IntArray
                     || value is LongArray
-        ) { fatal("NbtCompound does not accept type ${value::class.simpleName}.") }
+        ) { "NbtCompound does not accept type ${value::class.simpleName}." }
     }
 
     override fun toString(): String {

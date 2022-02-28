@@ -1,7 +1,6 @@
 /*
  * Copyright © Karrat - 2021.
  */
-@file:UseSerializers(Uuid.PrimitiveSerializer::class)
 
 package org.karrat.network.entity
 

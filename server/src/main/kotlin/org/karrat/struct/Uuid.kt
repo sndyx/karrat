@@ -6,7 +6,6 @@ package org.karrat.struct
 
 import kotlinx.serialization.Serializable
 import org.karrat.serialization.serializer.PrimitiveUuidSerializer
-import org.karrat.server.fatal
 import java.security.SecureRandom
 import kotlin.experimental.and
 import kotlin.experimental.or
@@ -30,7 +29,7 @@ public class Uuid {
      */
     public constructor (value: String) {
         val fixed = value.replace("-", "")
-        check(fixed.length == 32) { fatal("Not a valid Uuid.") }
+        check(fixed.length == 32) { "Not a valid Uuid." }
         val buffer = ByteBuffer(fixed.decodeHex())
         mostSignificantBits = buffer.readLong()
         leastSignificantBits = buffer.readLong()
@@ -83,7 +82,7 @@ public class Uuid {
      */
     public val timestamp: Long
         get() {
-            check(version == 1) { fatal("Uuid is not a time-based Uuid. See Uuid::version.") }
+            check(version == 1) { "Uuid is not a time-based Uuid. See Uuid::version." }
             return mostSignificantBits and 0x0FFFL shl 48 or (mostSignificantBits shr 16 and 0x0FFFFL shl 32) or (mostSignificantBits ushr 32)
         }
 

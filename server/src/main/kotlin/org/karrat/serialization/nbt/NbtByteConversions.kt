@@ -4,7 +4,6 @@
 
 package org.karrat.serialization.nbt
 
-import org.karrat.server.fatal
 import org.karrat.struct.*
 
 /**

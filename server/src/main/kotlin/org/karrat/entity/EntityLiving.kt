@@ -5,7 +5,6 @@
 package org.karrat.entity
 
 import org.karrat.play.Location
-import org.karrat.server.fatal
 
 public abstract class EntityLiving(location: Location) : Entity(location) {
 
@@ -13,7 +12,7 @@ public abstract class EntityLiving(location: Location) : Entity(location) {
     public var health: Double = maxHealth
 
     public fun damage(amount: Double) {
-        check(amount >= 0) { fatal("Damage must not be negative.") }
+        check(amount >= 0) { "Damage must not be negative." }
         health -= amount
     }
 

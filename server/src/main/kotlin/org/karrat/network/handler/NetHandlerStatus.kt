@@ -15,7 +15,6 @@ import org.karrat.packet.status.PingPacket
 import org.karrat.packet.status.PongPacket
 import org.karrat.packet.status.StatusRequestPacket
 import org.karrat.packet.status.StatusResponsePacket
-import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
 
 public open class NetHandlerStatus(public val session: Session) : NetHandler {
@@ -23,7 +22,7 @@ public open class NetHandlerStatus(public val session: Session) : NetHandler {
     override fun read(id: Int, data: ByteBuffer): ServerboundPacket = when (id) {
         0x00 -> StatusRequestPacket
         0x01 -> PingPacket(data)
-        else -> fatal("Invalid packet id $id in state handshake.")
+        else -> error("Invalid packet id $id in state handshake.")
     }
 
     override fun process(packet: ServerboundPacket): Unit = when (packet) {
@@ -37,7 +36,7 @@ public open class NetHandlerStatus(public val session: Session) : NetHandler {
             //TODO this probably shouldn't belong here but how does the session reset after NetHandlerStatus
 
         }
-        else -> fatal("Failed to handle packet: Invalid packet.")
+        else -> error("Failed to handle packet: Invalid packet.")
     }
 
 }

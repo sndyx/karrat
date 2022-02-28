@@ -8,7 +8,6 @@ import org.karrat.network.NetHandler
 import org.karrat.network.Session
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.handshake.HandshakePacket
-import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
 
 public open class NetHandlerHandshake(private val session: Session) : NetHandler {
@@ -16,16 +15,16 @@ public open class NetHandlerHandshake(private val session: Session) : NetHandler
     override fun read(id: Int, data: ByteBuffer): ServerboundPacket =
         when (id) {
             0x00 -> HandshakePacket(data)
-            else -> fatal("Invalid packet id $id in state handshake.")
+            else -> error("Invalid packet id $id in state handshake.")
         }
 
     override fun process(packet: ServerboundPacket): Unit = when (packet) {
         is HandshakePacket -> when (packet.nextState) {
             1 -> session.netHandler = NetHandlerStatus(session)
             2 -> session.netHandler = NetHandlerLogin(session)
-            else -> fatal { "Invalid handshake packet state to be handled." }
+            else -> error("Invalid handshake packet state to be handled.")
         }
-        else -> fatal("Invalid packet to be handled.")
+        else -> error("Invalid packet to be handled.")
     }
 
 }

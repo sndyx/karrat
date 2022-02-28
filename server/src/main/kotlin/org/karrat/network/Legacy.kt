@@ -6,7 +6,6 @@ package org.karrat.network
 
 import org.karrat.Config
 import org.karrat.Server
-import org.karrat.server.info
 import org.karrat.struct.DynamicByteBuffer
 import org.karrat.struct.writeBytes
 
@@ -29,6 +28,6 @@ internal fun Session.handleLegacyPing() {
     response.writeBytes(result.toByteArray(Charsets.UTF_16BE)) // Stuff?
     socket.write(response)
 
-    info("Session $this attempted to log in with a legacy client.")
+    println("Session $this attempted to log in with a legacy client.")
     socket.close()
 }

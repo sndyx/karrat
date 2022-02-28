@@ -9,12 +9,9 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.karrat.entity.Player
-import org.karrat.network.Session
-import org.karrat.network.SessionState
-import org.karrat.network.SocketChannel
-import org.karrat.network.state
+import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
-import org.karrat.server.info
+import org.karrat.server.FormattedPrintStream
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
@@ -23,9 +20,8 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 public object Server {
-
+    
     public var worlds: MutableList<World> = mutableListOf()
-
     public val players: Set<Player>
         get() {
             val result: MutableSet<Player> = mutableSetOf()
@@ -37,21 +33,23 @@ public object Server {
     
     public var sessions: MutableList<Session> = mutableListOf()
     public lateinit var socket: ServerSocketChannel
+    public val auth: AuthServer = AuthServer()
 
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
     internal var tickTimeMillis: Long = 0L
 
     public fun start(port: Int) {
-        info("Server starting.")
+        System.setOut(FormattedPrintStream(System.out))
+        println("Server starting.")
         socket = ServerSocketChannel.open()
         socket.bind(InetSocketAddress(InetAddress.getLocalHost(), port))
         socket.configureBlocking(true)
-        info("Bound to ip ${socket.localAddress} on port $port.")
+        println("Bound to ip ${socket.localAddress} on port $port.")
         thread(name = "socket") {
             while (true) {
                 val session = Session(SocketChannel(socket.accept()))
                 sessions.add(session)
-                info("Accepted $session.")
+                println("Accepted $session.")
             }
         }
         runBlocking {
@@ -66,7 +64,7 @@ public object Server {
     }
 
     public fun stop() {
-        info("Terminating sessions.")
+        println("Terminating sessions.")
         sessions
             .filter { it.state == SessionState.PLAY }
             .forEach { it.disconnect("Server shutting down.") }
@@ -78,7 +76,7 @@ public object Server {
             launch {
                 runCatching { session.handle() }
                     .onFailure {
-                        info("$session disconnected; internal error: ${it.message}")
+                        println("$session disconnected; internal error: ${it.message}")
                         runCatching { session.disconnect("Internal error: ${it.message}") }
                         sessions.remove(session)
                     }

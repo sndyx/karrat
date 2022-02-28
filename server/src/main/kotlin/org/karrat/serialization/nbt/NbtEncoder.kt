@@ -11,7 +11,6 @@ import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.modules.EmptySerializersModule
-import org.karrat.server.fatal
 import org.karrat.struct.NbtCompound
 
 internal fun <T> writeNbt(value: T, serializer: SerializationStrategy<T>): NbtCompound {
@@ -50,7 +49,7 @@ private abstract class AbstractNbtEncoder(
 
     override fun <T> encodeSerializableValue(serializer: SerializationStrategy<T>, value: T) {
         check(currentTagOrNull != null || (serializer.descriptor.kind !is PrimitiveKind && serializer.descriptor.kind !== SerialKind.ENUM)) {
-            fatal("Non-structured data type on top-level in Nbt: ${value!!::class.simpleName}.") // bruh why u tryna serialize a numba my man ???
+            "Non-structured data type on top-level in Nbt: ${value!!::class.simpleName}." // bruh why u tryna serialize a numba my man ???
         }
         serializer.serialize(this, value)
     }

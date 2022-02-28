@@ -4,8 +4,6 @@
 
 package org.karrat.struct
 
-import org.karrat.server.fatal
-
 public interface ByteBuffer {
 
     public var bytes: ByteArray
@@ -154,7 +152,7 @@ internal class MutableByteBufferImpl(allocation: Int) : ByteBufferImpl(ByteArray
 
     override fun write(value: Byte) {
         pointer++
-        check(bytes.size != pointer) { fatal("Buffer overflow.") }
+        check(bytes.size != pointer) { "Buffer overflow." }
         bytes[pointer] = value
     }
 

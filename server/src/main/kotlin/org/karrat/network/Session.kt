@@ -18,13 +18,14 @@ import org.karrat.packet.ClientboundPacket
 import org.karrat.packet.login.SetCompressionPacket
 import org.karrat.packet.play.DisconnectPacket
 import org.karrat.struct.*
-import java.net.SocketAddress
+import java.net.InetAddress
+import java.net.InetSocketAddress
 import javax.crypto.Cipher
 
 public class Session(public val socket: SocketChannel) {
 
-    public val address: SocketAddress
-        get() = socket.remoteAddress
+    public val address: InetAddress
+        get() = (socket.remoteAddress as InetSocketAddress).address
 
     /**
      * Player linked to this session instance, if in state Play.

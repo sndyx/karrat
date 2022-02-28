@@ -9,7 +9,6 @@ import org.karrat.Server
 import org.karrat.network.Session
 import org.karrat.network.handler.NetHandlerLogin
 import org.karrat.packet.login.EncryptionResponsePacket
-import org.karrat.server.fatal
 import org.karrat.struct.ByteBuffer
 import java.math.BigInteger
 import java.security.*
@@ -32,7 +31,7 @@ internal fun Server.generateKeyPair(): KeyPair {
         keyPairGen.initialize(1024)
         keyPairGen.generateKeyPair()
     }.getOrElse {
-        fatal("Key pair generation failed!")
+        error("Key pair generation failed!")
     }
 }
 
@@ -42,7 +41,7 @@ private fun createCipherInstance(algorithm: String, key: PrivateKey): Cipher {
         cipher.init(Cipher.DECRYPT_MODE, key)
         cipher
     }.getOrElse {
-        fatal(it)
+        error(it)
     }
 }
 
@@ -50,7 +49,7 @@ private fun decryptData(key: PrivateKey, bytes: ByteArray): ByteArray {
     return runCatching {
         createCipherInstance(key.algorithm, key).doFinal(bytes)
     }.getOrElse {
-        fatal(it)
+        error(it)
     }
 }
 
@@ -68,19 +67,19 @@ internal fun NetHandlerLogin.generateAESInstance(opMode: Int, key: Key): Cipher 
         var2.init(opMode, key, IvParameterSpec(key.encoded))
         var2
     }.getOrElse {
-        fatal("AES creation failed!")
+        error("AES creation failed!")
     }
 }
 
-internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): String {
+internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): ByteArray {
     return runCatching {
         BigInteger(
             digestOperation(
                 serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
             )
-        ).toString(16)
+        ).toByteArray()
     }.getOrElse {
-        fatal("Digest creation failed!")
+        error("Digest creation failed!")
     }
 }
 
@@ -92,6 +91,6 @@ private fun digestOperation(vararg hashed: ByteArray): ByteArray? {
         }
         digest.digest()
     }.getOrElse {
-        fatal("Digest creation failed!")
+        error("Digest creation failed!")
     }
 }
