@@ -15,6 +15,7 @@ internal fun main(args: Array<String>) {
                 "--color-output" -> argumentColorOutput()
                 "--help" -> argumentHelp()
                 "--port" -> argumentPort(args[i + 1])
+                "--basic-logging" -> argumentBasicLogging()
                 else -> printHelp()
             }
         } else if (args[i].startsWith('-')) {
@@ -36,9 +37,10 @@ private fun printHelp() {
     println(
         """
         Usage: karrat [options...]
-         -c, --color-output    Color codes logging messages
-         -h, --help            This help text
-         -p, --port            Sets the port to listen on
+         -c, --color-output  Color codes logging messages
+         -h, --help          This help text
+         -p, --port          Sets the port to listen on
+             --basic-logging Disables reflection in logging
     """.trimIndent()
     )
 }
@@ -61,4 +63,8 @@ private fun argumentPort(next: String) {
         parsed
     }
     i++
+}
+
+private fun argumentBasicLogging() {
+    Config.basicLogging = true
 }

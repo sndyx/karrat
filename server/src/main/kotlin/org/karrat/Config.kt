@@ -27,5 +27,6 @@ public object Config {
 
     public var colorOutput: Boolean = false
     public var port: Int = 25565
+    public var basicLogging: Boolean = false
 
 }

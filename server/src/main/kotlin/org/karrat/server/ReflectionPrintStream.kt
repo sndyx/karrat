@@ -9,7 +9,7 @@ import java.io.PrintStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-public class FormattedPrintStream(out: OutputStream) : PrintStream(out) {
+public class ReflectionPrintStream(out: OutputStream) : PrintStream(out) {
     
     private val time: String
         get() {
@@ -20,7 +20,11 @@ public class FormattedPrintStream(out: OutputStream) : PrintStream(out) {
     
     private val prefix: String
         get() {
-            val format = "$time <@${Thread.currentThread().name}>"
+            val caller = Thread.currentThread().stackTrace[4].fileName
+            val format = "$time <$caller${
+                if (Thread.currentThread().name == "main") ""
+                else " @${Thread.currentThread().name}"
+            }>"
             return if (format.length > 40) format.substring(0, 36) + "...>"
             else format.padEnd(40)
         }

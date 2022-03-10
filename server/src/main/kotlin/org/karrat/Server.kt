@@ -12,6 +12,7 @@ import org.karrat.entity.Player
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.server.FormattedPrintStream
+import org.karrat.server.ReflectionPrintStream
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
@@ -39,7 +40,10 @@ public object Server {
     internal var tickTimeMillis: Long = 0L
 
     public fun start(port: Int) {
-        System.setOut(FormattedPrintStream(System.out))
+        System.setOut(
+            if (Config.basicLogging) { FormattedPrintStream(System.out) }
+            else { FormattedPrintStream(System.out) }
+        )
         println("Server starting.")
         socket = ServerSocketChannel.open()
         socket.bind(InetSocketAddress(InetAddress.getLocalHost(), port))
