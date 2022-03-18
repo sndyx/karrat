@@ -26,6 +26,10 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
+tasks.named("compileKotlin") {
+    dependsOn(":codegen:run")
+}
+
 tasks.test {
     useJUnitPlatform()
 }
