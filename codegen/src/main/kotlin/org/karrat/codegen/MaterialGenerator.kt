@@ -21,7 +21,7 @@ fun generateMaterialClass() {
 
         import("org.karrat.struct.Identifier")
 
-        +"""
+        + """
         public open class Material(
             public val id: Int, 
             public val displayName: kotlin.String, 
@@ -59,10 +59,10 @@ fun generateMaterialClass() {
             val name = it.jsonObject["name"]!!.jsonPrimitive.content
             val nameParts = name.split('_')
             val formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
-            +"            register($formattedName)"
+            + "            register($formattedName)"
         }
-        +"        }"
-        +"    }"
+        + "        }"
+        + "    }"
         + ""
 
         elements.forEach {
@@ -75,37 +75,37 @@ fun generateMaterialClass() {
             val formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
 
             indent {
-                +"public object ${formattedName.replace(" ", "")} : Material("
+                + "public object ${formattedName.replace(" ", "")} : Material("
                 indent {
-                    +"id = $id,"
-                    +"displayName = \"$displayName\","
-                    +"identifier = Identifier(\"minecraft:$name\"),"
-                    +"stackSize = $stackSize"
+                    + "id = $id,"
+                    + "displayName = \"$displayName\","
+                    + "identifier = Identifier(\"minecraft:$name\"),"
+                    + "stackSize = $stackSize"
                 }
 
                 val variations = it.jsonObject["variations"]?.jsonArray
 
                 if (variations != null) {
-                    +") {"
+                    + ") {"
                     indent {
-                        +"init {"
+                        + "init {"
                         variations.forEach { variation ->
                             val metadata = variation.jsonObject["metadata"]!!.jsonPrimitive.content
                             val variationName = variation.jsonObject["displayName"]!!.jsonPrimitive.content
 
-                            +"    variations.add(MaterialVariation($metadata, \"$variationName\"))"
+                            + "    variations.add(MaterialVariation($metadata, \"$variationName\"))"
                         }
                         + "}"
 
                     }
-                    +"}"
+                    + "}"
                 } else {
                     + ")"
                 }
                 + ""
             }
         }
-        +"""
+        + """
         }
         
         public data class MaterialVariation(val metadata: Int, val displayName: kotlin.String)
