@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2021.
+ * Copyright © Karrat - 2022.
  */
 
 package org.karrat.play
@@ -13,14 +13,14 @@ import org.karrat.struct.Identifier
  */
 
 public open class Material(
-    public val id: Int,
-    public val displayName: kotlin.String,
-    public val identifier: Identifier,
+    public val id: Int, 
+    public val displayName: kotlin.String, 
+    public val identifier: Identifier, 
     public val stackSize: Int
 ) {
 
     public val variations: MutableList<MaterialVariation> = mutableListOf()
-
+    
     public companion object {
 
         private val materialRegistry: MutableList<Material> = mutableListOf()
@@ -32,7 +32,7 @@ public open class Material(
                 it.identifier == identifier
             }
         }
-
+        
         public fun fromId(id: Int): Material {
             return materialRegistry.first {
                 it.id == id
@@ -43,195 +43,741 @@ public open class Material(
             materialRegistry += material
         }
 
-        init {
+        internal fun registerMaterials() {         
             register(Stone)
-            register(Grass)
+            register(Granite)
+            register(PolishedGranite)
+            register(Diorite)
+            register(PolishedDiorite)
+            register(Andesite)
+            register(PolishedAndesite)
+            register(Deepslate)
+            register(CobbledDeepslate)
+            register(PolishedDeepslate)
+            register(Calcite)
+            register(Tuff)
+            register(DripstoneBlock)
+            register(GrassBlock)
             register(Dirt)
+            register(CoarseDirt)
+            register(Podzol)
+            register(RootedDirt)
+            register(CrimsonNylium)
+            register(WarpedNylium)
             register(Cobblestone)
-            register(Planks)
-            register(Sapling)
+            register(OakPlanks)
+            register(SprucePlanks)
+            register(BirchPlanks)
+            register(JunglePlanks)
+            register(AcaciaPlanks)
+            register(DarkOakPlanks)
+            register(CrimsonPlanks)
+            register(WarpedPlanks)
+            register(OakSapling)
+            register(SpruceSapling)
+            register(BirchSapling)
+            register(JungleSapling)
+            register(AcaciaSapling)
+            register(DarkOakSapling)
             register(Bedrock)
             register(Sand)
+            register(RedSand)
             register(Gravel)
-            register(GoldOre)
-            register(IronOre)
             register(CoalOre)
-            register(Log)
-            register(Leaves)
-            register(Sponge)
-            register(Glass)
+            register(DeepslateCoalOre)
+            register(IronOre)
+            register(DeepslateIronOre)
+            register(CopperOre)
+            register(DeepslateCopperOre)
+            register(GoldOre)
+            register(DeepslateGoldOre)
+            register(RedstoneOre)
+            register(DeepslateRedstoneOre)
+            register(EmeraldOre)
+            register(DeepslateEmeraldOre)
             register(LapisOre)
+            register(DeepslateLapisOre)
+            register(DiamondOre)
+            register(DeepslateDiamondOre)
+            register(NetherGoldOre)
+            register(NetherQuartzOre)
+            register(AncientDebris)
+            register(CoalBlock)
+            register(RawIronBlock)
+            register(RawCopperBlock)
+            register(RawGoldBlock)
+            register(AmethystBlock)
+            register(BuddingAmethyst)
+            register(IronBlock)
+            register(CopperBlock)
+            register(GoldBlock)
+            register(DiamondBlock)
+            register(NetheriteBlock)
+            register(ExposedCopper)
+            register(WeatheredCopper)
+            register(OxidizedCopper)
+            register(CutCopper)
+            register(ExposedCutCopper)
+            register(WeatheredCutCopper)
+            register(OxidizedCutCopper)
+            register(CutCopperStairs)
+            register(ExposedCutCopperStairs)
+            register(WeatheredCutCopperStairs)
+            register(OxidizedCutCopperStairs)
+            register(CutCopperSlab)
+            register(ExposedCutCopperSlab)
+            register(WeatheredCutCopperSlab)
+            register(OxidizedCutCopperSlab)
+            register(WaxedCopperBlock)
+            register(WaxedExposedCopper)
+            register(WaxedWeatheredCopper)
+            register(WaxedOxidizedCopper)
+            register(WaxedCutCopper)
+            register(WaxedExposedCutCopper)
+            register(WaxedWeatheredCutCopper)
+            register(WaxedOxidizedCutCopper)
+            register(WaxedCutCopperStairs)
+            register(WaxedExposedCutCopperStairs)
+            register(WaxedWeatheredCutCopperStairs)
+            register(WaxedOxidizedCutCopperStairs)
+            register(WaxedCutCopperSlab)
+            register(WaxedExposedCutCopperSlab)
+            register(WaxedWeatheredCutCopperSlab)
+            register(WaxedOxidizedCutCopperSlab)
+            register(OakLog)
+            register(SpruceLog)
+            register(BirchLog)
+            register(JungleLog)
+            register(AcaciaLog)
+            register(DarkOakLog)
+            register(CrimsonStem)
+            register(WarpedStem)
+            register(StrippedOakLog)
+            register(StrippedSpruceLog)
+            register(StrippedBirchLog)
+            register(StrippedJungleLog)
+            register(StrippedAcaciaLog)
+            register(StrippedDarkOakLog)
+            register(StrippedCrimsonStem)
+            register(StrippedWarpedStem)
+            register(StrippedOakWood)
+            register(StrippedSpruceWood)
+            register(StrippedBirchWood)
+            register(StrippedJungleWood)
+            register(StrippedAcaciaWood)
+            register(StrippedDarkOakWood)
+            register(StrippedCrimsonHyphae)
+            register(StrippedWarpedHyphae)
+            register(OakWood)
+            register(SpruceWood)
+            register(BirchWood)
+            register(JungleWood)
+            register(AcaciaWood)
+            register(DarkOakWood)
+            register(CrimsonHyphae)
+            register(WarpedHyphae)
+            register(OakLeaves)
+            register(SpruceLeaves)
+            register(BirchLeaves)
+            register(JungleLeaves)
+            register(AcaciaLeaves)
+            register(DarkOakLeaves)
+            register(AzaleaLeaves)
+            register(FloweringAzaleaLeaves)
+            register(Sponge)
+            register(WetSponge)
+            register(Glass)
+            register(TintedGlass)
             register(LapisBlock)
-            register(Dispenser)
             register(Sandstone)
-            register(Noteblock)
-            register(GoldenRail)
-            register(DetectorRail)
-            register(StickyPiston)
-            register(Web)
-            register(Tallgrass)
-            register(Deadbush)
-            register(Piston)
-            register(Wool)
-            register(YellowFlower)
-            register(RedFlower)
+            register(ChiseledSandstone)
+            register(CutSandstone)
+            register(Cobweb)
+            register(Grass)
+            register(Fern)
+            register(Azalea)
+            register(FloweringAzalea)
+            register(DeadBush)
+            register(Seagrass)
+            register(SeaPickle)
+            register(WhiteWool)
+            register(OrangeWool)
+            register(MagentaWool)
+            register(LightBlueWool)
+            register(YellowWool)
+            register(LimeWool)
+            register(PinkWool)
+            register(GrayWool)
+            register(LightGrayWool)
+            register(CyanWool)
+            register(PurpleWool)
+            register(BlueWool)
+            register(BrownWool)
+            register(GreenWool)
+            register(RedWool)
+            register(BlackWool)
+            register(Dandelion)
+            register(Poppy)
+            register(BlueOrchid)
+            register(Allium)
+            register(AzureBluet)
+            register(RedTulip)
+            register(OrangeTulip)
+            register(WhiteTulip)
+            register(PinkTulip)
+            register(OxeyeDaisy)
+            register(Cornflower)
+            register(LilyOfTheValley)
+            register(WitherRose)
+            register(SporeBlossom)
             register(BrownMushroom)
             register(RedMushroom)
-            register(GoldBlock)
-            register(IronBlock)
+            register(CrimsonFungus)
+            register(WarpedFungus)
+            register(CrimsonRoots)
+            register(WarpedRoots)
+            register(NetherSprouts)
+            register(WeepingVines)
+            register(TwistingVines)
+            register(SugarCane)
+            register(Kelp)
+            register(MossCarpet)
+            register(MossBlock)
+            register(HangingRoots)
+            register(BigDripleaf)
+            register(SmallDripleaf)
+            register(Bamboo)
+            register(OakSlab)
+            register(SpruceSlab)
+            register(BirchSlab)
+            register(JungleSlab)
+            register(AcaciaSlab)
+            register(DarkOakSlab)
+            register(CrimsonSlab)
+            register(WarpedSlab)
             register(StoneSlab)
-            register(BrickBlock)
-            register(Tnt)
+            register(SmoothStoneSlab)
+            register(SandstoneSlab)
+            register(CutSandstoneSlab)
+            register(PetrifiedOakSlab)
+            register(CobblestoneSlab)
+            register(BrickSlab)
+            register(StoneBrickSlab)
+            register(NetherBrickSlab)
+            register(QuartzSlab)
+            register(RedSandstoneSlab)
+            register(CutRedSandstoneSlab)
+            register(PurpurSlab)
+            register(PrismarineSlab)
+            register(PrismarineBrickSlab)
+            register(DarkPrismarineSlab)
+            register(SmoothQuartz)
+            register(SmoothRedSandstone)
+            register(SmoothSandstone)
+            register(SmoothStone)
+            register(Bricks)
             register(Bookshelf)
             register(MossyCobblestone)
             register(Obsidian)
             register(Torch)
-            register(MobSpawner)
+            register(EndRod)
+            register(ChorusPlant)
+            register(ChorusFlower)
+            register(PurpurBlock)
+            register(PurpurPillar)
+            register(PurpurStairs)
+            register(Spawner)
             register(OakStairs)
             register(Chest)
-            register(DiamondOre)
-            register(DiamondBlock)
             register(CraftingTable)
             register(Farmland)
             register(Furnace)
             register(Ladder)
-            register(Rail)
-            register(StoneStairs)
-            register(Lever)
-            register(StonePressurePlate)
-            register(WoodenPressurePlate)
-            register(RedstoneOre)
-            register(RedstoneTorch)
-            register(StoneButton)
-            register(SnowLayer)
-            register(Ice)
+            register(CobblestoneStairs)
             register(Snow)
+            register(Ice)
+            register(SnowBlock)
             register(Cactus)
             register(Clay)
             register(Jukebox)
-            register(Fence)
+            register(OakFence)
+            register(SpruceFence)
+            register(BirchFence)
+            register(JungleFence)
+            register(AcaciaFence)
+            register(DarkOakFence)
+            register(CrimsonFence)
+            register(WarpedFence)
             register(Pumpkin)
+            register(CarvedPumpkin)
+            register(JackOLantern)
             register(Netherrack)
             register(SoulSand)
+            register(SoulSoil)
+            register(Basalt)
+            register(PolishedBasalt)
+            register(SmoothBasalt)
+            register(SoulTorch)
             register(Glowstone)
-            register(LitPumpkin)
-            register(StainedGlass)
-            register(Trapdoor)
-            register(MonsterEgg)
-            register(Stonebrick)
+            register(InfestedStone)
+            register(InfestedCobblestone)
+            register(InfestedStoneBricks)
+            register(InfestedMossyStoneBricks)
+            register(InfestedCrackedStoneBricks)
+            register(InfestedChiseledStoneBricks)
+            register(InfestedDeepslate)
+            register(StoneBricks)
+            register(MossyStoneBricks)
+            register(CrackedStoneBricks)
+            register(ChiseledStoneBricks)
+            register(DeepslateBricks)
+            register(CrackedDeepslateBricks)
+            register(DeepslateTiles)
+            register(CrackedDeepslateTiles)
+            register(ChiseledDeepslate)
             register(BrownMushroomBlock)
             register(RedMushroomBlock)
+            register(MushroomStem)
             register(IronBars)
+            register(Chain)
             register(GlassPane)
-            register(MelonBlock)
+            register(Melon)
             register(Vine)
-            register(FenceGate)
+            register(GlowLichen)
             register(BrickStairs)
             register(StoneBrickStairs)
             register(Mycelium)
-            register(Waterlily)
-            register(NetherBrick)
+            register(LilyPad)
+            register(NetherBricks)
+            register(CrackedNetherBricks)
+            register(ChiseledNetherBricks)
             register(NetherBrickFence)
             register(NetherBrickStairs)
             register(EnchantingTable)
             register(EndPortalFrame)
             register(EndStone)
+            register(EndStoneBricks)
             register(DragonEgg)
-            register(RedstoneLamp)
-            register(WoodenSlab)
             register(SandstoneStairs)
-            register(EmeraldOre)
             register(EnderChest)
-            register(TripwireHook)
             register(EmeraldBlock)
             register(SpruceStairs)
             register(BirchStairs)
             register(JungleStairs)
+            register(CrimsonStairs)
+            register(WarpedStairs)
             register(CommandBlock)
             register(Beacon)
             register(CobblestoneWall)
-            register(WoodenButton)
+            register(MossyCobblestoneWall)
+            register(BrickWall)
+            register(PrismarineWall)
+            register(RedSandstoneWall)
+            register(MossyStoneBrickWall)
+            register(GraniteWall)
+            register(StoneBrickWall)
+            register(NetherBrickWall)
+            register(AndesiteWall)
+            register(RedNetherBrickWall)
+            register(SandstoneWall)
+            register(EndStoneBrickWall)
+            register(DioriteWall)
+            register(BlackstoneWall)
+            register(PolishedBlackstoneWall)
+            register(PolishedBlackstoneBrickWall)
+            register(CobbledDeepslateWall)
+            register(PolishedDeepslateWall)
+            register(DeepslateBrickWall)
+            register(DeepslateTileWall)
             register(Anvil)
-            register(TrappedChest)
-            register(LightWeightedPressurePlate)
-            register(HeavyWeightedPressurePlate)
-            register(DaylightDetector)
-            register(RedstoneBlock)
-            register(QuartzOre)
-            register(Hopper)
+            register(ChippedAnvil)
+            register(DamagedAnvil)
+            register(ChiseledQuartzBlock)
             register(QuartzBlock)
+            register(QuartzBricks)
+            register(QuartzPillar)
             register(QuartzStairs)
-            register(ActivatorRail)
-            register(Dropper)
-            register(StainedHardenedClay)
-            register(StainedGlassPane)
-            register(Leaves2)
-            register(Log2)
+            register(WhiteTerracotta)
+            register(OrangeTerracotta)
+            register(MagentaTerracotta)
+            register(LightBlueTerracotta)
+            register(YellowTerracotta)
+            register(LimeTerracotta)
+            register(PinkTerracotta)
+            register(GrayTerracotta)
+            register(LightGrayTerracotta)
+            register(CyanTerracotta)
+            register(PurpleTerracotta)
+            register(BlueTerracotta)
+            register(BrownTerracotta)
+            register(GreenTerracotta)
+            register(RedTerracotta)
+            register(BlackTerracotta)
+            register(Barrier)
+            register(Light)
+            register(HayBlock)
+            register(WhiteCarpet)
+            register(OrangeCarpet)
+            register(MagentaCarpet)
+            register(LightBlueCarpet)
+            register(YellowCarpet)
+            register(LimeCarpet)
+            register(PinkCarpet)
+            register(GrayCarpet)
+            register(LightGrayCarpet)
+            register(CyanCarpet)
+            register(PurpleCarpet)
+            register(BlueCarpet)
+            register(BrownCarpet)
+            register(GreenCarpet)
+            register(RedCarpet)
+            register(BlackCarpet)
+            register(Terracotta)
+            register(PackedIce)
             register(AcaciaStairs)
             register(DarkOakStairs)
-            register(Slime)
-            register(Barrier)
-            register(IronTrapdoor)
+            register(DirtPath)
+            register(Sunflower)
+            register(Lilac)
+            register(RoseBush)
+            register(Peony)
+            register(TallGrass)
+            register(LargeFern)
+            register(WhiteStainedGlass)
+            register(OrangeStainedGlass)
+            register(MagentaStainedGlass)
+            register(LightBlueStainedGlass)
+            register(YellowStainedGlass)
+            register(LimeStainedGlass)
+            register(PinkStainedGlass)
+            register(GrayStainedGlass)
+            register(LightGrayStainedGlass)
+            register(CyanStainedGlass)
+            register(PurpleStainedGlass)
+            register(BlueStainedGlass)
+            register(BrownStainedGlass)
+            register(GreenStainedGlass)
+            register(RedStainedGlass)
+            register(BlackStainedGlass)
+            register(WhiteStainedGlassPane)
+            register(OrangeStainedGlassPane)
+            register(MagentaStainedGlassPane)
+            register(LightBlueStainedGlassPane)
+            register(YellowStainedGlassPane)
+            register(LimeStainedGlassPane)
+            register(PinkStainedGlassPane)
+            register(GrayStainedGlassPane)
+            register(LightGrayStainedGlassPane)
+            register(CyanStainedGlassPane)
+            register(PurpleStainedGlassPane)
+            register(BlueStainedGlassPane)
+            register(BrownStainedGlassPane)
+            register(GreenStainedGlassPane)
+            register(RedStainedGlassPane)
+            register(BlackStainedGlassPane)
             register(Prismarine)
+            register(PrismarineBricks)
+            register(DarkPrismarine)
+            register(PrismarineStairs)
+            register(PrismarineBrickStairs)
+            register(DarkPrismarineStairs)
             register(SeaLantern)
-            register(HayBlock)
-            register(Carpet)
-            register(HardenedClay)
-            register(CoalBlock)
-            register(PackedIce)
-            register(DoublePlant)
             register(RedSandstone)
+            register(ChiseledRedSandstone)
+            register(CutRedSandstone)
             register(RedSandstoneStairs)
-            register(StoneSlab2)
+            register(RepeatingCommandBlock)
+            register(ChainCommandBlock)
+            register(MagmaBlock)
+            register(NetherWartBlock)
+            register(WarpedWartBlock)
+            register(RedNetherBricks)
+            register(BoneBlock)
+            register(StructureVoid)
+            register(ShulkerBox)
+            register(WhiteShulkerBox)
+            register(OrangeShulkerBox)
+            register(MagentaShulkerBox)
+            register(LightBlueShulkerBox)
+            register(YellowShulkerBox)
+            register(LimeShulkerBox)
+            register(PinkShulkerBox)
+            register(GrayShulkerBox)
+            register(LightGrayShulkerBox)
+            register(CyanShulkerBox)
+            register(PurpleShulkerBox)
+            register(BlueShulkerBox)
+            register(BrownShulkerBox)
+            register(GreenShulkerBox)
+            register(RedShulkerBox)
+            register(BlackShulkerBox)
+            register(WhiteGlazedTerracotta)
+            register(OrangeGlazedTerracotta)
+            register(MagentaGlazedTerracotta)
+            register(LightBlueGlazedTerracotta)
+            register(YellowGlazedTerracotta)
+            register(LimeGlazedTerracotta)
+            register(PinkGlazedTerracotta)
+            register(GrayGlazedTerracotta)
+            register(LightGrayGlazedTerracotta)
+            register(CyanGlazedTerracotta)
+            register(PurpleGlazedTerracotta)
+            register(BlueGlazedTerracotta)
+            register(BrownGlazedTerracotta)
+            register(GreenGlazedTerracotta)
+            register(RedGlazedTerracotta)
+            register(BlackGlazedTerracotta)
+            register(WhiteConcrete)
+            register(OrangeConcrete)
+            register(MagentaConcrete)
+            register(LightBlueConcrete)
+            register(YellowConcrete)
+            register(LimeConcrete)
+            register(PinkConcrete)
+            register(GrayConcrete)
+            register(LightGrayConcrete)
+            register(CyanConcrete)
+            register(PurpleConcrete)
+            register(BlueConcrete)
+            register(BrownConcrete)
+            register(GreenConcrete)
+            register(RedConcrete)
+            register(BlackConcrete)
+            register(WhiteConcretePowder)
+            register(OrangeConcretePowder)
+            register(MagentaConcretePowder)
+            register(LightBlueConcretePowder)
+            register(YellowConcretePowder)
+            register(LimeConcretePowder)
+            register(PinkConcretePowder)
+            register(GrayConcretePowder)
+            register(LightGrayConcretePowder)
+            register(CyanConcretePowder)
+            register(PurpleConcretePowder)
+            register(BlueConcretePowder)
+            register(BrownConcretePowder)
+            register(GreenConcretePowder)
+            register(RedConcretePowder)
+            register(BlackConcretePowder)
+            register(TurtleEgg)
+            register(DeadTubeCoralBlock)
+            register(DeadBrainCoralBlock)
+            register(DeadBubbleCoralBlock)
+            register(DeadFireCoralBlock)
+            register(DeadHornCoralBlock)
+            register(TubeCoralBlock)
+            register(BrainCoralBlock)
+            register(BubbleCoralBlock)
+            register(FireCoralBlock)
+            register(HornCoralBlock)
+            register(TubeCoral)
+            register(BrainCoral)
+            register(BubbleCoral)
+            register(FireCoral)
+            register(HornCoral)
+            register(DeadBrainCoral)
+            register(DeadBubbleCoral)
+            register(DeadFireCoral)
+            register(DeadHornCoral)
+            register(DeadTubeCoral)
+            register(TubeCoralFan)
+            register(BrainCoralFan)
+            register(BubbleCoralFan)
+            register(FireCoralFan)
+            register(HornCoralFan)
+            register(DeadTubeCoralFan)
+            register(DeadBrainCoralFan)
+            register(DeadBubbleCoralFan)
+            register(DeadFireCoralFan)
+            register(DeadHornCoralFan)
+            register(BlueIce)
+            register(Conduit)
+            register(PolishedGraniteStairs)
+            register(SmoothRedSandstoneStairs)
+            register(MossyStoneBrickStairs)
+            register(PolishedDioriteStairs)
+            register(MossyCobblestoneStairs)
+            register(EndStoneBrickStairs)
+            register(StoneStairs)
+            register(SmoothSandstoneStairs)
+            register(SmoothQuartzStairs)
+            register(GraniteStairs)
+            register(AndesiteStairs)
+            register(RedNetherBrickStairs)
+            register(PolishedAndesiteStairs)
+            register(DioriteStairs)
+            register(CobbledDeepslateStairs)
+            register(PolishedDeepslateStairs)
+            register(DeepslateBrickStairs)
+            register(DeepslateTileStairs)
+            register(PolishedGraniteSlab)
+            register(SmoothRedSandstoneSlab)
+            register(MossyStoneBrickSlab)
+            register(PolishedDioriteSlab)
+            register(MossyCobblestoneSlab)
+            register(EndStoneBrickSlab)
+            register(SmoothSandstoneSlab)
+            register(SmoothQuartzSlab)
+            register(GraniteSlab)
+            register(AndesiteSlab)
+            register(RedNetherBrickSlab)
+            register(PolishedAndesiteSlab)
+            register(DioriteSlab)
+            register(CobbledDeepslateSlab)
+            register(PolishedDeepslateSlab)
+            register(DeepslateBrickSlab)
+            register(DeepslateTileSlab)
+            register(Scaffolding)
+            register(Redstone)
+            register(RedstoneTorch)
+            register(RedstoneBlock)
+            register(Repeater)
+            register(Comparator)
+            register(Piston)
+            register(StickyPiston)
+            register(SlimeBlock)
+            register(HoneyBlock)
+            register(Observer)
+            register(Hopper)
+            register(Dispenser)
+            register(Dropper)
+            register(Lectern)
+            register(Target)
+            register(Lever)
+            register(LightningRod)
+            register(DaylightDetector)
+            register(SculkSensor)
+            register(TripwireHook)
+            register(TrappedChest)
+            register(Tnt)
+            register(RedstoneLamp)
+            register(NoteBlock)
+            register(StoneButton)
+            register(PolishedBlackstoneButton)
+            register(OakButton)
+            register(SpruceButton)
+            register(BirchButton)
+            register(JungleButton)
+            register(AcaciaButton)
+            register(DarkOakButton)
+            register(CrimsonButton)
+            register(WarpedButton)
+            register(StonePressurePlate)
+            register(PolishedBlackstonePressurePlate)
+            register(LightWeightedPressurePlate)
+            register(HeavyWeightedPressurePlate)
+            register(OakPressurePlate)
+            register(SprucePressurePlate)
+            register(BirchPressurePlate)
+            register(JunglePressurePlate)
+            register(AcaciaPressurePlate)
+            register(DarkOakPressurePlate)
+            register(CrimsonPressurePlate)
+            register(WarpedPressurePlate)
+            register(IronDoor)
+            register(OakDoor)
+            register(SpruceDoor)
+            register(BirchDoor)
+            register(JungleDoor)
+            register(AcaciaDoor)
+            register(DarkOakDoor)
+            register(CrimsonDoor)
+            register(WarpedDoor)
+            register(IronTrapdoor)
+            register(OakTrapdoor)
+            register(SpruceTrapdoor)
+            register(BirchTrapdoor)
+            register(JungleTrapdoor)
+            register(AcaciaTrapdoor)
+            register(DarkOakTrapdoor)
+            register(CrimsonTrapdoor)
+            register(WarpedTrapdoor)
+            register(OakFenceGate)
             register(SpruceFenceGate)
             register(BirchFenceGate)
             register(JungleFenceGate)
-            register(DarkOakFenceGate)
             register(AcaciaFenceGate)
-            register(SpruceFence)
-            register(BirchFence)
-            register(JungleFence)
-            register(DarkOakFence)
-            register(AcaciaFence)
-            register(IronShovel)
-            register(IronPickaxe)
-            register(IronAxe)
+            register(DarkOakFenceGate)
+            register(CrimsonFenceGate)
+            register(WarpedFenceGate)
+            register(PoweredRail)
+            register(DetectorRail)
+            register(Rail)
+            register(ActivatorRail)
+            register(Saddle)
+            register(Minecart)
+            register(ChestMinecart)
+            register(FurnaceMinecart)
+            register(TntMinecart)
+            register(HopperMinecart)
+            register(CarrotOnAStick)
+            register(WarpedFungusOnAStick)
+            register(Elytra)
+            register(OakBoat)
+            register(SpruceBoat)
+            register(BirchBoat)
+            register(JungleBoat)
+            register(AcaciaBoat)
+            register(DarkOakBoat)
+            register(StructureBlock)
+            register(Jigsaw)
+            register(TurtleHelmet)
+            register(Scute)
             register(FlintAndSteel)
             register(Apple)
             register(Bow)
             register(Arrow)
             register(Coal)
+            register(Charcoal)
             register(Diamond)
+            register(Emerald)
+            register(LapisLazuli)
+            register(Quartz)
+            register(AmethystShard)
+            register(RawIron)
             register(IronIngot)
+            register(RawCopper)
+            register(CopperIngot)
+            register(RawGold)
             register(GoldIngot)
-            register(IronSword)
+            register(NetheriteIngot)
+            register(NetheriteScrap)
             register(WoodenSword)
             register(WoodenShovel)
             register(WoodenPickaxe)
             register(WoodenAxe)
+            register(WoodenHoe)
             register(StoneSword)
             register(StoneShovel)
             register(StonePickaxe)
             register(StoneAxe)
-            register(DiamondSword)
-            register(DiamondShovel)
-            register(DiamondPickaxe)
-            register(DiamondAxe)
-            register(Stick)
-            register(Bowl)
-            register(MushroomStew)
+            register(StoneHoe)
             register(GoldenSword)
             register(GoldenShovel)
             register(GoldenPickaxe)
             register(GoldenAxe)
+            register(GoldenHoe)
+            register(IronSword)
+            register(IronShovel)
+            register(IronPickaxe)
+            register(IronAxe)
+            register(IronHoe)
+            register(DiamondSword)
+            register(DiamondShovel)
+            register(DiamondPickaxe)
+            register(DiamondAxe)
+            register(DiamondHoe)
+            register(NetheriteSword)
+            register(NetheriteShovel)
+            register(NetheritePickaxe)
+            register(NetheriteAxe)
+            register(NetheriteHoe)
+            register(Stick)
+            register(Bowl)
+            register(MushroomStew)
             register(String)
             register(Feather)
             register(Gunpowder)
-            register(WoodenHoe)
-            register(StoneHoe)
-            register(IronHoe)
-            register(DiamondHoe)
-            register(GoldenHoe)
             register(WheatSeeds)
             register(Wheat)
             register(Bread)
@@ -255,49 +801,99 @@ public open class Material(
             register(GoldenChestplate)
             register(GoldenLeggings)
             register(GoldenBoots)
+            register(NetheriteHelmet)
+            register(NetheriteChestplate)
+            register(NetheriteLeggings)
+            register(NetheriteBoots)
             register(Flint)
             register(Porkchop)
             register(CookedPorkchop)
             register(Painting)
             register(GoldenApple)
-            register(Sign)
-            register(WoodenDoor)
+            register(EnchantedGoldenApple)
+            register(OakSign)
+            register(SpruceSign)
+            register(BirchSign)
+            register(JungleSign)
+            register(AcaciaSign)
+            register(DarkOakSign)
+            register(CrimsonSign)
+            register(WarpedSign)
             register(Bucket)
             register(WaterBucket)
             register(LavaBucket)
-            register(Minecart)
-            register(Saddle)
-            register(IronDoor)
-            register(Redstone)
+            register(PowderSnowBucket)
             register(Snowball)
-            register(Boat)
             register(Leather)
             register(MilkBucket)
+            register(PufferfishBucket)
+            register(SalmonBucket)
+            register(CodBucket)
+            register(TropicalFishBucket)
+            register(AxolotlBucket)
             register(Brick)
             register(ClayBall)
-            register(Reeds)
+            register(DriedKelpBlock)
             register(Paper)
             register(Book)
             register(SlimeBall)
-            register(ChestMinecart)
-            register(FurnaceMinecart)
             register(Egg)
             register(Compass)
+            register(Bundle)
             register(FishingRod)
             register(Clock)
+            register(Spyglass)
             register(GlowstoneDust)
-            register(Fish)
-            register(CookedFish)
-            register(Dye)
+            register(Cod)
+            register(Salmon)
+            register(TropicalFish)
+            register(Pufferfish)
+            register(CookedCod)
+            register(CookedSalmon)
+            register(InkSac)
+            register(GlowInkSac)
+            register(CocoaBeans)
+            register(WhiteDye)
+            register(OrangeDye)
+            register(MagentaDye)
+            register(LightBlueDye)
+            register(YellowDye)
+            register(LimeDye)
+            register(PinkDye)
+            register(GrayDye)
+            register(LightGrayDye)
+            register(CyanDye)
+            register(PurpleDye)
+            register(BlueDye)
+            register(BrownDye)
+            register(GreenDye)
+            register(RedDye)
+            register(BlackDye)
+            register(BoneMeal)
             register(Bone)
             register(Sugar)
             register(Cake)
-            register(Bed)
-            register(Repeater)
+            register(WhiteBed)
+            register(OrangeBed)
+            register(MagentaBed)
+            register(LightBlueBed)
+            register(YellowBed)
+            register(LimeBed)
+            register(PinkBed)
+            register(GrayBed)
+            register(LightGrayBed)
+            register(CyanBed)
+            register(PurpleBed)
+            register(BlueBed)
+            register(BrownBed)
+            register(GreenBed)
+            register(RedBed)
+            register(BlackBed)
             register(Cookie)
             register(FilledMap)
             register(Shears)
-            register(Melon)
+            register(MelonSlice)
+            register(DriedKelp)
             register(PumpkinSeeds)
             register(MelonSeeds)
             register(Beef)
@@ -319,14 +915,80 @@ public open class Material(
             register(BrewingStand)
             register(Cauldron)
             register(EnderEye)
-            register(SpeckledMelon)
-            register(SpawnEgg)
+            register(GlisteringMelonSlice)
+            register(AxolotlSpawnEgg)
+            register(BatSpawnEgg)
+            register(BeeSpawnEgg)
+            register(BlazeSpawnEgg)
+            register(CatSpawnEgg)
+            register(CaveSpiderSpawnEgg)
+            register(ChickenSpawnEgg)
+            register(CodSpawnEgg)
+            register(CowSpawnEgg)
+            register(CreeperSpawnEgg)
+            register(DolphinSpawnEgg)
+            register(DonkeySpawnEgg)
+            register(DrownedSpawnEgg)
+            register(ElderGuardianSpawnEgg)
+            register(EndermanSpawnEgg)
+            register(EndermiteSpawnEgg)
+            register(EvokerSpawnEgg)
+            register(FoxSpawnEgg)
+            register(GhastSpawnEgg)
+            register(GlowSquidSpawnEgg)
+            register(GoatSpawnEgg)
+            register(GuardianSpawnEgg)
+            register(HoglinSpawnEgg)
+            register(HorseSpawnEgg)
+            register(HuskSpawnEgg)
+            register(LlamaSpawnEgg)
+            register(MagmaCubeSpawnEgg)
+            register(MooshroomSpawnEgg)
+            register(MuleSpawnEgg)
+            register(OcelotSpawnEgg)
+            register(PandaSpawnEgg)
+            register(ParrotSpawnEgg)
+            register(PhantomSpawnEgg)
+            register(PigSpawnEgg)
+            register(PiglinSpawnEgg)
+            register(PiglinBruteSpawnEgg)
+            register(PillagerSpawnEgg)
+            register(PolarBearSpawnEgg)
+            register(PufferfishSpawnEgg)
+            register(RabbitSpawnEgg)
+            register(RavagerSpawnEgg)
+            register(SalmonSpawnEgg)
+            register(SheepSpawnEgg)
+            register(ShulkerSpawnEgg)
+            register(SilverfishSpawnEgg)
+            register(SkeletonSpawnEgg)
+            register(SkeletonHorseSpawnEgg)
+            register(SlimeSpawnEgg)
+            register(SpiderSpawnEgg)
+            register(SquidSpawnEgg)
+            register(StraySpawnEgg)
+            register(StriderSpawnEgg)
+            register(TraderLlamaSpawnEgg)
+            register(TropicalFishSpawnEgg)
+            register(TurtleSpawnEgg)
+            register(VexSpawnEgg)
+            register(VillagerSpawnEgg)
+            register(VindicatorSpawnEgg)
+            register(WanderingTraderSpawnEgg)
+            register(WitchSpawnEgg)
+            register(WitherSkeletonSpawnEgg)
+            register(WolfSpawnEgg)
+            register(ZoglinSpawnEgg)
+            register(ZombieSpawnEgg)
+            register(ZombieHorseSpawnEgg)
+            register(ZombieVillagerSpawnEgg)
+            register(ZombifiedPiglinSpawnEgg)
             register(ExperienceBottle)
             register(FireCharge)
             register(WritableBook)
             register(WrittenBook)
-            register(Emerald)
             register(ItemFrame)
+            register(GlowItemFrame)
             register(FlowerPot)
             register(Carrot)
             register(Potato)
@@ -334,18 +996,18 @@ public open class Material(
             register(PoisonousPotato)
             register(Map)
             register(GoldenCarrot)
-            register(Skull)
-            register(CarrotOnAStick)
+            register(SkeletonSkull)
+            register(WitherSkeletonSkull)
+            register(PlayerHead)
+            register(ZombieHead)
+            register(CreeperHead)
+            register(DragonHead)
             register(NetherStar)
             register(PumpkinPie)
-            register(Fireworks)
-            register(FireworkCharge)
+            register(FireworkRocket)
+            register(FireworkStar)
             register(EnchantedBook)
-            register(Comparator)
-            register(Netherbrick)
-            register(Quartz)
-            register(TntMinecart)
-            register(HopperMinecart)
+            register(NetherBrick)
             register(PrismarineShard)
             register(PrismarineCrystals)
             register(Rabbit)
@@ -357,30 +1019,133 @@ public open class Material(
             register(IronHorseArmor)
             register(GoldenHorseArmor)
             register(DiamondHorseArmor)
+            register(LeatherHorseArmor)
             register(Lead)
             register(NameTag)
             register(CommandBlockMinecart)
             register(Mutton)
             register(CookedMutton)
-            register(Banner)
-            register(SpruceDoor)
-            register(BirchDoor)
-            register(JungleDoor)
-            register(AcaciaDoor)
-            register(DarkOakDoor)
-            register(Record13)
-            register(RecordCat)
-            register(RecordBlocks)
-            register(RecordChirp)
-            register(RecordFar)
-            register(RecordMall)
-            register(RecordMellohi)
-            register(RecordStal)
-            register(RecordStrad)
-            register(RecordWard)
-            register(Record11)
-            register(RecordWait)
+            register(WhiteBanner)
+            register(OrangeBanner)
+            register(MagentaBanner)
+            register(LightBlueBanner)
+            register(YellowBanner)
+            register(LimeBanner)
+            register(PinkBanner)
+            register(GrayBanner)
+            register(LightGrayBanner)
+            register(CyanBanner)
+            register(PurpleBanner)
+            register(BlueBanner)
+            register(BrownBanner)
+            register(GreenBanner)
+            register(RedBanner)
+            register(BlackBanner)
+            register(EndCrystal)
+            register(ChorusFruit)
+            register(PoppedChorusFruit)
+            register(Beetroot)
+            register(BeetrootSeeds)
+            register(BeetrootSoup)
+            register(DragonBreath)
+            register(SplashPotion)
+            register(SpectralArrow)
+            register(TippedArrow)
+            register(LingeringPotion)
+            register(Shield)
+            register(TotemOfUndying)
+            register(ShulkerShell)
+            register(IronNugget)
+            register(KnowledgeBook)
+            register(DebugStick)
+            register(MusicDisc13)
+            register(MusicDiscCat)
+            register(MusicDiscBlocks)
+            register(MusicDiscChirp)
+            register(MusicDiscFar)
+            register(MusicDiscMall)
+            register(MusicDiscMellohi)
+            register(MusicDiscStal)
+            register(MusicDiscStrad)
+            register(MusicDiscWard)
+            register(MusicDisc11)
+            register(MusicDiscWait)
+            register(MusicDiscOtherside)
+            register(MusicDiscPigstep)
+            register(Trident)
+            register(PhantomMembrane)
+            register(NautilusShell)
+            register(HeartOfTheSea)
+            register(Crossbow)
+            register(SuspiciousStew)
+            register(Loom)
+            register(FlowerBannerPattern)
+            register(CreeperBannerPattern)
+            register(SkullBannerPattern)
+            register(MojangBannerPattern)
+            register(GlobeBannerPattern)
+            register(PiglinBannerPattern)
+            register(Composter)
+            register(Barrel)
+            register(Smoker)
+            register(BlastFurnace)
+            register(CartographyTable)
+            register(FletchingTable)
+            register(Grindstone)
+            register(SmithingTable)
+            register(Stonecutter)
+            register(Bell)
+            register(Lantern)
+            register(SoulLantern)
+            register(SweetBerries)
+            register(GlowBerries)
+            register(Campfire)
+            register(SoulCampfire)
+            register(Shroomlight)
+            register(Honeycomb)
+            register(BeeNest)
+            register(Beehive)
+            register(HoneyBottle)
+            register(HoneycombBlock)
+            register(Lodestone)
+            register(CryingObsidian)
+            register(Blackstone)
+            register(BlackstoneSlab)
+            register(BlackstoneStairs)
+            register(GildedBlackstone)
+            register(PolishedBlackstone)
+            register(PolishedBlackstoneSlab)
+            register(PolishedBlackstoneStairs)
+            register(ChiseledPolishedBlackstone)
+            register(PolishedBlackstoneBricks)
+            register(PolishedBlackstoneBrickSlab)
+            register(PolishedBlackstoneBrickStairs)
+            register(CrackedPolishedBlackstoneBricks)
+            register(RespawnAnchor)
+            register(Candle)
+            register(WhiteCandle)
+            register(OrangeCandle)
+            register(MagentaCandle)
+            register(LightBlueCandle)
+            register(YellowCandle)
+            register(LimeCandle)
+            register(PinkCandle)
+            register(GrayCandle)
+            register(LightGrayCandle)
+            register(CyanCandle)
+            register(PurpleCandle)
+            register(BlueCandle)
+            register(BrownCandle)
+            register(GreenCandle)
+            register(RedCandle)
+            register(BlackCandle)
+            register(SmallAmethystBud)
+            register(MediumAmethystBud)
+            register(LargeAmethystBud)
+            register(AmethystCluster)
+            register(PointedDripstone)
         }
+
     }
 
     public object Stone : Material(
@@ -389,2413 +1154,7700 @@ public open class Material(
         identifier = Identifier("minecraft:stone"),
         stackSize = 64
     )
-
-    public object Grass : Material(
+    
+    public object Granite : Material(
         id = 2,
-        displayName = "Grass Block",
-        identifier = Identifier("minecraft:grass"),
+        displayName = "Granite",
+        identifier = Identifier("minecraft:granite"),
         stackSize = 64
     )
-
-    public object Dirt : Material(
+    
+    public object PolishedGranite : Material(
         id = 3,
+        displayName = "Polished Granite",
+        identifier = Identifier("minecraft:polished_granite"),
+        stackSize = 64
+    )
+    
+    public object Diorite : Material(
+        id = 4,
+        displayName = "Diorite",
+        identifier = Identifier("minecraft:diorite"),
+        stackSize = 64
+    )
+    
+    public object PolishedDiorite : Material(
+        id = 5,
+        displayName = "Polished Diorite",
+        identifier = Identifier("minecraft:polished_diorite"),
+        stackSize = 64
+    )
+    
+    public object Andesite : Material(
+        id = 6,
+        displayName = "Andesite",
+        identifier = Identifier("minecraft:andesite"),
+        stackSize = 64
+    )
+    
+    public object PolishedAndesite : Material(
+        id = 7,
+        displayName = "Polished Andesite",
+        identifier = Identifier("minecraft:polished_andesite"),
+        stackSize = 64
+    )
+    
+    public object Deepslate : Material(
+        id = 8,
+        displayName = "Deepslate",
+        identifier = Identifier("minecraft:deepslate"),
+        stackSize = 64
+    )
+    
+    public object CobbledDeepslate : Material(
+        id = 9,
+        displayName = "Cobbled Deepslate",
+        identifier = Identifier("minecraft:cobbled_deepslate"),
+        stackSize = 64
+    )
+    
+    public object PolishedDeepslate : Material(
+        id = 10,
+        displayName = "Polished Deepslate",
+        identifier = Identifier("minecraft:polished_deepslate"),
+        stackSize = 64
+    )
+    
+    public object Calcite : Material(
+        id = 11,
+        displayName = "Calcite",
+        identifier = Identifier("minecraft:calcite"),
+        stackSize = 64
+    )
+    
+    public object Tuff : Material(
+        id = 12,
+        displayName = "Tuff",
+        identifier = Identifier("minecraft:tuff"),
+        stackSize = 64
+    )
+    
+    public object DripstoneBlock : Material(
+        id = 13,
+        displayName = "Dripstone Block",
+        identifier = Identifier("minecraft:dripstone_block"),
+        stackSize = 64
+    )
+    
+    public object GrassBlock : Material(
+        id = 14,
+        displayName = "Grass Block",
+        identifier = Identifier("minecraft:grass_block"),
+        stackSize = 64
+    )
+    
+    public object Dirt : Material(
+        id = 15,
         displayName = "Dirt",
         identifier = Identifier("minecraft:dirt"),
         stackSize = 64
     )
-
+    
+    public object CoarseDirt : Material(
+        id = 16,
+        displayName = "Coarse Dirt",
+        identifier = Identifier("minecraft:coarse_dirt"),
+        stackSize = 64
+    )
+    
+    public object Podzol : Material(
+        id = 17,
+        displayName = "Podzol",
+        identifier = Identifier("minecraft:podzol"),
+        stackSize = 64
+    )
+    
+    public object RootedDirt : Material(
+        id = 18,
+        displayName = "Rooted Dirt",
+        identifier = Identifier("minecraft:rooted_dirt"),
+        stackSize = 64
+    )
+    
+    public object CrimsonNylium : Material(
+        id = 19,
+        displayName = "Crimson Nylium",
+        identifier = Identifier("minecraft:crimson_nylium"),
+        stackSize = 64
+    )
+    
+    public object WarpedNylium : Material(
+        id = 20,
+        displayName = "Warped Nylium",
+        identifier = Identifier("minecraft:warped_nylium"),
+        stackSize = 64
+    )
+    
     public object Cobblestone : Material(
-        id = 4,
+        id = 21,
         displayName = "Cobblestone",
         identifier = Identifier("minecraft:cobblestone"),
         stackSize = 64
     )
-
-    public object Planks : Material(
-        id = 5,
-        displayName = "Wooden Planks",
-        identifier = Identifier("minecraft:planks"),
+    
+    public object OakPlanks : Material(
+        id = 22,
+        displayName = "Oak Planks",
+        identifier = Identifier("minecraft:oak_planks"),
         stackSize = 64
     )
-
-    public object Sapling : Material(
-        id = 6,
-        displayName = "Sapling",
-        identifier = Identifier("minecraft:sapling"),
+    
+    public object SprucePlanks : Material(
+        id = 23,
+        displayName = "Spruce Planks",
+        identifier = Identifier("minecraft:spruce_planks"),
         stackSize = 64
     )
-
+    
+    public object BirchPlanks : Material(
+        id = 24,
+        displayName = "Birch Planks",
+        identifier = Identifier("minecraft:birch_planks"),
+        stackSize = 64
+    )
+    
+    public object JunglePlanks : Material(
+        id = 25,
+        displayName = "Jungle Planks",
+        identifier = Identifier("minecraft:jungle_planks"),
+        stackSize = 64
+    )
+    
+    public object AcaciaPlanks : Material(
+        id = 26,
+        displayName = "Acacia Planks",
+        identifier = Identifier("minecraft:acacia_planks"),
+        stackSize = 64
+    )
+    
+    public object DarkOakPlanks : Material(
+        id = 27,
+        displayName = "Dark Oak Planks",
+        identifier = Identifier("minecraft:dark_oak_planks"),
+        stackSize = 64
+    )
+    
+    public object CrimsonPlanks : Material(
+        id = 28,
+        displayName = "Crimson Planks",
+        identifier = Identifier("minecraft:crimson_planks"),
+        stackSize = 64
+    )
+    
+    public object WarpedPlanks : Material(
+        id = 29,
+        displayName = "Warped Planks",
+        identifier = Identifier("minecraft:warped_planks"),
+        stackSize = 64
+    )
+    
+    public object OakSapling : Material(
+        id = 30,
+        displayName = "Oak Sapling",
+        identifier = Identifier("minecraft:oak_sapling"),
+        stackSize = 64
+    )
+    
+    public object SpruceSapling : Material(
+        id = 31,
+        displayName = "Spruce Sapling",
+        identifier = Identifier("minecraft:spruce_sapling"),
+        stackSize = 64
+    )
+    
+    public object BirchSapling : Material(
+        id = 32,
+        displayName = "Birch Sapling",
+        identifier = Identifier("minecraft:birch_sapling"),
+        stackSize = 64
+    )
+    
+    public object JungleSapling : Material(
+        id = 33,
+        displayName = "Jungle Sapling",
+        identifier = Identifier("minecraft:jungle_sapling"),
+        stackSize = 64
+    )
+    
+    public object AcaciaSapling : Material(
+        id = 34,
+        displayName = "Acacia Sapling",
+        identifier = Identifier("minecraft:acacia_sapling"),
+        stackSize = 64
+    )
+    
+    public object DarkOakSapling : Material(
+        id = 35,
+        displayName = "Dark Oak Sapling",
+        identifier = Identifier("minecraft:dark_oak_sapling"),
+        stackSize = 64
+    )
+    
     public object Bedrock : Material(
-        id = 7,
+        id = 36,
         displayName = "Bedrock",
         identifier = Identifier("minecraft:bedrock"),
         stackSize = 64
     )
-
+    
     public object Sand : Material(
-        id = 12,
+        id = 37,
         displayName = "Sand",
         identifier = Identifier("minecraft:sand"),
         stackSize = 64
     )
-
+    
+    public object RedSand : Material(
+        id = 38,
+        displayName = "Red Sand",
+        identifier = Identifier("minecraft:red_sand"),
+        stackSize = 64
+    )
+    
     public object Gravel : Material(
-        id = 13,
+        id = 39,
         displayName = "Gravel",
         identifier = Identifier("minecraft:gravel"),
         stackSize = 64
     )
-
-    public object GoldOre : Material(
-        id = 14,
-        displayName = "Gold Ore",
-        identifier = Identifier("minecraft:gold_ore"),
-        stackSize = 64
-    )
-
-    public object IronOre : Material(
-        id = 15,
-        displayName = "Iron Ore",
-        identifier = Identifier("minecraft:iron_ore"),
-        stackSize = 64
-    )
-
+    
     public object CoalOre : Material(
-        id = 16,
+        id = 40,
         displayName = "Coal Ore",
         identifier = Identifier("minecraft:coal_ore"),
         stackSize = 64
     )
-
-    public object Log : Material(
-        id = 17,
-        displayName = "Wood",
-        identifier = Identifier("minecraft:log"),
-        stackSize = 64
-    )
-
-    public object Leaves : Material(
-        id = 18,
-        displayName = "Leaves",
-        identifier = Identifier("minecraft:leaves"),
-        stackSize = 64
-    )
-
-    public object Sponge : Material(
-        id = 19,
-        displayName = "Sponge",
-        identifier = Identifier("minecraft:sponge"),
-        stackSize = 64
-    )
-
-    public object Glass : Material(
-        id = 20,
-        displayName = "Glass",
-        identifier = Identifier("minecraft:glass"),
-        stackSize = 64
-    )
-
-    public object LapisOre : Material(
-        id = 21,
-        displayName = "Lapis Lazuli Ore",
-        identifier = Identifier("minecraft:lapis_ore"),
-        stackSize = 64
-    )
-
-    public object LapisBlock : Material(
-        id = 22,
-        displayName = "Lapis Lazuli Block",
-        identifier = Identifier("minecraft:lapis_block"),
-        stackSize = 64
-    )
-
-    public object Dispenser : Material(
-        id = 23,
-        displayName = "Dispenser",
-        identifier = Identifier("minecraft:dispenser"),
-        stackSize = 64
-    )
-
-    public object Sandstone : Material(
-        id = 24,
-        displayName = "Sandstone",
-        identifier = Identifier("minecraft:sandstone"),
-        stackSize = 64
-    )
-
-    public object Noteblock : Material(
-        id = 25,
-        displayName = "Note Block",
-        identifier = Identifier("minecraft:noteblock"),
-        stackSize = 64
-    )
-
-    public object GoldenRail : Material(
-        id = 27,
-        displayName = "Powered Rail",
-        identifier = Identifier("minecraft:golden_rail"),
-        stackSize = 64
-    )
-
-    public object DetectorRail : Material(
-        id = 28,
-        displayName = "Detector Rail",
-        identifier = Identifier("minecraft:detector_rail"),
-        stackSize = 64
-    )
-
-    public object StickyPiston : Material(
-        id = 29,
-        displayName = "Sticky Piston",
-        identifier = Identifier("minecraft:sticky_piston"),
-        stackSize = 64
-    )
-
-    public object Web : Material(
-        id = 30,
-        displayName = "Cobweb",
-        identifier = Identifier("minecraft:web"),
-        stackSize = 64
-    )
-
-    public object Tallgrass : Material(
-        id = 31,
-        displayName = "Grass",
-        identifier = Identifier("minecraft:tallgrass"),
-        stackSize = 64
-    )
-
-    public object Deadbush : Material(
-        id = 32,
-        displayName = "Dead Bush",
-        identifier = Identifier("minecraft:deadbush"),
-        stackSize = 64
-    )
-
-    public object Piston : Material(
-        id = 33,
-        displayName = "Piston",
-        identifier = Identifier("minecraft:piston"),
-        stackSize = 64
-    )
-
-    public object Wool : Material(
-        id = 35,
-        displayName = "Wool",
-        identifier = Identifier("minecraft:wool"),
-        stackSize = 64
-    )
-
-    public object YellowFlower : Material(
-        id = 37,
-        displayName = "Dandelion",
-        identifier = Identifier("minecraft:yellow_flower"),
-        stackSize = 64
-    )
-
-    public object RedFlower : Material(
-        id = 38,
-        displayName = "Poppy",
-        identifier = Identifier("minecraft:red_flower"),
-        stackSize = 64
-    )
-
-    public object BrownMushroom : Material(
-        id = 39,
-        displayName = "Brown Mushroom",
-        identifier = Identifier("minecraft:brown_mushroom"),
-        stackSize = 64
-    )
-
-    public object RedMushroom : Material(
-        id = 40,
-        displayName = "Red Mushroom",
-        identifier = Identifier("minecraft:red_mushroom"),
-        stackSize = 64
-    )
-
-    public object GoldBlock : Material(
+    
+    public object DeepslateCoalOre : Material(
         id = 41,
-        displayName = "Block of Gold",
-        identifier = Identifier("minecraft:gold_block"),
+        displayName = "Deepslate Coal Ore",
+        identifier = Identifier("minecraft:deepslate_coal_ore"),
         stackSize = 64
     )
-
-    public object IronBlock : Material(
+    
+    public object IronOre : Material(
         id = 42,
-        displayName = "Block of Iron",
-        identifier = Identifier("minecraft:iron_block"),
+        displayName = "Iron Ore",
+        identifier = Identifier("minecraft:iron_ore"),
         stackSize = 64
     )
-
-    public object StoneSlab : Material(
+    
+    public object DeepslateIronOre : Material(
+        id = 43,
+        displayName = "Deepslate Iron Ore",
+        identifier = Identifier("minecraft:deepslate_iron_ore"),
+        stackSize = 64
+    )
+    
+    public object CopperOre : Material(
         id = 44,
-        displayName = "Stone Slab",
-        identifier = Identifier("minecraft:stone_slab"),
+        displayName = "Copper Ore",
+        identifier = Identifier("minecraft:copper_ore"),
         stackSize = 64
     )
-
-    public object BrickBlock : Material(
+    
+    public object DeepslateCopperOre : Material(
         id = 45,
-        displayName = "Brick",
-        identifier = Identifier("minecraft:brick_block"),
+        displayName = "Deepslate Copper Ore",
+        identifier = Identifier("minecraft:deepslate_copper_ore"),
         stackSize = 64
     )
-
-    public object Tnt : Material(
+    
+    public object GoldOre : Material(
         id = 46,
-        displayName = "TNT",
-        identifier = Identifier("minecraft:tnt"),
+        displayName = "Gold Ore",
+        identifier = Identifier("minecraft:gold_ore"),
         stackSize = 64
     )
-
-    public object Bookshelf : Material(
+    
+    public object DeepslateGoldOre : Material(
         id = 47,
-        displayName = "Bookshelf",
-        identifier = Identifier("minecraft:bookshelf"),
+        displayName = "Deepslate Gold Ore",
+        identifier = Identifier("minecraft:deepslate_gold_ore"),
         stackSize = 64
     )
-
-    public object MossyCobblestone : Material(
-        id = 48,
-        displayName = "Moss Stone",
-        identifier = Identifier("minecraft:mossy_cobblestone"),
-        stackSize = 64
-    )
-
-    public object Obsidian : Material(
-        id = 49,
-        displayName = "Obsidian",
-        identifier = Identifier("minecraft:obsidian"),
-        stackSize = 64
-    )
-
-    public object Torch : Material(
-        id = 50,
-        displayName = "Torch",
-        identifier = Identifier("minecraft:torch"),
-        stackSize = 64
-    )
-
-    public object MobSpawner : Material(
-        id = 52,
-        displayName = "Monster Spawner",
-        identifier = Identifier("minecraft:mob_spawner"),
-        stackSize = 64
-    )
-
-    public object OakStairs : Material(
-        id = 53,
-        displayName = "Oak Wood Stairs",
-        identifier = Identifier("minecraft:oak_stairs"),
-        stackSize = 64
-    )
-
-    public object Chest : Material(
-        id = 54,
-        displayName = "Chest",
-        identifier = Identifier("minecraft:chest"),
-        stackSize = 64
-    )
-
-    public object DiamondOre : Material(
-        id = 56,
-        displayName = "Diamond Ore",
-        identifier = Identifier("minecraft:diamond_ore"),
-        stackSize = 64
-    )
-
-    public object DiamondBlock : Material(
-        id = 57,
-        displayName = "Block of Diamond",
-        identifier = Identifier("minecraft:diamond_block"),
-        stackSize = 64
-    )
-
-    public object CraftingTable : Material(
-        id = 58,
-        displayName = "Crafting Table",
-        identifier = Identifier("minecraft:crafting_table"),
-        stackSize = 64
-    )
-
-    public object Farmland : Material(
-        id = 60,
-        displayName = "Farmland",
-        identifier = Identifier("minecraft:farmland"),
-        stackSize = 64
-    )
-
-    public object Furnace : Material(
-        id = 61,
-        displayName = "Furnace",
-        identifier = Identifier("minecraft:furnace"),
-        stackSize = 64
-    )
-
-    public object Ladder : Material(
-        id = 65,
-        displayName = "Ladder",
-        identifier = Identifier("minecraft:ladder"),
-        stackSize = 64
-    )
-
-    public object Rail : Material(
-        id = 66,
-        displayName = "Rail",
-        identifier = Identifier("minecraft:rail"),
-        stackSize = 64
-    )
-
-    public object StoneStairs : Material(
-        id = 67,
-        displayName = "Cobblestone Stairs",
-        identifier = Identifier("minecraft:stone_stairs"),
-        stackSize = 64
-    )
-
-    public object Lever : Material(
-        id = 69,
-        displayName = "Lever",
-        identifier = Identifier("minecraft:lever"),
-        stackSize = 64
-    )
-
-    public object StonePressurePlate : Material(
-        id = 70,
-        displayName = "Stone Pressure Plate",
-        identifier = Identifier("minecraft:stone_pressure_plate"),
-        stackSize = 64
-    )
-
-    public object WoodenPressurePlate : Material(
-        id = 72,
-        displayName = "Wooden Pressure Plate",
-        identifier = Identifier("minecraft:wooden_pressure_plate"),
-        stackSize = 64
-    )
-
+    
     public object RedstoneOre : Material(
-        id = 73,
+        id = 48,
         displayName = "Redstone Ore",
         identifier = Identifier("minecraft:redstone_ore"),
         stackSize = 64
     )
-
-    public object RedstoneTorch : Material(
-        id = 76,
-        displayName = "Redstone Torch",
-        identifier = Identifier("minecraft:redstone_torch"),
+    
+    public object DeepslateRedstoneOre : Material(
+        id = 49,
+        displayName = "Deepslate Redstone Ore",
+        identifier = Identifier("minecraft:deepslate_redstone_ore"),
         stackSize = 64
     )
-
-    public object StoneButton : Material(
-        id = 77,
-        displayName = "Stone Button",
-        identifier = Identifier("minecraft:stone_button"),
-        stackSize = 64
-    )
-
-    public object SnowLayer : Material(
-        id = 78,
-        displayName = "Snow",
-        identifier = Identifier("minecraft:snow_layer"),
-        stackSize = 64
-    )
-
-    public object Ice : Material(
-        id = 79,
-        displayName = "Ice",
-        identifier = Identifier("minecraft:ice"),
-        stackSize = 64
-    )
-
-    public object Snow : Material(
-        id = 80,
-        displayName = "Snow",
-        identifier = Identifier("minecraft:snow"),
-        stackSize = 64
-    )
-
-    public object Cactus : Material(
-        id = 81,
-        displayName = "Cactus",
-        identifier = Identifier("minecraft:cactus"),
-        stackSize = 64
-    )
-
-    public object Clay : Material(
-        id = 82,
-        displayName = "Clay",
-        identifier = Identifier("minecraft:clay"),
-        stackSize = 64
-    )
-
-    public object Jukebox : Material(
-        id = 84,
-        displayName = "Jukebox",
-        identifier = Identifier("minecraft:jukebox"),
-        stackSize = 64
-    )
-
-    public object Fence : Material(
-        id = 85,
-        displayName = "Oak Fence",
-        identifier = Identifier("minecraft:fence"),
-        stackSize = 64
-    )
-
-    public object Pumpkin : Material(
-        id = 86,
-        displayName = "Pumpkin",
-        identifier = Identifier("minecraft:pumpkin"),
-        stackSize = 64
-    )
-
-    public object Netherrack : Material(
-        id = 87,
-        displayName = "Netherrack",
-        identifier = Identifier("minecraft:netherrack"),
-        stackSize = 64
-    )
-
-    public object SoulSand : Material(
-        id = 88,
-        displayName = "Soul Sand",
-        identifier = Identifier("minecraft:soul_sand"),
-        stackSize = 64
-    )
-
-    public object Glowstone : Material(
-        id = 89,
-        displayName = "Glowstone",
-        identifier = Identifier("minecraft:glowstone"),
-        stackSize = 64
-    )
-
-    public object LitPumpkin : Material(
-        id = 91,
-        displayName = "Jack o'Lantern",
-        identifier = Identifier("minecraft:lit_pumpkin"),
-        stackSize = 64
-    )
-
-    public object StainedGlass : Material(
-        id = 95,
-        displayName = "Stained Glass",
-        identifier = Identifier("minecraft:stained_glass"),
-        stackSize = 64
-    )
-
-    public object Trapdoor : Material(
-        id = 96,
-        displayName = "Wooden Trapdoor",
-        identifier = Identifier("minecraft:trapdoor"),
-        stackSize = 64
-    )
-
-    public object MonsterEgg : Material(
-        id = 97,
-        displayName = "Monster Egg",
-        identifier = Identifier("minecraft:monster_egg"),
-        stackSize = 64
-    )
-
-    public object Stonebrick : Material(
-        id = 98,
-        displayName = "Stone Bricks",
-        identifier = Identifier("minecraft:stonebrick"),
-        stackSize = 64
-    )
-
-    public object BrownMushroomBlock : Material(
-        id = 99,
-        displayName = "Brown Mushroom Block",
-        identifier = Identifier("minecraft:brown_mushroom_block"),
-        stackSize = 64
-    )
-
-    public object RedMushroomBlock : Material(
-        id = 100,
-        displayName = "Red Mushroom Block",
-        identifier = Identifier("minecraft:red_mushroom_block"),
-        stackSize = 64
-    )
-
-    public object IronBars : Material(
-        id = 101,
-        displayName = "Iron Bars",
-        identifier = Identifier("minecraft:iron_bars"),
-        stackSize = 64
-    )
-
-    public object GlassPane : Material(
-        id = 102,
-        displayName = "Glass Pane",
-        identifier = Identifier("minecraft:glass_pane"),
-        stackSize = 64
-    )
-
-    public object MelonBlock : Material(
-        id = 103,
-        displayName = "Melon",
-        identifier = Identifier("minecraft:melon_block"),
-        stackSize = 64
-    )
-
-    public object Vine : Material(
-        id = 106,
-        displayName = "Vines",
-        identifier = Identifier("minecraft:vine"),
-        stackSize = 64
-    )
-
-    public object FenceGate : Material(
-        id = 107,
-        displayName = "Oak Fence Gate",
-        identifier = Identifier("minecraft:fence_gate"),
-        stackSize = 64
-    )
-
-    public object BrickStairs : Material(
-        id = 108,
-        displayName = "Brick Stairs",
-        identifier = Identifier("minecraft:brick_stairs"),
-        stackSize = 64
-    )
-
-    public object StoneBrickStairs : Material(
-        id = 109,
-        displayName = "Stone Brick Stairs",
-        identifier = Identifier("minecraft:stone_brick_stairs"),
-        stackSize = 64
-    )
-
-    public object Mycelium : Material(
-        id = 110,
-        displayName = "Mycelium",
-        identifier = Identifier("minecraft:mycelium"),
-        stackSize = 64
-    )
-
-    public object Waterlily : Material(
-        id = 111,
-        displayName = "Lily Pad",
-        identifier = Identifier("minecraft:waterlily"),
-        stackSize = 64
-    )
-
-    public object NetherBrick : Material(
-        id = 112,
-        displayName = "Nether Brick",
-        identifier = Identifier("minecraft:nether_brick"),
-        stackSize = 64
-    )
-
-    public object NetherBrickFence : Material(
-        id = 113,
-        displayName = "Nether Brick Fence",
-        identifier = Identifier("minecraft:nether_brick_fence"),
-        stackSize = 64
-    )
-
-    public object NetherBrickStairs : Material(
-        id = 114,
-        displayName = "Nether Brick Stairs",
-        identifier = Identifier("minecraft:nether_brick_stairs"),
-        stackSize = 64
-    )
-
-    public object EnchantingTable : Material(
-        id = 116,
-        displayName = "Enchantment Table",
-        identifier = Identifier("minecraft:enchanting_table"),
-        stackSize = 64
-    )
-
-    public object EndPortalFrame : Material(
-        id = 120,
-        displayName = "End Portal Frame",
-        identifier = Identifier("minecraft:end_portal_frame"),
-        stackSize = 64
-    )
-
-    public object EndStone : Material(
-        id = 121,
-        displayName = "End Stone",
-        identifier = Identifier("minecraft:end_stone"),
-        stackSize = 64
-    )
-
-    public object DragonEgg : Material(
-        id = 122,
-        displayName = "Dragon Egg",
-        identifier = Identifier("minecraft:dragon_egg"),
-        stackSize = 64
-    )
-
-    public object RedstoneLamp : Material(
-        id = 123,
-        displayName = "Redstone Lamp",
-        identifier = Identifier("minecraft:redstone_lamp"),
-        stackSize = 64
-    )
-
-    public object WoodenSlab : Material(
-        id = 126,
-        displayName = "Wood Slab",
-        identifier = Identifier("minecraft:wooden_slab"),
-        stackSize = 64
-    )
-
-    public object SandstoneStairs : Material(
-        id = 128,
-        displayName = "Sandstone Stairs",
-        identifier = Identifier("minecraft:sandstone_stairs"),
-        stackSize = 64
-    )
-
+    
     public object EmeraldOre : Material(
-        id = 129,
+        id = 50,
         displayName = "Emerald Ore",
         identifier = Identifier("minecraft:emerald_ore"),
         stackSize = 64
     )
-
-    public object EnderChest : Material(
-        id = 130,
-        displayName = "Ender Chest",
-        identifier = Identifier("minecraft:ender_chest"),
+    
+    public object DeepslateEmeraldOre : Material(
+        id = 51,
+        displayName = "Deepslate Emerald Ore",
+        identifier = Identifier("minecraft:deepslate_emerald_ore"),
         stackSize = 64
     )
-
-    public object TripwireHook : Material(
-        id = 131,
-        displayName = "Tripwire Hook",
-        identifier = Identifier("minecraft:tripwire_hook"),
+    
+    public object LapisOre : Material(
+        id = 52,
+        displayName = "Lapis Lazuli Ore",
+        identifier = Identifier("minecraft:lapis_ore"),
         stackSize = 64
     )
-
-    public object EmeraldBlock : Material(
-        id = 133,
-        displayName = "Block of Emerald",
-        identifier = Identifier("minecraft:emerald_block"),
+    
+    public object DeepslateLapisOre : Material(
+        id = 53,
+        displayName = "Deepslate Lapis Lazuli Ore",
+        identifier = Identifier("minecraft:deepslate_lapis_ore"),
         stackSize = 64
     )
-
-    public object SpruceStairs : Material(
-        id = 134,
-        displayName = "Spruce Wood Stairs",
-        identifier = Identifier("minecraft:spruce_stairs"),
+    
+    public object DiamondOre : Material(
+        id = 54,
+        displayName = "Diamond Ore",
+        identifier = Identifier("minecraft:diamond_ore"),
         stackSize = 64
     )
-
-    public object BirchStairs : Material(
-        id = 135,
-        displayName = "Birch Wood Stairs",
-        identifier = Identifier("minecraft:birch_stairs"),
+    
+    public object DeepslateDiamondOre : Material(
+        id = 55,
+        displayName = "Deepslate Diamond Ore",
+        identifier = Identifier("minecraft:deepslate_diamond_ore"),
         stackSize = 64
     )
-
-    public object JungleStairs : Material(
-        id = 136,
-        displayName = "Jungle Wood Stairs",
-        identifier = Identifier("minecraft:jungle_stairs"),
+    
+    public object NetherGoldOre : Material(
+        id = 56,
+        displayName = "Nether Gold Ore",
+        identifier = Identifier("minecraft:nether_gold_ore"),
         stackSize = 64
     )
-
-    public object CommandBlock : Material(
-        id = 137,
-        displayName = "Command Block",
-        identifier = Identifier("minecraft:command_block"),
+    
+    public object NetherQuartzOre : Material(
+        id = 57,
+        displayName = "Nether Quartz Ore",
+        identifier = Identifier("minecraft:nether_quartz_ore"),
         stackSize = 64
     )
-
-    public object Beacon : Material(
-        id = 138,
-        displayName = "Beacon",
-        identifier = Identifier("minecraft:beacon"),
+    
+    public object AncientDebris : Material(
+        id = 58,
+        displayName = "Ancient Debris",
+        identifier = Identifier("minecraft:ancient_debris"),
         stackSize = 64
     )
-
-    public object CobblestoneWall : Material(
-        id = 139,
-        displayName = "Cobblestone Wall",
-        identifier = Identifier("minecraft:cobblestone_wall"),
-        stackSize = 64
-    )
-
-    public object WoodenButton : Material(
-        id = 143,
-        displayName = "Wooden Button",
-        identifier = Identifier("minecraft:wooden_button"),
-        stackSize = 64
-    )
-
-    public object Anvil : Material(
-        id = 145,
-        displayName = "Anvil",
-        identifier = Identifier("minecraft:anvil"),
-        stackSize = 64
-    )
-
-    public object TrappedChest : Material(
-        id = 146,
-        displayName = "Trapped Chest",
-        identifier = Identifier("minecraft:trapped_chest"),
-        stackSize = 64
-    )
-
-    public object LightWeightedPressurePlate : Material(
-        id = 147,
-        displayName = "Weighted Pressure Plate (Light)",
-        identifier = Identifier("minecraft:light_weighted_pressure_plate"),
-        stackSize = 64
-    )
-
-    public object HeavyWeightedPressurePlate : Material(
-        id = 148,
-        displayName = "Weighted Pressure Plate (Heavy)",
-        identifier = Identifier("minecraft:heavy_weighted_pressure_plate"),
-        stackSize = 64
-    )
-
-    public object DaylightDetector : Material(
-        id = 151,
-        displayName = "Daylight Detector",
-        identifier = Identifier("minecraft:daylight_detector"),
-        stackSize = 64
-    )
-
-    public object RedstoneBlock : Material(
-        id = 152,
-        displayName = "Block of Redstone",
-        identifier = Identifier("minecraft:redstone_block"),
-        stackSize = 64
-    )
-
-    public object QuartzOre : Material(
-        id = 153,
-        displayName = "Nether Quartz",
-        identifier = Identifier("minecraft:quartz_ore"),
-        stackSize = 64
-    )
-
-    public object Hopper : Material(
-        id = 154,
-        displayName = "Hopper",
-        identifier = Identifier("minecraft:hopper"),
-        stackSize = 64
-    )
-
-    public object QuartzBlock : Material(
-        id = 155,
-        displayName = "Block of Quartz",
-        identifier = Identifier("minecraft:quartz_block"),
-        stackSize = 64
-    )
-
-    public object QuartzStairs : Material(
-        id = 156,
-        displayName = "Quartz Stairs",
-        identifier = Identifier("minecraft:quartz_stairs"),
-        stackSize = 64
-    )
-
-    public object ActivatorRail : Material(
-        id = 157,
-        displayName = "Activator Rail",
-        identifier = Identifier("minecraft:activator_rail"),
-        stackSize = 64
-    )
-
-    public object Dropper : Material(
-        id = 158,
-        displayName = "Dropper",
-        identifier = Identifier("minecraft:dropper"),
-        stackSize = 64
-    )
-
-    public object StainedHardenedClay : Material(
-        id = 159,
-        displayName = "Stained Clay",
-        identifier = Identifier("minecraft:stained_hardened_clay"),
-        stackSize = 64
-    )
-
-    public object StainedGlassPane : Material(
-        id = 160,
-        displayName = "Stained Glass Pane",
-        identifier = Identifier("minecraft:stained_glass_pane"),
-        stackSize = 64
-    )
-
-    public object Leaves2 : Material(
-        id = 161,
-        displayName = "Leaves",
-        identifier = Identifier("minecraft:leaves2"),
-        stackSize = 64
-    )
-
-    public object Log2 : Material(
-        id = 162,
-        displayName = "Wood",
-        identifier = Identifier("minecraft:log2"),
-        stackSize = 64
-    )
-
-    public object AcaciaStairs : Material(
-        id = 163,
-        displayName = "Acacia Wood Stairs",
-        identifier = Identifier("minecraft:acacia_stairs"),
-        stackSize = 64
-    )
-
-    public object DarkOakStairs : Material(
-        id = 164,
-        displayName = "Dark Oak Wood Stairs",
-        identifier = Identifier("minecraft:dark_oak_stairs"),
-        stackSize = 64
-    )
-
-    public object Slime : Material(
-        id = 165,
-        displayName = "Slime Block",
-        identifier = Identifier("minecraft:slime"),
-        stackSize = 64
-    )
-
-    public object Barrier : Material(
-        id = 166,
-        displayName = "Barrier",
-        identifier = Identifier("minecraft:barrier"),
-        stackSize = 64
-    )
-
-    public object IronTrapdoor : Material(
-        id = 167,
-        displayName = "Iron Trapdoor",
-        identifier = Identifier("minecraft:iron_trapdoor"),
-        stackSize = 64
-    )
-
-    public object Prismarine : Material(
-        id = 168,
-        displayName = "Prismarine",
-        identifier = Identifier("minecraft:prismarine"),
-        stackSize = 64
-    )
-
-    public object SeaLantern : Material(
-        id = 169,
-        displayName = "Sea Lantern",
-        identifier = Identifier("minecraft:sea_lantern"),
-        stackSize = 64
-    )
-
-    public object HayBlock : Material(
-        id = 170,
-        displayName = "Hay Bale",
-        identifier = Identifier("minecraft:hay_block"),
-        stackSize = 64
-    )
-
-    public object Carpet : Material(
-        id = 171,
-        displayName = "Carpet",
-        identifier = Identifier("minecraft:carpet"),
-        stackSize = 64
-    )
-
-    public object HardenedClay : Material(
-        id = 172,
-        displayName = "Hardened Clay",
-        identifier = Identifier("minecraft:hardened_clay"),
-        stackSize = 64
-    )
-
+    
     public object CoalBlock : Material(
-        id = 173,
+        id = 59,
         displayName = "Block of Coal",
         identifier = Identifier("minecraft:coal_block"),
         stackSize = 64
     )
-
-    public object PackedIce : Material(
+    
+    public object RawIronBlock : Material(
+        id = 60,
+        displayName = "Block of Raw Iron",
+        identifier = Identifier("minecraft:raw_iron_block"),
+        stackSize = 64
+    )
+    
+    public object RawCopperBlock : Material(
+        id = 61,
+        displayName = "Block of Raw Copper",
+        identifier = Identifier("minecraft:raw_copper_block"),
+        stackSize = 64
+    )
+    
+    public object RawGoldBlock : Material(
+        id = 62,
+        displayName = "Block of Raw Gold",
+        identifier = Identifier("minecraft:raw_gold_block"),
+        stackSize = 64
+    )
+    
+    public object AmethystBlock : Material(
+        id = 63,
+        displayName = "Block of Amethyst",
+        identifier = Identifier("minecraft:amethyst_block"),
+        stackSize = 64
+    )
+    
+    public object BuddingAmethyst : Material(
+        id = 64,
+        displayName = "Budding Amethyst",
+        identifier = Identifier("minecraft:budding_amethyst"),
+        stackSize = 64
+    )
+    
+    public object IronBlock : Material(
+        id = 65,
+        displayName = "Block of Iron",
+        identifier = Identifier("minecraft:iron_block"),
+        stackSize = 64
+    )
+    
+    public object CopperBlock : Material(
+        id = 66,
+        displayName = "Block of Copper",
+        identifier = Identifier("minecraft:copper_block"),
+        stackSize = 64
+    )
+    
+    public object GoldBlock : Material(
+        id = 67,
+        displayName = "Block of Gold",
+        identifier = Identifier("minecraft:gold_block"),
+        stackSize = 64
+    )
+    
+    public object DiamondBlock : Material(
+        id = 68,
+        displayName = "Block of Diamond",
+        identifier = Identifier("minecraft:diamond_block"),
+        stackSize = 64
+    )
+    
+    public object NetheriteBlock : Material(
+        id = 69,
+        displayName = "Block of Netherite",
+        identifier = Identifier("minecraft:netherite_block"),
+        stackSize = 64
+    )
+    
+    public object ExposedCopper : Material(
+        id = 70,
+        displayName = "Exposed Copper",
+        identifier = Identifier("minecraft:exposed_copper"),
+        stackSize = 64
+    )
+    
+    public object WeatheredCopper : Material(
+        id = 71,
+        displayName = "Weathered Copper",
+        identifier = Identifier("minecraft:weathered_copper"),
+        stackSize = 64
+    )
+    
+    public object OxidizedCopper : Material(
+        id = 72,
+        displayName = "Oxidized Copper",
+        identifier = Identifier("minecraft:oxidized_copper"),
+        stackSize = 64
+    )
+    
+    public object CutCopper : Material(
+        id = 73,
+        displayName = "Cut Copper",
+        identifier = Identifier("minecraft:cut_copper"),
+        stackSize = 64
+    )
+    
+    public object ExposedCutCopper : Material(
+        id = 74,
+        displayName = "Exposed Cut Copper",
+        identifier = Identifier("minecraft:exposed_cut_copper"),
+        stackSize = 64
+    )
+    
+    public object WeatheredCutCopper : Material(
+        id = 75,
+        displayName = "Weathered Cut Copper",
+        identifier = Identifier("minecraft:weathered_cut_copper"),
+        stackSize = 64
+    )
+    
+    public object OxidizedCutCopper : Material(
+        id = 76,
+        displayName = "Oxidized Cut Copper",
+        identifier = Identifier("minecraft:oxidized_cut_copper"),
+        stackSize = 64
+    )
+    
+    public object CutCopperStairs : Material(
+        id = 77,
+        displayName = "Cut Copper Stairs",
+        identifier = Identifier("minecraft:cut_copper_stairs"),
+        stackSize = 64
+    )
+    
+    public object ExposedCutCopperStairs : Material(
+        id = 78,
+        displayName = "Exposed Cut Copper Stairs",
+        identifier = Identifier("minecraft:exposed_cut_copper_stairs"),
+        stackSize = 64
+    )
+    
+    public object WeatheredCutCopperStairs : Material(
+        id = 79,
+        displayName = "Weathered Cut Copper Stairs",
+        identifier = Identifier("minecraft:weathered_cut_copper_stairs"),
+        stackSize = 64
+    )
+    
+    public object OxidizedCutCopperStairs : Material(
+        id = 80,
+        displayName = "Oxidized Cut Copper Stairs",
+        identifier = Identifier("minecraft:oxidized_cut_copper_stairs"),
+        stackSize = 64
+    )
+    
+    public object CutCopperSlab : Material(
+        id = 81,
+        displayName = "Cut Copper Slab",
+        identifier = Identifier("minecraft:cut_copper_slab"),
+        stackSize = 64
+    )
+    
+    public object ExposedCutCopperSlab : Material(
+        id = 82,
+        displayName = "Exposed Cut Copper Slab",
+        identifier = Identifier("minecraft:exposed_cut_copper_slab"),
+        stackSize = 64
+    )
+    
+    public object WeatheredCutCopperSlab : Material(
+        id = 83,
+        displayName = "Weathered Cut Copper Slab",
+        identifier = Identifier("minecraft:weathered_cut_copper_slab"),
+        stackSize = 64
+    )
+    
+    public object OxidizedCutCopperSlab : Material(
+        id = 84,
+        displayName = "Oxidized Cut Copper Slab",
+        identifier = Identifier("minecraft:oxidized_cut_copper_slab"),
+        stackSize = 64
+    )
+    
+    public object WaxedCopperBlock : Material(
+        id = 85,
+        displayName = "Waxed Block of Copper",
+        identifier = Identifier("minecraft:waxed_copper_block"),
+        stackSize = 64
+    )
+    
+    public object WaxedExposedCopper : Material(
+        id = 86,
+        displayName = "Waxed Exposed Copper",
+        identifier = Identifier("minecraft:waxed_exposed_copper"),
+        stackSize = 64
+    )
+    
+    public object WaxedWeatheredCopper : Material(
+        id = 87,
+        displayName = "Waxed Weathered Copper",
+        identifier = Identifier("minecraft:waxed_weathered_copper"),
+        stackSize = 64
+    )
+    
+    public object WaxedOxidizedCopper : Material(
+        id = 88,
+        displayName = "Waxed Oxidized Copper",
+        identifier = Identifier("minecraft:waxed_oxidized_copper"),
+        stackSize = 64
+    )
+    
+    public object WaxedCutCopper : Material(
+        id = 89,
+        displayName = "Waxed Cut Copper",
+        identifier = Identifier("minecraft:waxed_cut_copper"),
+        stackSize = 64
+    )
+    
+    public object WaxedExposedCutCopper : Material(
+        id = 90,
+        displayName = "Waxed Exposed Cut Copper",
+        identifier = Identifier("minecraft:waxed_exposed_cut_copper"),
+        stackSize = 64
+    )
+    
+    public object WaxedWeatheredCutCopper : Material(
+        id = 91,
+        displayName = "Waxed Weathered Cut Copper",
+        identifier = Identifier("minecraft:waxed_weathered_cut_copper"),
+        stackSize = 64
+    )
+    
+    public object WaxedOxidizedCutCopper : Material(
+        id = 92,
+        displayName = "Waxed Oxidized Cut Copper",
+        identifier = Identifier("minecraft:waxed_oxidized_cut_copper"),
+        stackSize = 64
+    )
+    
+    public object WaxedCutCopperStairs : Material(
+        id = 93,
+        displayName = "Waxed Cut Copper Stairs",
+        identifier = Identifier("minecraft:waxed_cut_copper_stairs"),
+        stackSize = 64
+    )
+    
+    public object WaxedExposedCutCopperStairs : Material(
+        id = 94,
+        displayName = "Waxed Exposed Cut Copper Stairs",
+        identifier = Identifier("minecraft:waxed_exposed_cut_copper_stairs"),
+        stackSize = 64
+    )
+    
+    public object WaxedWeatheredCutCopperStairs : Material(
+        id = 95,
+        displayName = "Waxed Weathered Cut Copper Stairs",
+        identifier = Identifier("minecraft:waxed_weathered_cut_copper_stairs"),
+        stackSize = 64
+    )
+    
+    public object WaxedOxidizedCutCopperStairs : Material(
+        id = 96,
+        displayName = "Waxed Oxidized Cut Copper Stairs",
+        identifier = Identifier("minecraft:waxed_oxidized_cut_copper_stairs"),
+        stackSize = 64
+    )
+    
+    public object WaxedCutCopperSlab : Material(
+        id = 97,
+        displayName = "Waxed Cut Copper Slab",
+        identifier = Identifier("minecraft:waxed_cut_copper_slab"),
+        stackSize = 64
+    )
+    
+    public object WaxedExposedCutCopperSlab : Material(
+        id = 98,
+        displayName = "Waxed Exposed Cut Copper Slab",
+        identifier = Identifier("minecraft:waxed_exposed_cut_copper_slab"),
+        stackSize = 64
+    )
+    
+    public object WaxedWeatheredCutCopperSlab : Material(
+        id = 99,
+        displayName = "Waxed Weathered Cut Copper Slab",
+        identifier = Identifier("minecraft:waxed_weathered_cut_copper_slab"),
+        stackSize = 64
+    )
+    
+    public object WaxedOxidizedCutCopperSlab : Material(
+        id = 100,
+        displayName = "Waxed Oxidized Cut Copper Slab",
+        identifier = Identifier("minecraft:waxed_oxidized_cut_copper_slab"),
+        stackSize = 64
+    )
+    
+    public object OakLog : Material(
+        id = 101,
+        displayName = "Oak Log",
+        identifier = Identifier("minecraft:oak_log"),
+        stackSize = 64
+    )
+    
+    public object SpruceLog : Material(
+        id = 102,
+        displayName = "Spruce Log",
+        identifier = Identifier("minecraft:spruce_log"),
+        stackSize = 64
+    )
+    
+    public object BirchLog : Material(
+        id = 103,
+        displayName = "Birch Log",
+        identifier = Identifier("minecraft:birch_log"),
+        stackSize = 64
+    )
+    
+    public object JungleLog : Material(
+        id = 104,
+        displayName = "Jungle Log",
+        identifier = Identifier("minecraft:jungle_log"),
+        stackSize = 64
+    )
+    
+    public object AcaciaLog : Material(
+        id = 105,
+        displayName = "Acacia Log",
+        identifier = Identifier("minecraft:acacia_log"),
+        stackSize = 64
+    )
+    
+    public object DarkOakLog : Material(
+        id = 106,
+        displayName = "Dark Oak Log",
+        identifier = Identifier("minecraft:dark_oak_log"),
+        stackSize = 64
+    )
+    
+    public object CrimsonStem : Material(
+        id = 107,
+        displayName = "Crimson Stem",
+        identifier = Identifier("minecraft:crimson_stem"),
+        stackSize = 64
+    )
+    
+    public object WarpedStem : Material(
+        id = 108,
+        displayName = "Warped Stem",
+        identifier = Identifier("minecraft:warped_stem"),
+        stackSize = 64
+    )
+    
+    public object StrippedOakLog : Material(
+        id = 109,
+        displayName = "Stripped Oak Log",
+        identifier = Identifier("minecraft:stripped_oak_log"),
+        stackSize = 64
+    )
+    
+    public object StrippedSpruceLog : Material(
+        id = 110,
+        displayName = "Stripped Spruce Log",
+        identifier = Identifier("minecraft:stripped_spruce_log"),
+        stackSize = 64
+    )
+    
+    public object StrippedBirchLog : Material(
+        id = 111,
+        displayName = "Stripped Birch Log",
+        identifier = Identifier("minecraft:stripped_birch_log"),
+        stackSize = 64
+    )
+    
+    public object StrippedJungleLog : Material(
+        id = 112,
+        displayName = "Stripped Jungle Log",
+        identifier = Identifier("minecraft:stripped_jungle_log"),
+        stackSize = 64
+    )
+    
+    public object StrippedAcaciaLog : Material(
+        id = 113,
+        displayName = "Stripped Acacia Log",
+        identifier = Identifier("minecraft:stripped_acacia_log"),
+        stackSize = 64
+    )
+    
+    public object StrippedDarkOakLog : Material(
+        id = 114,
+        displayName = "Stripped Dark Oak Log",
+        identifier = Identifier("minecraft:stripped_dark_oak_log"),
+        stackSize = 64
+    )
+    
+    public object StrippedCrimsonStem : Material(
+        id = 115,
+        displayName = "Stripped Crimson Stem",
+        identifier = Identifier("minecraft:stripped_crimson_stem"),
+        stackSize = 64
+    )
+    
+    public object StrippedWarpedStem : Material(
+        id = 116,
+        displayName = "Stripped Warped Stem",
+        identifier = Identifier("minecraft:stripped_warped_stem"),
+        stackSize = 64
+    )
+    
+    public object StrippedOakWood : Material(
+        id = 117,
+        displayName = "Stripped Oak Wood",
+        identifier = Identifier("minecraft:stripped_oak_wood"),
+        stackSize = 64
+    )
+    
+    public object StrippedSpruceWood : Material(
+        id = 118,
+        displayName = "Stripped Spruce Wood",
+        identifier = Identifier("minecraft:stripped_spruce_wood"),
+        stackSize = 64
+    )
+    
+    public object StrippedBirchWood : Material(
+        id = 119,
+        displayName = "Stripped Birch Wood",
+        identifier = Identifier("minecraft:stripped_birch_wood"),
+        stackSize = 64
+    )
+    
+    public object StrippedJungleWood : Material(
+        id = 120,
+        displayName = "Stripped Jungle Wood",
+        identifier = Identifier("minecraft:stripped_jungle_wood"),
+        stackSize = 64
+    )
+    
+    public object StrippedAcaciaWood : Material(
+        id = 121,
+        displayName = "Stripped Acacia Wood",
+        identifier = Identifier("minecraft:stripped_acacia_wood"),
+        stackSize = 64
+    )
+    
+    public object StrippedDarkOakWood : Material(
+        id = 122,
+        displayName = "Stripped Dark Oak Wood",
+        identifier = Identifier("minecraft:stripped_dark_oak_wood"),
+        stackSize = 64
+    )
+    
+    public object StrippedCrimsonHyphae : Material(
+        id = 123,
+        displayName = "Stripped Crimson Hyphae",
+        identifier = Identifier("minecraft:stripped_crimson_hyphae"),
+        stackSize = 64
+    )
+    
+    public object StrippedWarpedHyphae : Material(
+        id = 124,
+        displayName = "Stripped Warped Hyphae",
+        identifier = Identifier("minecraft:stripped_warped_hyphae"),
+        stackSize = 64
+    )
+    
+    public object OakWood : Material(
+        id = 125,
+        displayName = "Oak Wood",
+        identifier = Identifier("minecraft:oak_wood"),
+        stackSize = 64
+    )
+    
+    public object SpruceWood : Material(
+        id = 126,
+        displayName = "Spruce Wood",
+        identifier = Identifier("minecraft:spruce_wood"),
+        stackSize = 64
+    )
+    
+    public object BirchWood : Material(
+        id = 127,
+        displayName = "Birch Wood",
+        identifier = Identifier("minecraft:birch_wood"),
+        stackSize = 64
+    )
+    
+    public object JungleWood : Material(
+        id = 128,
+        displayName = "Jungle Wood",
+        identifier = Identifier("minecraft:jungle_wood"),
+        stackSize = 64
+    )
+    
+    public object AcaciaWood : Material(
+        id = 129,
+        displayName = "Acacia Wood",
+        identifier = Identifier("minecraft:acacia_wood"),
+        stackSize = 64
+    )
+    
+    public object DarkOakWood : Material(
+        id = 130,
+        displayName = "Dark Oak Wood",
+        identifier = Identifier("minecraft:dark_oak_wood"),
+        stackSize = 64
+    )
+    
+    public object CrimsonHyphae : Material(
+        id = 131,
+        displayName = "Crimson Hyphae",
+        identifier = Identifier("minecraft:crimson_hyphae"),
+        stackSize = 64
+    )
+    
+    public object WarpedHyphae : Material(
+        id = 132,
+        displayName = "Warped Hyphae",
+        identifier = Identifier("minecraft:warped_hyphae"),
+        stackSize = 64
+    )
+    
+    public object OakLeaves : Material(
+        id = 133,
+        displayName = "Oak Leaves",
+        identifier = Identifier("minecraft:oak_leaves"),
+        stackSize = 64
+    )
+    
+    public object SpruceLeaves : Material(
+        id = 134,
+        displayName = "Spruce Leaves",
+        identifier = Identifier("minecraft:spruce_leaves"),
+        stackSize = 64
+    )
+    
+    public object BirchLeaves : Material(
+        id = 135,
+        displayName = "Birch Leaves",
+        identifier = Identifier("minecraft:birch_leaves"),
+        stackSize = 64
+    )
+    
+    public object JungleLeaves : Material(
+        id = 136,
+        displayName = "Jungle Leaves",
+        identifier = Identifier("minecraft:jungle_leaves"),
+        stackSize = 64
+    )
+    
+    public object AcaciaLeaves : Material(
+        id = 137,
+        displayName = "Acacia Leaves",
+        identifier = Identifier("minecraft:acacia_leaves"),
+        stackSize = 64
+    )
+    
+    public object DarkOakLeaves : Material(
+        id = 138,
+        displayName = "Dark Oak Leaves",
+        identifier = Identifier("minecraft:dark_oak_leaves"),
+        stackSize = 64
+    )
+    
+    public object AzaleaLeaves : Material(
+        id = 139,
+        displayName = "Azalea Leaves",
+        identifier = Identifier("minecraft:azalea_leaves"),
+        stackSize = 64
+    )
+    
+    public object FloweringAzaleaLeaves : Material(
+        id = 140,
+        displayName = "Flowering Azalea Leaves",
+        identifier = Identifier("minecraft:flowering_azalea_leaves"),
+        stackSize = 64
+    )
+    
+    public object Sponge : Material(
+        id = 141,
+        displayName = "Sponge",
+        identifier = Identifier("minecraft:sponge"),
+        stackSize = 64
+    )
+    
+    public object WetSponge : Material(
+        id = 142,
+        displayName = "Wet Sponge",
+        identifier = Identifier("minecraft:wet_sponge"),
+        stackSize = 64
+    )
+    
+    public object Glass : Material(
+        id = 143,
+        displayName = "Glass",
+        identifier = Identifier("minecraft:glass"),
+        stackSize = 64
+    )
+    
+    public object TintedGlass : Material(
+        id = 144,
+        displayName = "Tinted Glass",
+        identifier = Identifier("minecraft:tinted_glass"),
+        stackSize = 64
+    )
+    
+    public object LapisBlock : Material(
+        id = 145,
+        displayName = "Block of Lapis Lazuli",
+        identifier = Identifier("minecraft:lapis_block"),
+        stackSize = 64
+    )
+    
+    public object Sandstone : Material(
+        id = 146,
+        displayName = "Sandstone",
+        identifier = Identifier("minecraft:sandstone"),
+        stackSize = 64
+    )
+    
+    public object ChiseledSandstone : Material(
+        id = 147,
+        displayName = "Chiseled Sandstone",
+        identifier = Identifier("minecraft:chiseled_sandstone"),
+        stackSize = 64
+    )
+    
+    public object CutSandstone : Material(
+        id = 148,
+        displayName = "Cut Sandstone",
+        identifier = Identifier("minecraft:cut_sandstone"),
+        stackSize = 64
+    )
+    
+    public object Cobweb : Material(
+        id = 149,
+        displayName = "Cobweb",
+        identifier = Identifier("minecraft:cobweb"),
+        stackSize = 64
+    )
+    
+    public object Grass : Material(
+        id = 150,
+        displayName = "Grass",
+        identifier = Identifier("minecraft:grass"),
+        stackSize = 64
+    )
+    
+    public object Fern : Material(
+        id = 151,
+        displayName = "Fern",
+        identifier = Identifier("minecraft:fern"),
+        stackSize = 64
+    )
+    
+    public object Azalea : Material(
+        id = 152,
+        displayName = "Azalea",
+        identifier = Identifier("minecraft:azalea"),
+        stackSize = 64
+    )
+    
+    public object FloweringAzalea : Material(
+        id = 153,
+        displayName = "Flowering Azalea",
+        identifier = Identifier("minecraft:flowering_azalea"),
+        stackSize = 64
+    )
+    
+    public object DeadBush : Material(
+        id = 154,
+        displayName = "Dead Bush",
+        identifier = Identifier("minecraft:dead_bush"),
+        stackSize = 64
+    )
+    
+    public object Seagrass : Material(
+        id = 155,
+        displayName = "Seagrass",
+        identifier = Identifier("minecraft:seagrass"),
+        stackSize = 64
+    )
+    
+    public object SeaPickle : Material(
+        id = 156,
+        displayName = "Sea Pickle",
+        identifier = Identifier("minecraft:sea_pickle"),
+        stackSize = 64
+    )
+    
+    public object WhiteWool : Material(
+        id = 157,
+        displayName = "White Wool",
+        identifier = Identifier("minecraft:white_wool"),
+        stackSize = 64
+    )
+    
+    public object OrangeWool : Material(
+        id = 158,
+        displayName = "Orange Wool",
+        identifier = Identifier("minecraft:orange_wool"),
+        stackSize = 64
+    )
+    
+    public object MagentaWool : Material(
+        id = 159,
+        displayName = "Magenta Wool",
+        identifier = Identifier("minecraft:magenta_wool"),
+        stackSize = 64
+    )
+    
+    public object LightBlueWool : Material(
+        id = 160,
+        displayName = "Light Blue Wool",
+        identifier = Identifier("minecraft:light_blue_wool"),
+        stackSize = 64
+    )
+    
+    public object YellowWool : Material(
+        id = 161,
+        displayName = "Yellow Wool",
+        identifier = Identifier("minecraft:yellow_wool"),
+        stackSize = 64
+    )
+    
+    public object LimeWool : Material(
+        id = 162,
+        displayName = "Lime Wool",
+        identifier = Identifier("minecraft:lime_wool"),
+        stackSize = 64
+    )
+    
+    public object PinkWool : Material(
+        id = 163,
+        displayName = "Pink Wool",
+        identifier = Identifier("minecraft:pink_wool"),
+        stackSize = 64
+    )
+    
+    public object GrayWool : Material(
+        id = 164,
+        displayName = "Gray Wool",
+        identifier = Identifier("minecraft:gray_wool"),
+        stackSize = 64
+    )
+    
+    public object LightGrayWool : Material(
+        id = 165,
+        displayName = "Light Gray Wool",
+        identifier = Identifier("minecraft:light_gray_wool"),
+        stackSize = 64
+    )
+    
+    public object CyanWool : Material(
+        id = 166,
+        displayName = "Cyan Wool",
+        identifier = Identifier("minecraft:cyan_wool"),
+        stackSize = 64
+    )
+    
+    public object PurpleWool : Material(
+        id = 167,
+        displayName = "Purple Wool",
+        identifier = Identifier("minecraft:purple_wool"),
+        stackSize = 64
+    )
+    
+    public object BlueWool : Material(
+        id = 168,
+        displayName = "Blue Wool",
+        identifier = Identifier("minecraft:blue_wool"),
+        stackSize = 64
+    )
+    
+    public object BrownWool : Material(
+        id = 169,
+        displayName = "Brown Wool",
+        identifier = Identifier("minecraft:brown_wool"),
+        stackSize = 64
+    )
+    
+    public object GreenWool : Material(
+        id = 170,
+        displayName = "Green Wool",
+        identifier = Identifier("minecraft:green_wool"),
+        stackSize = 64
+    )
+    
+    public object RedWool : Material(
+        id = 171,
+        displayName = "Red Wool",
+        identifier = Identifier("minecraft:red_wool"),
+        stackSize = 64
+    )
+    
+    public object BlackWool : Material(
+        id = 172,
+        displayName = "Black Wool",
+        identifier = Identifier("minecraft:black_wool"),
+        stackSize = 64
+    )
+    
+    public object Dandelion : Material(
+        id = 173,
+        displayName = "Dandelion",
+        identifier = Identifier("minecraft:dandelion"),
+        stackSize = 64
+    )
+    
+    public object Poppy : Material(
         id = 174,
-        displayName = "Packed Ice",
-        identifier = Identifier("minecraft:packed_ice"),
+        displayName = "Poppy",
+        identifier = Identifier("minecraft:poppy"),
         stackSize = 64
     )
-
-    public object DoublePlant : Material(
+    
+    public object BlueOrchid : Material(
         id = 175,
-        displayName = "Large Flowers",
-        identifier = Identifier("minecraft:double_plant"),
+        displayName = "Blue Orchid",
+        identifier = Identifier("minecraft:blue_orchid"),
         stackSize = 64
     )
-
-    public object RedSandstone : Material(
+    
+    public object Allium : Material(
+        id = 176,
+        displayName = "Allium",
+        identifier = Identifier("minecraft:allium"),
+        stackSize = 64
+    )
+    
+    public object AzureBluet : Material(
+        id = 177,
+        displayName = "Azure Bluet",
+        identifier = Identifier("minecraft:azure_bluet"),
+        stackSize = 64
+    )
+    
+    public object RedTulip : Material(
+        id = 178,
+        displayName = "Red Tulip",
+        identifier = Identifier("minecraft:red_tulip"),
+        stackSize = 64
+    )
+    
+    public object OrangeTulip : Material(
         id = 179,
-        displayName = "Red Sandstone",
-        identifier = Identifier("minecraft:red_sandstone"),
+        displayName = "Orange Tulip",
+        identifier = Identifier("minecraft:orange_tulip"),
         stackSize = 64
     )
-
-    public object RedSandstoneStairs : Material(
+    
+    public object WhiteTulip : Material(
         id = 180,
-        displayName = "Red Sandstone Stairs",
-        identifier = Identifier("minecraft:red_sandstone_stairs"),
+        displayName = "White Tulip",
+        identifier = Identifier("minecraft:white_tulip"),
         stackSize = 64
     )
-
-    public object StoneSlab2 : Material(
+    
+    public object PinkTulip : Material(
+        id = 181,
+        displayName = "Pink Tulip",
+        identifier = Identifier("minecraft:pink_tulip"),
+        stackSize = 64
+    )
+    
+    public object OxeyeDaisy : Material(
         id = 182,
-        displayName = "Red Sandstone Slab",
-        identifier = Identifier("minecraft:stone_slab2"),
+        displayName = "Oxeye Daisy",
+        identifier = Identifier("minecraft:oxeye_daisy"),
         stackSize = 64
     )
-
-    public object SpruceFenceGate : Material(
+    
+    public object Cornflower : Material(
         id = 183,
-        displayName = "Spruce Fence Gate",
-        identifier = Identifier("minecraft:spruce_fence_gate"),
+        displayName = "Cornflower",
+        identifier = Identifier("minecraft:cornflower"),
         stackSize = 64
     )
-
-    public object BirchFenceGate : Material(
+    
+    public object LilyOfTheValley : Material(
         id = 184,
-        displayName = "Birch Fence Gate",
-        identifier = Identifier("minecraft:birch_fence_gate"),
+        displayName = "Lily of the Valley",
+        identifier = Identifier("minecraft:lily_of_the_valley"),
         stackSize = 64
     )
-
-    public object JungleFenceGate : Material(
+    
+    public object WitherRose : Material(
         id = 185,
-        displayName = "Jungle Fence Gate",
-        identifier = Identifier("minecraft:jungle_fence_gate"),
+        displayName = "Wither Rose",
+        identifier = Identifier("minecraft:wither_rose"),
         stackSize = 64
     )
-
-    public object DarkOakFenceGate : Material(
+    
+    public object SporeBlossom : Material(
         id = 186,
-        displayName = "Dark Oak Fence Gate",
-        identifier = Identifier("minecraft:dark_oak_fence_gate"),
+        displayName = "Spore Blossom",
+        identifier = Identifier("minecraft:spore_blossom"),
         stackSize = 64
     )
-
-    public object AcaciaFenceGate : Material(
+    
+    public object BrownMushroom : Material(
         id = 187,
-        displayName = "Acacia Fence Gate",
-        identifier = Identifier("minecraft:acacia_fence_gate"),
+        displayName = "Brown Mushroom",
+        identifier = Identifier("minecraft:brown_mushroom"),
         stackSize = 64
     )
-
-    public object SpruceFence : Material(
+    
+    public object RedMushroom : Material(
         id = 188,
+        displayName = "Red Mushroom",
+        identifier = Identifier("minecraft:red_mushroom"),
+        stackSize = 64
+    )
+    
+    public object CrimsonFungus : Material(
+        id = 189,
+        displayName = "Crimson Fungus",
+        identifier = Identifier("minecraft:crimson_fungus"),
+        stackSize = 64
+    )
+    
+    public object WarpedFungus : Material(
+        id = 190,
+        displayName = "Warped Fungus",
+        identifier = Identifier("minecraft:warped_fungus"),
+        stackSize = 64
+    )
+    
+    public object CrimsonRoots : Material(
+        id = 191,
+        displayName = "Crimson Roots",
+        identifier = Identifier("minecraft:crimson_roots"),
+        stackSize = 64
+    )
+    
+    public object WarpedRoots : Material(
+        id = 192,
+        displayName = "Warped Roots",
+        identifier = Identifier("minecraft:warped_roots"),
+        stackSize = 64
+    )
+    
+    public object NetherSprouts : Material(
+        id = 193,
+        displayName = "Nether Sprouts",
+        identifier = Identifier("minecraft:nether_sprouts"),
+        stackSize = 64
+    )
+    
+    public object WeepingVines : Material(
+        id = 194,
+        displayName = "Weeping Vines",
+        identifier = Identifier("minecraft:weeping_vines"),
+        stackSize = 64
+    )
+    
+    public object TwistingVines : Material(
+        id = 195,
+        displayName = "Twisting Vines",
+        identifier = Identifier("minecraft:twisting_vines"),
+        stackSize = 64
+    )
+    
+    public object SugarCane : Material(
+        id = 196,
+        displayName = "Sugar Cane",
+        identifier = Identifier("minecraft:sugar_cane"),
+        stackSize = 64
+    )
+    
+    public object Kelp : Material(
+        id = 197,
+        displayName = "Kelp",
+        identifier = Identifier("minecraft:kelp"),
+        stackSize = 64
+    )
+    
+    public object MossCarpet : Material(
+        id = 198,
+        displayName = "Moss Carpet",
+        identifier = Identifier("minecraft:moss_carpet"),
+        stackSize = 64
+    )
+    
+    public object MossBlock : Material(
+        id = 199,
+        displayName = "Moss Block",
+        identifier = Identifier("minecraft:moss_block"),
+        stackSize = 64
+    )
+    
+    public object HangingRoots : Material(
+        id = 200,
+        displayName = "Hanging Roots",
+        identifier = Identifier("minecraft:hanging_roots"),
+        stackSize = 64
+    )
+    
+    public object BigDripleaf : Material(
+        id = 201,
+        displayName = "Big Dripleaf",
+        identifier = Identifier("minecraft:big_dripleaf"),
+        stackSize = 64
+    )
+    
+    public object SmallDripleaf : Material(
+        id = 202,
+        displayName = "Small Dripleaf",
+        identifier = Identifier("minecraft:small_dripleaf"),
+        stackSize = 64
+    )
+    
+    public object Bamboo : Material(
+        id = 203,
+        displayName = "Bamboo",
+        identifier = Identifier("minecraft:bamboo"),
+        stackSize = 64
+    )
+    
+    public object OakSlab : Material(
+        id = 204,
+        displayName = "Oak Slab",
+        identifier = Identifier("minecraft:oak_slab"),
+        stackSize = 64
+    )
+    
+    public object SpruceSlab : Material(
+        id = 205,
+        displayName = "Spruce Slab",
+        identifier = Identifier("minecraft:spruce_slab"),
+        stackSize = 64
+    )
+    
+    public object BirchSlab : Material(
+        id = 206,
+        displayName = "Birch Slab",
+        identifier = Identifier("minecraft:birch_slab"),
+        stackSize = 64
+    )
+    
+    public object JungleSlab : Material(
+        id = 207,
+        displayName = "Jungle Slab",
+        identifier = Identifier("minecraft:jungle_slab"),
+        stackSize = 64
+    )
+    
+    public object AcaciaSlab : Material(
+        id = 208,
+        displayName = "Acacia Slab",
+        identifier = Identifier("minecraft:acacia_slab"),
+        stackSize = 64
+    )
+    
+    public object DarkOakSlab : Material(
+        id = 209,
+        displayName = "Dark Oak Slab",
+        identifier = Identifier("minecraft:dark_oak_slab"),
+        stackSize = 64
+    )
+    
+    public object CrimsonSlab : Material(
+        id = 210,
+        displayName = "Crimson Slab",
+        identifier = Identifier("minecraft:crimson_slab"),
+        stackSize = 64
+    )
+    
+    public object WarpedSlab : Material(
+        id = 211,
+        displayName = "Warped Slab",
+        identifier = Identifier("minecraft:warped_slab"),
+        stackSize = 64
+    )
+    
+    public object StoneSlab : Material(
+        id = 212,
+        displayName = "Stone Slab",
+        identifier = Identifier("minecraft:stone_slab"),
+        stackSize = 64
+    )
+    
+    public object SmoothStoneSlab : Material(
+        id = 213,
+        displayName = "Smooth Stone Slab",
+        identifier = Identifier("minecraft:smooth_stone_slab"),
+        stackSize = 64
+    )
+    
+    public object SandstoneSlab : Material(
+        id = 214,
+        displayName = "Sandstone Slab",
+        identifier = Identifier("minecraft:sandstone_slab"),
+        stackSize = 64
+    )
+    
+    public object CutSandstoneSlab : Material(
+        id = 215,
+        displayName = "Cut Sandstone Slab",
+        identifier = Identifier("minecraft:cut_sandstone_slab"),
+        stackSize = 64
+    )
+    
+    public object PetrifiedOakSlab : Material(
+        id = 216,
+        displayName = "Petrified Oak Slab",
+        identifier = Identifier("minecraft:petrified_oak_slab"),
+        stackSize = 64
+    )
+    
+    public object CobblestoneSlab : Material(
+        id = 217,
+        displayName = "Cobblestone Slab",
+        identifier = Identifier("minecraft:cobblestone_slab"),
+        stackSize = 64
+    )
+    
+    public object BrickSlab : Material(
+        id = 218,
+        displayName = "Brick Slab",
+        identifier = Identifier("minecraft:brick_slab"),
+        stackSize = 64
+    )
+    
+    public object StoneBrickSlab : Material(
+        id = 219,
+        displayName = "Stone Brick Slab",
+        identifier = Identifier("minecraft:stone_brick_slab"),
+        stackSize = 64
+    )
+    
+    public object NetherBrickSlab : Material(
+        id = 220,
+        displayName = "Nether Brick Slab",
+        identifier = Identifier("minecraft:nether_brick_slab"),
+        stackSize = 64
+    )
+    
+    public object QuartzSlab : Material(
+        id = 221,
+        displayName = "Quartz Slab",
+        identifier = Identifier("minecraft:quartz_slab"),
+        stackSize = 64
+    )
+    
+    public object RedSandstoneSlab : Material(
+        id = 222,
+        displayName = "Red Sandstone Slab",
+        identifier = Identifier("minecraft:red_sandstone_slab"),
+        stackSize = 64
+    )
+    
+    public object CutRedSandstoneSlab : Material(
+        id = 223,
+        displayName = "Cut Red Sandstone Slab",
+        identifier = Identifier("minecraft:cut_red_sandstone_slab"),
+        stackSize = 64
+    )
+    
+    public object PurpurSlab : Material(
+        id = 224,
+        displayName = "Purpur Slab",
+        identifier = Identifier("minecraft:purpur_slab"),
+        stackSize = 64
+    )
+    
+    public object PrismarineSlab : Material(
+        id = 225,
+        displayName = "Prismarine Slab",
+        identifier = Identifier("minecraft:prismarine_slab"),
+        stackSize = 64
+    )
+    
+    public object PrismarineBrickSlab : Material(
+        id = 226,
+        displayName = "Prismarine Brick Slab",
+        identifier = Identifier("minecraft:prismarine_brick_slab"),
+        stackSize = 64
+    )
+    
+    public object DarkPrismarineSlab : Material(
+        id = 227,
+        displayName = "Dark Prismarine Slab",
+        identifier = Identifier("minecraft:dark_prismarine_slab"),
+        stackSize = 64
+    )
+    
+    public object SmoothQuartz : Material(
+        id = 228,
+        displayName = "Smooth Quartz Block",
+        identifier = Identifier("minecraft:smooth_quartz"),
+        stackSize = 64
+    )
+    
+    public object SmoothRedSandstone : Material(
+        id = 229,
+        displayName = "Smooth Red Sandstone",
+        identifier = Identifier("minecraft:smooth_red_sandstone"),
+        stackSize = 64
+    )
+    
+    public object SmoothSandstone : Material(
+        id = 230,
+        displayName = "Smooth Sandstone",
+        identifier = Identifier("minecraft:smooth_sandstone"),
+        stackSize = 64
+    )
+    
+    public object SmoothStone : Material(
+        id = 231,
+        displayName = "Smooth Stone",
+        identifier = Identifier("minecraft:smooth_stone"),
+        stackSize = 64
+    )
+    
+    public object Bricks : Material(
+        id = 232,
+        displayName = "Bricks",
+        identifier = Identifier("minecraft:bricks"),
+        stackSize = 64
+    )
+    
+    public object Bookshelf : Material(
+        id = 233,
+        displayName = "Bookshelf",
+        identifier = Identifier("minecraft:bookshelf"),
+        stackSize = 64
+    )
+    
+    public object MossyCobblestone : Material(
+        id = 234,
+        displayName = "Mossy Cobblestone",
+        identifier = Identifier("minecraft:mossy_cobblestone"),
+        stackSize = 64
+    )
+    
+    public object Obsidian : Material(
+        id = 235,
+        displayName = "Obsidian",
+        identifier = Identifier("minecraft:obsidian"),
+        stackSize = 64
+    )
+    
+    public object Torch : Material(
+        id = 236,
+        displayName = "Torch",
+        identifier = Identifier("minecraft:torch"),
+        stackSize = 64
+    )
+    
+    public object EndRod : Material(
+        id = 237,
+        displayName = "End Rod",
+        identifier = Identifier("minecraft:end_rod"),
+        stackSize = 64
+    )
+    
+    public object ChorusPlant : Material(
+        id = 238,
+        displayName = "Chorus Plant",
+        identifier = Identifier("minecraft:chorus_plant"),
+        stackSize = 64
+    )
+    
+    public object ChorusFlower : Material(
+        id = 239,
+        displayName = "Chorus Flower",
+        identifier = Identifier("minecraft:chorus_flower"),
+        stackSize = 64
+    )
+    
+    public object PurpurBlock : Material(
+        id = 240,
+        displayName = "Purpur Block",
+        identifier = Identifier("minecraft:purpur_block"),
+        stackSize = 64
+    )
+    
+    public object PurpurPillar : Material(
+        id = 241,
+        displayName = "Purpur Pillar",
+        identifier = Identifier("minecraft:purpur_pillar"),
+        stackSize = 64
+    )
+    
+    public object PurpurStairs : Material(
+        id = 242,
+        displayName = "Purpur Stairs",
+        identifier = Identifier("minecraft:purpur_stairs"),
+        stackSize = 64
+    )
+    
+    public object Spawner : Material(
+        id = 243,
+        displayName = "Spawner",
+        identifier = Identifier("minecraft:spawner"),
+        stackSize = 64
+    )
+    
+    public object OakStairs : Material(
+        id = 244,
+        displayName = "Oak Stairs",
+        identifier = Identifier("minecraft:oak_stairs"),
+        stackSize = 64
+    )
+    
+    public object Chest : Material(
+        id = 245,
+        displayName = "Chest",
+        identifier = Identifier("minecraft:chest"),
+        stackSize = 64
+    )
+    
+    public object CraftingTable : Material(
+        id = 246,
+        displayName = "Crafting Table",
+        identifier = Identifier("minecraft:crafting_table"),
+        stackSize = 64
+    )
+    
+    public object Farmland : Material(
+        id = 247,
+        displayName = "Farmland",
+        identifier = Identifier("minecraft:farmland"),
+        stackSize = 64
+    )
+    
+    public object Furnace : Material(
+        id = 248,
+        displayName = "Furnace",
+        identifier = Identifier("minecraft:furnace"),
+        stackSize = 64
+    )
+    
+    public object Ladder : Material(
+        id = 249,
+        displayName = "Ladder",
+        identifier = Identifier("minecraft:ladder"),
+        stackSize = 64
+    )
+    
+    public object CobblestoneStairs : Material(
+        id = 250,
+        displayName = "Cobblestone Stairs",
+        identifier = Identifier("minecraft:cobblestone_stairs"),
+        stackSize = 64
+    )
+    
+    public object Snow : Material(
+        id = 251,
+        displayName = "Snow",
+        identifier = Identifier("minecraft:snow"),
+        stackSize = 64
+    )
+    
+    public object Ice : Material(
+        id = 252,
+        displayName = "Ice",
+        identifier = Identifier("minecraft:ice"),
+        stackSize = 64
+    )
+    
+    public object SnowBlock : Material(
+        id = 253,
+        displayName = "Snow Block",
+        identifier = Identifier("minecraft:snow_block"),
+        stackSize = 64
+    )
+    
+    public object Cactus : Material(
+        id = 254,
+        displayName = "Cactus",
+        identifier = Identifier("minecraft:cactus"),
+        stackSize = 64
+    )
+    
+    public object Clay : Material(
+        id = 255,
+        displayName = "Clay",
+        identifier = Identifier("minecraft:clay"),
+        stackSize = 64
+    )
+    
+    public object Jukebox : Material(
+        id = 256,
+        displayName = "Jukebox",
+        identifier = Identifier("minecraft:jukebox"),
+        stackSize = 64
+    )
+    
+    public object OakFence : Material(
+        id = 257,
+        displayName = "Oak Fence",
+        identifier = Identifier("minecraft:oak_fence"),
+        stackSize = 64
+    )
+    
+    public object SpruceFence : Material(
+        id = 258,
         displayName = "Spruce Fence",
         identifier = Identifier("minecraft:spruce_fence"),
         stackSize = 64
     )
-
+    
     public object BirchFence : Material(
-        id = 189,
+        id = 259,
         displayName = "Birch Fence",
         identifier = Identifier("minecraft:birch_fence"),
         stackSize = 64
     )
-
+    
     public object JungleFence : Material(
-        id = 190,
+        id = 260,
         displayName = "Jungle Fence",
         identifier = Identifier("minecraft:jungle_fence"),
         stackSize = 64
     )
-
-    public object DarkOakFence : Material(
-        id = 191,
-        displayName = "Dark Oak Fence",
-        identifier = Identifier("minecraft:dark_oak_fence"),
-        stackSize = 64
-    )
-
+    
     public object AcaciaFence : Material(
-        id = 192,
+        id = 261,
         displayName = "Acacia Fence",
         identifier = Identifier("minecraft:acacia_fence"),
         stackSize = 64
     )
-
-    public object IronShovel : Material(
-        id = 256,
-        displayName = "Iron Shovel",
-        identifier = Identifier("minecraft:iron_shovel"),
-        stackSize = 1
-    )
-
-    public object IronPickaxe : Material(
-        id = 257,
-        displayName = "Iron Pickaxe",
-        identifier = Identifier("minecraft:iron_pickaxe"),
-        stackSize = 1
-    )
-
-    public object IronAxe : Material(
-        id = 258,
-        displayName = "Iron Axe",
-        identifier = Identifier("minecraft:iron_axe"),
-        stackSize = 1
-    )
-
-    public object FlintAndSteel : Material(
-        id = 259,
-        displayName = "Flint and Steel",
-        identifier = Identifier("minecraft:flint_and_steel"),
-        stackSize = 1
-    )
-
-    public object Apple : Material(
-        id = 260,
-        displayName = "Apple",
-        identifier = Identifier("minecraft:apple"),
-        stackSize = 64
-    )
-
-    public object Bow : Material(
-        id = 261,
-        displayName = "Bow",
-        identifier = Identifier("minecraft:bow"),
-        stackSize = 1
-    )
-
-    public object Arrow : Material(
+    
+    public object DarkOakFence : Material(
         id = 262,
-        displayName = "Arrow",
-        identifier = Identifier("minecraft:arrow"),
+        displayName = "Dark Oak Fence",
+        identifier = Identifier("minecraft:dark_oak_fence"),
         stackSize = 64
     )
-
-    public object Coal : Material(
+    
+    public object CrimsonFence : Material(
         id = 263,
-        displayName = "Coal",
-        identifier = Identifier("minecraft:coal"),
+        displayName = "Crimson Fence",
+        identifier = Identifier("minecraft:crimson_fence"),
         stackSize = 64
-    ) {
-        init {
-            variations.add(MaterialVariation(0, "Coal"))
-            variations.add(MaterialVariation(1, "Charcoal"))
-        }
-    }
-
-    public object Diamond : Material(
+    )
+    
+    public object WarpedFence : Material(
         id = 264,
-        displayName = "Diamond",
-        identifier = Identifier("minecraft:diamond"),
+        displayName = "Warped Fence",
+        identifier = Identifier("minecraft:warped_fence"),
         stackSize = 64
     )
-
-    public object IronIngot : Material(
+    
+    public object Pumpkin : Material(
         id = 265,
-        displayName = "Iron Ingot",
-        identifier = Identifier("minecraft:iron_ingot"),
+        displayName = "Pumpkin",
+        identifier = Identifier("minecraft:pumpkin"),
         stackSize = 64
     )
-
-    public object GoldIngot : Material(
+    
+    public object CarvedPumpkin : Material(
         id = 266,
-        displayName = "Gold Ingot",
-        identifier = Identifier("minecraft:gold_ingot"),
+        displayName = "Carved Pumpkin",
+        identifier = Identifier("minecraft:carved_pumpkin"),
         stackSize = 64
     )
-
-    public object IronSword : Material(
+    
+    public object JackOLantern : Material(
         id = 267,
-        displayName = "Iron Sword",
-        identifier = Identifier("minecraft:iron_sword"),
-        stackSize = 1
+        displayName = "Jack o'Lantern",
+        identifier = Identifier("minecraft:jack_o_lantern"),
+        stackSize = 64
     )
-
-    public object WoodenSword : Material(
+    
+    public object Netherrack : Material(
         id = 268,
-        displayName = "Wooden Sword",
-        identifier = Identifier("minecraft:wooden_sword"),
-        stackSize = 1
+        displayName = "Netherrack",
+        identifier = Identifier("minecraft:netherrack"),
+        stackSize = 64
     )
-
-    public object WoodenShovel : Material(
+    
+    public object SoulSand : Material(
         id = 269,
-        displayName = "Wooden Shovel",
-        identifier = Identifier("minecraft:wooden_shovel"),
-        stackSize = 1
+        displayName = "Soul Sand",
+        identifier = Identifier("minecraft:soul_sand"),
+        stackSize = 64
     )
-
-    public object WoodenPickaxe : Material(
+    
+    public object SoulSoil : Material(
         id = 270,
-        displayName = "Wooden Pickaxe",
-        identifier = Identifier("minecraft:wooden_pickaxe"),
-        stackSize = 1
+        displayName = "Soul Soil",
+        identifier = Identifier("minecraft:soul_soil"),
+        stackSize = 64
     )
-
-    public object WoodenAxe : Material(
+    
+    public object Basalt : Material(
         id = 271,
-        displayName = "Wooden Axe",
-        identifier = Identifier("minecraft:wooden_axe"),
-        stackSize = 1
+        displayName = "Basalt",
+        identifier = Identifier("minecraft:basalt"),
+        stackSize = 64
     )
-
-    public object StoneSword : Material(
+    
+    public object PolishedBasalt : Material(
         id = 272,
-        displayName = "Stone Sword",
-        identifier = Identifier("minecraft:stone_sword"),
-        stackSize = 1
+        displayName = "Polished Basalt",
+        identifier = Identifier("minecraft:polished_basalt"),
+        stackSize = 64
     )
-
-    public object StoneShovel : Material(
+    
+    public object SmoothBasalt : Material(
         id = 273,
-        displayName = "Stone Shovel",
-        identifier = Identifier("minecraft:stone_shovel"),
-        stackSize = 1
+        displayName = "Smooth Basalt",
+        identifier = Identifier("minecraft:smooth_basalt"),
+        stackSize = 64
     )
-
-    public object StonePickaxe : Material(
+    
+    public object SoulTorch : Material(
         id = 274,
-        displayName = "Stone Pickaxe",
-        identifier = Identifier("minecraft:stone_pickaxe"),
-        stackSize = 1
+        displayName = "Soul Torch",
+        identifier = Identifier("minecraft:soul_torch"),
+        stackSize = 64
     )
-
-    public object StoneAxe : Material(
+    
+    public object Glowstone : Material(
         id = 275,
-        displayName = "Stone Axe",
-        identifier = Identifier("minecraft:stone_axe"),
-        stackSize = 1
+        displayName = "Glowstone",
+        identifier = Identifier("minecraft:glowstone"),
+        stackSize = 64
     )
-
-    public object DiamondSword : Material(
+    
+    public object InfestedStone : Material(
         id = 276,
-        displayName = "Diamond Sword",
-        identifier = Identifier("minecraft:diamond_sword"),
-        stackSize = 1
+        displayName = "Infested Stone",
+        identifier = Identifier("minecraft:infested_stone"),
+        stackSize = 64
     )
-
-    public object DiamondShovel : Material(
+    
+    public object InfestedCobblestone : Material(
         id = 277,
-        displayName = "Diamond Shovel",
-        identifier = Identifier("minecraft:diamond_shovel"),
-        stackSize = 1
+        displayName = "Infested Cobblestone",
+        identifier = Identifier("minecraft:infested_cobblestone"),
+        stackSize = 64
     )
-
-    public object DiamondPickaxe : Material(
+    
+    public object InfestedStoneBricks : Material(
         id = 278,
-        displayName = "Diamond Pickaxe",
-        identifier = Identifier("minecraft:diamond_pickaxe"),
-        stackSize = 1
+        displayName = "Infested Stone Bricks",
+        identifier = Identifier("minecraft:infested_stone_bricks"),
+        stackSize = 64
     )
-
-    public object DiamondAxe : Material(
+    
+    public object InfestedMossyStoneBricks : Material(
         id = 279,
-        displayName = "Diamond Axe",
-        identifier = Identifier("minecraft:diamond_axe"),
-        stackSize = 1
+        displayName = "Infested Mossy Stone Bricks",
+        identifier = Identifier("minecraft:infested_mossy_stone_bricks"),
+        stackSize = 64
     )
-
-    public object Stick : Material(
+    
+    public object InfestedCrackedStoneBricks : Material(
         id = 280,
-        displayName = "Stick",
-        identifier = Identifier("minecraft:stick"),
+        displayName = "Infested Cracked Stone Bricks",
+        identifier = Identifier("minecraft:infested_cracked_stone_bricks"),
         stackSize = 64
     )
-
-    public object Bowl : Material(
+    
+    public object InfestedChiseledStoneBricks : Material(
         id = 281,
-        displayName = "Bowl",
-        identifier = Identifier("minecraft:bowl"),
+        displayName = "Infested Chiseled Stone Bricks",
+        identifier = Identifier("minecraft:infested_chiseled_stone_bricks"),
         stackSize = 64
     )
-
-    public object MushroomStew : Material(
+    
+    public object InfestedDeepslate : Material(
         id = 282,
-        displayName = "Mushroom Stew",
-        identifier = Identifier("minecraft:mushroom_stew"),
-        stackSize = 1
+        displayName = "Infested Deepslate",
+        identifier = Identifier("minecraft:infested_deepslate"),
+        stackSize = 64
     )
-
-    public object GoldenSword : Material(
+    
+    public object StoneBricks : Material(
         id = 283,
-        displayName = "Golden Sword",
-        identifier = Identifier("minecraft:golden_sword"),
-        stackSize = 1
+        displayName = "Stone Bricks",
+        identifier = Identifier("minecraft:stone_bricks"),
+        stackSize = 64
     )
-
-    public object GoldenShovel : Material(
+    
+    public object MossyStoneBricks : Material(
         id = 284,
-        displayName = "Golden Shovel",
-        identifier = Identifier("minecraft:golden_shovel"),
-        stackSize = 1
+        displayName = "Mossy Stone Bricks",
+        identifier = Identifier("minecraft:mossy_stone_bricks"),
+        stackSize = 64
     )
-
-    public object GoldenPickaxe : Material(
+    
+    public object CrackedStoneBricks : Material(
         id = 285,
-        displayName = "Golden Pickaxe",
-        identifier = Identifier("minecraft:golden_pickaxe"),
-        stackSize = 1
+        displayName = "Cracked Stone Bricks",
+        identifier = Identifier("minecraft:cracked_stone_bricks"),
+        stackSize = 64
     )
-
-    public object GoldenAxe : Material(
+    
+    public object ChiseledStoneBricks : Material(
         id = 286,
-        displayName = "Golden Axe",
-        identifier = Identifier("minecraft:golden_axe"),
-        stackSize = 1
+        displayName = "Chiseled Stone Bricks",
+        identifier = Identifier("minecraft:chiseled_stone_bricks"),
+        stackSize = 64
     )
-
-    public object String : Material(
+    
+    public object DeepslateBricks : Material(
         id = 287,
-        displayName = "String",
-        identifier = Identifier("minecraft:string"),
+        displayName = "Deepslate Bricks",
+        identifier = Identifier("minecraft:deepslate_bricks"),
         stackSize = 64
     )
-
-    public object Feather : Material(
+    
+    public object CrackedDeepslateBricks : Material(
         id = 288,
-        displayName = "Feather",
-        identifier = Identifier("minecraft:feather"),
+        displayName = "Cracked Deepslate Bricks",
+        identifier = Identifier("minecraft:cracked_deepslate_bricks"),
         stackSize = 64
     )
-
-    public object Gunpowder : Material(
+    
+    public object DeepslateTiles : Material(
         id = 289,
-        displayName = "Gunpowder",
-        identifier = Identifier("minecraft:gunpowder"),
+        displayName = "Deepslate Tiles",
+        identifier = Identifier("minecraft:deepslate_tiles"),
         stackSize = 64
     )
-
-    public object WoodenHoe : Material(
+    
+    public object CrackedDeepslateTiles : Material(
         id = 290,
-        displayName = "Wooden Hoe",
-        identifier = Identifier("minecraft:wooden_hoe"),
-        stackSize = 1
+        displayName = "Cracked Deepslate Tiles",
+        identifier = Identifier("minecraft:cracked_deepslate_tiles"),
+        stackSize = 64
     )
-
-    public object StoneHoe : Material(
+    
+    public object ChiseledDeepslate : Material(
         id = 291,
-        displayName = "Stone Hoe",
-        identifier = Identifier("minecraft:stone_hoe"),
-        stackSize = 1
+        displayName = "Chiseled Deepslate",
+        identifier = Identifier("minecraft:chiseled_deepslate"),
+        stackSize = 64
     )
-
-    public object IronHoe : Material(
+    
+    public object BrownMushroomBlock : Material(
         id = 292,
-        displayName = "Iron Hoe",
-        identifier = Identifier("minecraft:iron_hoe"),
-        stackSize = 1
+        displayName = "Brown Mushroom Block",
+        identifier = Identifier("minecraft:brown_mushroom_block"),
+        stackSize = 64
     )
-
-    public object DiamondHoe : Material(
+    
+    public object RedMushroomBlock : Material(
         id = 293,
-        displayName = "Diamond Hoe",
-        identifier = Identifier("minecraft:diamond_hoe"),
-        stackSize = 1
+        displayName = "Red Mushroom Block",
+        identifier = Identifier("minecraft:red_mushroom_block"),
+        stackSize = 64
     )
-
-    public object GoldenHoe : Material(
+    
+    public object MushroomStem : Material(
         id = 294,
-        displayName = "Golden Hoe",
-        identifier = Identifier("minecraft:golden_hoe"),
-        stackSize = 1
+        displayName = "Mushroom Stem",
+        identifier = Identifier("minecraft:mushroom_stem"),
+        stackSize = 64
     )
-
-    public object WheatSeeds : Material(
+    
+    public object IronBars : Material(
         id = 295,
-        displayName = "Seeds",
-        identifier = Identifier("minecraft:wheat_seeds"),
+        displayName = "Iron Bars",
+        identifier = Identifier("minecraft:iron_bars"),
         stackSize = 64
     )
-
-    public object Wheat : Material(
+    
+    public object Chain : Material(
         id = 296,
-        displayName = "Wheat",
-        identifier = Identifier("minecraft:wheat"),
+        displayName = "Chain",
+        identifier = Identifier("minecraft:chain"),
         stackSize = 64
     )
-
-    public object Bread : Material(
+    
+    public object GlassPane : Material(
         id = 297,
-        displayName = "Bread",
-        identifier = Identifier("minecraft:bread"),
+        displayName = "Glass Pane",
+        identifier = Identifier("minecraft:glass_pane"),
         stackSize = 64
     )
-
-    public object LeatherHelmet : Material(
-        id = 298,
-        displayName = "Leather Cap",
-        identifier = Identifier("minecraft:leather_helmet"),
-        stackSize = 1
-    )
-
-    public object LeatherChestplate : Material(
-        id = 299,
-        displayName = "Leather Tunic",
-        identifier = Identifier("minecraft:leather_chestplate"),
-        stackSize = 1
-    )
-
-    public object LeatherLeggings : Material(
-        id = 300,
-        displayName = "Leather Pants",
-        identifier = Identifier("minecraft:leather_leggings"),
-        stackSize = 1
-    )
-
-    public object LeatherBoots : Material(
-        id = 301,
-        displayName = "Leather Boots",
-        identifier = Identifier("minecraft:leather_boots"),
-        stackSize = 1
-    )
-
-    public object ChainmailHelmet : Material(
-        id = 302,
-        displayName = "Chain Helmet",
-        identifier = Identifier("minecraft:chainmail_helmet"),
-        stackSize = 1
-    )
-
-    public object ChainmailChestplate : Material(
-        id = 303,
-        displayName = "Chain Chestplate",
-        identifier = Identifier("minecraft:chainmail_chestplate"),
-        stackSize = 1
-    )
-
-    public object ChainmailLeggings : Material(
-        id = 304,
-        displayName = "Chain Leggings",
-        identifier = Identifier("minecraft:chainmail_leggings"),
-        stackSize = 1
-    )
-
-    public object ChainmailBoots : Material(
-        id = 305,
-        displayName = "Chain Boots",
-        identifier = Identifier("minecraft:chainmail_boots"),
-        stackSize = 1
-    )
-
-    public object IronHelmet : Material(
-        id = 306,
-        displayName = "Iron Helmet",
-        identifier = Identifier("minecraft:iron_helmet"),
-        stackSize = 1
-    )
-
-    public object IronChestplate : Material(
-        id = 307,
-        displayName = "Iron Chestplate",
-        identifier = Identifier("minecraft:iron_chestplate"),
-        stackSize = 1
-    )
-
-    public object IronLeggings : Material(
-        id = 308,
-        displayName = "Iron Leggings",
-        identifier = Identifier("minecraft:iron_leggings"),
-        stackSize = 1
-    )
-
-    public object IronBoots : Material(
-        id = 309,
-        displayName = "Iron Boots",
-        identifier = Identifier("minecraft:iron_boots"),
-        stackSize = 1
-    )
-
-    public object DiamondHelmet : Material(
-        id = 310,
-        displayName = "Diamond Helmet",
-        identifier = Identifier("minecraft:diamond_helmet"),
-        stackSize = 1
-    )
-
-    public object DiamondChestplate : Material(
-        id = 311,
-        displayName = "Diamond Chestplate",
-        identifier = Identifier("minecraft:diamond_chestplate"),
-        stackSize = 1
-    )
-
-    public object DiamondLeggings : Material(
-        id = 312,
-        displayName = "Diamond Leggings",
-        identifier = Identifier("minecraft:diamond_leggings"),
-        stackSize = 1
-    )
-
-    public object DiamondBoots : Material(
-        id = 313,
-        displayName = "Diamond Boots",
-        identifier = Identifier("minecraft:diamond_boots"),
-        stackSize = 1
-    )
-
-    public object GoldenHelmet : Material(
-        id = 314,
-        displayName = "Golden Helmet",
-        identifier = Identifier("minecraft:golden_helmet"),
-        stackSize = 1
-    )
-
-    public object GoldenChestplate : Material(
-        id = 315,
-        displayName = "Golden Chestplate",
-        identifier = Identifier("minecraft:golden_chestplate"),
-        stackSize = 1
-    )
-
-    public object GoldenLeggings : Material(
-        id = 316,
-        displayName = "Golden Leggings",
-        identifier = Identifier("minecraft:golden_leggings"),
-        stackSize = 1
-    )
-
-    public object GoldenBoots : Material(
-        id = 317,
-        displayName = "Golden Boots",
-        identifier = Identifier("minecraft:golden_boots"),
-        stackSize = 1
-    )
-
-    public object Flint : Material(
-        id = 318,
-        displayName = "Flint",
-        identifier = Identifier("minecraft:flint"),
-        stackSize = 64
-    )
-
-    public object Porkchop : Material(
-        id = 319,
-        displayName = "Raw Porkchop",
-        identifier = Identifier("minecraft:porkchop"),
-        stackSize = 64
-    )
-
-    public object CookedPorkchop : Material(
-        id = 320,
-        displayName = "Cooked Porkchop",
-        identifier = Identifier("minecraft:cooked_porkchop"),
-        stackSize = 64
-    )
-
-    public object Painting : Material(
-        id = 321,
-        displayName = "Painting",
-        identifier = Identifier("minecraft:painting"),
-        stackSize = 64
-    )
-
-    public object GoldenApple : Material(
-        id = 322,
-        displayName = "Golden Apple",
-        identifier = Identifier("minecraft:golden_apple"),
-        stackSize = 64
-    ) {
-        init {
-            variations.add(MaterialVariation(0, "Golden Apple"))
-            variations.add(MaterialVariation(1, "Enchanted Golden Apple"))
-        }
-    }
-
-    public object Sign : Material(
-        id = 323,
-        displayName = "Sign",
-        identifier = Identifier("minecraft:sign"),
-        stackSize = 16
-    )
-
-    public object WoodenDoor : Material(
-        id = 324,
-        displayName = "Oak Door",
-        identifier = Identifier("minecraft:wooden_door"),
-        stackSize = 64
-    )
-
-    public object Bucket : Material(
-        id = 325,
-        displayName = "Bucket",
-        identifier = Identifier("minecraft:bucket"),
-        stackSize = 16
-    )
-
-    public object WaterBucket : Material(
-        id = 326,
-        displayName = "Water Bucket",
-        identifier = Identifier("minecraft:water_bucket"),
-        stackSize = 1
-    )
-
-    public object LavaBucket : Material(
-        id = 327,
-        displayName = "Lava Bucket",
-        identifier = Identifier("minecraft:lava_bucket"),
-        stackSize = 1
-    )
-
-    public object Minecart : Material(
-        id = 328,
-        displayName = "Minecart",
-        identifier = Identifier("minecraft:minecart"),
-        stackSize = 1
-    )
-
-    public object Saddle : Material(
-        id = 329,
-        displayName = "Saddle",
-        identifier = Identifier("minecraft:saddle"),
-        stackSize = 1
-    )
-
-    public object IronDoor : Material(
-        id = 330,
-        displayName = "Iron Door",
-        identifier = Identifier("minecraft:iron_door"),
-        stackSize = 64
-    )
-
-    public object Redstone : Material(
-        id = 331,
-        displayName = "Redstone",
-        identifier = Identifier("minecraft:redstone"),
-        stackSize = 64
-    )
-
-    public object Snowball : Material(
-        id = 332,
-        displayName = "Snowball",
-        identifier = Identifier("minecraft:snowball"),
-        stackSize = 16
-    )
-
-    public object Boat : Material(
-        id = 333,
-        displayName = "Boat",
-        identifier = Identifier("minecraft:boat"),
-        stackSize = 1
-    )
-
-    public object Leather : Material(
-        id = 334,
-        displayName = "Leather",
-        identifier = Identifier("minecraft:leather"),
-        stackSize = 64
-    )
-
-    public object MilkBucket : Material(
-        id = 335,
-        displayName = "Milk",
-        identifier = Identifier("minecraft:milk_bucket"),
-        stackSize = 1
-    )
-
-    public object Brick : Material(
-        id = 336,
-        displayName = "Brick",
-        identifier = Identifier("minecraft:brick"),
-        stackSize = 64
-    )
-
-    public object ClayBall : Material(
-        id = 337,
-        displayName = "Clay",
-        identifier = Identifier("minecraft:clay_ball"),
-        stackSize = 64
-    )
-
-    public object Reeds : Material(
-        id = 338,
-        displayName = "Sugar Canes",
-        identifier = Identifier("minecraft:reeds"),
-        stackSize = 64
-    )
-
-    public object Paper : Material(
-        id = 339,
-        displayName = "Paper",
-        identifier = Identifier("minecraft:paper"),
-        stackSize = 64
-    )
-
-    public object Book : Material(
-        id = 340,
-        displayName = "Book",
-        identifier = Identifier("minecraft:book"),
-        stackSize = 64
-    )
-
-    public object SlimeBall : Material(
-        id = 341,
-        displayName = "Slimeball",
-        identifier = Identifier("minecraft:slime_ball"),
-        stackSize = 64
-    )
-
-    public object ChestMinecart : Material(
-        id = 342,
-        displayName = "Minecart with Chest",
-        identifier = Identifier("minecraft:chest_minecart"),
-        stackSize = 1
-    )
-
-    public object FurnaceMinecart : Material(
-        id = 343,
-        displayName = "Minecart with Furnace",
-        identifier = Identifier("minecraft:furnace_minecart"),
-        stackSize = 1
-    )
-
-    public object Egg : Material(
-        id = 344,
-        displayName = "Egg",
-        identifier = Identifier("minecraft:egg"),
-        stackSize = 16
-    )
-
-    public object Compass : Material(
-        id = 345,
-        displayName = "Compass",
-        identifier = Identifier("minecraft:compass"),
-        stackSize = 64
-    )
-
-    public object FishingRod : Material(
-        id = 346,
-        displayName = "Fishing Rod",
-        identifier = Identifier("minecraft:fishing_rod"),
-        stackSize = 1
-    )
-
-    public object Clock : Material(
-        id = 347,
-        displayName = "Clock",
-        identifier = Identifier("minecraft:clock"),
-        stackSize = 64
-    )
-
-    public object GlowstoneDust : Material(
-        id = 348,
-        displayName = "Glowstone Dust",
-        identifier = Identifier("minecraft:glowstone_dust"),
-        stackSize = 64
-    )
-
-    public object Fish : Material(
-        id = 349,
-        displayName = "Fish",
-        identifier = Identifier("minecraft:fish"),
-        stackSize = 64
-    ) {
-        init {
-            variations.add(MaterialVariation(0, "Raw Fish"))
-            variations.add(MaterialVariation(1, "Raw Salmon"))
-            variations.add(MaterialVariation(2, "Clownfish"))
-            variations.add(MaterialVariation(3, "Pufferfish"))
-        }
-    }
-
-    public object CookedFish : Material(
-        id = 350,
-        displayName = "Cooked Fish",
-        identifier = Identifier("minecraft:cooked_fish"),
-        stackSize = 64
-    )
-
-    public object Dye : Material(
-        id = 351,
-        displayName = "Dye",
-        identifier = Identifier("minecraft:dye"),
-        stackSize = 64
-    ) {
-        init {
-            variations.add(MaterialVariation(0, "Ink Sac"))
-            variations.add(MaterialVariation(1, "Rose Red"))
-            variations.add(MaterialVariation(2, "Cactus Green"))
-            variations.add(MaterialVariation(3, "Cocoa Beans"))
-            variations.add(MaterialVariation(4, "Lapis Lazuli"))
-            variations.add(MaterialVariation(5, "Purple Dye"))
-            variations.add(MaterialVariation(6, "Cyan Dye"))
-            variations.add(MaterialVariation(7, "Light Gray Dye"))
-            variations.add(MaterialVariation(8, "Gray Dye"))
-            variations.add(MaterialVariation(9, "Pink Dye"))
-            variations.add(MaterialVariation(10, "Lime Dye"))
-            variations.add(MaterialVariation(11, "Dandelion Yellow"))
-            variations.add(MaterialVariation(12, "Light Blue Dye"))
-            variations.add(MaterialVariation(13, "Magenta Dye"))
-            variations.add(MaterialVariation(14, "Orange Dye"))
-            variations.add(MaterialVariation(15, "Bone Meal"))
-        }
-    }
-
-    public object Bone : Material(
-        id = 352,
-        displayName = "Bone",
-        identifier = Identifier("minecraft:bone"),
-        stackSize = 64
-    )
-
-    public object Sugar : Material(
-        id = 353,
-        displayName = "Sugar",
-        identifier = Identifier("minecraft:sugar"),
-        stackSize = 64
-    )
-
-    public object Cake : Material(
-        id = 354,
-        displayName = "Cake",
-        identifier = Identifier("minecraft:cake"),
-        stackSize = 1
-    )
-
-    public object Bed : Material(
-        id = 355,
-        displayName = "Bed",
-        identifier = Identifier("minecraft:bed"),
-        stackSize = 1
-    )
-
-    public object Repeater : Material(
-        id = 356,
-        displayName = "Redstone Repeater",
-        identifier = Identifier("minecraft:repeater"),
-        stackSize = 64
-    )
-
-    public object Cookie : Material(
-        id = 357,
-        displayName = "Cookie",
-        identifier = Identifier("minecraft:cookie"),
-        stackSize = 64
-    )
-
-    public object FilledMap : Material(
-        id = 358,
-        displayName = "Map",
-        identifier = Identifier("minecraft:filled_map"),
-        stackSize = 64
-    )
-
-    public object Shears : Material(
-        id = 359,
-        displayName = "Shears",
-        identifier = Identifier("minecraft:shears"),
-        stackSize = 1
-    )
-
+    
     public object Melon : Material(
-        id = 360,
+        id = 298,
         displayName = "Melon",
         identifier = Identifier("minecraft:melon"),
         stackSize = 64
     )
-
-    public object PumpkinSeeds : Material(
+    
+    public object Vine : Material(
+        id = 299,
+        displayName = "Vines",
+        identifier = Identifier("minecraft:vine"),
+        stackSize = 64
+    )
+    
+    public object GlowLichen : Material(
+        id = 300,
+        displayName = "Glow Lichen",
+        identifier = Identifier("minecraft:glow_lichen"),
+        stackSize = 64
+    )
+    
+    public object BrickStairs : Material(
+        id = 301,
+        displayName = "Brick Stairs",
+        identifier = Identifier("minecraft:brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object StoneBrickStairs : Material(
+        id = 302,
+        displayName = "Stone Brick Stairs",
+        identifier = Identifier("minecraft:stone_brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object Mycelium : Material(
+        id = 303,
+        displayName = "Mycelium",
+        identifier = Identifier("minecraft:mycelium"),
+        stackSize = 64
+    )
+    
+    public object LilyPad : Material(
+        id = 304,
+        displayName = "Lily Pad",
+        identifier = Identifier("minecraft:lily_pad"),
+        stackSize = 64
+    )
+    
+    public object NetherBricks : Material(
+        id = 305,
+        displayName = "Nether Bricks",
+        identifier = Identifier("minecraft:nether_bricks"),
+        stackSize = 64
+    )
+    
+    public object CrackedNetherBricks : Material(
+        id = 306,
+        displayName = "Cracked Nether Bricks",
+        identifier = Identifier("minecraft:cracked_nether_bricks"),
+        stackSize = 64
+    )
+    
+    public object ChiseledNetherBricks : Material(
+        id = 307,
+        displayName = "Chiseled Nether Bricks",
+        identifier = Identifier("minecraft:chiseled_nether_bricks"),
+        stackSize = 64
+    )
+    
+    public object NetherBrickFence : Material(
+        id = 308,
+        displayName = "Nether Brick Fence",
+        identifier = Identifier("minecraft:nether_brick_fence"),
+        stackSize = 64
+    )
+    
+    public object NetherBrickStairs : Material(
+        id = 309,
+        displayName = "Nether Brick Stairs",
+        identifier = Identifier("minecraft:nether_brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object EnchantingTable : Material(
+        id = 310,
+        displayName = "Enchanting Table",
+        identifier = Identifier("minecraft:enchanting_table"),
+        stackSize = 64
+    )
+    
+    public object EndPortalFrame : Material(
+        id = 311,
+        displayName = "End Portal Frame",
+        identifier = Identifier("minecraft:end_portal_frame"),
+        stackSize = 64
+    )
+    
+    public object EndStone : Material(
+        id = 312,
+        displayName = "End Stone",
+        identifier = Identifier("minecraft:end_stone"),
+        stackSize = 64
+    )
+    
+    public object EndStoneBricks : Material(
+        id = 313,
+        displayName = "End Stone Bricks",
+        identifier = Identifier("minecraft:end_stone_bricks"),
+        stackSize = 64
+    )
+    
+    public object DragonEgg : Material(
+        id = 314,
+        displayName = "Dragon Egg",
+        identifier = Identifier("minecraft:dragon_egg"),
+        stackSize = 64
+    )
+    
+    public object SandstoneStairs : Material(
+        id = 315,
+        displayName = "Sandstone Stairs",
+        identifier = Identifier("minecraft:sandstone_stairs"),
+        stackSize = 64
+    )
+    
+    public object EnderChest : Material(
+        id = 316,
+        displayName = "Ender Chest",
+        identifier = Identifier("minecraft:ender_chest"),
+        stackSize = 64
+    )
+    
+    public object EmeraldBlock : Material(
+        id = 317,
+        displayName = "Block of Emerald",
+        identifier = Identifier("minecraft:emerald_block"),
+        stackSize = 64
+    )
+    
+    public object SpruceStairs : Material(
+        id = 318,
+        displayName = "Spruce Stairs",
+        identifier = Identifier("minecraft:spruce_stairs"),
+        stackSize = 64
+    )
+    
+    public object BirchStairs : Material(
+        id = 319,
+        displayName = "Birch Stairs",
+        identifier = Identifier("minecraft:birch_stairs"),
+        stackSize = 64
+    )
+    
+    public object JungleStairs : Material(
+        id = 320,
+        displayName = "Jungle Stairs",
+        identifier = Identifier("minecraft:jungle_stairs"),
+        stackSize = 64
+    )
+    
+    public object CrimsonStairs : Material(
+        id = 321,
+        displayName = "Crimson Stairs",
+        identifier = Identifier("minecraft:crimson_stairs"),
+        stackSize = 64
+    )
+    
+    public object WarpedStairs : Material(
+        id = 322,
+        displayName = "Warped Stairs",
+        identifier = Identifier("minecraft:warped_stairs"),
+        stackSize = 64
+    )
+    
+    public object CommandBlock : Material(
+        id = 323,
+        displayName = "Command Block",
+        identifier = Identifier("minecraft:command_block"),
+        stackSize = 64
+    )
+    
+    public object Beacon : Material(
+        id = 324,
+        displayName = "Beacon",
+        identifier = Identifier("minecraft:beacon"),
+        stackSize = 64
+    )
+    
+    public object CobblestoneWall : Material(
+        id = 325,
+        displayName = "Cobblestone Wall",
+        identifier = Identifier("minecraft:cobblestone_wall"),
+        stackSize = 64
+    )
+    
+    public object MossyCobblestoneWall : Material(
+        id = 326,
+        displayName = "Mossy Cobblestone Wall",
+        identifier = Identifier("minecraft:mossy_cobblestone_wall"),
+        stackSize = 64
+    )
+    
+    public object BrickWall : Material(
+        id = 327,
+        displayName = "Brick Wall",
+        identifier = Identifier("minecraft:brick_wall"),
+        stackSize = 64
+    )
+    
+    public object PrismarineWall : Material(
+        id = 328,
+        displayName = "Prismarine Wall",
+        identifier = Identifier("minecraft:prismarine_wall"),
+        stackSize = 64
+    )
+    
+    public object RedSandstoneWall : Material(
+        id = 329,
+        displayName = "Red Sandstone Wall",
+        identifier = Identifier("minecraft:red_sandstone_wall"),
+        stackSize = 64
+    )
+    
+    public object MossyStoneBrickWall : Material(
+        id = 330,
+        displayName = "Mossy Stone Brick Wall",
+        identifier = Identifier("minecraft:mossy_stone_brick_wall"),
+        stackSize = 64
+    )
+    
+    public object GraniteWall : Material(
+        id = 331,
+        displayName = "Granite Wall",
+        identifier = Identifier("minecraft:granite_wall"),
+        stackSize = 64
+    )
+    
+    public object StoneBrickWall : Material(
+        id = 332,
+        displayName = "Stone Brick Wall",
+        identifier = Identifier("minecraft:stone_brick_wall"),
+        stackSize = 64
+    )
+    
+    public object NetherBrickWall : Material(
+        id = 333,
+        displayName = "Nether Brick Wall",
+        identifier = Identifier("minecraft:nether_brick_wall"),
+        stackSize = 64
+    )
+    
+    public object AndesiteWall : Material(
+        id = 334,
+        displayName = "Andesite Wall",
+        identifier = Identifier("minecraft:andesite_wall"),
+        stackSize = 64
+    )
+    
+    public object RedNetherBrickWall : Material(
+        id = 335,
+        displayName = "Red Nether Brick Wall",
+        identifier = Identifier("minecraft:red_nether_brick_wall"),
+        stackSize = 64
+    )
+    
+    public object SandstoneWall : Material(
+        id = 336,
+        displayName = "Sandstone Wall",
+        identifier = Identifier("minecraft:sandstone_wall"),
+        stackSize = 64
+    )
+    
+    public object EndStoneBrickWall : Material(
+        id = 337,
+        displayName = "End Stone Brick Wall",
+        identifier = Identifier("minecraft:end_stone_brick_wall"),
+        stackSize = 64
+    )
+    
+    public object DioriteWall : Material(
+        id = 338,
+        displayName = "Diorite Wall",
+        identifier = Identifier("minecraft:diorite_wall"),
+        stackSize = 64
+    )
+    
+    public object BlackstoneWall : Material(
+        id = 339,
+        displayName = "Blackstone Wall",
+        identifier = Identifier("minecraft:blackstone_wall"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstoneWall : Material(
+        id = 340,
+        displayName = "Polished Blackstone Wall",
+        identifier = Identifier("minecraft:polished_blackstone_wall"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstoneBrickWall : Material(
+        id = 341,
+        displayName = "Polished Blackstone Brick Wall",
+        identifier = Identifier("minecraft:polished_blackstone_brick_wall"),
+        stackSize = 64
+    )
+    
+    public object CobbledDeepslateWall : Material(
+        id = 342,
+        displayName = "Cobbled Deepslate Wall",
+        identifier = Identifier("minecraft:cobbled_deepslate_wall"),
+        stackSize = 64
+    )
+    
+    public object PolishedDeepslateWall : Material(
+        id = 343,
+        displayName = "Polished Deepslate Wall",
+        identifier = Identifier("minecraft:polished_deepslate_wall"),
+        stackSize = 64
+    )
+    
+    public object DeepslateBrickWall : Material(
+        id = 344,
+        displayName = "Deepslate Brick Wall",
+        identifier = Identifier("minecraft:deepslate_brick_wall"),
+        stackSize = 64
+    )
+    
+    public object DeepslateTileWall : Material(
+        id = 345,
+        displayName = "Deepslate Tile Wall",
+        identifier = Identifier("minecraft:deepslate_tile_wall"),
+        stackSize = 64
+    )
+    
+    public object Anvil : Material(
+        id = 346,
+        displayName = "Anvil",
+        identifier = Identifier("minecraft:anvil"),
+        stackSize = 64
+    )
+    
+    public object ChippedAnvil : Material(
+        id = 347,
+        displayName = "Chipped Anvil",
+        identifier = Identifier("minecraft:chipped_anvil"),
+        stackSize = 64
+    )
+    
+    public object DamagedAnvil : Material(
+        id = 348,
+        displayName = "Damaged Anvil",
+        identifier = Identifier("minecraft:damaged_anvil"),
+        stackSize = 64
+    )
+    
+    public object ChiseledQuartzBlock : Material(
+        id = 349,
+        displayName = "Chiseled Quartz Block",
+        identifier = Identifier("minecraft:chiseled_quartz_block"),
+        stackSize = 64
+    )
+    
+    public object QuartzBlock : Material(
+        id = 350,
+        displayName = "Block of Quartz",
+        identifier = Identifier("minecraft:quartz_block"),
+        stackSize = 64
+    )
+    
+    public object QuartzBricks : Material(
+        id = 351,
+        displayName = "Quartz Bricks",
+        identifier = Identifier("minecraft:quartz_bricks"),
+        stackSize = 64
+    )
+    
+    public object QuartzPillar : Material(
+        id = 352,
+        displayName = "Quartz Pillar",
+        identifier = Identifier("minecraft:quartz_pillar"),
+        stackSize = 64
+    )
+    
+    public object QuartzStairs : Material(
+        id = 353,
+        displayName = "Quartz Stairs",
+        identifier = Identifier("minecraft:quartz_stairs"),
+        stackSize = 64
+    )
+    
+    public object WhiteTerracotta : Material(
+        id = 354,
+        displayName = "White Terracotta",
+        identifier = Identifier("minecraft:white_terracotta"),
+        stackSize = 64
+    )
+    
+    public object OrangeTerracotta : Material(
+        id = 355,
+        displayName = "Orange Terracotta",
+        identifier = Identifier("minecraft:orange_terracotta"),
+        stackSize = 64
+    )
+    
+    public object MagentaTerracotta : Material(
+        id = 356,
+        displayName = "Magenta Terracotta",
+        identifier = Identifier("minecraft:magenta_terracotta"),
+        stackSize = 64
+    )
+    
+    public object LightBlueTerracotta : Material(
+        id = 357,
+        displayName = "Light Blue Terracotta",
+        identifier = Identifier("minecraft:light_blue_terracotta"),
+        stackSize = 64
+    )
+    
+    public object YellowTerracotta : Material(
+        id = 358,
+        displayName = "Yellow Terracotta",
+        identifier = Identifier("minecraft:yellow_terracotta"),
+        stackSize = 64
+    )
+    
+    public object LimeTerracotta : Material(
+        id = 359,
+        displayName = "Lime Terracotta",
+        identifier = Identifier("minecraft:lime_terracotta"),
+        stackSize = 64
+    )
+    
+    public object PinkTerracotta : Material(
+        id = 360,
+        displayName = "Pink Terracotta",
+        identifier = Identifier("minecraft:pink_terracotta"),
+        stackSize = 64
+    )
+    
+    public object GrayTerracotta : Material(
         id = 361,
-        displayName = "Pumpkin Seeds",
-        identifier = Identifier("minecraft:pumpkin_seeds"),
+        displayName = "Gray Terracotta",
+        identifier = Identifier("minecraft:gray_terracotta"),
         stackSize = 64
     )
-
-    public object MelonSeeds : Material(
+    
+    public object LightGrayTerracotta : Material(
         id = 362,
-        displayName = "Melon Seeds",
-        identifier = Identifier("minecraft:melon_seeds"),
+        displayName = "Light Gray Terracotta",
+        identifier = Identifier("minecraft:light_gray_terracotta"),
         stackSize = 64
     )
-
-    public object Beef : Material(
+    
+    public object CyanTerracotta : Material(
         id = 363,
-        displayName = "Raw Beef",
-        identifier = Identifier("minecraft:beef"),
+        displayName = "Cyan Terracotta",
+        identifier = Identifier("minecraft:cyan_terracotta"),
         stackSize = 64
     )
-
-    public object CookedBeef : Material(
+    
+    public object PurpleTerracotta : Material(
         id = 364,
-        displayName = "Steak",
-        identifier = Identifier("minecraft:cooked_beef"),
+        displayName = "Purple Terracotta",
+        identifier = Identifier("minecraft:purple_terracotta"),
         stackSize = 64
     )
-
-    public object Chicken : Material(
+    
+    public object BlueTerracotta : Material(
         id = 365,
-        displayName = "Raw Chicken",
-        identifier = Identifier("minecraft:chicken"),
+        displayName = "Blue Terracotta",
+        identifier = Identifier("minecraft:blue_terracotta"),
         stackSize = 64
     )
-
-    public object CookedChicken : Material(
+    
+    public object BrownTerracotta : Material(
         id = 366,
-        displayName = "Cooked Chicken",
-        identifier = Identifier("minecraft:cooked_chicken"),
+        displayName = "Brown Terracotta",
+        identifier = Identifier("minecraft:brown_terracotta"),
         stackSize = 64
     )
-
-    public object RottenFlesh : Material(
+    
+    public object GreenTerracotta : Material(
         id = 367,
-        displayName = "Rotten Flesh",
-        identifier = Identifier("minecraft:rotten_flesh"),
+        displayName = "Green Terracotta",
+        identifier = Identifier("minecraft:green_terracotta"),
         stackSize = 64
     )
-
-    public object EnderPearl : Material(
+    
+    public object RedTerracotta : Material(
         id = 368,
-        displayName = "Ender Pearl",
-        identifier = Identifier("minecraft:ender_pearl"),
-        stackSize = 16
+        displayName = "Red Terracotta",
+        identifier = Identifier("minecraft:red_terracotta"),
+        stackSize = 64
     )
-
-    public object BlazeRod : Material(
+    
+    public object BlackTerracotta : Material(
         id = 369,
-        displayName = "Blaze Rod",
-        identifier = Identifier("minecraft:blaze_rod"),
+        displayName = "Black Terracotta",
+        identifier = Identifier("minecraft:black_terracotta"),
         stackSize = 64
     )
-
-    public object GhastTear : Material(
+    
+    public object Barrier : Material(
         id = 370,
-        displayName = "Ghast Tear",
-        identifier = Identifier("minecraft:ghast_tear"),
+        displayName = "Barrier",
+        identifier = Identifier("minecraft:barrier"),
         stackSize = 64
     )
-
-    public object GoldNugget : Material(
+    
+    public object Light : Material(
         id = 371,
-        displayName = "Gold Nugget",
-        identifier = Identifier("minecraft:gold_nugget"),
+        displayName = "Light",
+        identifier = Identifier("minecraft:light"),
         stackSize = 64
     )
-
-    public object NetherWart : Material(
+    
+    public object HayBlock : Material(
         id = 372,
-        displayName = "Nether Wart",
-        identifier = Identifier("minecraft:nether_wart"),
+        displayName = "Hay Bale",
+        identifier = Identifier("minecraft:hay_block"),
         stackSize = 64
     )
-
-    public object Potion : Material(
+    
+    public object WhiteCarpet : Material(
         id = 373,
-        displayName = "Potion",
-        identifier = Identifier("minecraft:potion"),
-        stackSize = 1
+        displayName = "White Carpet",
+        identifier = Identifier("minecraft:white_carpet"),
+        stackSize = 64
     )
-
-    public object GlassBottle : Material(
+    
+    public object OrangeCarpet : Material(
         id = 374,
-        displayName = "Glass Bottle",
-        identifier = Identifier("minecraft:glass_bottle"),
+        displayName = "Orange Carpet",
+        identifier = Identifier("minecraft:orange_carpet"),
         stackSize = 64
     )
-
-    public object SpiderEye : Material(
+    
+    public object MagentaCarpet : Material(
         id = 375,
-        displayName = "Spider Eye",
-        identifier = Identifier("minecraft:spider_eye"),
+        displayName = "Magenta Carpet",
+        identifier = Identifier("minecraft:magenta_carpet"),
         stackSize = 64
     )
-
-    public object FermentedSpiderEye : Material(
+    
+    public object LightBlueCarpet : Material(
         id = 376,
-        displayName = "Fermented Spider Eye",
-        identifier = Identifier("minecraft:fermented_spider_eye"),
+        displayName = "Light Blue Carpet",
+        identifier = Identifier("minecraft:light_blue_carpet"),
         stackSize = 64
     )
-
-    public object BlazePowder : Material(
+    
+    public object YellowCarpet : Material(
         id = 377,
-        displayName = "Blaze Powder",
-        identifier = Identifier("minecraft:blaze_powder"),
+        displayName = "Yellow Carpet",
+        identifier = Identifier("minecraft:yellow_carpet"),
         stackSize = 64
     )
-
-    public object MagmaCream : Material(
+    
+    public object LimeCarpet : Material(
         id = 378,
-        displayName = "Magma Cream",
-        identifier = Identifier("minecraft:magma_cream"),
+        displayName = "Lime Carpet",
+        identifier = Identifier("minecraft:lime_carpet"),
         stackSize = 64
     )
-
-    public object BrewingStand : Material(
+    
+    public object PinkCarpet : Material(
         id = 379,
-        displayName = "Brewing Stand",
-        identifier = Identifier("minecraft:brewing_stand"),
+        displayName = "Pink Carpet",
+        identifier = Identifier("minecraft:pink_carpet"),
         stackSize = 64
     )
-
-    public object Cauldron : Material(
+    
+    public object GrayCarpet : Material(
         id = 380,
-        displayName = "Cauldron",
-        identifier = Identifier("minecraft:cauldron"),
+        displayName = "Gray Carpet",
+        identifier = Identifier("minecraft:gray_carpet"),
         stackSize = 64
     )
-
-    public object EnderEye : Material(
+    
+    public object LightGrayCarpet : Material(
         id = 381,
-        displayName = "Eye of Ender",
-        identifier = Identifier("minecraft:ender_eye"),
+        displayName = "Light Gray Carpet",
+        identifier = Identifier("minecraft:light_gray_carpet"),
         stackSize = 64
     )
-
-    public object SpeckledMelon : Material(
+    
+    public object CyanCarpet : Material(
         id = 382,
-        displayName = "Glistering Melon",
-        identifier = Identifier("minecraft:speckled_melon"),
+        displayName = "Cyan Carpet",
+        identifier = Identifier("minecraft:cyan_carpet"),
         stackSize = 64
     )
-
-    public object SpawnEgg : Material(
+    
+    public object PurpleCarpet : Material(
         id = 383,
-        displayName = "Spawn Egg",
-        identifier = Identifier("minecraft:spawn_egg"),
+        displayName = "Purple Carpet",
+        identifier = Identifier("minecraft:purple_carpet"),
         stackSize = 64
     )
-
-    public object ExperienceBottle : Material(
+    
+    public object BlueCarpet : Material(
         id = 384,
-        displayName = "Bottle o' Enchanting",
-        identifier = Identifier("minecraft:experience_bottle"),
+        displayName = "Blue Carpet",
+        identifier = Identifier("minecraft:blue_carpet"),
         stackSize = 64
     )
-
-    public object FireCharge : Material(
+    
+    public object BrownCarpet : Material(
         id = 385,
-        displayName = "Fire Charge",
-        identifier = Identifier("minecraft:fire_charge"),
+        displayName = "Brown Carpet",
+        identifier = Identifier("minecraft:brown_carpet"),
         stackSize = 64
     )
-
-    public object WritableBook : Material(
+    
+    public object GreenCarpet : Material(
         id = 386,
-        displayName = "Book and Quill",
-        identifier = Identifier("minecraft:writable_book"),
-        stackSize = 1
+        displayName = "Green Carpet",
+        identifier = Identifier("minecraft:green_carpet"),
+        stackSize = 64
     )
-
-    public object WrittenBook : Material(
+    
+    public object RedCarpet : Material(
         id = 387,
-        displayName = "Written Book",
-        identifier = Identifier("minecraft:written_book"),
-        stackSize = 16
+        displayName = "Red Carpet",
+        identifier = Identifier("minecraft:red_carpet"),
+        stackSize = 64
     )
-
-    public object Emerald : Material(
+    
+    public object BlackCarpet : Material(
         id = 388,
-        displayName = "Emerald",
-        identifier = Identifier("minecraft:emerald"),
+        displayName = "Black Carpet",
+        identifier = Identifier("minecraft:black_carpet"),
         stackSize = 64
     )
-
-    public object ItemFrame : Material(
+    
+    public object Terracotta : Material(
         id = 389,
-        displayName = "Item Frame",
-        identifier = Identifier("minecraft:item_frame"),
+        displayName = "Terracotta",
+        identifier = Identifier("minecraft:terracotta"),
         stackSize = 64
     )
-
-    public object FlowerPot : Material(
+    
+    public object PackedIce : Material(
         id = 390,
-        displayName = "Flower Pot",
-        identifier = Identifier("minecraft:flower_pot"),
+        displayName = "Packed Ice",
+        identifier = Identifier("minecraft:packed_ice"),
         stackSize = 64
-    ) {
-        init {
-            variations.add(MaterialVariation(0, "Empty Flower Pot"))
-            variations.add(MaterialVariation(1, "Poppy Flower Pot"))
-            variations.add(MaterialVariation(2, "Dandelion Flower Pot"))
-            variations.add(MaterialVariation(3, "Oak sapling Flower Pot"))
-            variations.add(MaterialVariation(4, "Spruce sapling Flower Pot"))
-            variations.add(MaterialVariation(5, "Birch sapling Flower Pot"))
-            variations.add(MaterialVariation(6, "Jungle sapling Flower Pot"))
-            variations.add(MaterialVariation(7, "Red mushroom Flower Pot"))
-            variations.add(MaterialVariation(8, "Brown mushroom Flower Pot"))
-            variations.add(MaterialVariation(9, "Cactus Flower Pot"))
-            variations.add(MaterialVariation(10, "Dead bush Flower Pot"))
-            variations.add(MaterialVariation(11, "Fern Flower Pot"))
-            variations.add(MaterialVariation(12, "Acacia sapling Flower Pot"))
-            variations.add(MaterialVariation(13, "Dark oak sapling Flower Pot"))
-        }
-    }
-
-    public object Carrot : Material(
+    )
+    
+    public object AcaciaStairs : Material(
         id = 391,
-        displayName = "Carrot",
-        identifier = Identifier("minecraft:carrot"),
+        displayName = "Acacia Stairs",
+        identifier = Identifier("minecraft:acacia_stairs"),
         stackSize = 64
     )
-
-    public object Potato : Material(
+    
+    public object DarkOakStairs : Material(
         id = 392,
-        displayName = "Potato",
-        identifier = Identifier("minecraft:potato"),
+        displayName = "Dark Oak Stairs",
+        identifier = Identifier("minecraft:dark_oak_stairs"),
         stackSize = 64
     )
-
-    public object BakedPotato : Material(
+    
+    public object DirtPath : Material(
         id = 393,
-        displayName = "Baked Potato",
-        identifier = Identifier("minecraft:baked_potato"),
+        displayName = "Dirt Path",
+        identifier = Identifier("minecraft:dirt_path"),
         stackSize = 64
     )
-
-    public object PoisonousPotato : Material(
+    
+    public object Sunflower : Material(
         id = 394,
-        displayName = "Poisonous Potato",
-        identifier = Identifier("minecraft:poisonous_potato"),
+        displayName = "Sunflower",
+        identifier = Identifier("minecraft:sunflower"),
         stackSize = 64
     )
-
-    public object Map : Material(
+    
+    public object Lilac : Material(
         id = 395,
-        displayName = "Empty Map",
-        identifier = Identifier("minecraft:map"),
+        displayName = "Lilac",
+        identifier = Identifier("minecraft:lilac"),
         stackSize = 64
     )
-
-    public object GoldenCarrot : Material(
+    
+    public object RoseBush : Material(
         id = 396,
-        displayName = "Golden Carrot",
-        identifier = Identifier("minecraft:golden_carrot"),
+        displayName = "Rose Bush",
+        identifier = Identifier("minecraft:rose_bush"),
         stackSize = 64
     )
-
-    public object Skull : Material(
+    
+    public object Peony : Material(
         id = 397,
-        displayName = "Skull",
-        identifier = Identifier("minecraft:skull"),
+        displayName = "Peony",
+        identifier = Identifier("minecraft:peony"),
         stackSize = 64
-    ) {
-        init {
-            variations.add(MaterialVariation(0, "Skeleton Skull"))
-            variations.add(MaterialVariation(1, "Wither Skeleton Skull"))
-            variations.add(MaterialVariation(2, "Zombie Head"))
-            variations.add(MaterialVariation(3, "Head"))
-            variations.add(MaterialVariation(4, "Creeper Head"))
-        }
-    }
-
-    public object CarrotOnAStick : Material(
+    )
+    
+    public object TallGrass : Material(
         id = 398,
-        displayName = "Carrot on a Stick",
-        identifier = Identifier("minecraft:carrot_on_a_stick"),
-        stackSize = 1
+        displayName = "Tall Grass",
+        identifier = Identifier("minecraft:tall_grass"),
+        stackSize = 64
     )
-
-    public object NetherStar : Material(
+    
+    public object LargeFern : Material(
         id = 399,
-        displayName = "Nether Star",
-        identifier = Identifier("minecraft:nether_star"),
+        displayName = "Large Fern",
+        identifier = Identifier("minecraft:large_fern"),
         stackSize = 64
     )
-
-    public object PumpkinPie : Material(
+    
+    public object WhiteStainedGlass : Material(
         id = 400,
-        displayName = "Pumpkin Pie",
-        identifier = Identifier("minecraft:pumpkin_pie"),
+        displayName = "White Stained Glass",
+        identifier = Identifier("minecraft:white_stained_glass"),
         stackSize = 64
     )
-
-    public object Fireworks : Material(
+    
+    public object OrangeStainedGlass : Material(
         id = 401,
-        displayName = "Firework Rocket",
-        identifier = Identifier("minecraft:fireworks"),
+        displayName = "Orange Stained Glass",
+        identifier = Identifier("minecraft:orange_stained_glass"),
         stackSize = 64
     )
-
-    public object FireworkCharge : Material(
+    
+    public object MagentaStainedGlass : Material(
         id = 402,
-        displayName = "Firework Star",
-        identifier = Identifier("minecraft:firework_charge"),
+        displayName = "Magenta Stained Glass",
+        identifier = Identifier("minecraft:magenta_stained_glass"),
         stackSize = 64
     )
-
-    public object EnchantedBook : Material(
+    
+    public object LightBlueStainedGlass : Material(
         id = 403,
-        displayName = "Enchanted Book",
-        identifier = Identifier("minecraft:enchanted_book"),
+        displayName = "Light Blue Stained Glass",
+        identifier = Identifier("minecraft:light_blue_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object YellowStainedGlass : Material(
+        id = 404,
+        displayName = "Yellow Stained Glass",
+        identifier = Identifier("minecraft:yellow_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object LimeStainedGlass : Material(
+        id = 405,
+        displayName = "Lime Stained Glass",
+        identifier = Identifier("minecraft:lime_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object PinkStainedGlass : Material(
+        id = 406,
+        displayName = "Pink Stained Glass",
+        identifier = Identifier("minecraft:pink_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object GrayStainedGlass : Material(
+        id = 407,
+        displayName = "Gray Stained Glass",
+        identifier = Identifier("minecraft:gray_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object LightGrayStainedGlass : Material(
+        id = 408,
+        displayName = "Light Gray Stained Glass",
+        identifier = Identifier("minecraft:light_gray_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object CyanStainedGlass : Material(
+        id = 409,
+        displayName = "Cyan Stained Glass",
+        identifier = Identifier("minecraft:cyan_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object PurpleStainedGlass : Material(
+        id = 410,
+        displayName = "Purple Stained Glass",
+        identifier = Identifier("minecraft:purple_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object BlueStainedGlass : Material(
+        id = 411,
+        displayName = "Blue Stained Glass",
+        identifier = Identifier("minecraft:blue_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object BrownStainedGlass : Material(
+        id = 412,
+        displayName = "Brown Stained Glass",
+        identifier = Identifier("minecraft:brown_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object GreenStainedGlass : Material(
+        id = 413,
+        displayName = "Green Stained Glass",
+        identifier = Identifier("minecraft:green_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object RedStainedGlass : Material(
+        id = 414,
+        displayName = "Red Stained Glass",
+        identifier = Identifier("minecraft:red_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object BlackStainedGlass : Material(
+        id = 415,
+        displayName = "Black Stained Glass",
+        identifier = Identifier("minecraft:black_stained_glass"),
+        stackSize = 64
+    )
+    
+    public object WhiteStainedGlassPane : Material(
+        id = 416,
+        displayName = "White Stained Glass Pane",
+        identifier = Identifier("minecraft:white_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object OrangeStainedGlassPane : Material(
+        id = 417,
+        displayName = "Orange Stained Glass Pane",
+        identifier = Identifier("minecraft:orange_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object MagentaStainedGlassPane : Material(
+        id = 418,
+        displayName = "Magenta Stained Glass Pane",
+        identifier = Identifier("minecraft:magenta_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object LightBlueStainedGlassPane : Material(
+        id = 419,
+        displayName = "Light Blue Stained Glass Pane",
+        identifier = Identifier("minecraft:light_blue_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object YellowStainedGlassPane : Material(
+        id = 420,
+        displayName = "Yellow Stained Glass Pane",
+        identifier = Identifier("minecraft:yellow_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object LimeStainedGlassPane : Material(
+        id = 421,
+        displayName = "Lime Stained Glass Pane",
+        identifier = Identifier("minecraft:lime_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object PinkStainedGlassPane : Material(
+        id = 422,
+        displayName = "Pink Stained Glass Pane",
+        identifier = Identifier("minecraft:pink_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object GrayStainedGlassPane : Material(
+        id = 423,
+        displayName = "Gray Stained Glass Pane",
+        identifier = Identifier("minecraft:gray_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object LightGrayStainedGlassPane : Material(
+        id = 424,
+        displayName = "Light Gray Stained Glass Pane",
+        identifier = Identifier("minecraft:light_gray_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object CyanStainedGlassPane : Material(
+        id = 425,
+        displayName = "Cyan Stained Glass Pane",
+        identifier = Identifier("minecraft:cyan_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object PurpleStainedGlassPane : Material(
+        id = 426,
+        displayName = "Purple Stained Glass Pane",
+        identifier = Identifier("minecraft:purple_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object BlueStainedGlassPane : Material(
+        id = 427,
+        displayName = "Blue Stained Glass Pane",
+        identifier = Identifier("minecraft:blue_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object BrownStainedGlassPane : Material(
+        id = 428,
+        displayName = "Brown Stained Glass Pane",
+        identifier = Identifier("minecraft:brown_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object GreenStainedGlassPane : Material(
+        id = 429,
+        displayName = "Green Stained Glass Pane",
+        identifier = Identifier("minecraft:green_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object RedStainedGlassPane : Material(
+        id = 430,
+        displayName = "Red Stained Glass Pane",
+        identifier = Identifier("minecraft:red_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object BlackStainedGlassPane : Material(
+        id = 431,
+        displayName = "Black Stained Glass Pane",
+        identifier = Identifier("minecraft:black_stained_glass_pane"),
+        stackSize = 64
+    )
+    
+    public object Prismarine : Material(
+        id = 432,
+        displayName = "Prismarine",
+        identifier = Identifier("minecraft:prismarine"),
+        stackSize = 64
+    )
+    
+    public object PrismarineBricks : Material(
+        id = 433,
+        displayName = "Prismarine Bricks",
+        identifier = Identifier("minecraft:prismarine_bricks"),
+        stackSize = 64
+    )
+    
+    public object DarkPrismarine : Material(
+        id = 434,
+        displayName = "Dark Prismarine",
+        identifier = Identifier("minecraft:dark_prismarine"),
+        stackSize = 64
+    )
+    
+    public object PrismarineStairs : Material(
+        id = 435,
+        displayName = "Prismarine Stairs",
+        identifier = Identifier("minecraft:prismarine_stairs"),
+        stackSize = 64
+    )
+    
+    public object PrismarineBrickStairs : Material(
+        id = 436,
+        displayName = "Prismarine Brick Stairs",
+        identifier = Identifier("minecraft:prismarine_brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object DarkPrismarineStairs : Material(
+        id = 437,
+        displayName = "Dark Prismarine Stairs",
+        identifier = Identifier("minecraft:dark_prismarine_stairs"),
+        stackSize = 64
+    )
+    
+    public object SeaLantern : Material(
+        id = 438,
+        displayName = "Sea Lantern",
+        identifier = Identifier("minecraft:sea_lantern"),
+        stackSize = 64
+    )
+    
+    public object RedSandstone : Material(
+        id = 439,
+        displayName = "Red Sandstone",
+        identifier = Identifier("minecraft:red_sandstone"),
+        stackSize = 64
+    )
+    
+    public object ChiseledRedSandstone : Material(
+        id = 440,
+        displayName = "Chiseled Red Sandstone",
+        identifier = Identifier("minecraft:chiseled_red_sandstone"),
+        stackSize = 64
+    )
+    
+    public object CutRedSandstone : Material(
+        id = 441,
+        displayName = "Cut Red Sandstone",
+        identifier = Identifier("minecraft:cut_red_sandstone"),
+        stackSize = 64
+    )
+    
+    public object RedSandstoneStairs : Material(
+        id = 442,
+        displayName = "Red Sandstone Stairs",
+        identifier = Identifier("minecraft:red_sandstone_stairs"),
+        stackSize = 64
+    )
+    
+    public object RepeatingCommandBlock : Material(
+        id = 443,
+        displayName = "Repeating Command Block",
+        identifier = Identifier("minecraft:repeating_command_block"),
+        stackSize = 64
+    )
+    
+    public object ChainCommandBlock : Material(
+        id = 444,
+        displayName = "Chain Command Block",
+        identifier = Identifier("minecraft:chain_command_block"),
+        stackSize = 64
+    )
+    
+    public object MagmaBlock : Material(
+        id = 445,
+        displayName = "Magma Block",
+        identifier = Identifier("minecraft:magma_block"),
+        stackSize = 64
+    )
+    
+    public object NetherWartBlock : Material(
+        id = 446,
+        displayName = "Nether Wart Block",
+        identifier = Identifier("minecraft:nether_wart_block"),
+        stackSize = 64
+    )
+    
+    public object WarpedWartBlock : Material(
+        id = 447,
+        displayName = "Warped Wart Block",
+        identifier = Identifier("minecraft:warped_wart_block"),
+        stackSize = 64
+    )
+    
+    public object RedNetherBricks : Material(
+        id = 448,
+        displayName = "Red Nether Bricks",
+        identifier = Identifier("minecraft:red_nether_bricks"),
+        stackSize = 64
+    )
+    
+    public object BoneBlock : Material(
+        id = 449,
+        displayName = "Bone Block",
+        identifier = Identifier("minecraft:bone_block"),
+        stackSize = 64
+    )
+    
+    public object StructureVoid : Material(
+        id = 450,
+        displayName = "Structure Void",
+        identifier = Identifier("minecraft:structure_void"),
+        stackSize = 64
+    )
+    
+    public object ShulkerBox : Material(
+        id = 451,
+        displayName = "Shulker Box",
+        identifier = Identifier("minecraft:shulker_box"),
         stackSize = 1
     )
-
+    
+    public object WhiteShulkerBox : Material(
+        id = 452,
+        displayName = "White Shulker Box",
+        identifier = Identifier("minecraft:white_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object OrangeShulkerBox : Material(
+        id = 453,
+        displayName = "Orange Shulker Box",
+        identifier = Identifier("minecraft:orange_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object MagentaShulkerBox : Material(
+        id = 454,
+        displayName = "Magenta Shulker Box",
+        identifier = Identifier("minecraft:magenta_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object LightBlueShulkerBox : Material(
+        id = 455,
+        displayName = "Light Blue Shulker Box",
+        identifier = Identifier("minecraft:light_blue_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object YellowShulkerBox : Material(
+        id = 456,
+        displayName = "Yellow Shulker Box",
+        identifier = Identifier("minecraft:yellow_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object LimeShulkerBox : Material(
+        id = 457,
+        displayName = "Lime Shulker Box",
+        identifier = Identifier("minecraft:lime_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object PinkShulkerBox : Material(
+        id = 458,
+        displayName = "Pink Shulker Box",
+        identifier = Identifier("minecraft:pink_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object GrayShulkerBox : Material(
+        id = 459,
+        displayName = "Gray Shulker Box",
+        identifier = Identifier("minecraft:gray_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object LightGrayShulkerBox : Material(
+        id = 460,
+        displayName = "Light Gray Shulker Box",
+        identifier = Identifier("minecraft:light_gray_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object CyanShulkerBox : Material(
+        id = 461,
+        displayName = "Cyan Shulker Box",
+        identifier = Identifier("minecraft:cyan_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object PurpleShulkerBox : Material(
+        id = 462,
+        displayName = "Purple Shulker Box",
+        identifier = Identifier("minecraft:purple_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object BlueShulkerBox : Material(
+        id = 463,
+        displayName = "Blue Shulker Box",
+        identifier = Identifier("minecraft:blue_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object BrownShulkerBox : Material(
+        id = 464,
+        displayName = "Brown Shulker Box",
+        identifier = Identifier("minecraft:brown_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object GreenShulkerBox : Material(
+        id = 465,
+        displayName = "Green Shulker Box",
+        identifier = Identifier("minecraft:green_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object RedShulkerBox : Material(
+        id = 466,
+        displayName = "Red Shulker Box",
+        identifier = Identifier("minecraft:red_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object BlackShulkerBox : Material(
+        id = 467,
+        displayName = "Black Shulker Box",
+        identifier = Identifier("minecraft:black_shulker_box"),
+        stackSize = 1
+    )
+    
+    public object WhiteGlazedTerracotta : Material(
+        id = 468,
+        displayName = "White Glazed Terracotta",
+        identifier = Identifier("minecraft:white_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object OrangeGlazedTerracotta : Material(
+        id = 469,
+        displayName = "Orange Glazed Terracotta",
+        identifier = Identifier("minecraft:orange_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object MagentaGlazedTerracotta : Material(
+        id = 470,
+        displayName = "Magenta Glazed Terracotta",
+        identifier = Identifier("minecraft:magenta_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object LightBlueGlazedTerracotta : Material(
+        id = 471,
+        displayName = "Light Blue Glazed Terracotta",
+        identifier = Identifier("minecraft:light_blue_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object YellowGlazedTerracotta : Material(
+        id = 472,
+        displayName = "Yellow Glazed Terracotta",
+        identifier = Identifier("minecraft:yellow_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object LimeGlazedTerracotta : Material(
+        id = 473,
+        displayName = "Lime Glazed Terracotta",
+        identifier = Identifier("minecraft:lime_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object PinkGlazedTerracotta : Material(
+        id = 474,
+        displayName = "Pink Glazed Terracotta",
+        identifier = Identifier("minecraft:pink_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object GrayGlazedTerracotta : Material(
+        id = 475,
+        displayName = "Gray Glazed Terracotta",
+        identifier = Identifier("minecraft:gray_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object LightGrayGlazedTerracotta : Material(
+        id = 476,
+        displayName = "Light Gray Glazed Terracotta",
+        identifier = Identifier("minecraft:light_gray_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object CyanGlazedTerracotta : Material(
+        id = 477,
+        displayName = "Cyan Glazed Terracotta",
+        identifier = Identifier("minecraft:cyan_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object PurpleGlazedTerracotta : Material(
+        id = 478,
+        displayName = "Purple Glazed Terracotta",
+        identifier = Identifier("minecraft:purple_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object BlueGlazedTerracotta : Material(
+        id = 479,
+        displayName = "Blue Glazed Terracotta",
+        identifier = Identifier("minecraft:blue_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object BrownGlazedTerracotta : Material(
+        id = 480,
+        displayName = "Brown Glazed Terracotta",
+        identifier = Identifier("minecraft:brown_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object GreenGlazedTerracotta : Material(
+        id = 481,
+        displayName = "Green Glazed Terracotta",
+        identifier = Identifier("minecraft:green_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object RedGlazedTerracotta : Material(
+        id = 482,
+        displayName = "Red Glazed Terracotta",
+        identifier = Identifier("minecraft:red_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object BlackGlazedTerracotta : Material(
+        id = 483,
+        displayName = "Black Glazed Terracotta",
+        identifier = Identifier("minecraft:black_glazed_terracotta"),
+        stackSize = 64
+    )
+    
+    public object WhiteConcrete : Material(
+        id = 484,
+        displayName = "White Concrete",
+        identifier = Identifier("minecraft:white_concrete"),
+        stackSize = 64
+    )
+    
+    public object OrangeConcrete : Material(
+        id = 485,
+        displayName = "Orange Concrete",
+        identifier = Identifier("minecraft:orange_concrete"),
+        stackSize = 64
+    )
+    
+    public object MagentaConcrete : Material(
+        id = 486,
+        displayName = "Magenta Concrete",
+        identifier = Identifier("minecraft:magenta_concrete"),
+        stackSize = 64
+    )
+    
+    public object LightBlueConcrete : Material(
+        id = 487,
+        displayName = "Light Blue Concrete",
+        identifier = Identifier("minecraft:light_blue_concrete"),
+        stackSize = 64
+    )
+    
+    public object YellowConcrete : Material(
+        id = 488,
+        displayName = "Yellow Concrete",
+        identifier = Identifier("minecraft:yellow_concrete"),
+        stackSize = 64
+    )
+    
+    public object LimeConcrete : Material(
+        id = 489,
+        displayName = "Lime Concrete",
+        identifier = Identifier("minecraft:lime_concrete"),
+        stackSize = 64
+    )
+    
+    public object PinkConcrete : Material(
+        id = 490,
+        displayName = "Pink Concrete",
+        identifier = Identifier("minecraft:pink_concrete"),
+        stackSize = 64
+    )
+    
+    public object GrayConcrete : Material(
+        id = 491,
+        displayName = "Gray Concrete",
+        identifier = Identifier("minecraft:gray_concrete"),
+        stackSize = 64
+    )
+    
+    public object LightGrayConcrete : Material(
+        id = 492,
+        displayName = "Light Gray Concrete",
+        identifier = Identifier("minecraft:light_gray_concrete"),
+        stackSize = 64
+    )
+    
+    public object CyanConcrete : Material(
+        id = 493,
+        displayName = "Cyan Concrete",
+        identifier = Identifier("minecraft:cyan_concrete"),
+        stackSize = 64
+    )
+    
+    public object PurpleConcrete : Material(
+        id = 494,
+        displayName = "Purple Concrete",
+        identifier = Identifier("minecraft:purple_concrete"),
+        stackSize = 64
+    )
+    
+    public object BlueConcrete : Material(
+        id = 495,
+        displayName = "Blue Concrete",
+        identifier = Identifier("minecraft:blue_concrete"),
+        stackSize = 64
+    )
+    
+    public object BrownConcrete : Material(
+        id = 496,
+        displayName = "Brown Concrete",
+        identifier = Identifier("minecraft:brown_concrete"),
+        stackSize = 64
+    )
+    
+    public object GreenConcrete : Material(
+        id = 497,
+        displayName = "Green Concrete",
+        identifier = Identifier("minecraft:green_concrete"),
+        stackSize = 64
+    )
+    
+    public object RedConcrete : Material(
+        id = 498,
+        displayName = "Red Concrete",
+        identifier = Identifier("minecraft:red_concrete"),
+        stackSize = 64
+    )
+    
+    public object BlackConcrete : Material(
+        id = 499,
+        displayName = "Black Concrete",
+        identifier = Identifier("minecraft:black_concrete"),
+        stackSize = 64
+    )
+    
+    public object WhiteConcretePowder : Material(
+        id = 500,
+        displayName = "White Concrete Powder",
+        identifier = Identifier("minecraft:white_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object OrangeConcretePowder : Material(
+        id = 501,
+        displayName = "Orange Concrete Powder",
+        identifier = Identifier("minecraft:orange_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object MagentaConcretePowder : Material(
+        id = 502,
+        displayName = "Magenta Concrete Powder",
+        identifier = Identifier("minecraft:magenta_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object LightBlueConcretePowder : Material(
+        id = 503,
+        displayName = "Light Blue Concrete Powder",
+        identifier = Identifier("minecraft:light_blue_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object YellowConcretePowder : Material(
+        id = 504,
+        displayName = "Yellow Concrete Powder",
+        identifier = Identifier("minecraft:yellow_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object LimeConcretePowder : Material(
+        id = 505,
+        displayName = "Lime Concrete Powder",
+        identifier = Identifier("minecraft:lime_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object PinkConcretePowder : Material(
+        id = 506,
+        displayName = "Pink Concrete Powder",
+        identifier = Identifier("minecraft:pink_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object GrayConcretePowder : Material(
+        id = 507,
+        displayName = "Gray Concrete Powder",
+        identifier = Identifier("minecraft:gray_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object LightGrayConcretePowder : Material(
+        id = 508,
+        displayName = "Light Gray Concrete Powder",
+        identifier = Identifier("minecraft:light_gray_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object CyanConcretePowder : Material(
+        id = 509,
+        displayName = "Cyan Concrete Powder",
+        identifier = Identifier("minecraft:cyan_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object PurpleConcretePowder : Material(
+        id = 510,
+        displayName = "Purple Concrete Powder",
+        identifier = Identifier("minecraft:purple_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object BlueConcretePowder : Material(
+        id = 511,
+        displayName = "Blue Concrete Powder",
+        identifier = Identifier("minecraft:blue_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object BrownConcretePowder : Material(
+        id = 512,
+        displayName = "Brown Concrete Powder",
+        identifier = Identifier("minecraft:brown_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object GreenConcretePowder : Material(
+        id = 513,
+        displayName = "Green Concrete Powder",
+        identifier = Identifier("minecraft:green_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object RedConcretePowder : Material(
+        id = 514,
+        displayName = "Red Concrete Powder",
+        identifier = Identifier("minecraft:red_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object BlackConcretePowder : Material(
+        id = 515,
+        displayName = "Black Concrete Powder",
+        identifier = Identifier("minecraft:black_concrete_powder"),
+        stackSize = 64
+    )
+    
+    public object TurtleEgg : Material(
+        id = 516,
+        displayName = "Turtle Egg",
+        identifier = Identifier("minecraft:turtle_egg"),
+        stackSize = 64
+    )
+    
+    public object DeadTubeCoralBlock : Material(
+        id = 517,
+        displayName = "Dead Tube Coral Block",
+        identifier = Identifier("minecraft:dead_tube_coral_block"),
+        stackSize = 64
+    )
+    
+    public object DeadBrainCoralBlock : Material(
+        id = 518,
+        displayName = "Dead Brain Coral Block",
+        identifier = Identifier("minecraft:dead_brain_coral_block"),
+        stackSize = 64
+    )
+    
+    public object DeadBubbleCoralBlock : Material(
+        id = 519,
+        displayName = "Dead Bubble Coral Block",
+        identifier = Identifier("minecraft:dead_bubble_coral_block"),
+        stackSize = 64
+    )
+    
+    public object DeadFireCoralBlock : Material(
+        id = 520,
+        displayName = "Dead Fire Coral Block",
+        identifier = Identifier("minecraft:dead_fire_coral_block"),
+        stackSize = 64
+    )
+    
+    public object DeadHornCoralBlock : Material(
+        id = 521,
+        displayName = "Dead Horn Coral Block",
+        identifier = Identifier("minecraft:dead_horn_coral_block"),
+        stackSize = 64
+    )
+    
+    public object TubeCoralBlock : Material(
+        id = 522,
+        displayName = "Tube Coral Block",
+        identifier = Identifier("minecraft:tube_coral_block"),
+        stackSize = 64
+    )
+    
+    public object BrainCoralBlock : Material(
+        id = 523,
+        displayName = "Brain Coral Block",
+        identifier = Identifier("minecraft:brain_coral_block"),
+        stackSize = 64
+    )
+    
+    public object BubbleCoralBlock : Material(
+        id = 524,
+        displayName = "Bubble Coral Block",
+        identifier = Identifier("minecraft:bubble_coral_block"),
+        stackSize = 64
+    )
+    
+    public object FireCoralBlock : Material(
+        id = 525,
+        displayName = "Fire Coral Block",
+        identifier = Identifier("minecraft:fire_coral_block"),
+        stackSize = 64
+    )
+    
+    public object HornCoralBlock : Material(
+        id = 526,
+        displayName = "Horn Coral Block",
+        identifier = Identifier("minecraft:horn_coral_block"),
+        stackSize = 64
+    )
+    
+    public object TubeCoral : Material(
+        id = 527,
+        displayName = "Tube Coral",
+        identifier = Identifier("minecraft:tube_coral"),
+        stackSize = 64
+    )
+    
+    public object BrainCoral : Material(
+        id = 528,
+        displayName = "Brain Coral",
+        identifier = Identifier("minecraft:brain_coral"),
+        stackSize = 64
+    )
+    
+    public object BubbleCoral : Material(
+        id = 529,
+        displayName = "Bubble Coral",
+        identifier = Identifier("minecraft:bubble_coral"),
+        stackSize = 64
+    )
+    
+    public object FireCoral : Material(
+        id = 530,
+        displayName = "Fire Coral",
+        identifier = Identifier("minecraft:fire_coral"),
+        stackSize = 64
+    )
+    
+    public object HornCoral : Material(
+        id = 531,
+        displayName = "Horn Coral",
+        identifier = Identifier("minecraft:horn_coral"),
+        stackSize = 64
+    )
+    
+    public object DeadBrainCoral : Material(
+        id = 532,
+        displayName = "Dead Brain Coral",
+        identifier = Identifier("minecraft:dead_brain_coral"),
+        stackSize = 64
+    )
+    
+    public object DeadBubbleCoral : Material(
+        id = 533,
+        displayName = "Dead Bubble Coral",
+        identifier = Identifier("minecraft:dead_bubble_coral"),
+        stackSize = 64
+    )
+    
+    public object DeadFireCoral : Material(
+        id = 534,
+        displayName = "Dead Fire Coral",
+        identifier = Identifier("minecraft:dead_fire_coral"),
+        stackSize = 64
+    )
+    
+    public object DeadHornCoral : Material(
+        id = 535,
+        displayName = "Dead Horn Coral",
+        identifier = Identifier("minecraft:dead_horn_coral"),
+        stackSize = 64
+    )
+    
+    public object DeadTubeCoral : Material(
+        id = 536,
+        displayName = "Dead Tube Coral",
+        identifier = Identifier("minecraft:dead_tube_coral"),
+        stackSize = 64
+    )
+    
+    public object TubeCoralFan : Material(
+        id = 537,
+        displayName = "Tube Coral Fan",
+        identifier = Identifier("minecraft:tube_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object BrainCoralFan : Material(
+        id = 538,
+        displayName = "Brain Coral Fan",
+        identifier = Identifier("minecraft:brain_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object BubbleCoralFan : Material(
+        id = 539,
+        displayName = "Bubble Coral Fan",
+        identifier = Identifier("minecraft:bubble_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object FireCoralFan : Material(
+        id = 540,
+        displayName = "Fire Coral Fan",
+        identifier = Identifier("minecraft:fire_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object HornCoralFan : Material(
+        id = 541,
+        displayName = "Horn Coral Fan",
+        identifier = Identifier("minecraft:horn_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object DeadTubeCoralFan : Material(
+        id = 542,
+        displayName = "Dead Tube Coral Fan",
+        identifier = Identifier("minecraft:dead_tube_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object DeadBrainCoralFan : Material(
+        id = 543,
+        displayName = "Dead Brain Coral Fan",
+        identifier = Identifier("minecraft:dead_brain_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object DeadBubbleCoralFan : Material(
+        id = 544,
+        displayName = "Dead Bubble Coral Fan",
+        identifier = Identifier("minecraft:dead_bubble_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object DeadFireCoralFan : Material(
+        id = 545,
+        displayName = "Dead Fire Coral Fan",
+        identifier = Identifier("minecraft:dead_fire_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object DeadHornCoralFan : Material(
+        id = 546,
+        displayName = "Dead Horn Coral Fan",
+        identifier = Identifier("minecraft:dead_horn_coral_fan"),
+        stackSize = 64
+    )
+    
+    public object BlueIce : Material(
+        id = 547,
+        displayName = "Blue Ice",
+        identifier = Identifier("minecraft:blue_ice"),
+        stackSize = 64
+    )
+    
+    public object Conduit : Material(
+        id = 548,
+        displayName = "Conduit",
+        identifier = Identifier("minecraft:conduit"),
+        stackSize = 64
+    )
+    
+    public object PolishedGraniteStairs : Material(
+        id = 549,
+        displayName = "Polished Granite Stairs",
+        identifier = Identifier("minecraft:polished_granite_stairs"),
+        stackSize = 64
+    )
+    
+    public object SmoothRedSandstoneStairs : Material(
+        id = 550,
+        displayName = "Smooth Red Sandstone Stairs",
+        identifier = Identifier("minecraft:smooth_red_sandstone_stairs"),
+        stackSize = 64
+    )
+    
+    public object MossyStoneBrickStairs : Material(
+        id = 551,
+        displayName = "Mossy Stone Brick Stairs",
+        identifier = Identifier("minecraft:mossy_stone_brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object PolishedDioriteStairs : Material(
+        id = 552,
+        displayName = "Polished Diorite Stairs",
+        identifier = Identifier("minecraft:polished_diorite_stairs"),
+        stackSize = 64
+    )
+    
+    public object MossyCobblestoneStairs : Material(
+        id = 553,
+        displayName = "Mossy Cobblestone Stairs",
+        identifier = Identifier("minecraft:mossy_cobblestone_stairs"),
+        stackSize = 64
+    )
+    
+    public object EndStoneBrickStairs : Material(
+        id = 554,
+        displayName = "End Stone Brick Stairs",
+        identifier = Identifier("minecraft:end_stone_brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object StoneStairs : Material(
+        id = 555,
+        displayName = "Stone Stairs",
+        identifier = Identifier("minecraft:stone_stairs"),
+        stackSize = 64
+    )
+    
+    public object SmoothSandstoneStairs : Material(
+        id = 556,
+        displayName = "Smooth Sandstone Stairs",
+        identifier = Identifier("minecraft:smooth_sandstone_stairs"),
+        stackSize = 64
+    )
+    
+    public object SmoothQuartzStairs : Material(
+        id = 557,
+        displayName = "Smooth Quartz Stairs",
+        identifier = Identifier("minecraft:smooth_quartz_stairs"),
+        stackSize = 64
+    )
+    
+    public object GraniteStairs : Material(
+        id = 558,
+        displayName = "Granite Stairs",
+        identifier = Identifier("minecraft:granite_stairs"),
+        stackSize = 64
+    )
+    
+    public object AndesiteStairs : Material(
+        id = 559,
+        displayName = "Andesite Stairs",
+        identifier = Identifier("minecraft:andesite_stairs"),
+        stackSize = 64
+    )
+    
+    public object RedNetherBrickStairs : Material(
+        id = 560,
+        displayName = "Red Nether Brick Stairs",
+        identifier = Identifier("minecraft:red_nether_brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object PolishedAndesiteStairs : Material(
+        id = 561,
+        displayName = "Polished Andesite Stairs",
+        identifier = Identifier("minecraft:polished_andesite_stairs"),
+        stackSize = 64
+    )
+    
+    public object DioriteStairs : Material(
+        id = 562,
+        displayName = "Diorite Stairs",
+        identifier = Identifier("minecraft:diorite_stairs"),
+        stackSize = 64
+    )
+    
+    public object CobbledDeepslateStairs : Material(
+        id = 563,
+        displayName = "Cobbled Deepslate Stairs",
+        identifier = Identifier("minecraft:cobbled_deepslate_stairs"),
+        stackSize = 64
+    )
+    
+    public object PolishedDeepslateStairs : Material(
+        id = 564,
+        displayName = "Polished Deepslate Stairs",
+        identifier = Identifier("minecraft:polished_deepslate_stairs"),
+        stackSize = 64
+    )
+    
+    public object DeepslateBrickStairs : Material(
+        id = 565,
+        displayName = "Deepslate Brick Stairs",
+        identifier = Identifier("minecraft:deepslate_brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object DeepslateTileStairs : Material(
+        id = 566,
+        displayName = "Deepslate Tile Stairs",
+        identifier = Identifier("minecraft:deepslate_tile_stairs"),
+        stackSize = 64
+    )
+    
+    public object PolishedGraniteSlab : Material(
+        id = 567,
+        displayName = "Polished Granite Slab",
+        identifier = Identifier("minecraft:polished_granite_slab"),
+        stackSize = 64
+    )
+    
+    public object SmoothRedSandstoneSlab : Material(
+        id = 568,
+        displayName = "Smooth Red Sandstone Slab",
+        identifier = Identifier("minecraft:smooth_red_sandstone_slab"),
+        stackSize = 64
+    )
+    
+    public object MossyStoneBrickSlab : Material(
+        id = 569,
+        displayName = "Mossy Stone Brick Slab",
+        identifier = Identifier("minecraft:mossy_stone_brick_slab"),
+        stackSize = 64
+    )
+    
+    public object PolishedDioriteSlab : Material(
+        id = 570,
+        displayName = "Polished Diorite Slab",
+        identifier = Identifier("minecraft:polished_diorite_slab"),
+        stackSize = 64
+    )
+    
+    public object MossyCobblestoneSlab : Material(
+        id = 571,
+        displayName = "Mossy Cobblestone Slab",
+        identifier = Identifier("minecraft:mossy_cobblestone_slab"),
+        stackSize = 64
+    )
+    
+    public object EndStoneBrickSlab : Material(
+        id = 572,
+        displayName = "End Stone Brick Slab",
+        identifier = Identifier("minecraft:end_stone_brick_slab"),
+        stackSize = 64
+    )
+    
+    public object SmoothSandstoneSlab : Material(
+        id = 573,
+        displayName = "Smooth Sandstone Slab",
+        identifier = Identifier("minecraft:smooth_sandstone_slab"),
+        stackSize = 64
+    )
+    
+    public object SmoothQuartzSlab : Material(
+        id = 574,
+        displayName = "Smooth Quartz Slab",
+        identifier = Identifier("minecraft:smooth_quartz_slab"),
+        stackSize = 64
+    )
+    
+    public object GraniteSlab : Material(
+        id = 575,
+        displayName = "Granite Slab",
+        identifier = Identifier("minecraft:granite_slab"),
+        stackSize = 64
+    )
+    
+    public object AndesiteSlab : Material(
+        id = 576,
+        displayName = "Andesite Slab",
+        identifier = Identifier("minecraft:andesite_slab"),
+        stackSize = 64
+    )
+    
+    public object RedNetherBrickSlab : Material(
+        id = 577,
+        displayName = "Red Nether Brick Slab",
+        identifier = Identifier("minecraft:red_nether_brick_slab"),
+        stackSize = 64
+    )
+    
+    public object PolishedAndesiteSlab : Material(
+        id = 578,
+        displayName = "Polished Andesite Slab",
+        identifier = Identifier("minecraft:polished_andesite_slab"),
+        stackSize = 64
+    )
+    
+    public object DioriteSlab : Material(
+        id = 579,
+        displayName = "Diorite Slab",
+        identifier = Identifier("minecraft:diorite_slab"),
+        stackSize = 64
+    )
+    
+    public object CobbledDeepslateSlab : Material(
+        id = 580,
+        displayName = "Cobbled Deepslate Slab",
+        identifier = Identifier("minecraft:cobbled_deepslate_slab"),
+        stackSize = 64
+    )
+    
+    public object PolishedDeepslateSlab : Material(
+        id = 581,
+        displayName = "Polished Deepslate Slab",
+        identifier = Identifier("minecraft:polished_deepslate_slab"),
+        stackSize = 64
+    )
+    
+    public object DeepslateBrickSlab : Material(
+        id = 582,
+        displayName = "Deepslate Brick Slab",
+        identifier = Identifier("minecraft:deepslate_brick_slab"),
+        stackSize = 64
+    )
+    
+    public object DeepslateTileSlab : Material(
+        id = 583,
+        displayName = "Deepslate Tile Slab",
+        identifier = Identifier("minecraft:deepslate_tile_slab"),
+        stackSize = 64
+    )
+    
+    public object Scaffolding : Material(
+        id = 584,
+        displayName = "Scaffolding",
+        identifier = Identifier("minecraft:scaffolding"),
+        stackSize = 64
+    )
+    
+    public object Redstone : Material(
+        id = 585,
+        displayName = "Redstone Dust",
+        identifier = Identifier("minecraft:redstone"),
+        stackSize = 64
+    )
+    
+    public object RedstoneTorch : Material(
+        id = 586,
+        displayName = "Redstone Torch",
+        identifier = Identifier("minecraft:redstone_torch"),
+        stackSize = 64
+    )
+    
+    public object RedstoneBlock : Material(
+        id = 587,
+        displayName = "Block of Redstone",
+        identifier = Identifier("minecraft:redstone_block"),
+        stackSize = 64
+    )
+    
+    public object Repeater : Material(
+        id = 588,
+        displayName = "Redstone Repeater",
+        identifier = Identifier("minecraft:repeater"),
+        stackSize = 64
+    )
+    
     public object Comparator : Material(
-        id = 404,
+        id = 589,
         displayName = "Redstone Comparator",
         identifier = Identifier("minecraft:comparator"),
         stackSize = 64
     )
-
-    public object Netherbrick : Material(
-        id = 405,
-        displayName = "Nether Brick",
-        identifier = Identifier("minecraft:netherbrick"),
+    
+    public object Piston : Material(
+        id = 590,
+        displayName = "Piston",
+        identifier = Identifier("minecraft:piston"),
         stackSize = 64
     )
-
-    public object Quartz : Material(
-        id = 406,
-        displayName = "Nether Quartz",
-        identifier = Identifier("minecraft:quartz"),
+    
+    public object StickyPiston : Material(
+        id = 591,
+        displayName = "Sticky Piston",
+        identifier = Identifier("minecraft:sticky_piston"),
         stackSize = 64
     )
-
-    public object TntMinecart : Material(
-        id = 407,
-        displayName = "Minecart with TNT",
-        identifier = Identifier("minecraft:tnt_minecart"),
-        stackSize = 1
-    )
-
-    public object HopperMinecart : Material(
-        id = 408,
-        displayName = "Minecart with Hopper",
-        identifier = Identifier("minecraft:hopper_minecart"),
-        stackSize = 1
-    )
-
-    public object PrismarineShard : Material(
-        id = 409,
-        displayName = "Prismarine Shard",
-        identifier = Identifier("minecraft:prismarine_shard"),
+    
+    public object SlimeBlock : Material(
+        id = 592,
+        displayName = "Slime Block",
+        identifier = Identifier("minecraft:slime_block"),
         stackSize = 64
     )
-
-    public object PrismarineCrystals : Material(
-        id = 410,
-        displayName = "Prismarine Crystals",
-        identifier = Identifier("minecraft:prismarine_crystals"),
+    
+    public object HoneyBlock : Material(
+        id = 593,
+        displayName = "Honey Block",
+        identifier = Identifier("minecraft:honey_block"),
         stackSize = 64
     )
-
-    public object Rabbit : Material(
-        id = 411,
-        displayName = "Raw Rabbit",
-        identifier = Identifier("minecraft:rabbit"),
+    
+    public object Observer : Material(
+        id = 594,
+        displayName = "Observer",
+        identifier = Identifier("minecraft:observer"),
         stackSize = 64
     )
-
-    public object CookedRabbit : Material(
-        id = 412,
-        displayName = "Cooked Rabbit",
-        identifier = Identifier("minecraft:cooked_rabbit"),
+    
+    public object Hopper : Material(
+        id = 595,
+        displayName = "Hopper",
+        identifier = Identifier("minecraft:hopper"),
         stackSize = 64
     )
-
-    public object RabbitStew : Material(
-        id = 413,
-        displayName = "Rabbit Stew",
-        identifier = Identifier("minecraft:rabbit_stew"),
-        stackSize = 1
-    )
-
-    public object RabbitFoot : Material(
-        id = 414,
-        displayName = "Rabbit's Foot",
-        identifier = Identifier("minecraft:rabbit_foot"),
+    
+    public object Dispenser : Material(
+        id = 596,
+        displayName = "Dispenser",
+        identifier = Identifier("minecraft:dispenser"),
         stackSize = 64
     )
-
-    public object RabbitHide : Material(
-        id = 415,
-        displayName = "Rabbit Hide",
-        identifier = Identifier("minecraft:rabbit_hide"),
+    
+    public object Dropper : Material(
+        id = 597,
+        displayName = "Dropper",
+        identifier = Identifier("minecraft:dropper"),
         stackSize = 64
     )
-
-    public object ArmorStand : Material(
-        id = 416,
-        displayName = "Armor Stand",
-        identifier = Identifier("minecraft:armor_stand"),
-        stackSize = 16
-    )
-
-    public object IronHorseArmor : Material(
-        id = 417,
-        displayName = "Iron Horse Armor",
-        identifier = Identifier("minecraft:iron_horse_armor"),
-        stackSize = 1
-    )
-
-    public object GoldenHorseArmor : Material(
-        id = 418,
-        displayName = "Gold Horse Armor",
-        identifier = Identifier("minecraft:golden_horse_armor"),
-        stackSize = 1
-    )
-
-    public object DiamondHorseArmor : Material(
-        id = 419,
-        displayName = "Diamond Horse Armor",
-        identifier = Identifier("minecraft:diamond_horse_armor"),
-        stackSize = 1
-    )
-
-    public object Lead : Material(
-        id = 420,
-        displayName = "Lead",
-        identifier = Identifier("minecraft:lead"),
+    
+    public object Lectern : Material(
+        id = 598,
+        displayName = "Lectern",
+        identifier = Identifier("minecraft:lectern"),
         stackSize = 64
     )
-
-    public object NameTag : Material(
-        id = 421,
-        displayName = "Name Tag",
-        identifier = Identifier("minecraft:name_tag"),
+    
+    public object Target : Material(
+        id = 599,
+        displayName = "Target",
+        identifier = Identifier("minecraft:target"),
         stackSize = 64
     )
-
-    public object CommandBlockMinecart : Material(
-        id = 422,
-        displayName = "Minecart with Command Block",
-        identifier = Identifier("minecraft:command_block_minecart"),
-        stackSize = 1
-    )
-
-    public object Mutton : Material(
-        id = 423,
-        displayName = "Raw Mutton",
-        identifier = Identifier("minecraft:mutton"),
+    
+    public object Lever : Material(
+        id = 600,
+        displayName = "Lever",
+        identifier = Identifier("minecraft:lever"),
         stackSize = 64
     )
-
-    public object CookedMutton : Material(
-        id = 424,
-        displayName = "Cooked Mutton",
-        identifier = Identifier("minecraft:cooked_mutton"),
+    
+    public object LightningRod : Material(
+        id = 601,
+        displayName = "Lightning Rod",
+        identifier = Identifier("minecraft:lightning_rod"),
         stackSize = 64
     )
-
-    public object Banner : Material(
-        id = 425,
-        displayName = "Banner",
-        identifier = Identifier("minecraft:banner"),
-        stackSize = 16
+    
+    public object DaylightDetector : Material(
+        id = 602,
+        displayName = "Daylight Detector",
+        identifier = Identifier("minecraft:daylight_detector"),
+        stackSize = 64
     )
-
+    
+    public object SculkSensor : Material(
+        id = 603,
+        displayName = "Sculk Sensor",
+        identifier = Identifier("minecraft:sculk_sensor"),
+        stackSize = 64
+    )
+    
+    public object TripwireHook : Material(
+        id = 604,
+        displayName = "Tripwire Hook",
+        identifier = Identifier("minecraft:tripwire_hook"),
+        stackSize = 64
+    )
+    
+    public object TrappedChest : Material(
+        id = 605,
+        displayName = "Trapped Chest",
+        identifier = Identifier("minecraft:trapped_chest"),
+        stackSize = 64
+    )
+    
+    public object Tnt : Material(
+        id = 606,
+        displayName = "TNT",
+        identifier = Identifier("minecraft:tnt"),
+        stackSize = 64
+    )
+    
+    public object RedstoneLamp : Material(
+        id = 607,
+        displayName = "Redstone Lamp",
+        identifier = Identifier("minecraft:redstone_lamp"),
+        stackSize = 64
+    )
+    
+    public object NoteBlock : Material(
+        id = 608,
+        displayName = "Note Block",
+        identifier = Identifier("minecraft:note_block"),
+        stackSize = 64
+    )
+    
+    public object StoneButton : Material(
+        id = 609,
+        displayName = "Stone Button",
+        identifier = Identifier("minecraft:stone_button"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstoneButton : Material(
+        id = 610,
+        displayName = "Polished Blackstone Button",
+        identifier = Identifier("minecraft:polished_blackstone_button"),
+        stackSize = 64
+    )
+    
+    public object OakButton : Material(
+        id = 611,
+        displayName = "Oak Button",
+        identifier = Identifier("minecraft:oak_button"),
+        stackSize = 64
+    )
+    
+    public object SpruceButton : Material(
+        id = 612,
+        displayName = "Spruce Button",
+        identifier = Identifier("minecraft:spruce_button"),
+        stackSize = 64
+    )
+    
+    public object BirchButton : Material(
+        id = 613,
+        displayName = "Birch Button",
+        identifier = Identifier("minecraft:birch_button"),
+        stackSize = 64
+    )
+    
+    public object JungleButton : Material(
+        id = 614,
+        displayName = "Jungle Button",
+        identifier = Identifier("minecraft:jungle_button"),
+        stackSize = 64
+    )
+    
+    public object AcaciaButton : Material(
+        id = 615,
+        displayName = "Acacia Button",
+        identifier = Identifier("minecraft:acacia_button"),
+        stackSize = 64
+    )
+    
+    public object DarkOakButton : Material(
+        id = 616,
+        displayName = "Dark Oak Button",
+        identifier = Identifier("minecraft:dark_oak_button"),
+        stackSize = 64
+    )
+    
+    public object CrimsonButton : Material(
+        id = 617,
+        displayName = "Crimson Button",
+        identifier = Identifier("minecraft:crimson_button"),
+        stackSize = 64
+    )
+    
+    public object WarpedButton : Material(
+        id = 618,
+        displayName = "Warped Button",
+        identifier = Identifier("minecraft:warped_button"),
+        stackSize = 64
+    )
+    
+    public object StonePressurePlate : Material(
+        id = 619,
+        displayName = "Stone Pressure Plate",
+        identifier = Identifier("minecraft:stone_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstonePressurePlate : Material(
+        id = 620,
+        displayName = "Polished Blackstone Pressure Plate",
+        identifier = Identifier("minecraft:polished_blackstone_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object LightWeightedPressurePlate : Material(
+        id = 621,
+        displayName = "Light Weighted Pressure Plate",
+        identifier = Identifier("minecraft:light_weighted_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object HeavyWeightedPressurePlate : Material(
+        id = 622,
+        displayName = "Heavy Weighted Pressure Plate",
+        identifier = Identifier("minecraft:heavy_weighted_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object OakPressurePlate : Material(
+        id = 623,
+        displayName = "Oak Pressure Plate",
+        identifier = Identifier("minecraft:oak_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object SprucePressurePlate : Material(
+        id = 624,
+        displayName = "Spruce Pressure Plate",
+        identifier = Identifier("minecraft:spruce_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object BirchPressurePlate : Material(
+        id = 625,
+        displayName = "Birch Pressure Plate",
+        identifier = Identifier("minecraft:birch_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object JunglePressurePlate : Material(
+        id = 626,
+        displayName = "Jungle Pressure Plate",
+        identifier = Identifier("minecraft:jungle_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object AcaciaPressurePlate : Material(
+        id = 627,
+        displayName = "Acacia Pressure Plate",
+        identifier = Identifier("minecraft:acacia_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object DarkOakPressurePlate : Material(
+        id = 628,
+        displayName = "Dark Oak Pressure Plate",
+        identifier = Identifier("minecraft:dark_oak_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object CrimsonPressurePlate : Material(
+        id = 629,
+        displayName = "Crimson Pressure Plate",
+        identifier = Identifier("minecraft:crimson_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object WarpedPressurePlate : Material(
+        id = 630,
+        displayName = "Warped Pressure Plate",
+        identifier = Identifier("minecraft:warped_pressure_plate"),
+        stackSize = 64
+    )
+    
+    public object IronDoor : Material(
+        id = 631,
+        displayName = "Iron Door",
+        identifier = Identifier("minecraft:iron_door"),
+        stackSize = 64
+    )
+    
+    public object OakDoor : Material(
+        id = 632,
+        displayName = "Oak Door",
+        identifier = Identifier("minecraft:oak_door"),
+        stackSize = 64
+    )
+    
     public object SpruceDoor : Material(
-        id = 427,
+        id = 633,
         displayName = "Spruce Door",
         identifier = Identifier("minecraft:spruce_door"),
         stackSize = 64
     )
-
+    
     public object BirchDoor : Material(
-        id = 428,
+        id = 634,
         displayName = "Birch Door",
         identifier = Identifier("minecraft:birch_door"),
         stackSize = 64
     )
-
+    
     public object JungleDoor : Material(
-        id = 429,
+        id = 635,
         displayName = "Jungle Door",
         identifier = Identifier("minecraft:jungle_door"),
         stackSize = 64
     )
-
+    
     public object AcaciaDoor : Material(
-        id = 430,
+        id = 636,
         displayName = "Acacia Door",
         identifier = Identifier("minecraft:acacia_door"),
         stackSize = 64
     )
-
+    
     public object DarkOakDoor : Material(
-        id = 431,
+        id = 637,
         displayName = "Dark Oak Door",
         identifier = Identifier("minecraft:dark_oak_door"),
         stackSize = 64
     )
-
-    public object Record13 : Material(
-        id = 2256,
+    
+    public object CrimsonDoor : Material(
+        id = 638,
+        displayName = "Crimson Door",
+        identifier = Identifier("minecraft:crimson_door"),
+        stackSize = 64
+    )
+    
+    public object WarpedDoor : Material(
+        id = 639,
+        displayName = "Warped Door",
+        identifier = Identifier("minecraft:warped_door"),
+        stackSize = 64
+    )
+    
+    public object IronTrapdoor : Material(
+        id = 640,
+        displayName = "Iron Trapdoor",
+        identifier = Identifier("minecraft:iron_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object OakTrapdoor : Material(
+        id = 641,
+        displayName = "Oak Trapdoor",
+        identifier = Identifier("minecraft:oak_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object SpruceTrapdoor : Material(
+        id = 642,
+        displayName = "Spruce Trapdoor",
+        identifier = Identifier("minecraft:spruce_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object BirchTrapdoor : Material(
+        id = 643,
+        displayName = "Birch Trapdoor",
+        identifier = Identifier("minecraft:birch_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object JungleTrapdoor : Material(
+        id = 644,
+        displayName = "Jungle Trapdoor",
+        identifier = Identifier("minecraft:jungle_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object AcaciaTrapdoor : Material(
+        id = 645,
+        displayName = "Acacia Trapdoor",
+        identifier = Identifier("minecraft:acacia_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object DarkOakTrapdoor : Material(
+        id = 646,
+        displayName = "Dark Oak Trapdoor",
+        identifier = Identifier("minecraft:dark_oak_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object CrimsonTrapdoor : Material(
+        id = 647,
+        displayName = "Crimson Trapdoor",
+        identifier = Identifier("minecraft:crimson_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object WarpedTrapdoor : Material(
+        id = 648,
+        displayName = "Warped Trapdoor",
+        identifier = Identifier("minecraft:warped_trapdoor"),
+        stackSize = 64
+    )
+    
+    public object OakFenceGate : Material(
+        id = 649,
+        displayName = "Oak Fence Gate",
+        identifier = Identifier("minecraft:oak_fence_gate"),
+        stackSize = 64
+    )
+    
+    public object SpruceFenceGate : Material(
+        id = 650,
+        displayName = "Spruce Fence Gate",
+        identifier = Identifier("minecraft:spruce_fence_gate"),
+        stackSize = 64
+    )
+    
+    public object BirchFenceGate : Material(
+        id = 651,
+        displayName = "Birch Fence Gate",
+        identifier = Identifier("minecraft:birch_fence_gate"),
+        stackSize = 64
+    )
+    
+    public object JungleFenceGate : Material(
+        id = 652,
+        displayName = "Jungle Fence Gate",
+        identifier = Identifier("minecraft:jungle_fence_gate"),
+        stackSize = 64
+    )
+    
+    public object AcaciaFenceGate : Material(
+        id = 653,
+        displayName = "Acacia Fence Gate",
+        identifier = Identifier("minecraft:acacia_fence_gate"),
+        stackSize = 64
+    )
+    
+    public object DarkOakFenceGate : Material(
+        id = 654,
+        displayName = "Dark Oak Fence Gate",
+        identifier = Identifier("minecraft:dark_oak_fence_gate"),
+        stackSize = 64
+    )
+    
+    public object CrimsonFenceGate : Material(
+        id = 655,
+        displayName = "Crimson Fence Gate",
+        identifier = Identifier("minecraft:crimson_fence_gate"),
+        stackSize = 64
+    )
+    
+    public object WarpedFenceGate : Material(
+        id = 656,
+        displayName = "Warped Fence Gate",
+        identifier = Identifier("minecraft:warped_fence_gate"),
+        stackSize = 64
+    )
+    
+    public object PoweredRail : Material(
+        id = 657,
+        displayName = "Powered Rail",
+        identifier = Identifier("minecraft:powered_rail"),
+        stackSize = 64
+    )
+    
+    public object DetectorRail : Material(
+        id = 658,
+        displayName = "Detector Rail",
+        identifier = Identifier("minecraft:detector_rail"),
+        stackSize = 64
+    )
+    
+    public object Rail : Material(
+        id = 659,
+        displayName = "Rail",
+        identifier = Identifier("minecraft:rail"),
+        stackSize = 64
+    )
+    
+    public object ActivatorRail : Material(
+        id = 660,
+        displayName = "Activator Rail",
+        identifier = Identifier("minecraft:activator_rail"),
+        stackSize = 64
+    )
+    
+    public object Saddle : Material(
+        id = 661,
+        displayName = "Saddle",
+        identifier = Identifier("minecraft:saddle"),
+        stackSize = 1
+    )
+    
+    public object Minecart : Material(
+        id = 662,
+        displayName = "Minecart",
+        identifier = Identifier("minecraft:minecart"),
+        stackSize = 1
+    )
+    
+    public object ChestMinecart : Material(
+        id = 663,
+        displayName = "Minecart with Chest",
+        identifier = Identifier("minecraft:chest_minecart"),
+        stackSize = 1
+    )
+    
+    public object FurnaceMinecart : Material(
+        id = 664,
+        displayName = "Minecart with Furnace",
+        identifier = Identifier("minecraft:furnace_minecart"),
+        stackSize = 1
+    )
+    
+    public object TntMinecart : Material(
+        id = 665,
+        displayName = "Minecart with TNT",
+        identifier = Identifier("minecraft:tnt_minecart"),
+        stackSize = 1
+    )
+    
+    public object HopperMinecart : Material(
+        id = 666,
+        displayName = "Minecart with Hopper",
+        identifier = Identifier("minecraft:hopper_minecart"),
+        stackSize = 1
+    )
+    
+    public object CarrotOnAStick : Material(
+        id = 667,
+        displayName = "Carrot on a Stick",
+        identifier = Identifier("minecraft:carrot_on_a_stick"),
+        stackSize = 1
+    )
+    
+    public object WarpedFungusOnAStick : Material(
+        id = 668,
+        displayName = "Warped Fungus on a Stick",
+        identifier = Identifier("minecraft:warped_fungus_on_a_stick"),
+        stackSize = 64
+    )
+    
+    public object Elytra : Material(
+        id = 669,
+        displayName = "Elytra",
+        identifier = Identifier("minecraft:elytra"),
+        stackSize = 1
+    )
+    
+    public object OakBoat : Material(
+        id = 670,
+        displayName = "Oak Boat",
+        identifier = Identifier("minecraft:oak_boat"),
+        stackSize = 1
+    )
+    
+    public object SpruceBoat : Material(
+        id = 671,
+        displayName = "Spruce Boat",
+        identifier = Identifier("minecraft:spruce_boat"),
+        stackSize = 1
+    )
+    
+    public object BirchBoat : Material(
+        id = 672,
+        displayName = "Birch Boat",
+        identifier = Identifier("minecraft:birch_boat"),
+        stackSize = 1
+    )
+    
+    public object JungleBoat : Material(
+        id = 673,
+        displayName = "Jungle Boat",
+        identifier = Identifier("minecraft:jungle_boat"),
+        stackSize = 1
+    )
+    
+    public object AcaciaBoat : Material(
+        id = 674,
+        displayName = "Acacia Boat",
+        identifier = Identifier("minecraft:acacia_boat"),
+        stackSize = 1
+    )
+    
+    public object DarkOakBoat : Material(
+        id = 675,
+        displayName = "Dark Oak Boat",
+        identifier = Identifier("minecraft:dark_oak_boat"),
+        stackSize = 1
+    )
+    
+    public object StructureBlock : Material(
+        id = 676,
+        displayName = "Structure Block",
+        identifier = Identifier("minecraft:structure_block"),
+        stackSize = 64
+    )
+    
+    public object Jigsaw : Material(
+        id = 677,
+        displayName = "Jigsaw Block",
+        identifier = Identifier("minecraft:jigsaw"),
+        stackSize = 64
+    )
+    
+    public object TurtleHelmet : Material(
+        id = 678,
+        displayName = "Turtle Shell",
+        identifier = Identifier("minecraft:turtle_helmet"),
+        stackSize = 1
+    )
+    
+    public object Scute : Material(
+        id = 679,
+        displayName = "Scute",
+        identifier = Identifier("minecraft:scute"),
+        stackSize = 64
+    )
+    
+    public object FlintAndSteel : Material(
+        id = 680,
+        displayName = "Flint and Steel",
+        identifier = Identifier("minecraft:flint_and_steel"),
+        stackSize = 1
+    )
+    
+    public object Apple : Material(
+        id = 681,
+        displayName = "Apple",
+        identifier = Identifier("minecraft:apple"),
+        stackSize = 64
+    )
+    
+    public object Bow : Material(
+        id = 682,
+        displayName = "Bow",
+        identifier = Identifier("minecraft:bow"),
+        stackSize = 1
+    )
+    
+    public object Arrow : Material(
+        id = 683,
+        displayName = "Arrow",
+        identifier = Identifier("minecraft:arrow"),
+        stackSize = 64
+    )
+    
+    public object Coal : Material(
+        id = 684,
+        displayName = "Coal",
+        identifier = Identifier("minecraft:coal"),
+        stackSize = 64
+    )
+    
+    public object Charcoal : Material(
+        id = 685,
+        displayName = "Charcoal",
+        identifier = Identifier("minecraft:charcoal"),
+        stackSize = 64
+    )
+    
+    public object Diamond : Material(
+        id = 686,
+        displayName = "Diamond",
+        identifier = Identifier("minecraft:diamond"),
+        stackSize = 64
+    )
+    
+    public object Emerald : Material(
+        id = 687,
+        displayName = "Emerald",
+        identifier = Identifier("minecraft:emerald"),
+        stackSize = 64
+    )
+    
+    public object LapisLazuli : Material(
+        id = 688,
+        displayName = "Lapis Lazuli",
+        identifier = Identifier("minecraft:lapis_lazuli"),
+        stackSize = 64
+    )
+    
+    public object Quartz : Material(
+        id = 689,
+        displayName = "Nether Quartz",
+        identifier = Identifier("minecraft:quartz"),
+        stackSize = 64
+    )
+    
+    public object AmethystShard : Material(
+        id = 690,
+        displayName = "Amethyst Shard",
+        identifier = Identifier("minecraft:amethyst_shard"),
+        stackSize = 64
+    )
+    
+    public object RawIron : Material(
+        id = 691,
+        displayName = "Raw Iron",
+        identifier = Identifier("minecraft:raw_iron"),
+        stackSize = 64
+    )
+    
+    public object IronIngot : Material(
+        id = 692,
+        displayName = "Iron Ingot",
+        identifier = Identifier("minecraft:iron_ingot"),
+        stackSize = 64
+    )
+    
+    public object RawCopper : Material(
+        id = 693,
+        displayName = "Raw Copper",
+        identifier = Identifier("minecraft:raw_copper"),
+        stackSize = 64
+    )
+    
+    public object CopperIngot : Material(
+        id = 694,
+        displayName = "Copper Ingot",
+        identifier = Identifier("minecraft:copper_ingot"),
+        stackSize = 64
+    )
+    
+    public object RawGold : Material(
+        id = 695,
+        displayName = "Raw Gold",
+        identifier = Identifier("minecraft:raw_gold"),
+        stackSize = 64
+    )
+    
+    public object GoldIngot : Material(
+        id = 696,
+        displayName = "Gold Ingot",
+        identifier = Identifier("minecraft:gold_ingot"),
+        stackSize = 64
+    )
+    
+    public object NetheriteIngot : Material(
+        id = 697,
+        displayName = "Netherite Ingot",
+        identifier = Identifier("minecraft:netherite_ingot"),
+        stackSize = 64
+    )
+    
+    public object NetheriteScrap : Material(
+        id = 698,
+        displayName = "Netherite Scrap",
+        identifier = Identifier("minecraft:netherite_scrap"),
+        stackSize = 64
+    )
+    
+    public object WoodenSword : Material(
+        id = 699,
+        displayName = "Wooden Sword",
+        identifier = Identifier("minecraft:wooden_sword"),
+        stackSize = 1
+    )
+    
+    public object WoodenShovel : Material(
+        id = 700,
+        displayName = "Wooden Shovel",
+        identifier = Identifier("minecraft:wooden_shovel"),
+        stackSize = 1
+    )
+    
+    public object WoodenPickaxe : Material(
+        id = 701,
+        displayName = "Wooden Pickaxe",
+        identifier = Identifier("minecraft:wooden_pickaxe"),
+        stackSize = 1
+    )
+    
+    public object WoodenAxe : Material(
+        id = 702,
+        displayName = "Wooden Axe",
+        identifier = Identifier("minecraft:wooden_axe"),
+        stackSize = 1
+    )
+    
+    public object WoodenHoe : Material(
+        id = 703,
+        displayName = "Wooden Hoe",
+        identifier = Identifier("minecraft:wooden_hoe"),
+        stackSize = 1
+    )
+    
+    public object StoneSword : Material(
+        id = 704,
+        displayName = "Stone Sword",
+        identifier = Identifier("minecraft:stone_sword"),
+        stackSize = 1
+    )
+    
+    public object StoneShovel : Material(
+        id = 705,
+        displayName = "Stone Shovel",
+        identifier = Identifier("minecraft:stone_shovel"),
+        stackSize = 1
+    )
+    
+    public object StonePickaxe : Material(
+        id = 706,
+        displayName = "Stone Pickaxe",
+        identifier = Identifier("minecraft:stone_pickaxe"),
+        stackSize = 1
+    )
+    
+    public object StoneAxe : Material(
+        id = 707,
+        displayName = "Stone Axe",
+        identifier = Identifier("minecraft:stone_axe"),
+        stackSize = 1
+    )
+    
+    public object StoneHoe : Material(
+        id = 708,
+        displayName = "Stone Hoe",
+        identifier = Identifier("minecraft:stone_hoe"),
+        stackSize = 1
+    )
+    
+    public object GoldenSword : Material(
+        id = 709,
+        displayName = "Golden Sword",
+        identifier = Identifier("minecraft:golden_sword"),
+        stackSize = 1
+    )
+    
+    public object GoldenShovel : Material(
+        id = 710,
+        displayName = "Golden Shovel",
+        identifier = Identifier("minecraft:golden_shovel"),
+        stackSize = 1
+    )
+    
+    public object GoldenPickaxe : Material(
+        id = 711,
+        displayName = "Golden Pickaxe",
+        identifier = Identifier("minecraft:golden_pickaxe"),
+        stackSize = 1
+    )
+    
+    public object GoldenAxe : Material(
+        id = 712,
+        displayName = "Golden Axe",
+        identifier = Identifier("minecraft:golden_axe"),
+        stackSize = 1
+    )
+    
+    public object GoldenHoe : Material(
+        id = 713,
+        displayName = "Golden Hoe",
+        identifier = Identifier("minecraft:golden_hoe"),
+        stackSize = 1
+    )
+    
+    public object IronSword : Material(
+        id = 714,
+        displayName = "Iron Sword",
+        identifier = Identifier("minecraft:iron_sword"),
+        stackSize = 1
+    )
+    
+    public object IronShovel : Material(
+        id = 715,
+        displayName = "Iron Shovel",
+        identifier = Identifier("minecraft:iron_shovel"),
+        stackSize = 1
+    )
+    
+    public object IronPickaxe : Material(
+        id = 716,
+        displayName = "Iron Pickaxe",
+        identifier = Identifier("minecraft:iron_pickaxe"),
+        stackSize = 1
+    )
+    
+    public object IronAxe : Material(
+        id = 717,
+        displayName = "Iron Axe",
+        identifier = Identifier("minecraft:iron_axe"),
+        stackSize = 1
+    )
+    
+    public object IronHoe : Material(
+        id = 718,
+        displayName = "Iron Hoe",
+        identifier = Identifier("minecraft:iron_hoe"),
+        stackSize = 1
+    )
+    
+    public object DiamondSword : Material(
+        id = 719,
+        displayName = "Diamond Sword",
+        identifier = Identifier("minecraft:diamond_sword"),
+        stackSize = 1
+    )
+    
+    public object DiamondShovel : Material(
+        id = 720,
+        displayName = "Diamond Shovel",
+        identifier = Identifier("minecraft:diamond_shovel"),
+        stackSize = 1
+    )
+    
+    public object DiamondPickaxe : Material(
+        id = 721,
+        displayName = "Diamond Pickaxe",
+        identifier = Identifier("minecraft:diamond_pickaxe"),
+        stackSize = 1
+    )
+    
+    public object DiamondAxe : Material(
+        id = 722,
+        displayName = "Diamond Axe",
+        identifier = Identifier("minecraft:diamond_axe"),
+        stackSize = 1
+    )
+    
+    public object DiamondHoe : Material(
+        id = 723,
+        displayName = "Diamond Hoe",
+        identifier = Identifier("minecraft:diamond_hoe"),
+        stackSize = 1
+    )
+    
+    public object NetheriteSword : Material(
+        id = 724,
+        displayName = "Netherite Sword",
+        identifier = Identifier("minecraft:netherite_sword"),
+        stackSize = 1
+    )
+    
+    public object NetheriteShovel : Material(
+        id = 725,
+        displayName = "Netherite Shovel",
+        identifier = Identifier("minecraft:netherite_shovel"),
+        stackSize = 1
+    )
+    
+    public object NetheritePickaxe : Material(
+        id = 726,
+        displayName = "Netherite Pickaxe",
+        identifier = Identifier("minecraft:netherite_pickaxe"),
+        stackSize = 1
+    )
+    
+    public object NetheriteAxe : Material(
+        id = 727,
+        displayName = "Netherite Axe",
+        identifier = Identifier("minecraft:netherite_axe"),
+        stackSize = 1
+    )
+    
+    public object NetheriteHoe : Material(
+        id = 728,
+        displayName = "Netherite Hoe",
+        identifier = Identifier("minecraft:netherite_hoe"),
+        stackSize = 1
+    )
+    
+    public object Stick : Material(
+        id = 729,
+        displayName = "Stick",
+        identifier = Identifier("minecraft:stick"),
+        stackSize = 64
+    )
+    
+    public object Bowl : Material(
+        id = 730,
+        displayName = "Bowl",
+        identifier = Identifier("minecraft:bowl"),
+        stackSize = 64
+    )
+    
+    public object MushroomStew : Material(
+        id = 731,
+        displayName = "Mushroom Stew",
+        identifier = Identifier("minecraft:mushroom_stew"),
+        stackSize = 1
+    )
+    
+    public object String : Material(
+        id = 732,
+        displayName = "String",
+        identifier = Identifier("minecraft:string"),
+        stackSize = 64
+    )
+    
+    public object Feather : Material(
+        id = 733,
+        displayName = "Feather",
+        identifier = Identifier("minecraft:feather"),
+        stackSize = 64
+    )
+    
+    public object Gunpowder : Material(
+        id = 734,
+        displayName = "Gunpowder",
+        identifier = Identifier("minecraft:gunpowder"),
+        stackSize = 64
+    )
+    
+    public object WheatSeeds : Material(
+        id = 735,
+        displayName = "Wheat Seeds",
+        identifier = Identifier("minecraft:wheat_seeds"),
+        stackSize = 64
+    )
+    
+    public object Wheat : Material(
+        id = 736,
+        displayName = "Wheat",
+        identifier = Identifier("minecraft:wheat"),
+        stackSize = 64
+    )
+    
+    public object Bread : Material(
+        id = 737,
+        displayName = "Bread",
+        identifier = Identifier("minecraft:bread"),
+        stackSize = 64
+    )
+    
+    public object LeatherHelmet : Material(
+        id = 738,
+        displayName = "Leather Cap",
+        identifier = Identifier("minecraft:leather_helmet"),
+        stackSize = 1
+    )
+    
+    public object LeatherChestplate : Material(
+        id = 739,
+        displayName = "Leather Tunic",
+        identifier = Identifier("minecraft:leather_chestplate"),
+        stackSize = 1
+    )
+    
+    public object LeatherLeggings : Material(
+        id = 740,
+        displayName = "Leather Pants",
+        identifier = Identifier("minecraft:leather_leggings"),
+        stackSize = 1
+    )
+    
+    public object LeatherBoots : Material(
+        id = 741,
+        displayName = "Leather Boots",
+        identifier = Identifier("minecraft:leather_boots"),
+        stackSize = 1
+    )
+    
+    public object ChainmailHelmet : Material(
+        id = 742,
+        displayName = "Chainmail Helmet",
+        identifier = Identifier("minecraft:chainmail_helmet"),
+        stackSize = 1
+    )
+    
+    public object ChainmailChestplate : Material(
+        id = 743,
+        displayName = "Chainmail Chestplate",
+        identifier = Identifier("minecraft:chainmail_chestplate"),
+        stackSize = 1
+    )
+    
+    public object ChainmailLeggings : Material(
+        id = 744,
+        displayName = "Chainmail Leggings",
+        identifier = Identifier("minecraft:chainmail_leggings"),
+        stackSize = 1
+    )
+    
+    public object ChainmailBoots : Material(
+        id = 745,
+        displayName = "Chainmail Boots",
+        identifier = Identifier("minecraft:chainmail_boots"),
+        stackSize = 1
+    )
+    
+    public object IronHelmet : Material(
+        id = 746,
+        displayName = "Iron Helmet",
+        identifier = Identifier("minecraft:iron_helmet"),
+        stackSize = 1
+    )
+    
+    public object IronChestplate : Material(
+        id = 747,
+        displayName = "Iron Chestplate",
+        identifier = Identifier("minecraft:iron_chestplate"),
+        stackSize = 1
+    )
+    
+    public object IronLeggings : Material(
+        id = 748,
+        displayName = "Iron Leggings",
+        identifier = Identifier("minecraft:iron_leggings"),
+        stackSize = 1
+    )
+    
+    public object IronBoots : Material(
+        id = 749,
+        displayName = "Iron Boots",
+        identifier = Identifier("minecraft:iron_boots"),
+        stackSize = 1
+    )
+    
+    public object DiamondHelmet : Material(
+        id = 750,
+        displayName = "Diamond Helmet",
+        identifier = Identifier("minecraft:diamond_helmet"),
+        stackSize = 1
+    )
+    
+    public object DiamondChestplate : Material(
+        id = 751,
+        displayName = "Diamond Chestplate",
+        identifier = Identifier("minecraft:diamond_chestplate"),
+        stackSize = 1
+    )
+    
+    public object DiamondLeggings : Material(
+        id = 752,
+        displayName = "Diamond Leggings",
+        identifier = Identifier("minecraft:diamond_leggings"),
+        stackSize = 1
+    )
+    
+    public object DiamondBoots : Material(
+        id = 753,
+        displayName = "Diamond Boots",
+        identifier = Identifier("minecraft:diamond_boots"),
+        stackSize = 1
+    )
+    
+    public object GoldenHelmet : Material(
+        id = 754,
+        displayName = "Golden Helmet",
+        identifier = Identifier("minecraft:golden_helmet"),
+        stackSize = 1
+    )
+    
+    public object GoldenChestplate : Material(
+        id = 755,
+        displayName = "Golden Chestplate",
+        identifier = Identifier("minecraft:golden_chestplate"),
+        stackSize = 1
+    )
+    
+    public object GoldenLeggings : Material(
+        id = 756,
+        displayName = "Golden Leggings",
+        identifier = Identifier("minecraft:golden_leggings"),
+        stackSize = 1
+    )
+    
+    public object GoldenBoots : Material(
+        id = 757,
+        displayName = "Golden Boots",
+        identifier = Identifier("minecraft:golden_boots"),
+        stackSize = 1
+    )
+    
+    public object NetheriteHelmet : Material(
+        id = 758,
+        displayName = "Netherite Helmet",
+        identifier = Identifier("minecraft:netherite_helmet"),
+        stackSize = 1
+    )
+    
+    public object NetheriteChestplate : Material(
+        id = 759,
+        displayName = "Netherite Chestplate",
+        identifier = Identifier("minecraft:netherite_chestplate"),
+        stackSize = 1
+    )
+    
+    public object NetheriteLeggings : Material(
+        id = 760,
+        displayName = "Netherite Leggings",
+        identifier = Identifier("minecraft:netherite_leggings"),
+        stackSize = 1
+    )
+    
+    public object NetheriteBoots : Material(
+        id = 761,
+        displayName = "Netherite Boots",
+        identifier = Identifier("minecraft:netherite_boots"),
+        stackSize = 1
+    )
+    
+    public object Flint : Material(
+        id = 762,
+        displayName = "Flint",
+        identifier = Identifier("minecraft:flint"),
+        stackSize = 64
+    )
+    
+    public object Porkchop : Material(
+        id = 763,
+        displayName = "Raw Porkchop",
+        identifier = Identifier("minecraft:porkchop"),
+        stackSize = 64
+    )
+    
+    public object CookedPorkchop : Material(
+        id = 764,
+        displayName = "Cooked Porkchop",
+        identifier = Identifier("minecraft:cooked_porkchop"),
+        stackSize = 64
+    )
+    
+    public object Painting : Material(
+        id = 765,
+        displayName = "Painting",
+        identifier = Identifier("minecraft:painting"),
+        stackSize = 64
+    )
+    
+    public object GoldenApple : Material(
+        id = 766,
+        displayName = "Golden Apple",
+        identifier = Identifier("minecraft:golden_apple"),
+        stackSize = 64
+    )
+    
+    public object EnchantedGoldenApple : Material(
+        id = 767,
+        displayName = "Enchanted Golden Apple",
+        identifier = Identifier("minecraft:enchanted_golden_apple"),
+        stackSize = 64
+    )
+    
+    public object OakSign : Material(
+        id = 768,
+        displayName = "Oak Sign",
+        identifier = Identifier("minecraft:oak_sign"),
+        stackSize = 16
+    )
+    
+    public object SpruceSign : Material(
+        id = 769,
+        displayName = "Spruce Sign",
+        identifier = Identifier("minecraft:spruce_sign"),
+        stackSize = 16
+    )
+    
+    public object BirchSign : Material(
+        id = 770,
+        displayName = "Birch Sign",
+        identifier = Identifier("minecraft:birch_sign"),
+        stackSize = 16
+    )
+    
+    public object JungleSign : Material(
+        id = 771,
+        displayName = "Jungle Sign",
+        identifier = Identifier("minecraft:jungle_sign"),
+        stackSize = 16
+    )
+    
+    public object AcaciaSign : Material(
+        id = 772,
+        displayName = "Acacia Sign",
+        identifier = Identifier("minecraft:acacia_sign"),
+        stackSize = 16
+    )
+    
+    public object DarkOakSign : Material(
+        id = 773,
+        displayName = "Dark Oak Sign",
+        identifier = Identifier("minecraft:dark_oak_sign"),
+        stackSize = 16
+    )
+    
+    public object CrimsonSign : Material(
+        id = 774,
+        displayName = "Crimson Sign",
+        identifier = Identifier("minecraft:crimson_sign"),
+        stackSize = 16
+    )
+    
+    public object WarpedSign : Material(
+        id = 775,
+        displayName = "Warped Sign",
+        identifier = Identifier("minecraft:warped_sign"),
+        stackSize = 16
+    )
+    
+    public object Bucket : Material(
+        id = 776,
+        displayName = "Bucket",
+        identifier = Identifier("minecraft:bucket"),
+        stackSize = 16
+    )
+    
+    public object WaterBucket : Material(
+        id = 777,
+        displayName = "Water Bucket",
+        identifier = Identifier("minecraft:water_bucket"),
+        stackSize = 1
+    )
+    
+    public object LavaBucket : Material(
+        id = 778,
+        displayName = "Lava Bucket",
+        identifier = Identifier("minecraft:lava_bucket"),
+        stackSize = 1
+    )
+    
+    public object PowderSnowBucket : Material(
+        id = 779,
+        displayName = "Powder Snow Bucket",
+        identifier = Identifier("minecraft:powder_snow_bucket"),
+        stackSize = 1
+    )
+    
+    public object Snowball : Material(
+        id = 780,
+        displayName = "Snowball",
+        identifier = Identifier("minecraft:snowball"),
+        stackSize = 16
+    )
+    
+    public object Leather : Material(
+        id = 781,
+        displayName = "Leather",
+        identifier = Identifier("minecraft:leather"),
+        stackSize = 64
+    )
+    
+    public object MilkBucket : Material(
+        id = 782,
+        displayName = "Milk Bucket",
+        identifier = Identifier("minecraft:milk_bucket"),
+        stackSize = 1
+    )
+    
+    public object PufferfishBucket : Material(
+        id = 783,
+        displayName = "Bucket of Pufferfish",
+        identifier = Identifier("minecraft:pufferfish_bucket"),
+        stackSize = 1
+    )
+    
+    public object SalmonBucket : Material(
+        id = 784,
+        displayName = "Bucket of Salmon",
+        identifier = Identifier("minecraft:salmon_bucket"),
+        stackSize = 1
+    )
+    
+    public object CodBucket : Material(
+        id = 785,
+        displayName = "Bucket of Cod",
+        identifier = Identifier("minecraft:cod_bucket"),
+        stackSize = 1
+    )
+    
+    public object TropicalFishBucket : Material(
+        id = 786,
+        displayName = "Bucket of Tropical Fish",
+        identifier = Identifier("minecraft:tropical_fish_bucket"),
+        stackSize = 1
+    )
+    
+    public object AxolotlBucket : Material(
+        id = 787,
+        displayName = "Bucket of Axolotl",
+        identifier = Identifier("minecraft:axolotl_bucket"),
+        stackSize = 1
+    )
+    
+    public object Brick : Material(
+        id = 788,
+        displayName = "Brick",
+        identifier = Identifier("minecraft:brick"),
+        stackSize = 64
+    )
+    
+    public object ClayBall : Material(
+        id = 789,
+        displayName = "Clay Ball",
+        identifier = Identifier("minecraft:clay_ball"),
+        stackSize = 64
+    )
+    
+    public object DriedKelpBlock : Material(
+        id = 790,
+        displayName = "Dried Kelp Block",
+        identifier = Identifier("minecraft:dried_kelp_block"),
+        stackSize = 64
+    )
+    
+    public object Paper : Material(
+        id = 791,
+        displayName = "Paper",
+        identifier = Identifier("minecraft:paper"),
+        stackSize = 64
+    )
+    
+    public object Book : Material(
+        id = 792,
+        displayName = "Book",
+        identifier = Identifier("minecraft:book"),
+        stackSize = 64
+    )
+    
+    public object SlimeBall : Material(
+        id = 793,
+        displayName = "Slimeball",
+        identifier = Identifier("minecraft:slime_ball"),
+        stackSize = 64
+    )
+    
+    public object Egg : Material(
+        id = 794,
+        displayName = "Egg",
+        identifier = Identifier("minecraft:egg"),
+        stackSize = 16
+    )
+    
+    public object Compass : Material(
+        id = 795,
+        displayName = "Compass",
+        identifier = Identifier("minecraft:compass"),
+        stackSize = 64
+    )
+    
+    public object Bundle : Material(
+        id = 796,
+        displayName = "Bundle",
+        identifier = Identifier("minecraft:bundle"),
+        stackSize = 1
+    )
+    
+    public object FishingRod : Material(
+        id = 797,
+        displayName = "Fishing Rod",
+        identifier = Identifier("minecraft:fishing_rod"),
+        stackSize = 1
+    )
+    
+    public object Clock : Material(
+        id = 798,
+        displayName = "Clock",
+        identifier = Identifier("minecraft:clock"),
+        stackSize = 64
+    )
+    
+    public object Spyglass : Material(
+        id = 799,
+        displayName = "Spyglass",
+        identifier = Identifier("minecraft:spyglass"),
+        stackSize = 1
+    )
+    
+    public object GlowstoneDust : Material(
+        id = 800,
+        displayName = "Glowstone Dust",
+        identifier = Identifier("minecraft:glowstone_dust"),
+        stackSize = 64
+    )
+    
+    public object Cod : Material(
+        id = 801,
+        displayName = "Raw Cod",
+        identifier = Identifier("minecraft:cod"),
+        stackSize = 64
+    )
+    
+    public object Salmon : Material(
+        id = 802,
+        displayName = "Raw Salmon",
+        identifier = Identifier("minecraft:salmon"),
+        stackSize = 64
+    )
+    
+    public object TropicalFish : Material(
+        id = 803,
+        displayName = "Tropical Fish",
+        identifier = Identifier("minecraft:tropical_fish"),
+        stackSize = 64
+    )
+    
+    public object Pufferfish : Material(
+        id = 804,
+        displayName = "Pufferfish",
+        identifier = Identifier("minecraft:pufferfish"),
+        stackSize = 64
+    )
+    
+    public object CookedCod : Material(
+        id = 805,
+        displayName = "Cooked Cod",
+        identifier = Identifier("minecraft:cooked_cod"),
+        stackSize = 64
+    )
+    
+    public object CookedSalmon : Material(
+        id = 806,
+        displayName = "Cooked Salmon",
+        identifier = Identifier("minecraft:cooked_salmon"),
+        stackSize = 64
+    )
+    
+    public object InkSac : Material(
+        id = 807,
+        displayName = "Ink Sac",
+        identifier = Identifier("minecraft:ink_sac"),
+        stackSize = 64
+    )
+    
+    public object GlowInkSac : Material(
+        id = 808,
+        displayName = "Glow Ink Sac",
+        identifier = Identifier("minecraft:glow_ink_sac"),
+        stackSize = 64
+    )
+    
+    public object CocoaBeans : Material(
+        id = 809,
+        displayName = "Cocoa Beans",
+        identifier = Identifier("minecraft:cocoa_beans"),
+        stackSize = 64
+    )
+    
+    public object WhiteDye : Material(
+        id = 810,
+        displayName = "White Dye",
+        identifier = Identifier("minecraft:white_dye"),
+        stackSize = 64
+    )
+    
+    public object OrangeDye : Material(
+        id = 811,
+        displayName = "Orange Dye",
+        identifier = Identifier("minecraft:orange_dye"),
+        stackSize = 64
+    )
+    
+    public object MagentaDye : Material(
+        id = 812,
+        displayName = "Magenta Dye",
+        identifier = Identifier("minecraft:magenta_dye"),
+        stackSize = 64
+    )
+    
+    public object LightBlueDye : Material(
+        id = 813,
+        displayName = "Light Blue Dye",
+        identifier = Identifier("minecraft:light_blue_dye"),
+        stackSize = 64
+    )
+    
+    public object YellowDye : Material(
+        id = 814,
+        displayName = "Yellow Dye",
+        identifier = Identifier("minecraft:yellow_dye"),
+        stackSize = 64
+    )
+    
+    public object LimeDye : Material(
+        id = 815,
+        displayName = "Lime Dye",
+        identifier = Identifier("minecraft:lime_dye"),
+        stackSize = 64
+    )
+    
+    public object PinkDye : Material(
+        id = 816,
+        displayName = "Pink Dye",
+        identifier = Identifier("minecraft:pink_dye"),
+        stackSize = 64
+    )
+    
+    public object GrayDye : Material(
+        id = 817,
+        displayName = "Gray Dye",
+        identifier = Identifier("minecraft:gray_dye"),
+        stackSize = 64
+    )
+    
+    public object LightGrayDye : Material(
+        id = 818,
+        displayName = "Light Gray Dye",
+        identifier = Identifier("minecraft:light_gray_dye"),
+        stackSize = 64
+    )
+    
+    public object CyanDye : Material(
+        id = 819,
+        displayName = "Cyan Dye",
+        identifier = Identifier("minecraft:cyan_dye"),
+        stackSize = 64
+    )
+    
+    public object PurpleDye : Material(
+        id = 820,
+        displayName = "Purple Dye",
+        identifier = Identifier("minecraft:purple_dye"),
+        stackSize = 64
+    )
+    
+    public object BlueDye : Material(
+        id = 821,
+        displayName = "Blue Dye",
+        identifier = Identifier("minecraft:blue_dye"),
+        stackSize = 64
+    )
+    
+    public object BrownDye : Material(
+        id = 822,
+        displayName = "Brown Dye",
+        identifier = Identifier("minecraft:brown_dye"),
+        stackSize = 64
+    )
+    
+    public object GreenDye : Material(
+        id = 823,
+        displayName = "Green Dye",
+        identifier = Identifier("minecraft:green_dye"),
+        stackSize = 64
+    )
+    
+    public object RedDye : Material(
+        id = 824,
+        displayName = "Red Dye",
+        identifier = Identifier("minecraft:red_dye"),
+        stackSize = 64
+    )
+    
+    public object BlackDye : Material(
+        id = 825,
+        displayName = "Black Dye",
+        identifier = Identifier("minecraft:black_dye"),
+        stackSize = 64
+    )
+    
+    public object BoneMeal : Material(
+        id = 826,
+        displayName = "Bone Meal",
+        identifier = Identifier("minecraft:bone_meal"),
+        stackSize = 64
+    )
+    
+    public object Bone : Material(
+        id = 827,
+        displayName = "Bone",
+        identifier = Identifier("minecraft:bone"),
+        stackSize = 64
+    )
+    
+    public object Sugar : Material(
+        id = 828,
+        displayName = "Sugar",
+        identifier = Identifier("minecraft:sugar"),
+        stackSize = 64
+    )
+    
+    public object Cake : Material(
+        id = 829,
+        displayName = "Cake",
+        identifier = Identifier("minecraft:cake"),
+        stackSize = 1
+    )
+    
+    public object WhiteBed : Material(
+        id = 830,
+        displayName = "White Bed",
+        identifier = Identifier("minecraft:white_bed"),
+        stackSize = 1
+    )
+    
+    public object OrangeBed : Material(
+        id = 831,
+        displayName = "Orange Bed",
+        identifier = Identifier("minecraft:orange_bed"),
+        stackSize = 1
+    )
+    
+    public object MagentaBed : Material(
+        id = 832,
+        displayName = "Magenta Bed",
+        identifier = Identifier("minecraft:magenta_bed"),
+        stackSize = 1
+    )
+    
+    public object LightBlueBed : Material(
+        id = 833,
+        displayName = "Light Blue Bed",
+        identifier = Identifier("minecraft:light_blue_bed"),
+        stackSize = 1
+    )
+    
+    public object YellowBed : Material(
+        id = 834,
+        displayName = "Yellow Bed",
+        identifier = Identifier("minecraft:yellow_bed"),
+        stackSize = 1
+    )
+    
+    public object LimeBed : Material(
+        id = 835,
+        displayName = "Lime Bed",
+        identifier = Identifier("minecraft:lime_bed"),
+        stackSize = 1
+    )
+    
+    public object PinkBed : Material(
+        id = 836,
+        displayName = "Pink Bed",
+        identifier = Identifier("minecraft:pink_bed"),
+        stackSize = 1
+    )
+    
+    public object GrayBed : Material(
+        id = 837,
+        displayName = "Gray Bed",
+        identifier = Identifier("minecraft:gray_bed"),
+        stackSize = 1
+    )
+    
+    public object LightGrayBed : Material(
+        id = 838,
+        displayName = "Light Gray Bed",
+        identifier = Identifier("minecraft:light_gray_bed"),
+        stackSize = 1
+    )
+    
+    public object CyanBed : Material(
+        id = 839,
+        displayName = "Cyan Bed",
+        identifier = Identifier("minecraft:cyan_bed"),
+        stackSize = 1
+    )
+    
+    public object PurpleBed : Material(
+        id = 840,
+        displayName = "Purple Bed",
+        identifier = Identifier("minecraft:purple_bed"),
+        stackSize = 1
+    )
+    
+    public object BlueBed : Material(
+        id = 841,
+        displayName = "Blue Bed",
+        identifier = Identifier("minecraft:blue_bed"),
+        stackSize = 1
+    )
+    
+    public object BrownBed : Material(
+        id = 842,
+        displayName = "Brown Bed",
+        identifier = Identifier("minecraft:brown_bed"),
+        stackSize = 1
+    )
+    
+    public object GreenBed : Material(
+        id = 843,
+        displayName = "Green Bed",
+        identifier = Identifier("minecraft:green_bed"),
+        stackSize = 1
+    )
+    
+    public object RedBed : Material(
+        id = 844,
+        displayName = "Red Bed",
+        identifier = Identifier("minecraft:red_bed"),
+        stackSize = 1
+    )
+    
+    public object BlackBed : Material(
+        id = 845,
+        displayName = "Black Bed",
+        identifier = Identifier("minecraft:black_bed"),
+        stackSize = 1
+    )
+    
+    public object Cookie : Material(
+        id = 846,
+        displayName = "Cookie",
+        identifier = Identifier("minecraft:cookie"),
+        stackSize = 64
+    )
+    
+    public object FilledMap : Material(
+        id = 847,
+        displayName = "Map",
+        identifier = Identifier("minecraft:filled_map"),
+        stackSize = 64
+    )
+    
+    public object Shears : Material(
+        id = 848,
+        displayName = "Shears",
+        identifier = Identifier("minecraft:shears"),
+        stackSize = 1
+    )
+    
+    public object MelonSlice : Material(
+        id = 849,
+        displayName = "Melon Slice",
+        identifier = Identifier("minecraft:melon_slice"),
+        stackSize = 64
+    )
+    
+    public object DriedKelp : Material(
+        id = 850,
+        displayName = "Dried Kelp",
+        identifier = Identifier("minecraft:dried_kelp"),
+        stackSize = 64
+    )
+    
+    public object PumpkinSeeds : Material(
+        id = 851,
+        displayName = "Pumpkin Seeds",
+        identifier = Identifier("minecraft:pumpkin_seeds"),
+        stackSize = 64
+    )
+    
+    public object MelonSeeds : Material(
+        id = 852,
+        displayName = "Melon Seeds",
+        identifier = Identifier("minecraft:melon_seeds"),
+        stackSize = 64
+    )
+    
+    public object Beef : Material(
+        id = 853,
+        displayName = "Raw Beef",
+        identifier = Identifier("minecraft:beef"),
+        stackSize = 64
+    )
+    
+    public object CookedBeef : Material(
+        id = 854,
+        displayName = "Steak",
+        identifier = Identifier("minecraft:cooked_beef"),
+        stackSize = 64
+    )
+    
+    public object Chicken : Material(
+        id = 855,
+        displayName = "Raw Chicken",
+        identifier = Identifier("minecraft:chicken"),
+        stackSize = 64
+    )
+    
+    public object CookedChicken : Material(
+        id = 856,
+        displayName = "Cooked Chicken",
+        identifier = Identifier("minecraft:cooked_chicken"),
+        stackSize = 64
+    )
+    
+    public object RottenFlesh : Material(
+        id = 857,
+        displayName = "Rotten Flesh",
+        identifier = Identifier("minecraft:rotten_flesh"),
+        stackSize = 64
+    )
+    
+    public object EnderPearl : Material(
+        id = 858,
+        displayName = "Ender Pearl",
+        identifier = Identifier("minecraft:ender_pearl"),
+        stackSize = 16
+    )
+    
+    public object BlazeRod : Material(
+        id = 859,
+        displayName = "Blaze Rod",
+        identifier = Identifier("minecraft:blaze_rod"),
+        stackSize = 64
+    )
+    
+    public object GhastTear : Material(
+        id = 860,
+        displayName = "Ghast Tear",
+        identifier = Identifier("minecraft:ghast_tear"),
+        stackSize = 64
+    )
+    
+    public object GoldNugget : Material(
+        id = 861,
+        displayName = "Gold Nugget",
+        identifier = Identifier("minecraft:gold_nugget"),
+        stackSize = 64
+    )
+    
+    public object NetherWart : Material(
+        id = 862,
+        displayName = "Nether Wart",
+        identifier = Identifier("minecraft:nether_wart"),
+        stackSize = 64
+    )
+    
+    public object Potion : Material(
+        id = 863,
+        displayName = "Potion",
+        identifier = Identifier("minecraft:potion"),
+        stackSize = 1
+    )
+    
+    public object GlassBottle : Material(
+        id = 864,
+        displayName = "Glass Bottle",
+        identifier = Identifier("minecraft:glass_bottle"),
+        stackSize = 64
+    )
+    
+    public object SpiderEye : Material(
+        id = 865,
+        displayName = "Spider Eye",
+        identifier = Identifier("minecraft:spider_eye"),
+        stackSize = 64
+    )
+    
+    public object FermentedSpiderEye : Material(
+        id = 866,
+        displayName = "Fermented Spider Eye",
+        identifier = Identifier("minecraft:fermented_spider_eye"),
+        stackSize = 64
+    )
+    
+    public object BlazePowder : Material(
+        id = 867,
+        displayName = "Blaze Powder",
+        identifier = Identifier("minecraft:blaze_powder"),
+        stackSize = 64
+    )
+    
+    public object MagmaCream : Material(
+        id = 868,
+        displayName = "Magma Cream",
+        identifier = Identifier("minecraft:magma_cream"),
+        stackSize = 64
+    )
+    
+    public object BrewingStand : Material(
+        id = 869,
+        displayName = "Brewing Stand",
+        identifier = Identifier("minecraft:brewing_stand"),
+        stackSize = 64
+    )
+    
+    public object Cauldron : Material(
+        id = 870,
+        displayName = "Cauldron",
+        identifier = Identifier("minecraft:cauldron"),
+        stackSize = 64
+    )
+    
+    public object EnderEye : Material(
+        id = 871,
+        displayName = "Eye of Ender",
+        identifier = Identifier("minecraft:ender_eye"),
+        stackSize = 64
+    )
+    
+    public object GlisteringMelonSlice : Material(
+        id = 872,
+        displayName = "Glistering Melon Slice",
+        identifier = Identifier("minecraft:glistering_melon_slice"),
+        stackSize = 64
+    )
+    
+    public object AxolotlSpawnEgg : Material(
+        id = 873,
+        displayName = "Axolotl Spawn Egg",
+        identifier = Identifier("minecraft:axolotl_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object BatSpawnEgg : Material(
+        id = 874,
+        displayName = "Bat Spawn Egg",
+        identifier = Identifier("minecraft:bat_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object BeeSpawnEgg : Material(
+        id = 875,
+        displayName = "Bee Spawn Egg",
+        identifier = Identifier("minecraft:bee_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object BlazeSpawnEgg : Material(
+        id = 876,
+        displayName = "Blaze Spawn Egg",
+        identifier = Identifier("minecraft:blaze_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object CatSpawnEgg : Material(
+        id = 877,
+        displayName = "Cat Spawn Egg",
+        identifier = Identifier("minecraft:cat_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object CaveSpiderSpawnEgg : Material(
+        id = 878,
+        displayName = "Cave Spider Spawn Egg",
+        identifier = Identifier("minecraft:cave_spider_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ChickenSpawnEgg : Material(
+        id = 879,
+        displayName = "Chicken Spawn Egg",
+        identifier = Identifier("minecraft:chicken_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object CodSpawnEgg : Material(
+        id = 880,
+        displayName = "Cod Spawn Egg",
+        identifier = Identifier("minecraft:cod_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object CowSpawnEgg : Material(
+        id = 881,
+        displayName = "Cow Spawn Egg",
+        identifier = Identifier("minecraft:cow_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object CreeperSpawnEgg : Material(
+        id = 882,
+        displayName = "Creeper Spawn Egg",
+        identifier = Identifier("minecraft:creeper_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object DolphinSpawnEgg : Material(
+        id = 883,
+        displayName = "Dolphin Spawn Egg",
+        identifier = Identifier("minecraft:dolphin_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object DonkeySpawnEgg : Material(
+        id = 884,
+        displayName = "Donkey Spawn Egg",
+        identifier = Identifier("minecraft:donkey_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object DrownedSpawnEgg : Material(
+        id = 885,
+        displayName = "Drowned Spawn Egg",
+        identifier = Identifier("minecraft:drowned_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ElderGuardianSpawnEgg : Material(
+        id = 886,
+        displayName = "Elder Guardian Spawn Egg",
+        identifier = Identifier("minecraft:elder_guardian_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object EndermanSpawnEgg : Material(
+        id = 887,
+        displayName = "Enderman Spawn Egg",
+        identifier = Identifier("minecraft:enderman_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object EndermiteSpawnEgg : Material(
+        id = 888,
+        displayName = "Endermite Spawn Egg",
+        identifier = Identifier("minecraft:endermite_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object EvokerSpawnEgg : Material(
+        id = 889,
+        displayName = "Evoker Spawn Egg",
+        identifier = Identifier("minecraft:evoker_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object FoxSpawnEgg : Material(
+        id = 890,
+        displayName = "Fox Spawn Egg",
+        identifier = Identifier("minecraft:fox_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object GhastSpawnEgg : Material(
+        id = 891,
+        displayName = "Ghast Spawn Egg",
+        identifier = Identifier("minecraft:ghast_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object GlowSquidSpawnEgg : Material(
+        id = 892,
+        displayName = "Glow Squid Spawn Egg",
+        identifier = Identifier("minecraft:glow_squid_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object GoatSpawnEgg : Material(
+        id = 893,
+        displayName = "Goat Spawn Egg",
+        identifier = Identifier("minecraft:goat_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object GuardianSpawnEgg : Material(
+        id = 894,
+        displayName = "Guardian Spawn Egg",
+        identifier = Identifier("minecraft:guardian_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object HoglinSpawnEgg : Material(
+        id = 895,
+        displayName = "Hoglin Spawn Egg",
+        identifier = Identifier("minecraft:hoglin_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object HorseSpawnEgg : Material(
+        id = 896,
+        displayName = "Horse Spawn Egg",
+        identifier = Identifier("minecraft:horse_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object HuskSpawnEgg : Material(
+        id = 897,
+        displayName = "Husk Spawn Egg",
+        identifier = Identifier("minecraft:husk_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object LlamaSpawnEgg : Material(
+        id = 898,
+        displayName = "Llama Spawn Egg",
+        identifier = Identifier("minecraft:llama_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object MagmaCubeSpawnEgg : Material(
+        id = 899,
+        displayName = "Magma Cube Spawn Egg",
+        identifier = Identifier("minecraft:magma_cube_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object MooshroomSpawnEgg : Material(
+        id = 900,
+        displayName = "Mooshroom Spawn Egg",
+        identifier = Identifier("minecraft:mooshroom_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object MuleSpawnEgg : Material(
+        id = 901,
+        displayName = "Mule Spawn Egg",
+        identifier = Identifier("minecraft:mule_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object OcelotSpawnEgg : Material(
+        id = 902,
+        displayName = "Ocelot Spawn Egg",
+        identifier = Identifier("minecraft:ocelot_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object PandaSpawnEgg : Material(
+        id = 903,
+        displayName = "Panda Spawn Egg",
+        identifier = Identifier("minecraft:panda_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ParrotSpawnEgg : Material(
+        id = 904,
+        displayName = "Parrot Spawn Egg",
+        identifier = Identifier("minecraft:parrot_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object PhantomSpawnEgg : Material(
+        id = 905,
+        displayName = "Phantom Spawn Egg",
+        identifier = Identifier("minecraft:phantom_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object PigSpawnEgg : Material(
+        id = 906,
+        displayName = "Pig Spawn Egg",
+        identifier = Identifier("minecraft:pig_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object PiglinSpawnEgg : Material(
+        id = 907,
+        displayName = "Piglin Spawn Egg",
+        identifier = Identifier("minecraft:piglin_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object PiglinBruteSpawnEgg : Material(
+        id = 908,
+        displayName = "Piglin Brute Spawn Egg",
+        identifier = Identifier("minecraft:piglin_brute_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object PillagerSpawnEgg : Material(
+        id = 909,
+        displayName = "Pillager Spawn Egg",
+        identifier = Identifier("minecraft:pillager_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object PolarBearSpawnEgg : Material(
+        id = 910,
+        displayName = "Polar Bear Spawn Egg",
+        identifier = Identifier("minecraft:polar_bear_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object PufferfishSpawnEgg : Material(
+        id = 911,
+        displayName = "Pufferfish Spawn Egg",
+        identifier = Identifier("minecraft:pufferfish_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object RabbitSpawnEgg : Material(
+        id = 912,
+        displayName = "Rabbit Spawn Egg",
+        identifier = Identifier("minecraft:rabbit_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object RavagerSpawnEgg : Material(
+        id = 913,
+        displayName = "Ravager Spawn Egg",
+        identifier = Identifier("minecraft:ravager_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object SalmonSpawnEgg : Material(
+        id = 914,
+        displayName = "Salmon Spawn Egg",
+        identifier = Identifier("minecraft:salmon_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object SheepSpawnEgg : Material(
+        id = 915,
+        displayName = "Sheep Spawn Egg",
+        identifier = Identifier("minecraft:sheep_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ShulkerSpawnEgg : Material(
+        id = 916,
+        displayName = "Shulker Spawn Egg",
+        identifier = Identifier("minecraft:shulker_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object SilverfishSpawnEgg : Material(
+        id = 917,
+        displayName = "Silverfish Spawn Egg",
+        identifier = Identifier("minecraft:silverfish_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object SkeletonSpawnEgg : Material(
+        id = 918,
+        displayName = "Skeleton Spawn Egg",
+        identifier = Identifier("minecraft:skeleton_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object SkeletonHorseSpawnEgg : Material(
+        id = 919,
+        displayName = "Skeleton Horse Spawn Egg",
+        identifier = Identifier("minecraft:skeleton_horse_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object SlimeSpawnEgg : Material(
+        id = 920,
+        displayName = "Slime Spawn Egg",
+        identifier = Identifier("minecraft:slime_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object SpiderSpawnEgg : Material(
+        id = 921,
+        displayName = "Spider Spawn Egg",
+        identifier = Identifier("minecraft:spider_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object SquidSpawnEgg : Material(
+        id = 922,
+        displayName = "Squid Spawn Egg",
+        identifier = Identifier("minecraft:squid_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object StraySpawnEgg : Material(
+        id = 923,
+        displayName = "Stray Spawn Egg",
+        identifier = Identifier("minecraft:stray_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object StriderSpawnEgg : Material(
+        id = 924,
+        displayName = "Strider Spawn Egg",
+        identifier = Identifier("minecraft:strider_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object TraderLlamaSpawnEgg : Material(
+        id = 925,
+        displayName = "Trader Llama Spawn Egg",
+        identifier = Identifier("minecraft:trader_llama_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object TropicalFishSpawnEgg : Material(
+        id = 926,
+        displayName = "Tropical Fish Spawn Egg",
+        identifier = Identifier("minecraft:tropical_fish_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object TurtleSpawnEgg : Material(
+        id = 927,
+        displayName = "Turtle Spawn Egg",
+        identifier = Identifier("minecraft:turtle_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object VexSpawnEgg : Material(
+        id = 928,
+        displayName = "Vex Spawn Egg",
+        identifier = Identifier("minecraft:vex_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object VillagerSpawnEgg : Material(
+        id = 929,
+        displayName = "Villager Spawn Egg",
+        identifier = Identifier("minecraft:villager_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object VindicatorSpawnEgg : Material(
+        id = 930,
+        displayName = "Vindicator Spawn Egg",
+        identifier = Identifier("minecraft:vindicator_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object WanderingTraderSpawnEgg : Material(
+        id = 931,
+        displayName = "Wandering Trader Spawn Egg",
+        identifier = Identifier("minecraft:wandering_trader_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object WitchSpawnEgg : Material(
+        id = 932,
+        displayName = "Witch Spawn Egg",
+        identifier = Identifier("minecraft:witch_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object WitherSkeletonSpawnEgg : Material(
+        id = 933,
+        displayName = "Wither Skeleton Spawn Egg",
+        identifier = Identifier("minecraft:wither_skeleton_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object WolfSpawnEgg : Material(
+        id = 934,
+        displayName = "Wolf Spawn Egg",
+        identifier = Identifier("minecraft:wolf_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ZoglinSpawnEgg : Material(
+        id = 935,
+        displayName = "Zoglin Spawn Egg",
+        identifier = Identifier("minecraft:zoglin_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ZombieSpawnEgg : Material(
+        id = 936,
+        displayName = "Zombie Spawn Egg",
+        identifier = Identifier("minecraft:zombie_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ZombieHorseSpawnEgg : Material(
+        id = 937,
+        displayName = "Zombie Horse Spawn Egg",
+        identifier = Identifier("minecraft:zombie_horse_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ZombieVillagerSpawnEgg : Material(
+        id = 938,
+        displayName = "Zombie Villager Spawn Egg",
+        identifier = Identifier("minecraft:zombie_villager_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ZombifiedPiglinSpawnEgg : Material(
+        id = 939,
+        displayName = "Zombified Piglin Spawn Egg",
+        identifier = Identifier("minecraft:zombified_piglin_spawn_egg"),
+        stackSize = 64
+    )
+    
+    public object ExperienceBottle : Material(
+        id = 940,
+        displayName = "Bottle o' Enchanting",
+        identifier = Identifier("minecraft:experience_bottle"),
+        stackSize = 64
+    )
+    
+    public object FireCharge : Material(
+        id = 941,
+        displayName = "Fire Charge",
+        identifier = Identifier("minecraft:fire_charge"),
+        stackSize = 64
+    )
+    
+    public object WritableBook : Material(
+        id = 942,
+        displayName = "Book and Quill",
+        identifier = Identifier("minecraft:writable_book"),
+        stackSize = 1
+    )
+    
+    public object WrittenBook : Material(
+        id = 943,
+        displayName = "Written Book",
+        identifier = Identifier("minecraft:written_book"),
+        stackSize = 16
+    )
+    
+    public object ItemFrame : Material(
+        id = 944,
+        displayName = "Item Frame",
+        identifier = Identifier("minecraft:item_frame"),
+        stackSize = 64
+    )
+    
+    public object GlowItemFrame : Material(
+        id = 945,
+        displayName = "Glow Item Frame",
+        identifier = Identifier("minecraft:glow_item_frame"),
+        stackSize = 64
+    )
+    
+    public object FlowerPot : Material(
+        id = 946,
+        displayName = "Flower Pot",
+        identifier = Identifier("minecraft:flower_pot"),
+        stackSize = 64
+    )
+    
+    public object Carrot : Material(
+        id = 947,
+        displayName = "Carrot",
+        identifier = Identifier("minecraft:carrot"),
+        stackSize = 64
+    )
+    
+    public object Potato : Material(
+        id = 948,
+        displayName = "Potato",
+        identifier = Identifier("minecraft:potato"),
+        stackSize = 64
+    )
+    
+    public object BakedPotato : Material(
+        id = 949,
+        displayName = "Baked Potato",
+        identifier = Identifier("minecraft:baked_potato"),
+        stackSize = 64
+    )
+    
+    public object PoisonousPotato : Material(
+        id = 950,
+        displayName = "Poisonous Potato",
+        identifier = Identifier("minecraft:poisonous_potato"),
+        stackSize = 64
+    )
+    
+    public object Map : Material(
+        id = 951,
+        displayName = "Empty Map",
+        identifier = Identifier("minecraft:map"),
+        stackSize = 64
+    )
+    
+    public object GoldenCarrot : Material(
+        id = 952,
+        displayName = "Golden Carrot",
+        identifier = Identifier("minecraft:golden_carrot"),
+        stackSize = 64
+    )
+    
+    public object SkeletonSkull : Material(
+        id = 953,
+        displayName = "Skeleton Skull",
+        identifier = Identifier("minecraft:skeleton_skull"),
+        stackSize = 64
+    )
+    
+    public object WitherSkeletonSkull : Material(
+        id = 954,
+        displayName = "Wither Skeleton Skull",
+        identifier = Identifier("minecraft:wither_skeleton_skull"),
+        stackSize = 64
+    )
+    
+    public object PlayerHead : Material(
+        id = 955,
+        displayName = "Player Head",
+        identifier = Identifier("minecraft:player_head"),
+        stackSize = 64
+    )
+    
+    public object ZombieHead : Material(
+        id = 956,
+        displayName = "Zombie Head",
+        identifier = Identifier("minecraft:zombie_head"),
+        stackSize = 64
+    )
+    
+    public object CreeperHead : Material(
+        id = 957,
+        displayName = "Creeper Head",
+        identifier = Identifier("minecraft:creeper_head"),
+        stackSize = 64
+    )
+    
+    public object DragonHead : Material(
+        id = 958,
+        displayName = "Dragon Head",
+        identifier = Identifier("minecraft:dragon_head"),
+        stackSize = 64
+    )
+    
+    public object NetherStar : Material(
+        id = 959,
+        displayName = "Nether Star",
+        identifier = Identifier("minecraft:nether_star"),
+        stackSize = 64
+    )
+    
+    public object PumpkinPie : Material(
+        id = 960,
+        displayName = "Pumpkin Pie",
+        identifier = Identifier("minecraft:pumpkin_pie"),
+        stackSize = 64
+    )
+    
+    public object FireworkRocket : Material(
+        id = 961,
+        displayName = "Firework Rocket",
+        identifier = Identifier("minecraft:firework_rocket"),
+        stackSize = 64
+    )
+    
+    public object FireworkStar : Material(
+        id = 962,
+        displayName = "Firework Star",
+        identifier = Identifier("minecraft:firework_star"),
+        stackSize = 64
+    )
+    
+    public object EnchantedBook : Material(
+        id = 963,
+        displayName = "Enchanted Book",
+        identifier = Identifier("minecraft:enchanted_book"),
+        stackSize = 1
+    )
+    
+    public object NetherBrick : Material(
+        id = 964,
+        displayName = "Nether Brick",
+        identifier = Identifier("minecraft:nether_brick"),
+        stackSize = 64
+    )
+    
+    public object PrismarineShard : Material(
+        id = 965,
+        displayName = "Prismarine Shard",
+        identifier = Identifier("minecraft:prismarine_shard"),
+        stackSize = 64
+    )
+    
+    public object PrismarineCrystals : Material(
+        id = 966,
+        displayName = "Prismarine Crystals",
+        identifier = Identifier("minecraft:prismarine_crystals"),
+        stackSize = 64
+    )
+    
+    public object Rabbit : Material(
+        id = 967,
+        displayName = "Raw Rabbit",
+        identifier = Identifier("minecraft:rabbit"),
+        stackSize = 64
+    )
+    
+    public object CookedRabbit : Material(
+        id = 968,
+        displayName = "Cooked Rabbit",
+        identifier = Identifier("minecraft:cooked_rabbit"),
+        stackSize = 64
+    )
+    
+    public object RabbitStew : Material(
+        id = 969,
+        displayName = "Rabbit Stew",
+        identifier = Identifier("minecraft:rabbit_stew"),
+        stackSize = 1
+    )
+    
+    public object RabbitFoot : Material(
+        id = 970,
+        displayName = "Rabbit's Foot",
+        identifier = Identifier("minecraft:rabbit_foot"),
+        stackSize = 64
+    )
+    
+    public object RabbitHide : Material(
+        id = 971,
+        displayName = "Rabbit Hide",
+        identifier = Identifier("minecraft:rabbit_hide"),
+        stackSize = 64
+    )
+    
+    public object ArmorStand : Material(
+        id = 972,
+        displayName = "Armor Stand",
+        identifier = Identifier("minecraft:armor_stand"),
+        stackSize = 16
+    )
+    
+    public object IronHorseArmor : Material(
+        id = 973,
+        displayName = "Iron Horse Armor",
+        identifier = Identifier("minecraft:iron_horse_armor"),
+        stackSize = 1
+    )
+    
+    public object GoldenHorseArmor : Material(
+        id = 974,
+        displayName = "Golden Horse Armor",
+        identifier = Identifier("minecraft:golden_horse_armor"),
+        stackSize = 1
+    )
+    
+    public object DiamondHorseArmor : Material(
+        id = 975,
+        displayName = "Diamond Horse Armor",
+        identifier = Identifier("minecraft:diamond_horse_armor"),
+        stackSize = 1
+    )
+    
+    public object LeatherHorseArmor : Material(
+        id = 976,
+        displayName = "Leather Horse Armor",
+        identifier = Identifier("minecraft:leather_horse_armor"),
+        stackSize = 1
+    )
+    
+    public object Lead : Material(
+        id = 977,
+        displayName = "Lead",
+        identifier = Identifier("minecraft:lead"),
+        stackSize = 64
+    )
+    
+    public object NameTag : Material(
+        id = 978,
+        displayName = "Name Tag",
+        identifier = Identifier("minecraft:name_tag"),
+        stackSize = 64
+    )
+    
+    public object CommandBlockMinecart : Material(
+        id = 979,
+        displayName = "Minecart with Command Block",
+        identifier = Identifier("minecraft:command_block_minecart"),
+        stackSize = 1
+    )
+    
+    public object Mutton : Material(
+        id = 980,
+        displayName = "Raw Mutton",
+        identifier = Identifier("minecraft:mutton"),
+        stackSize = 64
+    )
+    
+    public object CookedMutton : Material(
+        id = 981,
+        displayName = "Cooked Mutton",
+        identifier = Identifier("minecraft:cooked_mutton"),
+        stackSize = 64
+    )
+    
+    public object WhiteBanner : Material(
+        id = 982,
+        displayName = "White Banner",
+        identifier = Identifier("minecraft:white_banner"),
+        stackSize = 16
+    )
+    
+    public object OrangeBanner : Material(
+        id = 983,
+        displayName = "Orange Banner",
+        identifier = Identifier("minecraft:orange_banner"),
+        stackSize = 16
+    )
+    
+    public object MagentaBanner : Material(
+        id = 984,
+        displayName = "Magenta Banner",
+        identifier = Identifier("minecraft:magenta_banner"),
+        stackSize = 16
+    )
+    
+    public object LightBlueBanner : Material(
+        id = 985,
+        displayName = "Light Blue Banner",
+        identifier = Identifier("minecraft:light_blue_banner"),
+        stackSize = 16
+    )
+    
+    public object YellowBanner : Material(
+        id = 986,
+        displayName = "Yellow Banner",
+        identifier = Identifier("minecraft:yellow_banner"),
+        stackSize = 16
+    )
+    
+    public object LimeBanner : Material(
+        id = 987,
+        displayName = "Lime Banner",
+        identifier = Identifier("minecraft:lime_banner"),
+        stackSize = 16
+    )
+    
+    public object PinkBanner : Material(
+        id = 988,
+        displayName = "Pink Banner",
+        identifier = Identifier("minecraft:pink_banner"),
+        stackSize = 16
+    )
+    
+    public object GrayBanner : Material(
+        id = 989,
+        displayName = "Gray Banner",
+        identifier = Identifier("minecraft:gray_banner"),
+        stackSize = 16
+    )
+    
+    public object LightGrayBanner : Material(
+        id = 990,
+        displayName = "Light Gray Banner",
+        identifier = Identifier("minecraft:light_gray_banner"),
+        stackSize = 16
+    )
+    
+    public object CyanBanner : Material(
+        id = 991,
+        displayName = "Cyan Banner",
+        identifier = Identifier("minecraft:cyan_banner"),
+        stackSize = 16
+    )
+    
+    public object PurpleBanner : Material(
+        id = 992,
+        displayName = "Purple Banner",
+        identifier = Identifier("minecraft:purple_banner"),
+        stackSize = 16
+    )
+    
+    public object BlueBanner : Material(
+        id = 993,
+        displayName = "Blue Banner",
+        identifier = Identifier("minecraft:blue_banner"),
+        stackSize = 16
+    )
+    
+    public object BrownBanner : Material(
+        id = 994,
+        displayName = "Brown Banner",
+        identifier = Identifier("minecraft:brown_banner"),
+        stackSize = 16
+    )
+    
+    public object GreenBanner : Material(
+        id = 995,
+        displayName = "Green Banner",
+        identifier = Identifier("minecraft:green_banner"),
+        stackSize = 16
+    )
+    
+    public object RedBanner : Material(
+        id = 996,
+        displayName = "Red Banner",
+        identifier = Identifier("minecraft:red_banner"),
+        stackSize = 16
+    )
+    
+    public object BlackBanner : Material(
+        id = 997,
+        displayName = "Black Banner",
+        identifier = Identifier("minecraft:black_banner"),
+        stackSize = 16
+    )
+    
+    public object EndCrystal : Material(
+        id = 998,
+        displayName = "End Crystal",
+        identifier = Identifier("minecraft:end_crystal"),
+        stackSize = 64
+    )
+    
+    public object ChorusFruit : Material(
+        id = 999,
+        displayName = "Chorus Fruit",
+        identifier = Identifier("minecraft:chorus_fruit"),
+        stackSize = 64
+    )
+    
+    public object PoppedChorusFruit : Material(
+        id = 1000,
+        displayName = "Popped Chorus Fruit",
+        identifier = Identifier("minecraft:popped_chorus_fruit"),
+        stackSize = 64
+    )
+    
+    public object Beetroot : Material(
+        id = 1001,
+        displayName = "Beetroot",
+        identifier = Identifier("minecraft:beetroot"),
+        stackSize = 64
+    )
+    
+    public object BeetrootSeeds : Material(
+        id = 1002,
+        displayName = "Beetroot Seeds",
+        identifier = Identifier("minecraft:beetroot_seeds"),
+        stackSize = 64
+    )
+    
+    public object BeetrootSoup : Material(
+        id = 1003,
+        displayName = "Beetroot Soup",
+        identifier = Identifier("minecraft:beetroot_soup"),
+        stackSize = 1
+    )
+    
+    public object DragonBreath : Material(
+        id = 1004,
+        displayName = "Dragon's Breath",
+        identifier = Identifier("minecraft:dragon_breath"),
+        stackSize = 64
+    )
+    
+    public object SplashPotion : Material(
+        id = 1005,
+        displayName = "Splash Potion",
+        identifier = Identifier("minecraft:splash_potion"),
+        stackSize = 1
+    )
+    
+    public object SpectralArrow : Material(
+        id = 1006,
+        displayName = "Spectral Arrow",
+        identifier = Identifier("minecraft:spectral_arrow"),
+        stackSize = 64
+    )
+    
+    public object TippedArrow : Material(
+        id = 1007,
+        displayName = "Tipped Arrow",
+        identifier = Identifier("minecraft:tipped_arrow"),
+        stackSize = 64
+    )
+    
+    public object LingeringPotion : Material(
+        id = 1008,
+        displayName = "Lingering Potion",
+        identifier = Identifier("minecraft:lingering_potion"),
+        stackSize = 1
+    )
+    
+    public object Shield : Material(
+        id = 1009,
+        displayName = "Shield",
+        identifier = Identifier("minecraft:shield"),
+        stackSize = 1
+    )
+    
+    public object TotemOfUndying : Material(
+        id = 1010,
+        displayName = "Totem of Undying",
+        identifier = Identifier("minecraft:totem_of_undying"),
+        stackSize = 1
+    )
+    
+    public object ShulkerShell : Material(
+        id = 1011,
+        displayName = "Shulker Shell",
+        identifier = Identifier("minecraft:shulker_shell"),
+        stackSize = 64
+    )
+    
+    public object IronNugget : Material(
+        id = 1012,
+        displayName = "Iron Nugget",
+        identifier = Identifier("minecraft:iron_nugget"),
+        stackSize = 64
+    )
+    
+    public object KnowledgeBook : Material(
+        id = 1013,
+        displayName = "Knowledge Book",
+        identifier = Identifier("minecraft:knowledge_book"),
+        stackSize = 1
+    )
+    
+    public object DebugStick : Material(
+        id = 1014,
+        displayName = "Debug Stick",
+        identifier = Identifier("minecraft:debug_stick"),
+        stackSize = 1
+    )
+    
+    public object MusicDisc13 : Material(
+        id = 1015,
         displayName = "13 Disc",
-        identifier = Identifier("minecraft:record_13"),
+        identifier = Identifier("minecraft:music_disc_13"),
         stackSize = 1
     )
-
-    public object RecordCat : Material(
-        id = 2257,
+    
+    public object MusicDiscCat : Material(
+        id = 1016,
         displayName = "Cat Disc",
-        identifier = Identifier("minecraft:record_cat"),
+        identifier = Identifier("minecraft:music_disc_cat"),
         stackSize = 1
     )
-
-    public object RecordBlocks : Material(
-        id = 2258,
+    
+    public object MusicDiscBlocks : Material(
+        id = 1017,
         displayName = "Blocks Disc",
-        identifier = Identifier("minecraft:record_blocks"),
+        identifier = Identifier("minecraft:music_disc_blocks"),
         stackSize = 1
     )
-
-    public object RecordChirp : Material(
-        id = 2259,
+    
+    public object MusicDiscChirp : Material(
+        id = 1018,
         displayName = "Chirp Disc",
-        identifier = Identifier("minecraft:record_chirp"),
+        identifier = Identifier("minecraft:music_disc_chirp"),
         stackSize = 1
     )
-
-    public object RecordFar : Material(
-        id = 2260,
+    
+    public object MusicDiscFar : Material(
+        id = 1019,
         displayName = "Far Disc",
-        identifier = Identifier("minecraft:record_far"),
+        identifier = Identifier("minecraft:music_disc_far"),
         stackSize = 1
     )
-
-    public object RecordMall : Material(
-        id = 2261,
+    
+    public object MusicDiscMall : Material(
+        id = 1020,
         displayName = "Mall Disc",
-        identifier = Identifier("minecraft:record_mall"),
+        identifier = Identifier("minecraft:music_disc_mall"),
         stackSize = 1
     )
-
-    public object RecordMellohi : Material(
-        id = 2262,
+    
+    public object MusicDiscMellohi : Material(
+        id = 1021,
         displayName = "Mellohi Disc",
-        identifier = Identifier("minecraft:record_mellohi"),
+        identifier = Identifier("minecraft:music_disc_mellohi"),
         stackSize = 1
     )
-
-    public object RecordStal : Material(
-        id = 2263,
+    
+    public object MusicDiscStal : Material(
+        id = 1022,
         displayName = "Stal Disc",
-        identifier = Identifier("minecraft:record_stal"),
+        identifier = Identifier("minecraft:music_disc_stal"),
         stackSize = 1
     )
-
-    public object RecordStrad : Material(
-        id = 2264,
+    
+    public object MusicDiscStrad : Material(
+        id = 1023,
         displayName = "Strad Disc",
-        identifier = Identifier("minecraft:record_strad"),
+        identifier = Identifier("minecraft:music_disc_strad"),
         stackSize = 1
     )
-
-    public object RecordWard : Material(
-        id = 2265,
+    
+    public object MusicDiscWard : Material(
+        id = 1024,
         displayName = "Ward Disc",
-        identifier = Identifier("minecraft:record_ward"),
+        identifier = Identifier("minecraft:music_disc_ward"),
         stackSize = 1
     )
-
-    public object Record11 : Material(
-        id = 2266,
+    
+    public object MusicDisc11 : Material(
+        id = 1025,
         displayName = "11 Disc",
-        identifier = Identifier("minecraft:record_11"),
+        identifier = Identifier("minecraft:music_disc_11"),
         stackSize = 1
     )
-
-    public object RecordWait : Material(
-        id = 2267,
+    
+    public object MusicDiscWait : Material(
+        id = 1026,
         displayName = "Wait Disc",
-        identifier = Identifier("minecraft:record_wait"),
+        identifier = Identifier("minecraft:music_disc_wait"),
         stackSize = 1
     )
-
+    
+    public object MusicDiscOtherside : Material(
+        id = 1027,
+        displayName = "Music Disc",
+        identifier = Identifier("minecraft:music_disc_otherside"),
+        stackSize = 1
+    )
+    
+    public object MusicDiscPigstep : Material(
+        id = 1028,
+        displayName = "Music Disc",
+        identifier = Identifier("minecraft:music_disc_pigstep"),
+        stackSize = 1
+    )
+    
+    public object Trident : Material(
+        id = 1029,
+        displayName = "Trident",
+        identifier = Identifier("minecraft:trident"),
+        stackSize = 1
+    )
+    
+    public object PhantomMembrane : Material(
+        id = 1030,
+        displayName = "Phantom Membrane",
+        identifier = Identifier("minecraft:phantom_membrane"),
+        stackSize = 64
+    )
+    
+    public object NautilusShell : Material(
+        id = 1031,
+        displayName = "Nautilus Shell",
+        identifier = Identifier("minecraft:nautilus_shell"),
+        stackSize = 64
+    )
+    
+    public object HeartOfTheSea : Material(
+        id = 1032,
+        displayName = "Heart of the Sea",
+        identifier = Identifier("minecraft:heart_of_the_sea"),
+        stackSize = 64
+    )
+    
+    public object Crossbow : Material(
+        id = 1033,
+        displayName = "Crossbow",
+        identifier = Identifier("minecraft:crossbow"),
+        stackSize = 1
+    )
+    
+    public object SuspiciousStew : Material(
+        id = 1034,
+        displayName = "Suspicious Stew",
+        identifier = Identifier("minecraft:suspicious_stew"),
+        stackSize = 1
+    )
+    
+    public object Loom : Material(
+        id = 1035,
+        displayName = "Loom",
+        identifier = Identifier("minecraft:loom"),
+        stackSize = 64
+    )
+    
+    public object FlowerBannerPattern : Material(
+        id = 1036,
+        displayName = "Banner Pattern",
+        identifier = Identifier("minecraft:flower_banner_pattern"),
+        stackSize = 1
+    )
+    
+    public object CreeperBannerPattern : Material(
+        id = 1037,
+        displayName = "Banner Pattern",
+        identifier = Identifier("minecraft:creeper_banner_pattern"),
+        stackSize = 1
+    )
+    
+    public object SkullBannerPattern : Material(
+        id = 1038,
+        displayName = "Banner Pattern",
+        identifier = Identifier("minecraft:skull_banner_pattern"),
+        stackSize = 1
+    )
+    
+    public object MojangBannerPattern : Material(
+        id = 1039,
+        displayName = "Banner Pattern",
+        identifier = Identifier("minecraft:mojang_banner_pattern"),
+        stackSize = 1
+    )
+    
+    public object GlobeBannerPattern : Material(
+        id = 1040,
+        displayName = "Banner Pattern",
+        identifier = Identifier("minecraft:globe_banner_pattern"),
+        stackSize = 1
+    )
+    
+    public object PiglinBannerPattern : Material(
+        id = 1041,
+        displayName = "Banner Pattern",
+        identifier = Identifier("minecraft:piglin_banner_pattern"),
+        stackSize = 1
+    )
+    
+    public object Composter : Material(
+        id = 1042,
+        displayName = "Composter",
+        identifier = Identifier("minecraft:composter"),
+        stackSize = 64
+    )
+    
+    public object Barrel : Material(
+        id = 1043,
+        displayName = "Barrel",
+        identifier = Identifier("minecraft:barrel"),
+        stackSize = 64
+    )
+    
+    public object Smoker : Material(
+        id = 1044,
+        displayName = "Smoker",
+        identifier = Identifier("minecraft:smoker"),
+        stackSize = 64
+    )
+    
+    public object BlastFurnace : Material(
+        id = 1045,
+        displayName = "Blast Furnace",
+        identifier = Identifier("minecraft:blast_furnace"),
+        stackSize = 64
+    )
+    
+    public object CartographyTable : Material(
+        id = 1046,
+        displayName = "Cartography Table",
+        identifier = Identifier("minecraft:cartography_table"),
+        stackSize = 64
+    )
+    
+    public object FletchingTable : Material(
+        id = 1047,
+        displayName = "Fletching Table",
+        identifier = Identifier("minecraft:fletching_table"),
+        stackSize = 64
+    )
+    
+    public object Grindstone : Material(
+        id = 1048,
+        displayName = "Grindstone",
+        identifier = Identifier("minecraft:grindstone"),
+        stackSize = 64
+    )
+    
+    public object SmithingTable : Material(
+        id = 1049,
+        displayName = "Smithing Table",
+        identifier = Identifier("minecraft:smithing_table"),
+        stackSize = 64
+    )
+    
+    public object Stonecutter : Material(
+        id = 1050,
+        displayName = "Stonecutter",
+        identifier = Identifier("minecraft:stonecutter"),
+        stackSize = 64
+    )
+    
+    public object Bell : Material(
+        id = 1051,
+        displayName = "Bell",
+        identifier = Identifier("minecraft:bell"),
+        stackSize = 64
+    )
+    
+    public object Lantern : Material(
+        id = 1052,
+        displayName = "Lantern",
+        identifier = Identifier("minecraft:lantern"),
+        stackSize = 64
+    )
+    
+    public object SoulLantern : Material(
+        id = 1053,
+        displayName = "Soul Lantern",
+        identifier = Identifier("minecraft:soul_lantern"),
+        stackSize = 64
+    )
+    
+    public object SweetBerries : Material(
+        id = 1054,
+        displayName = "Sweet Berries",
+        identifier = Identifier("minecraft:sweet_berries"),
+        stackSize = 64
+    )
+    
+    public object GlowBerries : Material(
+        id = 1055,
+        displayName = "Glow Berries",
+        identifier = Identifier("minecraft:glow_berries"),
+        stackSize = 64
+    )
+    
+    public object Campfire : Material(
+        id = 1056,
+        displayName = "Campfire",
+        identifier = Identifier("minecraft:campfire"),
+        stackSize = 64
+    )
+    
+    public object SoulCampfire : Material(
+        id = 1057,
+        displayName = "Soul Campfire",
+        identifier = Identifier("minecraft:soul_campfire"),
+        stackSize = 64
+    )
+    
+    public object Shroomlight : Material(
+        id = 1058,
+        displayName = "Shroomlight",
+        identifier = Identifier("minecraft:shroomlight"),
+        stackSize = 64
+    )
+    
+    public object Honeycomb : Material(
+        id = 1059,
+        displayName = "Honeycomb",
+        identifier = Identifier("minecraft:honeycomb"),
+        stackSize = 64
+    )
+    
+    public object BeeNest : Material(
+        id = 1060,
+        displayName = "Bee Nest",
+        identifier = Identifier("minecraft:bee_nest"),
+        stackSize = 64
+    )
+    
+    public object Beehive : Material(
+        id = 1061,
+        displayName = "Beehive",
+        identifier = Identifier("minecraft:beehive"),
+        stackSize = 64
+    )
+    
+    public object HoneyBottle : Material(
+        id = 1062,
+        displayName = "Honey Bottle",
+        identifier = Identifier("minecraft:honey_bottle"),
+        stackSize = 16
+    )
+    
+    public object HoneycombBlock : Material(
+        id = 1063,
+        displayName = "Honeycomb Block",
+        identifier = Identifier("minecraft:honeycomb_block"),
+        stackSize = 64
+    )
+    
+    public object Lodestone : Material(
+        id = 1064,
+        displayName = "Lodestone",
+        identifier = Identifier("minecraft:lodestone"),
+        stackSize = 64
+    )
+    
+    public object CryingObsidian : Material(
+        id = 1065,
+        displayName = "Crying Obsidian",
+        identifier = Identifier("minecraft:crying_obsidian"),
+        stackSize = 64
+    )
+    
+    public object Blackstone : Material(
+        id = 1066,
+        displayName = "Blackstone",
+        identifier = Identifier("minecraft:blackstone"),
+        stackSize = 64
+    )
+    
+    public object BlackstoneSlab : Material(
+        id = 1067,
+        displayName = "Blackstone Slab",
+        identifier = Identifier("minecraft:blackstone_slab"),
+        stackSize = 64
+    )
+    
+    public object BlackstoneStairs : Material(
+        id = 1068,
+        displayName = "Blackstone Stairs",
+        identifier = Identifier("minecraft:blackstone_stairs"),
+        stackSize = 64
+    )
+    
+    public object GildedBlackstone : Material(
+        id = 1069,
+        displayName = "Gilded Blackstone",
+        identifier = Identifier("minecraft:gilded_blackstone"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstone : Material(
+        id = 1070,
+        displayName = "Polished Blackstone",
+        identifier = Identifier("minecraft:polished_blackstone"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstoneSlab : Material(
+        id = 1071,
+        displayName = "Polished Blackstone Slab",
+        identifier = Identifier("minecraft:polished_blackstone_slab"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstoneStairs : Material(
+        id = 1072,
+        displayName = "Polished Blackstone Stairs",
+        identifier = Identifier("minecraft:polished_blackstone_stairs"),
+        stackSize = 64
+    )
+    
+    public object ChiseledPolishedBlackstone : Material(
+        id = 1073,
+        displayName = "Chiseled Polished Blackstone",
+        identifier = Identifier("minecraft:chiseled_polished_blackstone"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstoneBricks : Material(
+        id = 1074,
+        displayName = "Polished Blackstone Bricks",
+        identifier = Identifier("minecraft:polished_blackstone_bricks"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstoneBrickSlab : Material(
+        id = 1075,
+        displayName = "Polished Blackstone Brick Slab",
+        identifier = Identifier("minecraft:polished_blackstone_brick_slab"),
+        stackSize = 64
+    )
+    
+    public object PolishedBlackstoneBrickStairs : Material(
+        id = 1076,
+        displayName = "Polished Blackstone Brick Stairs",
+        identifier = Identifier("minecraft:polished_blackstone_brick_stairs"),
+        stackSize = 64
+    )
+    
+    public object CrackedPolishedBlackstoneBricks : Material(
+        id = 1077,
+        displayName = "Cracked Polished Blackstone Bricks",
+        identifier = Identifier("minecraft:cracked_polished_blackstone_bricks"),
+        stackSize = 64
+    )
+    
+    public object RespawnAnchor : Material(
+        id = 1078,
+        displayName = "Respawn Anchor",
+        identifier = Identifier("minecraft:respawn_anchor"),
+        stackSize = 64
+    )
+    
+    public object Candle : Material(
+        id = 1079,
+        displayName = "Candle",
+        identifier = Identifier("minecraft:candle"),
+        stackSize = 64
+    )
+    
+    public object WhiteCandle : Material(
+        id = 1080,
+        displayName = "White Candle",
+        identifier = Identifier("minecraft:white_candle"),
+        stackSize = 64
+    )
+    
+    public object OrangeCandle : Material(
+        id = 1081,
+        displayName = "Orange Candle",
+        identifier = Identifier("minecraft:orange_candle"),
+        stackSize = 64
+    )
+    
+    public object MagentaCandle : Material(
+        id = 1082,
+        displayName = "Magenta Candle",
+        identifier = Identifier("minecraft:magenta_candle"),
+        stackSize = 64
+    )
+    
+    public object LightBlueCandle : Material(
+        id = 1083,
+        displayName = "Light Blue Candle",
+        identifier = Identifier("minecraft:light_blue_candle"),
+        stackSize = 64
+    )
+    
+    public object YellowCandle : Material(
+        id = 1084,
+        displayName = "Yellow Candle",
+        identifier = Identifier("minecraft:yellow_candle"),
+        stackSize = 64
+    )
+    
+    public object LimeCandle : Material(
+        id = 1085,
+        displayName = "Lime Candle",
+        identifier = Identifier("minecraft:lime_candle"),
+        stackSize = 64
+    )
+    
+    public object PinkCandle : Material(
+        id = 1086,
+        displayName = "Pink Candle",
+        identifier = Identifier("minecraft:pink_candle"),
+        stackSize = 64
+    )
+    
+    public object GrayCandle : Material(
+        id = 1087,
+        displayName = "Gray Candle",
+        identifier = Identifier("minecraft:gray_candle"),
+        stackSize = 64
+    )
+    
+    public object LightGrayCandle : Material(
+        id = 1088,
+        displayName = "Light Gray Candle",
+        identifier = Identifier("minecraft:light_gray_candle"),
+        stackSize = 64
+    )
+    
+    public object CyanCandle : Material(
+        id = 1089,
+        displayName = "Cyan Candle",
+        identifier = Identifier("minecraft:cyan_candle"),
+        stackSize = 64
+    )
+    
+    public object PurpleCandle : Material(
+        id = 1090,
+        displayName = "Purple Candle",
+        identifier = Identifier("minecraft:purple_candle"),
+        stackSize = 64
+    )
+    
+    public object BlueCandle : Material(
+        id = 1091,
+        displayName = "Blue Candle",
+        identifier = Identifier("minecraft:blue_candle"),
+        stackSize = 64
+    )
+    
+    public object BrownCandle : Material(
+        id = 1092,
+        displayName = "Brown Candle",
+        identifier = Identifier("minecraft:brown_candle"),
+        stackSize = 64
+    )
+    
+    public object GreenCandle : Material(
+        id = 1093,
+        displayName = "Green Candle",
+        identifier = Identifier("minecraft:green_candle"),
+        stackSize = 64
+    )
+    
+    public object RedCandle : Material(
+        id = 1094,
+        displayName = "Red Candle",
+        identifier = Identifier("minecraft:red_candle"),
+        stackSize = 64
+    )
+    
+    public object BlackCandle : Material(
+        id = 1095,
+        displayName = "Black Candle",
+        identifier = Identifier("minecraft:black_candle"),
+        stackSize = 64
+    )
+    
+    public object SmallAmethystBud : Material(
+        id = 1096,
+        displayName = "Small Amethyst Bud",
+        identifier = Identifier("minecraft:small_amethyst_bud"),
+        stackSize = 64
+    )
+    
+    public object MediumAmethystBud : Material(
+        id = 1097,
+        displayName = "Medium Amethyst Bud",
+        identifier = Identifier("minecraft:medium_amethyst_bud"),
+        stackSize = 64
+    )
+    
+    public object LargeAmethystBud : Material(
+        id = 1098,
+        displayName = "Large Amethyst Bud",
+        identifier = Identifier("minecraft:large_amethyst_bud"),
+        stackSize = 64
+    )
+    
+    public object AmethystCluster : Material(
+        id = 1099,
+        displayName = "Amethyst Cluster",
+        identifier = Identifier("minecraft:amethyst_cluster"),
+        stackSize = 64
+    )
+    
+    public object PointedDripstone : Material(
+        id = 1100,
+        displayName = "Pointed Dripstone",
+        identifier = Identifier("minecraft:pointed_dripstone"),
+        stackSize = 64
+    )
+    
 }
 
 public data class MaterialVariation(val metadata: Int, val displayName: String)

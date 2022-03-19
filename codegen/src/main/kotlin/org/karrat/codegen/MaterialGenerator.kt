@@ -53,15 +53,17 @@ fun generateMaterialClass() {
                     materialRegistry += material
                 }
     
-                init {             
+                internal fun registerMaterials() {         
         """.trimIndent()
         elements.forEach {
             val name = it.jsonObject["name"]!!.jsonPrimitive.content
             val nameParts = name.split('_')
-            val formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
+            var formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
+            if (formattedName == "Netherbrick") formattedName = "NetherBrickIngot"
             + "            register($formattedName)"
         }
         + "        }"
+        + ""
         + "    }"
         + ""
 
@@ -70,10 +72,12 @@ fun generateMaterialClass() {
             val displayName = it.jsonObject["displayName"]!!.jsonPrimitive.content
             val stackSize = it.jsonObject["stackSize"]!!.jsonPrimitive.content
 
+
+
             val name = it.jsonObject["name"]!!.jsonPrimitive.content
             val nameParts = name.split('_')
-            val formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
-
+            var formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
+            if (formattedName == "Netherbrick") formattedName = "NetherBrickIngot"
             indent {
                 + "public object ${formattedName.replace(" ", "")} : Material("
                 indent {

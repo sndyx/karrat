@@ -55,7 +55,7 @@ public abstract class Dimension(
         
         public val dimensions: List<Dimension> get() = dimensionRegistry
         
-        init {
+        internal fun registerDimensions() {
             register(Overworld)
             register(OverworldCaves)
             register(Nether)

@@ -53,7 +53,7 @@ fun generateBiomeClass() {
                     biomeRegistry += biome
                 }
 
-                init {             
+                internal fun registerBiomes() {             
         """.trimIndent()
         elements.forEach {
             val id = it.jsonObject["name"]!!.jsonPrimitive.content

@@ -11,7 +11,10 @@ import kotlinx.coroutines.runBlocking
 import org.karrat.entity.Player
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
+import org.karrat.play.Material
 import org.karrat.server.FormattedPrintStream
+import org.karrat.world.Biome
+import org.karrat.world.Dimension
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
@@ -48,6 +51,15 @@ public object Server {
         socket.bind(InetSocketAddress(InetAddress.getLocalHost(), port))
         socket.configureBlocking(true)
         println("Bound to ip ${socket.localAddress} on port $port.")
+        measureTimeMillis {
+            Biome.registerBiomes()
+        }.let { println("Loaded ${Biome.biomes.size} biomes in ${it}ms.") }
+        measureTimeMillis {
+            Material.registerMaterials()
+        }.let { println("Loaded ${Material.materials.size} materials in ${it}ms.") }
+        measureTimeMillis {
+            Dimension.registerDimensions()
+        }.let { println("Loaded ${Dimension.dimensions.size} dimensions in ${it}ms.") }
         thread(name = "socket") {
             while (true) {
                 val session = Session(SocketChannel(socket.accept()))

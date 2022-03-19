@@ -39,7 +39,7 @@ public abstract class Biome(
             biomeRegistry += biome
         }
 
-        init {             
+        internal fun registerBiomes() {             
             register(TheVoid)
             register(Plains)
             register(SunflowerPlains)
