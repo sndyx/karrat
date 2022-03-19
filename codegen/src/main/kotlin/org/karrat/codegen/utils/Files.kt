@@ -70,7 +70,7 @@ open class FileScope(path: String) {
     fun build(): String {
         val result = StringBuilder()
         result.append("/*\n")
-        result.append(" * Copyright © Karrat - 2021.\n")
+        result.append(" * Copyright © Karrat - 2022.\n")
         result.append(" */\n\n")
         result.append("package ").append(pkg).append("\n\n")
         imports.forEach {

@@ -19,16 +19,51 @@ fun generateMaterialClass() {
         generator("MaterialGenerator.kt")
         source("materials.json")
 
-        import("kotlinx.serialization.Serializable")
         import("org.karrat.struct.Identifier")
-        import("org.karrat.struct.id")
 
         + """
-        @Serializable
-        public class Material(public val id: Int, public val displayName: String, public val identifier: Identifier, public val stackSize: Int) {
+        public open class Material(
+            public val id: Int, 
+            public val displayName: kotlin.String, 
+            public val identifier: Identifier, 
+            public val stackSize: Int
+        ) {
         
+            public val variations: MutableList<MaterialVariation> = mutableListOf()
+            
             public companion object {
+
+                private val materialRegistry: MutableList<Material> = mutableListOf()
+    
+                public val materials: List<Material> get() = materialRegistry
+    
+                public fun fromIdentifier(identifier: Identifier): Material {
+                    return materialRegistry.first {
+                        it.identifier == identifier
+                    }
+                }
+                
+                public fun fromId(id: Int): Material {
+                    return materialRegistry.first {
+                        it.id == id
+                    }
+                }
+    
+                public fun register(material: Material) {
+                    materialRegistry += material
+                }
+    
+                init {             
         """.trimIndent()
+        elements.forEach {
+            val name = it.jsonObject["name"]!!.jsonPrimitive.content
+            val nameParts = name.split('_')
+            val formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
+            + "            register($formattedName)"
+        }
+        + "        }"
+        + "    }"
+        + ""
 
         elements.forEach {
             val id = it.jsonObject["id"]!!.jsonPrimitive.content
@@ -38,12 +73,42 @@ fun generateMaterialClass() {
             val name = it.jsonObject["name"]!!.jsonPrimitive.content
             val nameParts = name.split('_')
             val formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
-            + "        public val $formattedName: Material = Material($id, \"$displayName\", id(\"minecraft:$name\"), $stackSize)"
-        }
 
-        + """
+            indent {
+                + "public object ${formattedName.replace(" ", "")} : Material("
+                indent {
+                    + "id = $id,"
+                    + "displayName = \"$displayName\","
+                    + "identifier = Identifier(\"minecraft:$name\"),"
+                    + "stackSize = $stackSize"
+                }
+
+                val variations = it.jsonObject["variations"]?.jsonArray
+
+                if (variations != null) {
+                    + ") {"
+                    indent {
+                        + "init {"
+                        variations.forEach { variation ->
+                            val metadata = variation.jsonObject["metadata"]!!.jsonPrimitive.content
+                            val variationName = variation.jsonObject["displayName"]!!.jsonPrimitive.content
+
+                            + "    variations.add(MaterialVariation($metadata, \"$variationName\"))"
+                        }
+                        + "}"
+
+                    }
+                    + "}"
+                } else {
+                    + ")"
+                }
+                + ""
             }
-        }        
+        }
+        + """
+        }
+        
+        public data class MaterialVariation(val metadata: Int, val displayName: kotlin.String)
         """.trimIndent()
     }
 }
