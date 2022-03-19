@@ -4,3 +4,4 @@
 .gradle/*
 .DS_STORE
 /server/out
+/codegen/out

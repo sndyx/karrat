@@ -7,7 +7,6 @@ import org.karrat.codegen.utils.*
 
 @OptIn(ExperimentalSerializationApi::class)
 fun generateBiomeClass() {
-
     val file = Thread.currentThread().contextClassLoader.getResourceAsStream("dimension_codec.json")!!
     val json = Json.decodeFromString<JsonObject>(file.readAllBytes().decodeToString())
     val elements = json["minecraft:worldgen/biome"]!!.jsonObject["value"]!!.jsonArray
@@ -19,9 +18,8 @@ fun generateBiomeClass() {
 
         generator("BiomeGenerator.kt")
         source("dimension_codec.json")
+        credit("wiki.vg")
 
-        pkg("org.karrat.world")
-        
         import("org.karrat.struct.Identifier")
 
         + """
