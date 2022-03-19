@@ -71,8 +71,6 @@ fun generateMaterialClass() {
             val displayName = it.jsonObject["displayName"]!!.jsonPrimitive.content
             val stackSize = it.jsonObject["stackSize"]!!.jsonPrimitive.content
 
-
-
             val name = it.jsonObject["name"]!!.jsonPrimitive.content
             val nameParts = name.split('_')
             val formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
