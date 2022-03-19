@@ -10,13 +10,14 @@ fun file(path: String, block: FileScope.() -> Unit) {
     val scope = FileScope()
     scope.block()
     val content = scope.build()
-    val file = Path("../$path")
-    println(file.absolutePathString())
-    if (file.exists()) {
-        if (file.readText() == content) {
-            return
-        }
+    val file = Path("./$path")
+    if (file.exists() && file.readText() == content) {
+        println("${file.absolutePathString()} did not change on code generation")
+        return
     }
+
+    println("Generated ${file.absolutePathString()} through on code generation")
+
     file.writeText(content)
 }
 

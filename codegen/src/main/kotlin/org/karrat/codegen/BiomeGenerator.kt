@@ -57,26 +57,19 @@ fun generateBiomeClass() {
         elements.forEach {
             val id = it.jsonObject["name"]!!.jsonPrimitive.content
             val nameParts = id.split(':')[1].split('_')
-            var formattedName = ""
-            nameParts.forEach { part ->
-                formattedName += part.replaceFirstChar { char -> char.uppercaseChar() }
-            }
+            val formattedName = nameParts.joinToString("") { s -> s.replaceFirstChar { c -> c.uppercaseChar() } }
             + "            register($formattedName)"
         }
         + "        }"
         + "    }"
         + ""
         indent {
-
             elements.forEach {
                 val id = it.jsonObject["name"]!!.jsonPrimitive.content
                 val idNumber = it.jsonObject["id"]!!.jsonPrimitive.int
                 val element = it.jsonObject["element"]!!.jsonObject
 
-                var category = ""
-                element["category"]!!.jsonPrimitive.content.split("_").forEach { part ->
-                    category += part.replaceFirstChar { char -> char.uppercaseChar() }
-                }
+                val category = element["category"]!!.jsonPrimitive.content.split("_").joinToString("") { part -> part.replaceFirstChar { char -> char.uppercaseChar() } }
                 biomeCategories.add(category)
 
                 val downfall = element["downfall"]!!.jsonPrimitive.float
@@ -96,11 +89,8 @@ fun generateBiomeClass() {
                 val temperature = element["temperature"]!!.jsonPrimitive.float
 
                 val nameParts = id.split(':')[1].split('_')
-                var formattedName = ""
-                nameParts.forEach { part ->
-                    formattedName += part.replaceFirstChar { char -> char.uppercaseChar() } + " "
-                }
-                formattedName = formattedName.dropLast(1)
+                val formattedName =
+                    nameParts.joinToString(" ") { part -> part.replaceFirstChar { char -> char.uppercaseChar() } }
 
                 + "public object ${formattedName.replace(" ", "")} : Biome("
                 indent {

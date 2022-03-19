@@ -6,4 +6,5 @@ package org.karrat.codegen
 
 fun main() {
     generateBiomeClass()
+    generateMaterialClass()
 }
