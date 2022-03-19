@@ -8,16 +8,17 @@ import org.karrat.internal.NioByteBuffer
 import org.karrat.internal.NioSocketChannel
 import org.karrat.struct.ByteBuffer
 import org.karrat.struct.array
+import org.karrat.struct.byteBufferOf
 import org.karrat.struct.toByteBuffer
 import java.io.Closeable
 import java.net.SocketAddress
 
-public class SocketChannel(private val socket: NioSocketChannel) : Closeable {
+public sealed class SocketChannel(private val socket: NioSocketChannel) : Closeable {
 
     public val remoteAddress: SocketAddress get() = socket.remoteAddress
     public val isOpen: Boolean get() = socket.isOpen
 
-    public fun read(): ByteBuffer {
+    public open fun read(): ByteBuffer {
         val buffer = NioByteBuffer.allocate(1024)
         socket.read(buffer)
         return buffer
@@ -26,7 +27,7 @@ public class SocketChannel(private val socket: NioSocketChannel) : Closeable {
             .toByteBuffer()
     }
 
-    public fun write(src: ByteBuffer) {
+    public open fun write(src: ByteBuffer) {
         val buffer = NioByteBuffer.allocate(src.size)
         buffer.put(src.array())
         buffer.flip()
@@ -35,6 +36,16 @@ public class SocketChannel(private val socket: NioSocketChannel) : Closeable {
 
     public override fun close() {
         socket.close()
+    }
+
+    public object Dummy : SocketChannel(NioSocketChannel.open()) {
+
+        override fun read(): ByteBuffer {
+            return byteBufferOf()
+        }
+
+        override fun write(src: ByteBuffer) { /* Ignore */ }
+
     }
 
 }

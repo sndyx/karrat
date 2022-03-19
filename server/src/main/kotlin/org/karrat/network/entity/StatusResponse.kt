@@ -7,9 +7,8 @@ package org.karrat.network.entity
 import kotlinx.serialization.json.*
 import org.karrat.Config
 import org.karrat.Server
-import org.karrat.entity.FakePlayer
+import org.karrat.entity.DummyPlayer
 import org.karrat.entity.Player
-import org.karrat.struct.ChatComponent
 import org.karrat.struct.TextComponent
 import org.karrat.struct.Uuid
 import java.util.*
@@ -36,7 +35,7 @@ public open class StatusResponse(
             756,
             1,
             Server.players.size,
-            listOf(FakePlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
+            listOf(DummyPlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
             TextComponent(Config.motd),
             StatusResponse::class.java.getResource("/icon.png")?.readBytes()
         )
