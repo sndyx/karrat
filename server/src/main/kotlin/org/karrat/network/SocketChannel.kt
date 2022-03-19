@@ -13,7 +13,7 @@ import org.karrat.struct.toByteBuffer
 import java.io.Closeable
 import java.net.SocketAddress
 
-public sealed class SocketChannel(private val socket: NioSocketChannel) : Closeable {
+public open class SocketChannel(private val socket: NioSocketChannel) : Closeable {
 
     public val remoteAddress: SocketAddress get() = socket.remoteAddress
     public val isOpen: Boolean get() = socket.isOpen
