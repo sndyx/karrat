@@ -84,26 +84,7 @@ fun generateMaterialClass() {
                     + "identifier = Identifier(\"minecraft:$name\"),"
                     + "stackSize = $stackSize"
                 }
-
-                val variations = it.jsonObject["variations"]?.jsonArray
-
-                if (variations != null) {
-                    + ") {"
-                    indent {
-                        + "init {"
-                        variations.forEach { variation ->
-                            val metadata = variation.jsonObject["metadata"]!!.jsonPrimitive.content
-                            val variationName = variation.jsonObject["displayName"]!!.jsonPrimitive.content
-
-                            + "    variations.add(MaterialVariation($metadata, \"$variationName\"))"
-                        }
-                        + "}"
-
-                    }
-                    + "}"
-                } else {
-                    + ")"
-                }
+                + ")"
                 + ""
             }
         }
