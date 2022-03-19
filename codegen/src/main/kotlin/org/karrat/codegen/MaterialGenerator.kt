@@ -108,7 +108,7 @@ fun generateMaterialClass() {
         + """
         }
         
-        public data class MaterialVariation(val metadata: Int, val displayName: kotlin.String)
+        public data class MaterialVariation(val metadata: Int, val displayName: String)
         """.trimIndent()
     }
 }
