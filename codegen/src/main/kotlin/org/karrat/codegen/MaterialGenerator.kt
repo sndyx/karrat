@@ -28,6 +28,8 @@ fun generateMaterialClass() {
             public val identifier: Identifier, 
             public val stackSize: Int
         ) {
+        
+            public val variations: MutableList<MaterialVariation> = mutableListOf()
             
             public companion object {
 
@@ -80,10 +82,33 @@ fun generateMaterialClass() {
                     +"identifier = Identifier(\"minecraft:$name\"),"
                     +"stackSize = $stackSize"
                 }
-                +")"
+
+                val variations = it.jsonObject["variations"]?.jsonArray
+
+                if (variations != null) {
+                    +") {"
+                    indent {
+                        +"init {"
+                        variations.forEach { variation ->
+                            val metadata = variation.jsonObject["metadata"]!!.jsonPrimitive.content
+                            val variationName = variation.jsonObject["displayName"]!!.jsonPrimitive.content
+
+                            +"    variations.add(MaterialVariation($metadata, \"$variationName\"))"
+                        }
+                        + "}"
+
+                    }
+                    +"}"
+                } else {
+                    + ")"
+                }
                 + ""
             }
         }
-        + "}"
+        +"""
+        }
+        
+        public data class MaterialVariation(val metadata: Int, val displayName: kotlin.String)
+        """.trimIndent()
     }
 }
