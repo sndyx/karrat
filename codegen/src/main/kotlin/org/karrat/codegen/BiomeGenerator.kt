@@ -18,7 +18,6 @@ fun generateBiomeClass() {
 
         generator("BiomeGenerator.kt")
         source("dimension_codec.json")
-        credit("wiki.vg")
 
         import("org.karrat.struct.Identifier")
 

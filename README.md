@@ -20,6 +20,9 @@ It is a quick, open-source Minecraft server implementation developed by
     - [Gradle](#gradle)
     - [Maven](#maven-not-recommended)
   - [Documentation](#documentation)
+- [Credits](#credits)
+- [License](#license)
+- [Contributing](#contributing)
 
 <!--- END -->
 
@@ -87,6 +90,15 @@ To set up your plugin development environment, simply add the artifact to your
 ## Documentation
 
 Documentation can be found [here](/documentation/introduction.md).
+
+# Credits
+
+This project is only possible due to the hard work put in by members of
+ the Minecraft community!
+
+The following files are used in this program:
+ - *dimension_codec.json*, courtesy of *wiki.vg*.
+ - *materials.json*, courtesy of *prismarine.js*
 
 # License
 

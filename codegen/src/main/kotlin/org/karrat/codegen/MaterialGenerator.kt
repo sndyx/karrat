@@ -14,7 +14,6 @@ fun generateMaterialClass() {
 
         generator("MaterialGenerator.kt")
         source("materials.json")
-        credit("Prismarine.js")
 
         import("kotlinx.serialization.Serializable")
         import("org.karrat.struct.Identifier")

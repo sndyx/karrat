@@ -4,7 +4,6 @@
 
 package org.karrat.codegen.utils
 
-import java.io.InputStream
 import kotlin.io.path.*
 
 fun file(path: String, block: FileScope.() -> Unit) {
@@ -28,7 +27,6 @@ open class FileScope(path: String) {
 
     private var generator: String = ""
     private var source: String = ""
-    private var credit: String = ""
     private val imports: MutableList<String> = mutableListOf()
     private val content = StringBuilder()
     private var indent = 0
@@ -44,10 +42,6 @@ open class FileScope(path: String) {
 
     fun source(value: String) {
         source = value
-    }
-
-    fun credit(value: String) {
-        credit = value
     }
 
     fun import(value: String) {
@@ -94,10 +88,7 @@ open class FileScope(path: String) {
         if (source.isNotEmpty()) {
             result.append(" * from `${source}` source file.\n")
         }
-        if (credit.isNotEmpty()) {
-            result.append(" * Credits to `${credit}`.\n")
-        }
-        result.append(" * This should not be edited!\n")
+        result.append(" * DO NOT EDIT!\n")
         result.append(" */\n\n")
         result.append(content.toString())
         return result.toString()
