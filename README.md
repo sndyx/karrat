@@ -36,7 +36,7 @@ Karrat is designed to be as concise, clean, and friendly as possible. Its
 
 ### Setup
 
-Using the Karrat API requires Kotlin compiler `1.5.0` or higher.
+Using the Karrat API requires Kotlin compiler `1.6.0` or higher.
 
 ### Gradle
 
