@@ -29,8 +29,8 @@ public abstract class Biome(
 
         public val biomes: List<Biome> get() = biomeRegistry
 
-        public fun fromId(identifier: Identifier) {
-            biomeRegistry.first {
+        public fun fromIdentifier(identifier: Identifier): Biome {
+            return biomeRegistry.first {
                 it.id == identifier
             }
         }
