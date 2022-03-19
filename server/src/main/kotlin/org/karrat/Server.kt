@@ -13,6 +13,7 @@ import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.play.Material
 import org.karrat.server.FormattedPrintStream
+import org.karrat.server.ReflectionPrintStream
 import org.karrat.world.Biome
 import org.karrat.world.Dimension
 import java.net.InetAddress
@@ -44,7 +45,7 @@ public object Server {
     public fun start(port: Int) {
         System.setOut(
             if (Config.basicLogging) { FormattedPrintStream(System.out) }
-            else { FormattedPrintStream(System.out) }
+            else { ReflectionPrintStream(System.out) }
         )
         println("Server starting.")
         measureTimeMillis {
