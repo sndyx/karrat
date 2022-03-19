@@ -10,7 +10,7 @@ fun file(path: String, block: FileScope.() -> Unit) {
     val scope = FileScope(path)
     scope.block()
     val content = scope.build()
-    val file = Path("./$path")
+    val file = Path("../$path")
 
     val fileName = file.toAbsolutePath().normalize().toString()
     if (file.exists() && file.readText() == content) {
