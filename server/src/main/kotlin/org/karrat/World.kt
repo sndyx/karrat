@@ -30,7 +30,7 @@ public class World(
     /**
      * SHA-256 hashed [seed] used by the client for biome noise.
      */
-    public val hashedSeed: Long =
+    internal val hashedSeed: Long =
         hash(MutableByteBuffer(8)
             .apply { writeLong(seed) }.bytes
         ).toByteBuffer().readLong()
