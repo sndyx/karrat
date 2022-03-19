@@ -17,6 +17,9 @@ fun generateBiomeClass() {
 
     file("server/src/main/kotlin/org/karrat/world/Biome.kt") {
 
+        generator("BiomeGenerator.kt")
+        source("dimension_codec.json")
+
         pkg("org.karrat.world")
         
         import("org.karrat.struct.Identifier")

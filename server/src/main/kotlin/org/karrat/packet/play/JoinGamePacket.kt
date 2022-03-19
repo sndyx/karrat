@@ -26,6 +26,7 @@ public class JoinGamePacket(
     public val isDebug: Boolean,
     public val isFlat: Boolean
 ) : ClientboundPacket {
+
     override val id: Int = 0x26
 
     override fun write(data: DynamicByteBuffer): Unit = data.run {

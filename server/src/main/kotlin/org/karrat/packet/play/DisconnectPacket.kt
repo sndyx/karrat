@@ -17,4 +17,5 @@ public class DisconnectPacket(
 
     override fun write(data: DynamicByteBuffer): Unit =
         data.writeChatComponent(message)
+
 }

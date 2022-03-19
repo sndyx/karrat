@@ -17,7 +17,7 @@ import org.karrat.packet.status.StatusRequestPacket
 import org.karrat.packet.status.StatusResponsePacket
 import org.karrat.struct.ByteBuffer
 
-public open class NetHandlerStatus(public val session: Session) : NetHandler {
+public open class NetHandlerStatus(private val session: Session) : NetHandler {
 
     override fun read(id: Int, data: ByteBuffer): ServerboundPacket = when (id) {
         0x00 -> StatusRequestPacket

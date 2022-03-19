@@ -29,7 +29,7 @@ import javax.crypto.SecretKey
 import kotlin.concurrent.thread
 import kotlin.random.Random
 
-public open class NetHandlerLogin(public val session: Session) : NetHandler {
+public open class NetHandlerLogin(private val session: Session) : NetHandler {
 
     public var state: LoginState = LoginState.Initial
     public lateinit var username: String
@@ -92,6 +92,7 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
             val result = Server.authenticate(hash, session.address, username)
     
             result.onSuccess { response ->
+
                 state = LoginState.ReadyToAccept
         
                 if (uuid in Config.bannedPlayers) {
@@ -102,7 +103,8 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                     }
                 }
         
-                session.player = Player(uuid, username, location = Config.spawnLocation)
+                session.player = Player(session, uuid, username, location = Config.spawnLocation)
+
                 response.properties.firstOrNull { it.name == "textures" }
                     ?.let { session.player.skin = it.value }
         
@@ -112,13 +114,12 @@ public open class NetHandlerLogin(public val session: Session) : NetHandler {
                 }
         
                 session.enableCompression()
-                session.netHandler = NetHandlerPlay()
+                session.netHandler = NetHandlerPlay(session)
                 session.send(LoginSuccessPacket(uuid, username))
             }
     
             result.onFailure {
-                session.disconnect("Failed to verify username!")
-                println("Username '$username' tried to join with an invalid session")
+                session.disconnect("Failed to authenticate user.")
             }
     
         }

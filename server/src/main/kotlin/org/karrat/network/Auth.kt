@@ -4,6 +4,7 @@
 
 package org.karrat.network
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.karrat.Config
@@ -14,6 +15,7 @@ import java.net.InetAddress
 
 public open class AuthServer {
     
+    @OptIn(ExperimentalSerializationApi::class)
     public open fun authenticate(serverHash: ByteArray, ip: InetAddress, username: String): Result<SessionServerResponse> {
         val result = request(
             "${Config.sessionServer}/session/minecraft/hasJoined",
