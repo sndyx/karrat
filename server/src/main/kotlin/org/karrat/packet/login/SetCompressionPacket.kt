@@ -1,3 +1,7 @@
+/*
+ * Copyright © Karrat - 2022.
+ */
+
 package org.karrat.packet.login
 
 import org.karrat.packet.ClientboundPacket

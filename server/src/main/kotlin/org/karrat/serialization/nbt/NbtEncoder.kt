@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2021.
+ * Copyright © Karrat - 2022.
  */
 @file:OptIn(ExperimentalSerializationApi::class)
 

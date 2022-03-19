@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+#
+# Copyright © Karrat - 2022.
+#
+
 ##############################################################################
 ##
 ##  Gradle start up script for UN*X

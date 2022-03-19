@@ -1,3 +1,7 @@
+/*
+ * Copyright © Karrat - 2022.
+ */
+
 plugins {
     kotlin("jvm")
 }

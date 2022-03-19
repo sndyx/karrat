@@ -1,6 +1,8 @@
 <component name="CopyrightManager">
   <copyright>
-    <option name="notice" value="Copyright © Karrat - 2021." />
+    <option name="allowReplaceRegexp" value="Copyright © Karrat - 2021." />
+    <option name="keyword" value="Copyright © Karrat -" />
+    <option name="notice" value="Copyright © Karrat - 2022." />
     <option name="myName" value="Simple" />
   </copyright>
 </component>

@@ -1,3 +1,7 @@
+/*
+ * Copyright © Karrat - 2022.
+ */
+
 package org.karrat.codegen
 
 import kotlinx.serialization.ExperimentalSerializationApi
