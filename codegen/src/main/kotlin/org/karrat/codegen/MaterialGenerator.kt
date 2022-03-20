@@ -86,10 +86,6 @@ fun generateMaterialClass() {
                 + ""
             }
         }
-        + """
-        }
-        
-        public data class MaterialVariation(val metadata: Int, val displayName: String)
-        """.trimIndent()
+        + "}"
     }
 }
