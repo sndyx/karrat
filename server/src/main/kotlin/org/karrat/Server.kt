@@ -8,6 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.karrat.command.Command
 import org.karrat.entity.Player
 import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
@@ -28,6 +29,7 @@ import kotlin.system.measureTimeMillis
 public object Server {
     
     public var worlds: MutableList<World> = mutableListOf()
+    public var commands: MutableList<Command> = mutableListOf()
     public val players: Set<Player>
         get() {
             val result: MutableSet<Player> = mutableSetOf()
@@ -103,14 +105,17 @@ public object Server {
 
     private fun loadResources() {
         measureTimeMillis {
-            Biome.registerBiomes()
-        }.let { println("Loaded ${Biome.biomes.size} biomes in ${it}ms.") }
+            Biome.load()
+        }.let { println("Loaded ${Biome.list.size} biomes in ${it}ms.") }
         measureTimeMillis {
-            Material.registerMaterials()
-        }.let { println("Loaded ${Material.materials.size} materials in ${it}ms.") }
+            Command.load()
+        }.let { println("Loaded ${Command.list.size} commands in ${it}ms.") }
         measureTimeMillis {
-            Dimension.registerDimensions()
-        }.let { println("Loaded ${Dimension.dimensions.size} dimensions in ${it}ms.") }
+            Dimension.load()
+        }.let { println("Loaded ${Dimension.list.size} dimensions in ${it}ms.") }
+        measureTimeMillis {
+            Material.load()
+        }.let { println("Loaded ${Material.list.size} materials in ${it}ms.") }
     }
 
 }

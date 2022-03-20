@@ -19,6 +19,7 @@ fun generateMaterialClass() {
         generator("MaterialGenerator.kt")
         source("materials.json")
 
+        import("org.karrat.server.Loadable")
         import("org.karrat.struct.Identifier")
 
         + """
@@ -28,32 +29,32 @@ fun generateMaterialClass() {
             public val identifier: Identifier, 
             public val stackSize: Int
         ) {
-        
-            public val variations: MutableList<MaterialVariation> = mutableListOf()
-            
-            public companion object {
+                    
+            public companion object : Loadable<Material> {
 
-                private val materialRegistry: MutableList<Material> = mutableListOf()
-    
-                public val materials: List<Material> get() = materialRegistry
-    
+                override val list: MutableSet<Material> = mutableSetOf()
+        
                 public fun fromIdentifier(identifier: Identifier): Material {
-                    return materialRegistry.first {
+                    return list.first {
                         it.identifier == identifier
                     }
                 }
                 
                 public fun fromId(id: Int): Material {
-                    return materialRegistry.first {
+                    return list.first {
                         it.id == id
                     }
                 }
     
-                public fun register(material: Material) {
-                    materialRegistry += material
+                override fun register(material: Material) {
+                    list.add(material)
+                }
+                
+                override fun unregister(value: Material) {
+                    list.remove(value)
                 }
     
-                internal fun registerMaterials() {         
+                override fun load() {         
         """.trimIndent()
         elements.forEach {
             val name = it.jsonObject["name"]!!.jsonPrimitive.content

@@ -6,6 +6,7 @@ package org.karrat.world
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Transient
+import org.karrat.server.Loadable
 import org.karrat.struct.Identifier
 import org.karrat.struct.id
 
@@ -43,25 +44,27 @@ public abstract class Dimension(
     @Transient
     public abstract val id: Int
     
-    public companion object {
-        
-        public fun fromId(id: Int): Dimension = dimensions.first { it.id == id }
-        
-        public fun register(dimension: Dimension) {
-            dimensionRegistry.add(dimension)
+    public companion object : Loadable<Dimension> {
+
+        override val list: MutableSet<Dimension> = mutableSetOf()
+
+        public fun fromId(id: Int): Dimension = list.first { it.id == id }
+
+        override fun register(value: Dimension) {
+            list.add(value)
         }
-        
-        private val dimensionRegistry: MutableList<Dimension> = mutableListOf()
-        
-        public val dimensions: List<Dimension> get() = dimensionRegistry
-        
-        internal fun registerDimensions() {
+
+        override fun unregister(value: Dimension) {
+            list.remove(value)
+        }
+
+        override fun load() {
             register(Overworld)
             register(OverworldCaves)
             register(Nether)
             register(End)
         }
-        
+
     }
     
     public object Overworld : Dimension(

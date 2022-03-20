@@ -4,6 +4,7 @@
 
 package org.karrat.play
 
+import org.karrat.server.Loadable
 import org.karrat.struct.Identifier
 
 /*
@@ -18,32 +19,32 @@ public open class Material(
     public val identifier: Identifier, 
     public val stackSize: Int
 ) {
+            
+    public companion object : Loadable<Material> {
 
-    public val variations: MutableList<MaterialVariation> = mutableListOf()
-    
-    public companion object {
-
-        private val materialRegistry: MutableList<Material> = mutableListOf()
-
-        public val materials: List<Material> get() = materialRegistry
+        override val list: MutableSet<Material> = mutableSetOf()
 
         public fun fromIdentifier(identifier: Identifier): Material {
-            return materialRegistry.first {
+            return list.first {
                 it.identifier == identifier
             }
         }
         
         public fun fromId(id: Int): Material {
-            return materialRegistry.first {
+            return list.first {
                 it.id == id
             }
         }
 
-        public fun register(material: Material) {
-            materialRegistry += material
+        override fun register(material: Material) {
+            list.add(material)
+        }
+        
+        override fun unregister(value: Material) {
+            list.remove(value)
         }
 
-        internal fun registerMaterials() {         
+        override fun load() {         
             register(Stone)
             register(Granite)
             register(PolishedGranite)
@@ -8849,5 +8850,3 @@ public open class Material(
     )
     
 }
-
-public data class MaterialVariation(val metadata: Int, val displayName: String)

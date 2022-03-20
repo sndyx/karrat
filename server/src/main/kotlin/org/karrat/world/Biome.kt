@@ -4,6 +4,7 @@
 
 package org.karrat.world
 
+import org.karrat.server.Loadable
 import org.karrat.struct.Identifier
 
 /*
@@ -23,23 +24,25 @@ public abstract class Biome(
     public val name: String
 ) {
     
-    public companion object {
+    public companion object : Loadable<Biome> {
 
-        private val biomeRegistry: MutableList<Biome> = mutableListOf()
-
-        public val biomes: List<Biome> get() = biomeRegistry
+        override val list: MutableSet<Biome> = mutableSetOf()
 
         public fun fromIdentifier(identifier: Identifier): Biome {
-            return biomeRegistry.first {
+            return list.first {
                 it.id == identifier
             }
         }
 
-        public fun register(biome: Biome) {
-            biomeRegistry += biome
+        override fun register(value: Biome) {
+            list.add(value)
         }
 
-        internal fun registerBiomes() {             
+        override fun unregister(value: Biome) {
+            list.remove(value)
+        }
+
+        override fun load() {             
             register(TheVoid)
             register(Plains)
             register(SunflowerPlains)

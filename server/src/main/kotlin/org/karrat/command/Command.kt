@@ -7,47 +7,51 @@ package org.karrat.command
 import org.karrat.Config
 import org.karrat.entity.Player
 import org.karrat.play.stripColor
+import org.karrat.server.Loadable
 import kotlin.reflect.KClass
 
-public inline fun command(literal: String, structure: Command.() -> Unit = { }): Command {
-    val command = Command(literal)
-    command.structure()
-    return command
-}
+public interface Command {
 
-public fun CommandScope.respond(response: String) {
-    if (this is PlayerCommandScope) {
-        sender.sendMessage(response)
-    } else {
-        println(response)
+    public companion object : Loadable<Command> {
+
+        override val list: MutableSet<Command> = mutableSetOf()
+
+        override fun unregister(value: Command) {
+            list.remove(value)
+        }
+
+        override fun register(value: Command) {
+            list.add(value)
+        }
+
+        override fun load() {
+            register(killCommand())
+        }
+
+        public fun run(command: String, sender: Player? = null) {
+            if (command.isEmpty()) {
+                sendCommandResponse(sender, Config.commandNotFoundMessage)
+            }
+            val tokens = command.split(" ")
+            val cmd = list.firstOrNull {
+                (it as CommandLiteral)
+                    .literal!!
+                    .equals(tokens[0], ignoreCase = Config.ignoreCommandCapitalization)
+            }
+            if (cmd != null) {
+                cmd.run(tokens.drop(1), sender, emptyList())
+            } else {
+                sendCommandResponse(sender, Config.commandNotFoundMessage)
+            }
+        }
+
     }
-}
 
-public open class Command(public val literal: String?) {
+    public val subCommands: MutableList<Command>
 
-    public val subCommands: MutableList<Command> = mutableListOf()
-
-    public var globalExecutor: (CommandScope.() -> Unit)? = null
-    public var playerExecutor: (PlayerCommandScope.() -> Unit)? = null
-    public var consoleExecutor: (CommandScope.() -> Unit)? = null
-
-    public inline fun command(literal: String, structure: Command.() -> Unit = { }): Command {
-        val command = Command(literal)
-        command.structure()
-        subCommands.add(command)
-        return command
-    }
-
-    public inline fun <reified T> argument(
-        label: String = T::class.simpleName ?: "Argument",
-        completions: List<String> = emptyList(),
-        structure: Command.() -> Unit = { }
-    ): Command {
-        val command = CommandArgument(T::class, label, completions)
-        command.structure()
-        subCommands.add(command)
-        return command
-    }
+    public var globalExecutor: (CommandScope.() -> Unit)?
+    public var playerExecutor: (PlayerCommandScope.() -> Unit)?
+    public var consoleExecutor: (CommandScope.() -> Unit)?
 
     public fun onRun(executor: CommandScope.() -> Unit): Command {
         globalExecutor = executor
@@ -64,97 +68,95 @@ public open class Command(public val literal: String?) {
         return this
     }
 
-    public fun run(tokens: List<String>, sender: Player? = null, args: List<Any>) {
-        if (tokens.isNotEmpty()) {
-            var candidateSubCommand: CommandArgument? = null // Possible match if no better fit
-            subCommands.first { subCommand ->  // Iterate through sub-commands.
-                if (subCommand is CommandArgument) {
-                    runCatching {
-                        when (subCommand.type.qualifiedName) {
-                            "kotlin.Boolean" -> tokens[0].lowercase().toBooleanStrict()
-                            "kotlin.Byte" -> tokens[0].toByte()
-                            "kotlin.Short" -> tokens[0].toShort()
-                            "kotlin.Int" -> tokens[0].toInt()
-                            "kotlin.Long" -> tokens[0].toLong()
-                            "kotlin.Float" -> tokens[0].toFloat()
-                            "kotlin.Double" -> tokens[0].toDouble()
-                            "kotlin.String" -> {
-                                candidateSubCommand = subCommand
-                                return@first false
-                                // Check other sub-commands for a match
-                                // before defaulting to String argument.
-                            }
-                            else -> { return@first true } // Unexpected argument type.
-                        }
-                    }.onSuccess {
-                        candidateSubCommand = subCommand
-                    }
-                } else if (subCommand.literal!!.equals(tokens[0], ignoreCase = true)) {
-                    subCommand.run(tokens.drop(1), sender, args)
-                }
-                return@first false
-            }
-            if (candidateSubCommand != null) {
-                candidateSubCommand!!.run(
+}
+
+public fun Command.run(tokens: List<String>, sender: Player? = null, args: List<Any>) {
+    if (tokens.isNotEmpty()) {
+        val command = findSubCommand(tokens[0])
+        if (command != null) {
+            if (command is CommandArgument) {
+                command.run(
                     tokens.drop(1),
                     sender,
-                    args.toMutableList().apply { add(tokens[0]) }.toList()
+                    args.toMutableList().apply { add(tokens[0]) }
                 )
             } else {
-                sendInvalidSyntaxMessage(sender)
+                command.run(tokens.drop(1), sender, args)
             }
         } else {
-            execute(args, sender)
+            sendCommandResponse(sender, Config.invalidSyntaxMessage)
         }
+    } else {
+        execute(args, sender)
     }
+}
 
-    private fun sendInvalidSyntaxMessage(sender: Player?) {
-        if (sender != null) {
-            sender.sendMessage(Config.invalidSyntaxMessage)
-        } else {
-            println(Config.invalidSyntaxMessage.stripColor())
-        }
-    }
+public inline fun Command.command(
+    literal: String,
+    structure: Command.() -> Unit = { }
+): Command {
+    val command = CommandLiteral(literal)
+    command.structure()
+    subCommands.add(command)
+    return command
+}
 
-    private fun execute(args: List<Any>, sender: Player? = null) {
-        val arguments = Arguments(args)
-        if (sender != null && playerExecutor != null) {
-            playerExecutor!!.invoke(PlayerCommandScope(sender, arguments))
-        } else if(sender == null && consoleExecutor != null) {
-            consoleExecutor!!.invoke(CommandScope(arguments))
-        } else if(globalExecutor != null) {
-            globalExecutor!!.invoke(CommandScope(arguments))
-        } else {
-            sendInvalidSyntaxMessage(sender)
-        }
+public inline fun <reified T> Command.argument(
+    label: String = T::class.simpleName ?: "Argument",
+    completions: List<String> = emptyList(),
+    structure: Command.() -> Unit = { }
+): Command {
+    val command = CommandArgument(T::class, label, completions)
+    command.structure()
+    subCommands.add(command)
+    return command
+}
+
+public fun CommandScope.respond(response: String) {
+    if (this is PlayerCommandScope) {
+        sender.sendMessage(response)
+    } else {
+        println(response)
     }
+}
+
+internal fun Command.execute(args: List<Any>, sender: Player? = null) {
+    val arguments = Arguments(args)
+    if (sender != null && playerExecutor != null) {
+        playerExecutor!!.invoke(PlayerCommandScope(sender, arguments))
+    } else if(sender == null && consoleExecutor != null) {
+        consoleExecutor!!.invoke(CommandScope(arguments))
+    } else if(globalExecutor != null) {
+        globalExecutor!!.invoke(CommandScope(arguments))
+    } else {
+        sendCommandResponse(sender, Config.invalidSyntaxMessage)
+    }
+}
+
+internal fun sendCommandResponse(sender: Player?, response: String) {
+    if (sender != null) {
+        sender.sendMessage(response)
+    } else {
+        println(response.stripColor())
+    }
+}
+
+@PublishedApi
+internal open class CommandLiteral @PublishedApi internal constructor(
+    val literal: String?,
+): Command {
+
+    override val subCommands: MutableList<Command> = mutableListOf()
+
+    override var globalExecutor: (CommandScope.() -> Unit)? = null
+    override var playerExecutor: (PlayerCommandScope.() -> Unit)? = null
+    override var consoleExecutor: (CommandScope.() -> Unit)? = null
 
 }
 
-public open class CommandScope(
-    public val args: Arguments
-)
-
-public class PlayerCommandScope(
-    public val sender: Player,
-    args: Arguments
-) : CommandScope(args)
-
-public class Arguments(
-    public val values: List<Any>,
-) {
-
-    public val size: Int
-        get() = values.size
-
-    public inline operator fun <reified T> get(index: Int): T {
-        return values[index] as T
-    }
-
-}
-
-public class CommandArgument(
-    public val type: KClass<*>,
-    public val label: String,
-    public val completions: List<String>
-) : Command(null)
+@PublishedApi
+internal class CommandArgument @PublishedApi internal constructor (
+    val type: KClass<*>,
+    val label: String,
+    val completions: List<String>
+) : CommandLiteral(null)

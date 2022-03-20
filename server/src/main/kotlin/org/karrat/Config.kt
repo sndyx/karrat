@@ -30,6 +30,8 @@ public object Config {
     public var port: Int = 25565
     public var basicLogging: Boolean = false
 
+    public var ignoreCommandCapitalization: Boolean = true
+    public var commandNotFoundMessage: String = "&cCommand not found.".colored()
     public var invalidSyntaxMessage: String = "&cInvalid syntax.".colored()
 
 }
