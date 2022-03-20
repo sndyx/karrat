@@ -4,9 +4,11 @@
 
 package org.karrat.internal
 
-import java.net.HttpURLConnection
-import java.net.URL
+import java.net.*
 import java.security.MessageDigest
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
+import kotlin.system.exitProcess
 
 internal fun request(
     url: String,
@@ -48,4 +50,35 @@ internal fun postRequest(url: String, requestProperties: Map<String, String>): S
 internal fun hash(data: ByteArray): ByteArray {
     val digest = MessageDigest.getInstance("SHA-256")
     return digest.digest(data)
+}
+
+internal fun exitProcessWithMessage(message: String, status: Int) {
+    println(message)
+    Thread.sleep(1000L)
+    exitProcess(status)
+}
+
+internal fun <T> lazyMutable(initializer: () -> T): LazyMutable<T> =
+    LazyMutable(initializer)
+
+internal class LazyMutable<T>(val initializer: () -> T) : ReadWriteProperty<Any?, T> {
+
+    private object Null
+    private var prop: Any? = Null
+
+    @Suppress("UNCHECKED_CAST")
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return if (prop == Null) {
+            synchronized(this) {
+                return if (prop == Null) initializer().also { prop = it } else prop as T
+            }
+        } else prop as T
+    }
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        synchronized(this) {
+            prop = value
+        }
+    }
+
 }

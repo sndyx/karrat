@@ -4,6 +4,10 @@
 
 package org.karrat.play
 
-public fun color(text: String): String {
-    return text.replace(Regex("&([a-f0-9])")) { "§${it.groupValues[0]}" }
+public fun String.colored(): String {
+    return replace(Regex("&([a-f0-9])")) { "§${it.groupValues[0]}" }
+}
+
+public fun String.stripColor(): String {
+    return replace(Regex("&([a-f0-9])"), "")
 }

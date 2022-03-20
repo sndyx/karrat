@@ -9,11 +9,13 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.karrat.entity.Player
+import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.play.Material
 import org.karrat.server.FormattedPrintStream
 import org.karrat.server.ReflectionPrintStream
+import org.karrat.server.startConsoleInput
 import org.karrat.world.Biome
 import org.karrat.world.Dimension
 import java.net.InetAddress
@@ -48,19 +50,18 @@ public object Server {
             else { ReflectionPrintStream(System.out) }
         )
         println("Server starting.")
-        measureTimeMillis {
-            Biome.registerBiomes()
-        }.let { println("Loaded ${Biome.biomes.size} biomes in ${it}ms.") }
-        measureTimeMillis {
-            Material.registerMaterials()
-        }.let { println("Loaded ${Material.materials.size} materials in ${it}ms.") }
-        measureTimeMillis {
-            Dimension.registerDimensions()
-        }.let { println("Loaded ${Dimension.dimensions.size} dimensions in ${it}ms.") }
+        loadResources()
         socket = ServerSocketChannel.open()
-        socket.bind(InetSocketAddress(InetAddress.getLocalHost(), port))
+        runCatching {
+            socket.bind(InetSocketAddress(InetAddress.getLocalHost(), port))
+        }.onFailure {
+            exitProcessWithMessage("Port $port is already in use! Shutting down server...", 1)
+        }
         socket.configureBlocking(true)
         println("Bound to ip ${socket.localAddress} on port $port.")
+        thread(name = "Console") {
+            startConsoleInput()
+        }
         thread(name = "socket") {
             while (true) {
                 val session = Session(SocketChannel(socket.accept()))
@@ -98,6 +99,18 @@ public object Server {
                     }
             }
         }
+    }
+
+    private fun loadResources() {
+        measureTimeMillis {
+            Biome.registerBiomes()
+        }.let { println("Loaded ${Biome.biomes.size} biomes in ${it}ms.") }
+        measureTimeMillis {
+            Material.registerMaterials()
+        }.let { println("Loaded ${Material.materials.size} materials in ${it}ms.") }
+        measureTimeMillis {
+            Dimension.registerDimensions()
+        }.let { println("Loaded ${Dimension.dimensions.size} dimensions in ${it}ms.") }
     }
 
 }

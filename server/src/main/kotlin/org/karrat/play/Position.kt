@@ -14,6 +14,9 @@ public interface Vec3 {
 
 }
 
+public fun Vec3(x: Double, y: Double, z: Double): Vec3 =
+    Vec3Impl(x, y, z)
+
 internal open class Vec3Impl(
     override var x: Double,
     override var y: Double,

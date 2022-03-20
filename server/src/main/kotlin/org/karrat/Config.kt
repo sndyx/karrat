@@ -5,6 +5,7 @@
 package org.karrat
 
 import org.karrat.play.Location
+import org.karrat.play.colored
 import org.karrat.struct.Uuid
 import org.karrat.struct.id
 
@@ -28,5 +29,7 @@ public object Config {
     public var colorOutput: Boolean = false
     public var port: Int = 25565
     public var basicLogging: Boolean = false
+
+    public var invalidSyntaxMessage: String = "&cInvalid syntax.".colored()
 
 }
