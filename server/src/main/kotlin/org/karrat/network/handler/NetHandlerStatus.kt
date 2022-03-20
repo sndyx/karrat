@@ -9,7 +9,7 @@ import org.karrat.event.StatusResponseEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.network.NetHandler
 import org.karrat.network.Session
-import org.karrat.network.entity.StatusResponse
+import org.karrat.response.StatusResponse
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.status.PingPacket
 import org.karrat.packet.status.PongPacket

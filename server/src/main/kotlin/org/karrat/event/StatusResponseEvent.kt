@@ -5,7 +5,7 @@
 package org.karrat.event
 
 import org.karrat.network.Session
-import org.karrat.network.entity.StatusResponse
+import org.karrat.response.StatusResponse
 
 /**
  * A [CancellableEvent] fired when a [StatusResponse] is sent to the client.

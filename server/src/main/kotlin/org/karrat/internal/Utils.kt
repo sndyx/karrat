@@ -4,16 +4,20 @@
 
 package org.karrat.internal
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import java.net.*
 import java.security.MessageDigest
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 import kotlin.system.exitProcess
 
-internal fun request(
+@OptIn(ExperimentalSerializationApi::class)
+internal inline fun <reified T> request(
     url: String,
     vararg parameters: Pair<String, String?> = emptyArray()
-): Result<ByteArray> {
+): Result<T> {
     val urlWithParameters = buildString {
         append(url)
         append('?')
@@ -30,7 +34,7 @@ internal fun request(
     val connection = openHttpConnection(urlWithParameters)
     return runCatching {
         connection.inputStream
-            .use { Result.success(it.readBytes()) }
+            .use { Result.success(Json.decodeFromStream<T>(it)) }
     }.getOrElse {
         Result.failure(it)
     }

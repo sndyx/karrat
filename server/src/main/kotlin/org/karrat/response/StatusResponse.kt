@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.network.entity
+package org.karrat.response
 
 import kotlinx.serialization.json.*
 import org.karrat.Config
@@ -18,7 +18,7 @@ import java.util.*
  * gui. Includes information such as the server [version], [image], and
  * [description].
  */
-public open class StatusResponse(
+public class StatusResponse(
     public var version: String,
     public var protocol: Int,
     public var maxPlayers: Int,

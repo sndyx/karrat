@@ -2,11 +2,10 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.network.entity
+package org.karrat.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 import org.karrat.struct.Uuid
 
 @Serializable

@@ -6,7 +6,7 @@ package org.karrat.command
 
 import org.karrat.Server
 
-internal fun killCommand(): Command =
+internal fun Command.killCommand(): Command =
     command("kill") {
         argument<String>().onRun {
             Server.players
