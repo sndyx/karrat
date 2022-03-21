@@ -115,6 +115,20 @@ public inline fun <reified T> Command.argument(
     return command
 }
 
+public inline fun <reified T> Command.vararg(
+    label: String = T::class.simpleName ?: "Argument",
+    completions: List<String> = emptyList(),
+    structure: Command.() -> Unit = { }
+): Command {
+    val command = argument<T>(label, completions, structure)
+    command.subCommands.add(command)
+    return command
+}
+
+public fun Command.redirect(command: Command) {
+    subCommands.add(command)
+}
+
 public fun CommandScope.respond(response: String) {
     if (this is PlayerCommandScope) {
         sender.sendMessage(response)
