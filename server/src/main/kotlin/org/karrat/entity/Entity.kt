@@ -5,7 +5,7 @@
 package org.karrat.entity
 
 import org.karrat.play.Location
-import org.karrat.play.Vec3
+import org.karrat.play.Vec3d
 
 public abstract class Entity(loc: Location) {
 
@@ -18,7 +18,7 @@ public abstract class Entity(loc: Location) {
         locationChanged = true
     }
 
-    public var velocity: Vec3 = Vec3(0.0, 0.0, 0.0)
+    public var velocity: Vec3d = Vec3d(0.0, 0.0, 0.0)
     set(value) {
         field = value
         velocityChanged = true

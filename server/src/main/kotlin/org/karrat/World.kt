@@ -14,17 +14,32 @@ import org.karrat.struct.toByteBuffer
 import org.karrat.world.Block
 import org.karrat.world.Chunk
 import org.karrat.world.Dimension
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
-public class World(
-    public val identifier: Identifier,
-    public val dimension: Dimension,
-    public val seed: Long,
-) {
-    
+@Serializable
+public class World internal constructor(public val identifier: Identifier) {
+
+    public constructor (
+        identifier: Identifier,
+        dimension: Dimension,
+        seed: Long
+    ) : this(identifier) {
+        // This is a mess
+        // TODO: FIX THIS SHIT
+    }
+
+    @Transient
+    public val dimension: Dimension = Dimension.Overworld
+    @Transient
+    public val seed: Long = 0
+
     public val name: String
         get() = identifier.name // This is: not right
 
+    @Transient
     public val chunks: MutableSet<Chunk> = mutableSetOf()
+    @Transient
     public val entities: MutableSet<Entity> = mutableSetOf()
     public val players: List<Player>
         get() = entities.filterIsInstance<Player>()
@@ -44,7 +59,7 @@ public class World(
     }
 
     public fun blockAt(pos: BlockPos): Block =
-        blockAt(pos.posX, pos.posY, pos.posZ)
+        blockAt(pos.xPos, pos.yPos, pos.zPos)
 
     public operator fun get(x: Int, y: Int, z: Int): Block =
         blockAt(x, y, z)
@@ -57,7 +72,7 @@ public class World(
     }
 
     public fun setBlock(pos: BlockPos, block: Block): Unit =
-        setBlock(pos.posX, pos.posY, pos.posZ, block)
+        setBlock(pos.xPos, pos.yPos, pos.zPos, block)
 
     public operator fun set(x: Int, y: Int, z: Int, block: Block): Unit =
         setBlock(x, y, z, block)
@@ -66,9 +81,3 @@ public class World(
         setBlock(pos, block)
 
 }
-
-/**
- * Fetches a [World] from its [Identifier]. Throws an Exception if not found.
- */
-public fun World(identifier: Identifier): World =
-    World(identifier, Dimension.Overworld, 0L)

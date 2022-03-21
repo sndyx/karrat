@@ -11,7 +11,7 @@ import org.karrat.response.PackageResponse
 internal fun Command.Companion.installCommand(): Command =
     command("install") {
         argument<String>().onRun {
-            val pkg: String = args[0]
+            val pkg: String = arg(0)
             request<PackageResponse>("https://api.karrat.org/package/$pkg")
                 .onSuccess {
                     respond("&aStuff lol!! 1billion megabuytes? Continue!? [yes] [no]")

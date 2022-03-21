@@ -10,7 +10,7 @@ internal fun Command.Companion.killCommand(): Command =
     command("kill") {
         argument<String>().onRun {
             Server.players
-                .firstOrNull { it.name.equals(args[0], ignoreCase = true) }
+                .firstOrNull { it.name.equals(arg(0), ignoreCase = true) }
                     ?.remove()
                     ?: respond("Unable to find target.")
         }
