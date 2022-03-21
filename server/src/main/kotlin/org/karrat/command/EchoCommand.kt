@@ -6,7 +6,7 @@ package org.karrat.command
 
 public fun Command.Companion.echoCommand(): Command =
     command("echo") {
-        argument<String>().onRun {
-            respond(args[0])
+        vararg<String>().onRun {
+            respond(args.values.joinToString(" "))
         }
     }

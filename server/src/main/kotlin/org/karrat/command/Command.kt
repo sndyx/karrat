@@ -108,6 +108,19 @@ public inline fun <reified T> Command.argument(
     return command
 }
 
+public inline fun <reified T> Command.vararg(
+    label: String = T::class.simpleName ?: "Argument",
+    structure: Command.() -> Unit = { }
+): Command {
+    val command = argument<T>(label, structure)
+    command.subCommands.add(command)
+    return command
+}
+
+public fun Command.redirect(command: Command) {
+    subCommands.add(command)
+}
+
 @PublishedApi
 internal open class CommandLiteral @PublishedApi internal constructor(
     val literal: String?,
