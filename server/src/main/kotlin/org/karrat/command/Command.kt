@@ -32,14 +32,14 @@ public interface Command {
             if (command.isEmpty()) {
                 sender?.sendMessage(Config.commandNotFoundMessage)
             }
-            val tokens = command.split(" ")
+            val tokens = TokenBuffer(command.split(" "))
             val cmd = list.firstOrNull {
                 (it as CommandLiteral)
                     .literal!!
-                    .equals(tokens[0], ignoreCase = Config.ignoreCommandCapitalization)
+                    .equals(tokens.get(), ignoreCase = Config.ignoreCommandCapitalization)
             }
             if (cmd != null) {
-                cmd.run(tokens.drop(1), CommandScope(sender, mutableListOf()))
+                cmd.run(tokens.consume(), CommandScope(sender, mutableListOf()))
             } else {
                 sender?.sendMessage(Config.commandNotFoundMessage)
             }
@@ -64,17 +64,17 @@ public interface Command {
         }
     }
 
-    public fun run(tokens: List<String>, scope: CommandScope) {
-        if (tokens.isNotEmpty()) {
-            val command = findSubCommand(tokens[0])
+    public fun run(tokens: TokenBuffer, scope: CommandScope) {
+        if (tokens.hasNext()) {
+            val command = findSubCommand(tokens.get())
             if (command != null) {
                 if (command is CommandArgument) {
                     command.run(
-                        tokens.drop(1),
-                        scope.withArg(tokens[0])
+                        tokens.consume(),
+                        scope.withArg(tokens.get())
                     )
                 } else {
-                    command.run(tokens.drop(1), scope)
+                    command.run(tokens.consume(), scope)
                 }
             } else {
                 scope.sendMessage(Config.invalidSyntaxMessage)
@@ -118,6 +118,38 @@ public fun Command.redirect(command: Command) {
     subCommands.add(command)
 }
 
+public class TokenBuffer(
+    public val list: List<String>
+) {
+    public var index: Int = 0
+
+    public fun hasNext(): Boolean {
+        return index < list.size
+    }
+
+    public fun hasNext(num: Int): Boolean {
+        return index + num < list.size
+    }
+
+    public fun get(): String {
+        return list[index]
+    }
+
+    public fun get(num: Int): String {
+        return list[index + num]
+    }
+
+    public fun consume(): TokenBuffer {
+        index++
+        return this
+    }
+
+    public fun consume(num: Int): TokenBuffer {
+        index += num
+        return this
+    }
+}
+
 @PublishedApi
 internal open class CommandLiteral @PublishedApi internal constructor(
     val literal: String?,
@@ -136,5 +168,4 @@ internal class CommandArgument @PublishedApi internal constructor (
     override val subCommands: MutableList<Command> = mutableListOf()
 
     override var executor: (CommandScope.() -> Unit)? = null
-
 }
