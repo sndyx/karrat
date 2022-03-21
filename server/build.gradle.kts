@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "org.karrat.server"
-version = "1.17.1"
+version = "1.18.2"
 
 val main = "org.karrat.RunKt"
 
