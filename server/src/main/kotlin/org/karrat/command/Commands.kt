@@ -51,13 +51,31 @@ internal fun Command.findSubCommand(token: String): Command? {
 }
 
 public open class CommandScope(
+    public val sender: Sender?,
     public val args: Arguments
-)
+) {
+    public fun sendMessage(response: String) {
+        sender?.sendMessage(response)
+    }
+}
 
-public class PlayerCommandScope(
+public abstract class Sender {
+    public abstract fun sendMessage(response: String)
+}
+
+public class PlayerSender(
     public val sender: Player,
-    args: Arguments
-) : CommandScope(args)
+) : Sender() {
+    override fun sendMessage(response: String) {
+        sender.sendMessage(response)
+    }
+}
+
+public object ConsoleSender : Sender() {
+    override fun sendMessage(response: String) {
+        println("Command response to console: \n$response")
+    }
+}
 
 public class Arguments(
     public val values: List<Any>,
