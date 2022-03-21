@@ -26,6 +26,9 @@ public interface Command {
 
         override fun load() {
             register(killCommand())
+            register(installCommand())
+            register(stopCommand())
+            register(echoCommand())
         }
 
         public fun run(command: String, sender: Player? = null) {

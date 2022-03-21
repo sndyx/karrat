@@ -8,7 +8,7 @@ import org.karrat.internal.request
 import org.karrat.play.colored
 import org.karrat.response.PackageResponse
 
-internal fun Command.installCommand(): Command =
+internal fun Command.Companion.installCommand(): Command =
     command("install") {
         argument<String>().onRun {
             val pkg: String = args[0]

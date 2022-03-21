@@ -6,12 +6,13 @@ package org.karrat.command
 
 import org.karrat.Server
 
-internal fun Command.killCommand(): Command =
+internal fun Command.Companion.killCommand(): Command =
     command("kill") {
         argument<String>().onRun {
             Server.players
-                .first { it.name.equals(args[0], ignoreCase = true) }
-                .remove()
+                .firstOrNull { it.name.equals(args[0], ignoreCase = true) }
+                    ?.remove()
+                    ?: respond("Unable to find target.")
         }
     }.onRunByPlayer {
         sender.remove()

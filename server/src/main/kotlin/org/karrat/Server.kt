@@ -83,7 +83,6 @@ public object Server {
     }
 
     public fun stop() {
-        println("Terminating sessions.")
         sessions
             .filter { it.state == SessionState.PLAY }
             .forEach { it.disconnect("Server shutting down.") }

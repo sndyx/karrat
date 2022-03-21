@@ -18,7 +18,7 @@ public inline fun command(
 
 internal fun Command.findSubCommand(token: String): Command? {
     var possibleStringArgumentNode: CommandArgument? = null
-    subCommands.first { command ->
+    subCommands.forEach { command ->
         if (command is CommandArgument) {
             runCatching {
                 when (command.type.qualifiedName) {
@@ -31,11 +31,11 @@ internal fun Command.findSubCommand(token: String): Command? {
                     "kotlin.Double" -> token.toDouble()
                     "kotlin.String" -> {
                         possibleStringArgumentNode = command
-                        return@first false
+                        return@forEach
                         // Check other sub-commands for a match
                         // before defaulting to String argument.
                     }
-                    else -> { return@first false } // Unexpected argument type.
+                    else -> { return@forEach } // Unexpected argument type.
                 }
             }.onSuccess {
                 return command
@@ -45,7 +45,7 @@ internal fun Command.findSubCommand(token: String): Command? {
                 return command
             }
         }
-        return@first false
+        return@forEach
     }
     return possibleStringArgumentNode
 }
