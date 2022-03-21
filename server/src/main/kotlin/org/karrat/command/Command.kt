@@ -8,10 +8,12 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.capturedKClass
 import kotlinx.serialization.descriptors.elementDescriptors
 import kotlinx.serialization.serializer
-import org.karrat.Config
+import org.karrat.command.generic.*
+import org.karrat.command.generic.installCommand
+import org.karrat.command.generic.killCommand
+import org.karrat.command.generic.stopCommand
 import org.karrat.entity.Player
 import org.karrat.play.colored
 import org.karrat.serialization.command.CommandDecoder

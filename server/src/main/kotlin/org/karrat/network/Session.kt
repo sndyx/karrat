@@ -28,7 +28,7 @@ public class Session(public val socket: SocketChannel) {
         get() = (socket.remoteAddress as InetSocketAddress).address
 
     /**
-     * Player linked to this session instance, if in state Play.
+     * [Player] linked to this session instance, if in state Play.
      */
     public lateinit var player: Player
     public val isAlive: Boolean

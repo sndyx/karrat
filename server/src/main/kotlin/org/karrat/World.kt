@@ -15,31 +15,26 @@ import org.karrat.world.Block
 import org.karrat.world.Chunk
 import org.karrat.world.Dimension
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
+import org.karrat.serialization.serializer.PrimitiveWorldSerializer
 
-@Serializable
-public class World internal constructor(public val identifier: Identifier) {
+@Serializable(with = PrimitiveWorldSerializer::class)
+public class World(
+    public val identifier: Identifier,
+    public val dimension: Dimension,
+    public val seed: Long
+) {
 
-    public constructor (
-        identifier: Identifier,
-        dimension: Dimension,
-        seed: Long
-    ) : this(identifier) {
-        // This is a mess
-        // TODO: FIX THIS SHIT
+    public companion object {
+        public operator fun invoke(identifier: Identifier): World {
+            return Server.worlds.firstOrNull { it.identifier == identifier }
+                ?: error("Unable to find world.")
+        }
     }
 
-    @Transient
-    public val dimension: Dimension = Dimension.Overworld
-    @Transient
-    public val seed: Long = 0
-
     public val name: String
-        get() = identifier.name // This is: not right
+        get() = identifier.name // This is: right :)
 
-    @Transient
     public val chunks: MutableSet<Chunk> = mutableSetOf()
-    @Transient
     public val entities: MutableSet<Entity> = mutableSetOf()
     public val players: List<Player>
         get() = entities.filterIsInstance<Player>()
