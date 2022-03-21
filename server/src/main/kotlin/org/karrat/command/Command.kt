@@ -28,7 +28,6 @@ public interface Command {
             register(echoCommand())
         }
 
-        // TODO convert to node
         public fun run(command: String, sender: Sender? = null) {
             if (command.isEmpty()) {
                 sender?.sendMessage(Config.commandNotFoundMessage)
@@ -40,7 +39,7 @@ public interface Command {
                     .equals(tokens[0], ignoreCase = Config.ignoreCommandCapitalization)
             }
             if (cmd != null) {
-                cmd.run(tokens.drop(1), sender, emptyList())
+                cmd.run(tokens.drop(1), CommandScope(sender, mutableListOf()))
             } else {
                 sender?.sendMessage(Config.commandNotFoundMessage)
             }
@@ -57,33 +56,31 @@ public interface Command {
         return this
     }
 
-    public fun execute(args: List<Any>, sender: Sender? = null) {
-        val arguments = Arguments(args)
+    public fun execute(scope: CommandScope) {
         if (executor != null) {
-            executor!!.invoke(CommandScope(sender, arguments))
+            executor!!.invoke(scope)
         } else {
-            sender?.sendMessage(Config.invalidSyntaxMessage)
+            scope.sendMessage(Config.invalidSyntaxMessage)
         }
     }
 
-    public fun run(tokens: List<String>, sender: Sender? = null, args: List<Any>) {
+    public fun run(tokens: List<String>, scope: CommandScope) {
         if (tokens.isNotEmpty()) {
             val command = findSubCommand(tokens[0])
             if (command != null) {
                 if (command is CommandArgument) {
                     command.run(
                         tokens.drop(1),
-                        sender,
-                        args.toMutableList().apply { add(tokens[0]) }
+                        scope.withArg(tokens[0])
                     )
                 } else {
-                    command.run(tokens.drop(1), sender, args)
+                    command.run(tokens.drop(1), scope)
                 }
             } else {
-                sender?.sendMessage(Config.invalidSyntaxMessage)
+                scope.sendMessage(Config.invalidSyntaxMessage)
             }
         } else {
-            execute(args, sender)
+            execute(scope)
         }
     }
 }

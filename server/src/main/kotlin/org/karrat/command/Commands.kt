@@ -52,10 +52,15 @@ internal fun Command.findSubCommand(token: String): Command? {
 
 public open class CommandScope(
     public val sender: Sender?,
-    public val args: Arguments
+    public val args: MutableList<Any>
 ) {
     public fun sendMessage(response: String) {
         sender?.sendMessage(response)
+    }
+
+    public fun withArg(arg: Any): CommandScope {
+        args.add(arg)
+        return this
     }
 }
 
@@ -75,17 +80,4 @@ public object ConsoleSender : Sender() {
     override fun sendMessage(response: String) {
         println("Command response to console: \n$response")
     }
-}
-
-public class Arguments(
-    public val values: List<Any>,
-) {
-
-    public val size: Int
-        get() = values.size
-
-    public inline operator fun <reified T> get(index: Int): T {
-        return values[index] as T
-    }
-
 }
