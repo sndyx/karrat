@@ -24,6 +24,7 @@ import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 import java.security.KeyPair
 import kotlin.concurrent.thread
+import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
 public object Server {
@@ -86,6 +87,7 @@ public object Server {
         sessions
             .filter { it.state == SessionState.PLAY }
             .forEach { it.disconnect("Server shutting down.") }
+        exitProcess(0)
     }
 
     public fun tick(): Unit = runBlocking {

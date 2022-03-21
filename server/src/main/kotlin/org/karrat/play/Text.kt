@@ -9,5 +9,5 @@ public fun String.colored(): String {
 }
 
 public fun String.stripColor(): String {
-    return replace(Regex("&([a-f0-9])"), "")
+    return replace(Regex("§([a-f0-9])"), "")
 }
