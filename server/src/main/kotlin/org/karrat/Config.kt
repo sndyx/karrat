@@ -14,7 +14,7 @@ public object Config {
     public var sessionServer: String = "https://sessionserver.mojang.com"
     public var preventProxyConnections: Boolean = false
     public var compressionThreshold: Int = 1000
-    // public var spawnLocation: Location = Location(World(id("minecraft:Main_World")), 0.0, 0.0, 0.0)
+    public val spawnLocation: Location by lazy { Location(World(id("minecraft:Main_World")), 0.0, 0.0, 0.0) }
     public var viewDistance: Int = 8
     public var simulationDistance: Int = 8
     
