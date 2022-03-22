@@ -8,20 +8,10 @@ import org.karrat.play.colored
 
 public class CommandExecutor {
 
-    public var globalExecutor: (CommandSender.() -> Unit)? = null
-    public var consoleExecutor: (ConsoleCommandSender.() -> Unit)? = null
-    public var playerExecutor: (PlayerCommandSender.() -> Unit)? = null
+    public var executor: (CommandScope.() -> Unit)? = null
 
-    public fun execute(sender: CommandSender) {
-        if (sender is ConsoleCommandSender && consoleExecutor != null) {
-            consoleExecutor!!.invoke(sender)
-        } else if (sender is PlayerCommandSender && playerExecutor != null) {
-            playerExecutor!!.invoke(sender)
-        } else if (globalExecutor != null) {
-            globalExecutor!!.invoke(sender)
-        } else {
-            sender.respond("&cInvalid syntax".colored())
-        }
+    public fun execute(scope: CommandScope) {
+        executor?.let { it(scope) } ?: scope.respond("&No executor".colored())
     }
 
 }
