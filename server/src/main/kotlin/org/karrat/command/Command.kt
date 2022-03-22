@@ -127,7 +127,7 @@ public interface Command {
         return this
     }
 
-    public companion object : Loadable<Command> {
+    public companion object CommandRegistry : Loadable<Command> {
 
         override val list: MutableSet<Command> = mutableSetOf()
 

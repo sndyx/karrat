@@ -10,7 +10,7 @@ import org.karrat.command.argument
 import org.karrat.command.command
 import org.karrat.entity.Player
 
-internal fun Command.Companion.killCommand(): Command =
+internal fun Command.CommandRegistry.killCommand(): Command =
     command("kill") {
         argument<String>().onRun {
             Server.players.first { it.name == args[0] }

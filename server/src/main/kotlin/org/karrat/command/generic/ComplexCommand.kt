@@ -10,7 +10,7 @@ import org.karrat.command.command
 import org.karrat.command.route
 import org.karrat.play.BlockPos
 
-public fun Command.Companion.complexCommand(): Command =
+public fun Command.CommandRegistry.complexCommand(): Command =
     command("complex-command") {
         route("coords") {
             argument<BlockPos>().onRun {

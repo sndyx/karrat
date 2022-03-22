@@ -30,7 +30,7 @@ fun generateMaterialClass() {
             public val stackSize: Int
         ) {
                     
-            public companion object : Loadable<Material> {
+            public companion object MaterialRegistry : Loadable<Material> {
 
                 override val list: MutableSet<Material> = mutableSetOf()
         

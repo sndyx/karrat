@@ -8,7 +8,7 @@ import org.karrat.Server
 import org.karrat.command.Command
 import org.karrat.command.command
 
-internal fun Command.Companion.stopCommand(): Command =
+internal fun Command.CommandRegistry.stopCommand(): Command =
     command(listOf("stop", "exit")).onRun {
         respond("Stopping server...")
         Server.stop()

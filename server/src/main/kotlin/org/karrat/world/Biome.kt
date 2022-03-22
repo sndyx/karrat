@@ -24,7 +24,7 @@ public abstract class Biome(
     public val name: String
 ) {
     
-    public companion object : Loadable<Biome> {
+    public companion object BiomeRegistry : Loadable<Biome> {
 
         override val list: MutableSet<Biome> = mutableSetOf()
 
