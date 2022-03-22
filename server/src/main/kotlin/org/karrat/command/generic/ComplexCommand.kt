@@ -14,7 +14,7 @@ public fun Command.Companion.complexCommand(): Command =
     command("complex-command") {
         route("coords") {
             argument<BlockPos>().onRun {
-                val pos: BlockPos = arg(0)
+                val pos: BlockPos = args.getValue(0)
                 respond("Your coords were: [x: ${pos.xPos}, y: ${pos.yPos}, z: ${pos.zPos}]")
             }
         }

@@ -69,7 +69,63 @@ public interface Command {
     public val nodes: MutableSet<Command>
     public val executor: CommandExecutor
 
-    public fun matchesCommand(tokens: List<String>): Pair<Boolean, Int>
+    public fun matches(tokens: List<String>): Pair<Boolean, Int>
+
+    public fun consume(consumedTokens: List<String>, args: MutableList<Any>)
+
+    public fun canUse(sender: Player?): Boolean
+
+    public fun run(
+        tokens: List<String>,
+        sender: Player? = null,
+        args: MutableList<Any> = mutableListOf()
+    ) {
+        if (tokens.isEmpty()) executor.execute(CommandScope(sender, args))
+        else {
+            val next = resolveNextNode(tokens, sender)
+
+            next?.first?.let {
+                if (it.canUse(sender)) {
+                    it.consume(tokens, args)
+                    it.run(tokens.drop(next.second), sender, args)
+                } else {
+                    respond(sender, "&cLacks permission".colored())
+                    return
+                }
+            } ?: let {
+                respond(sender, "&cInvalid syntax".colored())
+                return
+            }
+        }
+    }
+
+    public fun resolveNextNode(tokens: List<String>, sender: Player?): Pair<Command, Int>? {
+        var bestFit: Pair<Command, Int>? = null
+        nodes.forEach {
+            val result = it.matches(tokens)
+            if (result.first) {
+                if (bestFit == null || bestFit!!.second < result.second) {
+                    bestFit = Pair(it, result.second)
+                }
+            }
+        }
+        return bestFit
+    }
+
+    public fun onRun(block: CommandScope.() -> Unit): Command {
+        executor.globalExecutor = block
+        return this
+    }
+
+    public fun onRunByConsole(block: CommandScope.() -> Unit): Command {
+        executor.consoleExecutor = block
+        return this
+    }
+
+    public fun onRunByPlayer(block: PlayerCommandScope.() -> Unit): Command {
+        executor.playerExecutor = block
+        return this
+    }
 
     public companion object : Loadable<Command> {
 
@@ -101,62 +157,6 @@ public interface Command {
         }
 
     }
-
-    public fun run(
-        tokens: List<String>,
-        sender: Player? = null,
-        args: List<Any> = emptyList()
-    ) {
-        if (tokens.isEmpty()) executor.execute(CommandScope(sender, args))
-        else {
-            val next = resolveNextNode(tokens)
-            when (next?.first) {
-                null -> {
-                    respond(sender, "&cInvalid syntax".colored())
-                    return
-                }
-                is CommandNodeArgument<*> -> {
-                    val argumentNode = next.first as CommandNodeArgument<*> // Smart cast impossible
-                    val decoder = CommandDecoder(ArrayDeque(tokens.take(next.second)))
-                    val result = argumentNode.serializer.deserialize(decoder)
-                    val newArgs = args.toMutableList().apply { add(result!!) }.toList()
-                    argumentNode.run(tokens.drop(next.second), sender, newArgs)
-                }
-                else -> {
-                    val literalNode = next.first as CommandNodeLiteral
-                    literalNode.run(tokens.drop(1), sender, args)
-                }
-            }
-        }
-    }
-
-    public fun resolveNextNode(tokens: List<String>): Pair<Command, Int>? {
-        var bestFit: Pair<Command, Int>? = null
-        nodes.forEach {
-            val result = it.matchesCommand(tokens)
-            if (result.first) {
-                if (bestFit == null || bestFit!!.second < result.second) {
-                    bestFit = Pair(it, result.second)
-                }
-            }
-        }
-        return bestFit
-    }
-
-    public fun onRun(block: CommandScope.() -> Unit): Command {
-        executor.globalExecutor = block
-        return this
-    }
-
-    public fun onRunByConsole(block: CommandScope.() -> Unit): Command {
-        executor.consoleExecutor = block
-        return this
-    }
-
-    public fun onRunByPlayer(block: PlayerCommandScope.() -> Unit): Command {
-        executor.playerExecutor = block
-        return this
-    }
 }
 
 @PublishedApi
@@ -167,11 +167,17 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
     override val nodes: MutableSet<Command> = mutableSetOf()
     override val executor: CommandExecutor = CommandExecutor()
 
-    override fun matchesCommand(tokens: List<String>): Pair<Boolean, Int> {
+
+    override fun matches(tokens: List<String>): Pair<Boolean, Int> {
         val matches = literals.firstOrNull { it == tokens.first() } != null
         return Pair(matches, 1)
     }
 
+    override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {}
+
+    override fun canUse(sender: Player?): Boolean {
+        return true
+    }
 
     fun aliases(aliases: List<String>): Command {
         literals.addAll(aliases)
@@ -194,11 +200,20 @@ internal class CommandNodeArgument<T> @PublishedApi internal constructor(
     override val nodes: MutableSet<Command> = mutableSetOf()
     override val executor: CommandExecutor = CommandExecutor()
 
-    override fun matchesCommand(tokens: List<String>): Pair<Boolean, Int> {
+    override fun matches(tokens: List<String>): Pair<Boolean, Int> {
         val descriptor = serializer.descriptor
         val size = decompiledElementsCount(descriptor)
         if (size > tokens.size) return Pair(false, 0)
         return Pair(checkMatch(descriptor, ArrayDeque(tokens)), size)
+    }
+
+    override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {
+        val decoder = CommandDecoder(ArrayDeque(consumedTokens))
+        args.add(serializer.deserialize(decoder)!!)
+    }
+
+    override fun canUse(sender: Player?): Boolean {
+        return true
     }
 
     private fun checkMatch(descriptor: SerialDescriptor, tokens: ArrayDeque<String>): Boolean {
