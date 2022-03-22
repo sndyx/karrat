@@ -29,9 +29,9 @@ public inline fun command(
 }
 
 public inline fun command(
-    literal: String,
+    vararg literal: String,
     structure: Command.() -> Unit = { }
-): Command = command(listOf(literal), structure)
+): Command = command(literal.asList(), structure)
 
 public fun Command.route(
     literals: List<String>,
@@ -177,11 +177,6 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
 
     override fun canUse(sender: Player?): Boolean {
         return true
-    }
-
-    fun aliases(aliases: List<String>): Command {
-        literals.addAll(aliases)
-        return this
     }
 }
 
