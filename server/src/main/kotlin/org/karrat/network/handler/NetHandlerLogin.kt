@@ -103,8 +103,6 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
                     }
                 }
 
-                /* commented until World.kt is 'finished'
-
                 session.player = Player(session, uuid, username, location = Config.spawnLocation)
 
                 response.properties.firstOrNull { it.name == "textures" }
@@ -119,8 +117,6 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
                 session.netHandler = NetHandlerPlay(session)
                 session.send(LoginSuccessPacket(uuid, username))
 
-
-                 */
             }
     
             result.onFailure {
