@@ -29,6 +29,8 @@ internal fun main(args: Array<String>) {
         } else {
             printHelp()
         }
+
+        i++
     }
     Server.start(Config.port)
 }
