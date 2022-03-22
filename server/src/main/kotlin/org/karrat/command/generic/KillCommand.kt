@@ -13,7 +13,7 @@ import org.karrat.entity.Player
 internal fun Command.Companion.killCommand(): Command =
     command("kill") {
         argument<String>().onRun {
-            Server.players.first { it.name == arg(0) }
+            Server.players.first { it.name == args[0] }
         }
     }.onRunByPlayer {
         sender.remove()
