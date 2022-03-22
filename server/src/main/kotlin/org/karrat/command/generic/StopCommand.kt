@@ -9,7 +9,7 @@ import org.karrat.command.Command
 import org.karrat.command.command
 
 internal fun Command.Companion.stopCommand(): Command =
-    command("stop").onRun {
+    command(listOf("stop", "exit")).onRun {
         respond("Stopping server...")
         Server.stop()
     }

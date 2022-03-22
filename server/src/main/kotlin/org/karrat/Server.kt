@@ -9,6 +9,9 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.karrat.command.Command
+import org.karrat.configuration.eulaPrompt
+import org.karrat.configuration.genServerFiles
+import org.karrat.configuration.isFirstRun
 import org.karrat.entity.Player
 import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
@@ -31,9 +34,9 @@ public object Server {
     
     public var worlds: MutableList<World> = mutableListOf()
     public var commands: MutableList<Command> = mutableListOf()
-    public val players: Set<Player>
+    public val players: MutableList<Player>
         get() {
-            val result: MutableSet<Player> = mutableSetOf()
+            val result: MutableList<Player> = mutableListOf()
             worlds.forEach {
                 result.addAll(it.players)
             }
@@ -53,6 +56,10 @@ public object Server {
             else { ReflectionPrintStream(System.out) }
         )
         println("Server starting.")
+        if (isFirstRun) {
+            genServerFiles()
+        }
+        eulaPrompt()
         loadResources()
         socket = ServerSocketChannel.open()
         runCatching {
