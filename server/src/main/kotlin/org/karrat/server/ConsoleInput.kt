@@ -6,13 +6,13 @@ package org.karrat.server
 
 import org.karrat.Server
 import org.karrat.command.Command
-import org.karrat.command.ConsoleCommandSender
+import org.karrat.command.ConsoleCommandScope
 
 internal fun Server.startConsoleInput() {
     runCatching {
         while (true) {
             val line = readln()
-            Command.run(line, ConsoleCommandSender)
+            Command.run(line, ConsoleCommandScope)
         }
     }.onFailure {
         if (it.message?.contains("EOF") == true) {

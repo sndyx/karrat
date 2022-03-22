@@ -97,7 +97,7 @@ public interface Command {
             list.map { it as CommandNodeLiteral }
                 .firstOrNull { node -> node.literals.any { it.equals(tokens[0], true) } }
                 ?.run(tokens.drop(1), sender)
-                ?: CommandSender.of(sender, emptyList()).respond("&cUnknown command.".colored())
+                ?: respond(sender, "&cUnknown command.".colored())
         }
 
     }
@@ -107,12 +107,12 @@ public interface Command {
         sender: Player? = null,
         args: List<Any> = emptyList()
     ) {
-        if (tokens.isEmpty()) executor.execute(CommandSender.of(sender, args))
+        if (tokens.isEmpty()) executor.execute(CommandScope(sender, args))
         else {
             val next = resolveNextNode(tokens)
             when (next?.first) {
                 null -> {
-                    CommandSender.of(sender, emptyList()).respond("&cInvalid syntax".colored())
+                    respond(sender, "&cInvalid syntax".colored())
                     return
                 }
                 is CommandNodeArgument<*> -> {
@@ -143,17 +143,17 @@ public interface Command {
         return bestFit
     }
 
-    public fun onRun(block: CommandSender.() -> Unit): Command {
+    public fun onRun(block: CommandScope.() -> Unit): Command {
         executor.globalExecutor = block
         return this
     }
 
-    public fun onRunByConsole(block: CommandSender.() -> Unit): Command {
+    public fun onRunByConsole(block: CommandScope.() -> Unit): Command {
         executor.consoleExecutor = block
         return this
     }
 
-    public fun onRunByPlayer(block: PlayerCommandSender.() -> Unit): Command {
+    public fun onRunByPlayer(block: PlayerCommandScope.() -> Unit): Command {
         executor.playerExecutor = block
         return this
     }
@@ -248,4 +248,12 @@ internal class CommandNodeArgument<T> @PublishedApi internal constructor(
         }
     }
 
+}
+
+private fun respond(sender: Player?, response: String) {
+    if (sender != null) {
+        sender.sendMessage(response)
+    } else {
+        println(response)
+    }
 }
