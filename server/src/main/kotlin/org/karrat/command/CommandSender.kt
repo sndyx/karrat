@@ -7,11 +7,11 @@ package org.karrat.command
 import org.karrat.entity.Player
 import org.karrat.play.stripColor
 
-public interface CommandSender {
-    public fun respond(value: String)
+public abstract class CommandSender() {
+    public abstract fun respond(value: String)
 }
 
-public object ConsoleCommandSender : CommandSender {
+public object ConsoleCommandSender : CommandSender() {
 
     override fun respond(value: String) {
         println(value.stripColor())
@@ -20,11 +20,11 @@ public object ConsoleCommandSender : CommandSender {
 }
 
 public class PlayerCommandSender(
-    public val sender: Player,
-) : CommandSender {
+    public val player: Player
+) : CommandSender() {
 
     override fun respond(value: String) {
-        sender.sendMessage(value)
+        player.sendMessage(value)
     }
 
 }

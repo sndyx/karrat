@@ -59,9 +59,9 @@ public interface Command {
     public val nodes: MutableSet<Command>
     public val executor: CommandExecutor
 
-    public fun matches(scope: CommandScope): Pair<Boolean, Int>
+    public fun matches(scope: CommandScope<CommandSender>): Pair<Boolean, Int>
 
-    public fun consume(scope: CommandScope, size: Int)
+    public fun consume(scope: CommandScope<CommandSender>, size: Int)
 
     public companion object : Loadable<Command> {
 
@@ -98,7 +98,7 @@ public interface Command {
 
     public fun run(command: String, sender: CommandSender): Unit = run(CommandScope(ArrayDeque(), sender))
 
-    public fun run(scope: CommandScope) {
+    public fun run(scope: CommandScope<CommandSender>) {
         if (scope.tokens.isEmpty()) executor.execute(scope)
         else {
             val next = resolveNextNode(scope)
@@ -113,7 +113,7 @@ public interface Command {
         }
     }
 
-    public fun resolveNextNode(scope: CommandScope): Pair<Command, Int>? {
+    public fun resolveNextNode(scope: CommandScope<CommandSender>): Pair<Command, Int>? {
         var bestFit: Pair<Command, Int>? = null
         nodes.forEach {
             val result = it.matches(scope)
@@ -126,15 +126,25 @@ public interface Command {
         return bestFit
     }
 
-    public fun onRun(block: CommandScope.() -> Unit): Command {
-        executor.executor = block
+    public fun onRun(block: CommandScope<CommandSender>.() -> Unit): Command {
+        executor.globalExecutor = block
+        return this
+    }
+
+    public fun onRunByPlayer(block: CommandScope<PlayerCommandSender>.() -> Unit): Command {
+        executor.playerExecutor = block
+        return this
+    }
+
+    public fun onRunByConsole(block: CommandScope<ConsoleCommandSender>.() -> Unit): Command {
+        executor.consoleExecutor = block
         return this
     }
 }
 
-public class CommandScope(
+public class CommandScope<out T: CommandSender>(
     public val tokens: ArrayDeque<String> = ArrayDeque(),
-    public val sender: CommandSender,
+    public val sender: T,
     public val args: MutableList<Any> = mutableListOf()
 ) {
     public fun respond(response: String) {
@@ -162,11 +172,11 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
     override val nodes: MutableSet<Command> = mutableSetOf()
     override val executor: CommandExecutor = CommandExecutor()
 
-    override fun matches(scope: CommandScope): Pair<Boolean, Int> {
+    override fun matches(scope: CommandScope<CommandSender>): Pair<Boolean, Int> {
         return Pair(scope.tokens.first() == literal, 1)
     }
 
-    override fun consume(scope: CommandScope, size: Int) {
+    override fun consume(scope: CommandScope<CommandSender>, size: Int) {
         scope.drop(size)
     }
 
@@ -187,14 +197,14 @@ internal class CommandNodeArgument<T> @PublishedApi internal constructor(
     override val nodes: MutableSet<Command> = mutableSetOf()
     override val executor: CommandExecutor = CommandExecutor()
 
-    override fun matches(scope: CommandScope): Pair<Boolean, Int> {
+    override fun matches(scope: CommandScope<CommandSender>): Pair<Boolean, Int> {
         val descriptor = serializer.descriptor
         val size = decompiledElementsCount(descriptor)
         if (size > scope.tokens.size) return Pair(false, 0)
         return Pair(checkMatch(descriptor, ArrayDeque(scope.tokens)), size)
     }
 
-    override fun consume(scope: CommandScope, size: Int) {
+    override fun consume(scope: CommandScope<CommandSender>, size: Int) {
         val decoder = CommandDecoder(ArrayDeque(scope.tokens.take(size)))
         val result = serializer.deserialize(decoder)
         scope.arg(result!!)

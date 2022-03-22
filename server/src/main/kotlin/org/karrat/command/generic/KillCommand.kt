@@ -13,16 +13,11 @@ import org.karrat.entity.Player
 internal fun Command.Companion.killCommand(): Command =
     command("kill") {
         argument<String>().onRun {
-            val player = args[0]
-
-            if (player is Player) {
-                (args[0] as Player).remove()
-            } else {
-                respond("Unable to find target.")
-            }
+            Server.players
+                .firstOrNull { it.name.equals(args[0] as String, ignoreCase = true) }
+                ?.remove()
+                ?: respond("Unable to find target.")
         }
-    }.onRun {
-        if (sender is Player) {
-            (sender as Player).remove()
-        }
+    }.onRunByPlayer {
+        sender.remove()
     }
