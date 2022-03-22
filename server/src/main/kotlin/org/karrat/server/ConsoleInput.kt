@@ -12,7 +12,7 @@ internal fun Server.startConsoleInput() {
     runCatching {
         while (true) {
             val line = readln()
-            Command.run(line, ConsoleCommandScope)
+            Command.run(line, null)
         }
     }.onFailure {
         if (it.message?.contains("EOF") == true) {
