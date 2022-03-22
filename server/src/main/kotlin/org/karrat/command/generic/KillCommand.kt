@@ -19,5 +19,5 @@ internal fun Command.Companion.killCommand(): Command =
                 ?: respond("Unable to find target.")
         }
     }.onRunByPlayer {
-        sender.remove()
+        sender.player.remove()
     }
