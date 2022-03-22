@@ -157,13 +157,6 @@ public interface Command {
         executor.playerExecutor = block
         return this
     }
-
-    public fun aliases(aliases: List<String>): Command {
-        check(this is CommandNodeLiteral) { "Cannot define aliases for an argument node." }
-        this.literals.addAll(aliases)
-        return this
-    }
-
 }
 
 @PublishedApi
@@ -179,6 +172,11 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
         return Pair(matches, 1)
     }
 
+
+    fun aliases(aliases: List<String>): Command {
+        literals.addAll(aliases)
+        return this
+    }
 }
 
 @PublishedApi
