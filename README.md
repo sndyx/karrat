@@ -96,6 +96,8 @@ Documentation can be found [here](/documentation/introduction.md).
 This project is only possible due to the hard work put in by members of
  the Minecraft community!
 
+Credits to *wiki.vg* for the great amount of help provided through its protocol information.
+
 The following files are used in this program:
  - *dimension_codec.json*, courtesy of *wiki.vg*.
  - *materials.json*, courtesy of *prismarine.js*
