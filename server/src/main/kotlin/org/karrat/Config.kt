@@ -11,6 +11,10 @@ import org.karrat.struct.id
 
 public object Config {
 
+    public fun plugins(block: () -> Unit) {
+        //temp
+    }
+    
     public var sessionServer: String = "https://sessionserver.mojang.com"
     public var preventProxyConnections: Boolean = false
     public var compressionThreshold: Int = 1000

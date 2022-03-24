@@ -17,6 +17,7 @@ import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.play.Material
+import org.karrat.script.runSettingsScript
 import org.karrat.server.FormattedPrintStream
 import org.karrat.server.ReflectionPrintStream
 import org.karrat.server.startConsoleInput
@@ -27,6 +28,8 @@ import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 import java.security.KeyPair
 import kotlin.concurrent.thread
+import kotlin.io.path.Path
+import kotlin.script.experimental.api.onFailure
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
@@ -50,7 +53,7 @@ public object Server {
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
     internal var tickTimeMillis: Long = 0L
 
-    public fun start(port: Int) {
+    public fun start() {
         System.setOut(
             if (Config.basicLogging) { FormattedPrintStream(System.out) }
             else { ReflectionPrintStream(System.out) }
@@ -60,15 +63,22 @@ public object Server {
             genServerFiles()
         }
         eulaPrompt()
+        runSettingsScript(Path("settings.server.kts")).onFailure { result ->
+            println("Failed to load settings.server.kts script.\n" + result.reports
+                .map { it.toString() }
+                .filter { !it.startsWith("DEBUG") }
+                .joinToString("\n")
+            )
+        }
         loadResources()
         socket = ServerSocketChannel.open()
         runCatching {
-            socket.bind(InetSocketAddress(InetAddress.getLocalHost(), port))
+            socket.bind(InetSocketAddress(InetAddress.getLocalHost(), Config.port))
         }.onFailure {
-            exitProcessWithMessage("Port $port is already in use! Shutting down server...", 1)
+            exitProcessWithMessage("Port ${Config.port} is already in use! Shutting down server...", 1)
         }
         socket.configureBlocking(true)
-        println("Bound to ip ${socket.localAddress} on port $port.")
+        println("Bound to ip ${socket.localAddress} on port ${Config.port}.")
         thread(name = "Console") {
             startConsoleInput()
         }

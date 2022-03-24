@@ -1,7 +1,3 @@
-/*
- * Copyright © Karrat - 2022.
- */
-
 plugins {
     // install("worldedit")
 }

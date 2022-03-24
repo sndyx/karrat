@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization") version "1.5.21"
-    id("application")
 }
 
 group = "org.karrat.server"
@@ -20,7 +19,9 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("script-runtime"))
+    implementation(kotlin("scripting-common"))
+    implementation(kotlin("scripting-jvm"))
+    implementation(kotlin("scripting-jvm-host"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
@@ -40,8 +41,13 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<KotlinCompile>().forEach {
-    it.kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-    it.kotlinOptions.freeCompilerArgs += "-Xexplicit-api=strict"
+    listOf(
+        "-Xextended-compiler-checks",
+        "-Xopt-in=kotlin.RequiresOptIn",
+        "-Xexplicit-api=strict"
+    ).forEach { arg ->
+        it.kotlinOptions.freeCompilerArgs += arg
+    }
 }
 
 tasks.withType<Jar> {
@@ -55,12 +61,8 @@ tasks.withType<Jar> {
     from(sourceSets.main.get().output)
 
     dependsOn(configurations.runtimeClasspath)
-    from({
+    from ({
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
 
-}
-
-application {
-    mainClass.set(main)
 }

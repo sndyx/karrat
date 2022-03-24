@@ -32,7 +32,7 @@ internal fun main(args: Array<String>) {
 
         i++
     }
-    Server.start(Config.port)
+    Server.start()
 }
 
 private fun printHelp() {

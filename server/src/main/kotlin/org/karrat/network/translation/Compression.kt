@@ -54,7 +54,7 @@ internal fun Session.compress(buffer: ByteBuffer) {
         result.writeBytes(bytes)
         deflater.reset()
     }
-
+    
     buffer.bytes = result.array()
     buffer.reset()
 }

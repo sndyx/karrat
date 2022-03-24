@@ -12,7 +12,7 @@ private var firstRunLock: Boolean? = null
 
 public val Server.isFirstRun: Boolean get() {
     firstRunLock?.let { return it }
-    val eulaFile = Path("defaults/EULA.txt")
+    val eulaFile = Path("EULA.txt")
     return (!eulaFile.exists()).also { firstRunLock = it }
 }
 
