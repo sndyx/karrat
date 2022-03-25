@@ -7,6 +7,7 @@ package org.karrat.command
 import org.karrat.entity.Player
 import org.karrat.play.stripColor
 
+@CommandDsl
 public interface CommandScope {
 
     public val args: CommandArguments

@@ -64,6 +64,7 @@ public inline fun <reified T> Command.vararg(
     return command
 }
 
+@CommandDsl
 public interface Command {
 
     public val nodes: MutableSet<Command>
