@@ -13,17 +13,18 @@ import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 import kotlin.script.experimental.jvmhost.BasicJvmScriptingHost
 import kotlin.script.experimental.jvmhost.createJvmCompilationConfigurationFromTemplate
+import kotlin.script.experimental.jvmhost.createJvmEvaluationConfigurationFromTemplate
 
 @KotlinScript(
     fileExtension = "server.kts",
     compilationConfiguration = SettingsScriptCompilationConfiguration::class,
-    evaluationConfiguration = SettingsScriptEvaluationConfiguration::class
+    evaluationConfiguration = SettingsScriptEvaluationConfiguration::class,
 )
 public abstract class ServerSettings
 
 internal object SettingsScriptCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports(Config::class)
-    // implicitReceivers(Config::class) ??? implicitReceivers causes odd reflection error
+    implicitReceivers(Config::class)
     jvm {
         dependenciesFromCurrentContext(wholeClasspath = true)
     }
@@ -33,12 +34,13 @@ internal object SettingsScriptCompilationConfiguration : ScriptCompilationConfig
 })
 
 internal object SettingsScriptEvaluationConfiguration : ScriptEvaluationConfiguration({
-    // implicitReceivers(Config)
+    implicitReceivers(Config)
 })
 
 public fun runSettingsScript(path: Path): ResultWithDiagnostics<EvaluationResult> {
-    val compilationConfiguration =
-        createJvmCompilationConfigurationFromTemplate<ServerSettings>()
-    return BasicJvmScriptingHost()
-        .eval(path.toFile().toScriptSource(), compilationConfiguration, null)
+    return BasicJvmScriptingHost().eval(
+        path.toFile().toScriptSource(),
+        createJvmCompilationConfigurationFromTemplate<ServerSettings>(),
+        createJvmEvaluationConfigurationFromTemplate<ServerSettings>()
+    )
 }

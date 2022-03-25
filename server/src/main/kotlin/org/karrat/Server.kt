@@ -63,13 +63,7 @@ public object Server {
             genServerFiles()
         }
         eulaPrompt()
-        runSettingsScript(Path("settings.server.kts")).onFailure { result ->
-            println("Failed to load settings.server.kts script.\n" + result.reports
-                .map { it.toString() }
-                .filter { !it.startsWith("DEBUG") }
-                .joinToString("\n")
-            )
-        }
+        loadServerConfiguration()
         loadResources()
         socket = ServerSocketChannel.open()
         runCatching {
@@ -78,7 +72,7 @@ public object Server {
             exitProcessWithMessage("Port ${Config.port} is already in use! Shutting down server...", 1)
         }
         socket.configureBlocking(true)
-        println("Bound to ip ${socket.localAddress} on port ${Config.port}.")
+        println("Bound to ip ${socket.localAddress}.")
         thread(name = "Console") {
             startConsoleInput()
         }
@@ -118,6 +112,17 @@ public object Server {
                         sessions.remove(session)
                     }
             }
+        }
+    }
+    
+    private fun loadServerConfiguration() {
+        println("Loading server configuration.")
+        runSettingsScript(Path("settings.server.kts")).onFailure { result ->
+            println("Failed to load settings.server.kts!\n" + result.reports
+                .map { it.toString() }
+                .filter { !it.startsWith("DEBUG") }
+                .joinToString("\n")
+            )
         }
     }
 
