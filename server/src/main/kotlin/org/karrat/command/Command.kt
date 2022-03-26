@@ -18,12 +18,13 @@ import org.karrat.entity.Player
 import org.karrat.play.colored
 import org.karrat.serialization.command.CommandDecoder
 import org.karrat.server.Loadable
+import java.lang.RuntimeException
 
 public inline fun command(
     literals: List<String>,
     structure: Command.() -> Unit = { }
 ): Command {
-    val command = CommandNodeLiteral(literals.toMutableList())
+    val command = CommandNodeLiteral(literals)
     command.structure()
     return command
 }
@@ -54,6 +55,16 @@ public inline fun <reified T> Command.argument(
     nodes.add(command)
     return command
 }
+
+public fun Command.redirect(
+    redirect: Command,
+    action: () -> Unit = { }
+): Command {
+    val command = CommandNodeRedirect(redirect, action)
+    nodes.add(command)
+    return command
+}
+
 
 public inline fun <reified T> Command.vararg(
     label: String? = null
@@ -87,7 +98,7 @@ public interface Command {
 
             next?.first?.let {
                 if (it.canUse(sender)) {
-                    it.consume(tokens, args)
+                    it.consume(tokens.take(next.second), args)
                     it.run(tokens.drop(next.second), sender, args)
                 } else {
                     respond(sender, "&cLacks permission".colored())
@@ -128,17 +139,39 @@ public interface Command {
         return this
     }
 
-    public companion object CommandRegistry : Loadable<Command> {
+    public companion object CommandRegistry : Command, Loadable<Command> {
 
         override val list: MutableSet<Command> = mutableSetOf()
 
-        override fun unregister(value: Command) {
-            list.remove(value)
-        }
+        override val nodes: MutableSet<Command>
+            get() = list
+
+        override val executor: CommandExecutor = ThrowingCommandExecutor
 
         override fun register(value: Command) {
             check(value is CommandNodeLiteral) { "Root node must be a literal node." }
             list.add(value)
+        }
+
+        override fun unregister(value: Command) {
+            check(value is CommandNodeLiteral) { "Root node must be a literal node." }
+            list.remove(value)
+        }
+
+        override fun matches(tokens: List<String>): Pair<Boolean, Int> {
+            throw RuntimeException()
+        }
+
+        override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {}
+
+        override fun canUse(sender: Player?): Boolean {
+            return true
+        }
+
+        internal object ThrowingCommandExecutor: CommandExecutor() {
+            override fun execute(sender: CommandScope) {
+                throw RuntimeException()
+            }
         }
 
         override fun load() {
@@ -151,10 +184,7 @@ public interface Command {
 
         public fun run(command: String, sender: Player? = null) {
             val tokens = command.split(" ")
-            list.map { it as CommandNodeLiteral }
-                .firstOrNull { node -> node.literals.any { it.equals(tokens[0], true) } }
-                ?.run(tokens.drop(1), sender)
-                ?: respond(sender, "&cUnknown command.".colored())
+            run(tokens, sender)
         }
 
     }
@@ -162,7 +192,7 @@ public interface Command {
 
 @PublishedApi
 internal class CommandNodeLiteral @PublishedApi internal constructor(
-    val literals: MutableList<String>,
+    val literals: List<String>,
 ) : Command {
 
     override val nodes: MutableSet<Command> = mutableSetOf()
@@ -180,6 +210,18 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
         return true
     }
 }
+
+@PublishedApi
+internal class CommandNodeRedirect @PublishedApi internal constructor(
+    val redirectNode: Command,
+    val action: () -> Unit // TODO pass command context class later
+) : Command by redirectNode {
+    override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {
+        action()
+        redirectNode.consume(consumedTokens, args)
+    }
+}
+
 
 @PublishedApi
 @OptIn(ExperimentalSerializationApi::class)
