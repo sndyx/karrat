@@ -112,10 +112,20 @@ public interface Command {
     public fun resolveNextNode(tokens: List<String>, sender: Player?): Pair<Command, Int>? {
         var bestFit: Pair<Command, Int>? = null
         nodes.forEach {
-            val result = it.matches(tokens)
-            if (result.first) {
-                if (bestFit == null || bestFit!!.second < result.second) {
-                    bestFit = Pair(it, result.second)
+            if (it is CommandNodeRedirect) {
+                val redirectBest = it.resolveNextNode(tokens, sender)
+                bestFit
+                    ?.let {
+                        if (redirectBest != null && redirectBest.second > bestFit!!.second)
+                            bestFit = redirectBest
+                    }
+                    ?: run { bestFit = redirectBest }
+            } else {
+                val result = it.matches(tokens)
+                if (result.first) {
+                    if (bestFit == null || bestFit!!.second < result.second) {
+                        bestFit = Pair(it, result.second)
+                    }
                 }
             }
         }
@@ -199,13 +209,7 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
 @PublishedApi
 internal class CommandNodeRedirect @PublishedApi internal constructor(
     val redirectNode: Command,
-) : Command by redirectNode {
-
-    override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {
-        redirectNode.consume(consumedTokens, args)
-    }
-    
-}
+) : Command by redirectNode
 
 
 @PublishedApi

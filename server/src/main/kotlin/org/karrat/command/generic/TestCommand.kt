@@ -11,4 +11,10 @@ internal fun Command.CommandRegistry.testCommand(): Command =
         route("redirect") {
             redirect(Command.Root)
         }
+        route("redirectUnsafe") {
+            redirect(Command.Root)
+            route("to") {
+                redirect(Command.Root)
+            }
+        }
     }
