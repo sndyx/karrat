@@ -20,6 +20,10 @@ public interface CommandScope {
     }
 
     public fun respond(value: String)
+    
+    public fun <T> argument(index: Int): T {
+        return args.getValue(index)
+    }
 
 }
 
@@ -48,6 +52,7 @@ public class CommandArguments internal constructor(
     args: List<Any>
 ) : List<Any> by listOf(args) {
 
+    @Suppress("Unchecked_Cast")
     public fun <T> getValue(index: Int): T {
         return get(index) as T
     }

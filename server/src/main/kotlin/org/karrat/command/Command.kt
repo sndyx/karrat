@@ -57,12 +57,10 @@ public inline fun <reified T> Command.argument(
 }
 
 public fun Command.redirect(
-    redirect: Command,
-    action: () -> Unit = { }
-): Command {
-    val command = CommandNodeRedirect(redirect, action)
+    redirect: Command
+) {
+    val command = CommandNodeRedirect(redirect)
     nodes.add(command)
-    return command
 }
 
 
@@ -138,40 +136,21 @@ public interface Command {
         executor.playerExecutor = block
         return this
     }
+    
+    public object Root : Command by command()
 
-    public companion object CommandRegistry : Command, Loadable<Command> {
-
-        override val list: MutableSet<Command> = mutableSetOf()
-
-        override val nodes: MutableSet<Command>
-            get() = list
-
-        override val executor: CommandExecutor = ThrowingCommandExecutor
-
+    public companion object CommandRegistry : Loadable<Command> {
+        
+        override val list: MutableSet<Command> get() = Root.nodes
+        
         override fun register(value: Command) {
             check(value is CommandNodeLiteral) { "Root node must be a literal node." }
-            list.add(value)
+            Root.nodes.add(value)
         }
 
         override fun unregister(value: Command) {
             check(value is CommandNodeLiteral) { "Root node must be a literal node." }
-            list.remove(value)
-        }
-
-        override fun matches(tokens: List<String>): Pair<Boolean, Int> {
-            throw RuntimeException()
-        }
-
-        override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {}
-
-        override fun canUse(sender: Player?): Boolean {
-            return true
-        }
-
-        internal object ThrowingCommandExecutor: CommandExecutor() {
-            override fun execute(sender: CommandScope) {
-                throw RuntimeException()
-            }
+            Root.nodes.add(value)
         }
 
         override fun load() {
@@ -180,11 +159,17 @@ public interface Command {
             register(stopCommand())
             register(echoCommand())
             register(complexCommand())
+            register(sudoCommand())
+            register(testCommand())
         }
 
         public fun run(command: String, sender: Player? = null) {
             val tokens = command.split(" ")
             run(tokens, sender)
+        }
+        
+        public fun run(tokens: List<String>, sender: Player? = null) {
+            Root.run(tokens, sender)
         }
 
     }
@@ -214,12 +199,12 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
 @PublishedApi
 internal class CommandNodeRedirect @PublishedApi internal constructor(
     val redirectNode: Command,
-    val action: () -> Unit // TODO pass command context class later
 ) : Command by redirectNode {
+
     override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {
-        action()
         redirectNode.consume(consumedTokens, args)
     }
+    
 }
 
 
