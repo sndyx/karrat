@@ -32,9 +32,6 @@ public open class NetHandlerStatus(private val session: Session) : NetHandler {
             if (!Server.dispatchEvent(event)) {
                 session.send(StatusResponsePacket(event.response.compile().toString()))
             } else Unit // frick you kotlin!!!!
-
-            //TODO this probably shouldn't belong here but how does the session reset after NetHandlerStatus
-
         }
         else -> error("Failed to handle packet: Invalid packet.")
     }
