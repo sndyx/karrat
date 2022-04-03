@@ -4,13 +4,13 @@
 
 package org.karrat.network
 
+import org.karrat.Config
 import org.karrat.internal.NioByteBuffer
 import org.karrat.internal.NioSocketChannel
 import org.karrat.struct.ByteBuffer
 import org.karrat.struct.array
 import org.karrat.struct.byteBufferOf
 import org.karrat.struct.toByteBuffer
-import org.karrat.Config
 import java.io.Closeable
 import java.net.SocketAddress
 
