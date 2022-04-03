@@ -15,16 +15,19 @@ import java.net.SocketAddress
 
 public open class SocketChannel(private val socket: NioSocketChannel) : Closeable {
 
+    public val buffer: NioByteBuffer = NioByteBuffer.allocate(Config.networkBufferSize)
     public val remoteAddress: SocketAddress get() = socket.remoteAddress
     public val isOpen: Boolean get() = socket.isOpen
 
     public open fun read(): ByteBuffer {
-        val buffer = NioByteBuffer.allocate(1024)
         socket.read(buffer)
         return buffer
             .array()
             .copyOf(1024 - buffer.remaining())
             .toByteBuffer()
+            .also {
+                buffer.clear() // Reset buffer for reading
+            }
     }
 
     public open fun write(src: ByteBuffer) {
