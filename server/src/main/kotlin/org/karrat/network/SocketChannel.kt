@@ -23,7 +23,7 @@ public open class SocketChannel(private val socket: NioSocketChannel) : Closeabl
         socket.read(buffer)
         return buffer
             .array()
-            .copyOf(1024 - buffer.remaining())
+            .copyOf(Config.networkBufferSize - buffer.remaining())
             .toByteBuffer()
             .also {
                 buffer.clear() // Reset buffer for reading
