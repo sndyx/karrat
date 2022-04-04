@@ -10,6 +10,7 @@ import org.karrat.entity.Player
 import org.karrat.event.BannedPlayerLoginEvent
 import org.karrat.event.PlayerLoginEvent
 import org.karrat.event.dispatchEvent
+import org.karrat.network.AuthServer
 import org.karrat.network.NetHandler
 import org.karrat.network.Session
 import org.karrat.network.authenticate
@@ -89,7 +90,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
 
         thread(name = "auth") {
     
-            val result = Server.authenticate(hash, session.address, username)
+            val result = AuthServer.authenticate(hash, session.address, username)
     
             result.onSuccess { response ->
 

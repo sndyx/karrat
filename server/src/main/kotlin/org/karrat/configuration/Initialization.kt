@@ -11,9 +11,7 @@ import kotlin.io.path.*
 private var firstRunLock: Boolean? = null
 
 public val Server.isFirstRun: Boolean get() {
-    firstRunLock?.let { return it }
-    val eulaFile = Path("EULA.txt")
-    return (!eulaFile.exists()).also { firstRunLock = it }
+    return firstRunLock ?: (!Path("EULA.txt").exists()).also { firstRunLock = it }
 }
 
 internal fun Server.genServerFiles() {
@@ -48,7 +46,6 @@ private fun signEula() {
     val signedEula = "Agreed upon at ${Date()}.\n\n$eula"
     eulaFile.writeText(signedEula)
 }
-
 
 private fun getResource(path: String): String =
     Thread.currentThread()

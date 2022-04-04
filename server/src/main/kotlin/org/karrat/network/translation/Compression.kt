@@ -17,6 +17,8 @@ private val deflater by lazy { Deflater() }
 internal fun Session.decompress(buffer: ByteBuffer) {
     val uncompressedLength = buffer.readVarInt()
     if (uncompressedLength == 0) return
+
+    // chunk bans!
     check(uncompressedLength < Config.compressionThreshold) {
         "Badly compressed packet - size of $uncompressedLength is below" +
                 " server threshold of ${Config.compressionThreshold}"

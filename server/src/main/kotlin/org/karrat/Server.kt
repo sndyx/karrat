@@ -48,7 +48,7 @@ public object Server {
     
     public var sessions: MutableList<Session> = mutableListOf()
     public lateinit var socket: ServerSocketChannel
-    public val auth: AuthServer = AuthServer()
+    public val auth: AuthServer = AuthServer
 
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
     internal var tickTimeMillis: Long = 0L
@@ -71,6 +71,7 @@ public object Server {
         }.onFailure {
             exitProcessWithMessage("Port ${Config.port} is already in use! Shutting down server...", 1)
         }
+
         socket.configureBlocking(true)
         println("Bound to ip ${socket.localAddress}.")
         thread(name = "Console") {

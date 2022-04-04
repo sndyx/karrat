@@ -33,7 +33,7 @@ public open class Player(
 
 /**
  * A dummy player with a [session] that ignores all read/write
- * operations, by means of [SocketChannel.Dummy].
+ * operations, by means of [SocketChannel.DummySocketChannel].
  */
 public class DummyPlayer(
     uuid: Uuid,
@@ -45,7 +45,7 @@ public class DummyPlayer(
         0.0
     )
 ) : Player(
-    session = Session(SocketChannel.Dummy),
+    session = Session(SocketChannel.DummySocketChannel),
     uuid = uuid,
     name = name,
     location = location

@@ -13,7 +13,7 @@ import org.karrat.internal.request
 import org.karrat.response.SessionServerResponse
 import java.net.InetAddress
 
-public open class AuthServer {
+public object AuthServer {
     
     @OptIn(ExperimentalSerializationApi::class)
     public open fun authenticate(serverHash: ByteArray, ip: InetAddress, username: String): Result<SessionServerResponse> {
@@ -27,8 +27,4 @@ public open class AuthServer {
         return Result.success(response.getOrThrow())
     }
     
-}
-
-public fun Server.authenticate(hash: ByteArray, ip: InetAddress, username: String): Result<SessionServerResponse> {
-    return auth.authenticate(hash, ip, username)
 }

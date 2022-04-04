@@ -42,7 +42,7 @@ public open class SocketChannel(private val socket: NioSocketChannel) : Closeabl
         socket.close()
     }
 
-    public object Dummy : SocketChannel(NioSocketChannel.open()) {
+    public object DummySocketChannel : SocketChannel(NioSocketChannel.open()) {
 
         override fun read(): ByteBuffer {
             return byteBufferOf()
