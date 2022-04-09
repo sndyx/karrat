@@ -12,57 +12,44 @@ plugins {
 group = "org.karrat.server"
 version = "1.18.2"
 
-val main = "org.karrat.RunKt"
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation(kotlin("scripting-common"))
-    implementation(kotlin("scripting-jvm"))
-    implementation(kotlin("scripting-jvm-host"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation(kotlin("test"))
 }
 
-tasks.named("compileKotlin") {
-    dependsOn(":codegen:run")
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-tasks.withType<KotlinCompile>().forEach {
-    listOf(
-        "-Xextended-compiler-checks",
-        "-Xopt-in=kotlin.RequiresOptIn",
-        "-Xexplicit-api=strict"
-    ).forEach { arg ->
-        it.kotlinOptions.freeCompilerArgs += arg
+tasks {
+    
+    test {
+        useJUnitPlatform()
     }
-}
-
-tasks.withType<Jar> {
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    manifest {
-        attributes["Main-Class"] = "org.karrat.RunKt"
+    
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        manifest {
+            attributes["Main-Class"] = "org.karrat.RunKt"
+        }
+        from(sourceSets.main.get().output)
+        dependsOn(configurations.runtimeClasspath)
+        from ({
+            configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+        })
     }
-
-    from(sourceSets.main.get().output)
-
-    dependsOn(configurations.runtimeClasspath)
-    from ({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
-
+    
+    withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            freeCompilerArgs = listOf(
+                "-opt-in=kotlin.RequiresOptIn",
+                "-Xexplicit-api=strict",
+                "-Xbackend-threads=0"
+            )
+        }
+    }
+    
 }

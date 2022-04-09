@@ -7,6 +7,7 @@ package org.karrat.struct
 import kotlinx.serialization.Serializable
 import org.karrat.serialization.serializer.PrimitiveUuidSerializer
 import java.security.SecureRandom
+import java.util.*
 import kotlin.experimental.and
 import kotlin.experimental.or
 
@@ -61,6 +62,10 @@ public class Uuid {
                 buffer.readLong(),
                 buffer.readLong()
             )
+        }
+        
+        public fun from(other: UUID): Uuid {
+            return Uuid(other.mostSignificantBits, other.leastSignificantBits)
         }
 
     }

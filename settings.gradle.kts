@@ -3,7 +3,8 @@
  */
 
 rootProject.name = "karrat"
-include("server")
-include("examples")
-include("sided")
 include("codegen")
+include("bukkit")
+include("examples")
+include("server")
+include("sided")

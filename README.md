@@ -66,7 +66,7 @@ repositories {
 }
 
 dependencies {
-    implementation "org.karrat:karrat-server-plugin:1.17.1"
+    implementation 'org.karrat:karrat-server-plugin:1.17.1'
 }
 ```
 

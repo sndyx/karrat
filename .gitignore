@@ -1,7 +1,16 @@
+# Gradle
+.gradle
+
+# Builds
 /build/
 /server/build/
-/gradle/wrapper/gradle-wrapper.jar
-.gradle/*
+/server/out/
+/codegen/build/
+/codegen/out/
+/bukkit/build/
+/bukkit/out/
+/sided/build/
+/sided/out/
+
+# System
 .DS_STORE
-/server/out
-/codegen/out

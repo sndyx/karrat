@@ -15,6 +15,8 @@ public object Config {
         //temp
     }
     
+    public var mainThreadId: Long = Thread.currentThread().id
+    
     public var sessionServer: String = "https://sessionserver.mojang.com"
     public var preventProxyConnections: Boolean = false
     public var compressionThreshold: Int = 1000
@@ -23,6 +25,8 @@ public object Config {
     public var viewDistance: Int = 8
     public var simulationDistance: Int = 8
     
+    public var isWhitelistOnly: Boolean = false
+    public var whitelist: MutableList<Uuid> = mutableListOf(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"))
     public var bannedPlayers: MutableList<Uuid> = mutableListOf(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"))
     public var tps: Int = 20
 

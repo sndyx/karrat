@@ -17,7 +17,6 @@ import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.play.Material
-import org.karrat.script.runSettingsScript
 import org.karrat.server.FormattedPrintStream
 import org.karrat.server.ReflectionPrintStream
 import org.karrat.server.startConsoleInput
@@ -28,8 +27,6 @@ import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 import java.security.KeyPair
 import kotlin.concurrent.thread
-import kotlin.io.path.Path
-import kotlin.script.experimental.api.onFailure
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
@@ -63,7 +60,6 @@ public object Server {
             genServerFiles()
         }
         eulaPrompt()
-        loadServerConfiguration()
         loadResources()
         socket = ServerSocketChannel.open()
         runCatching {
@@ -113,17 +109,6 @@ public object Server {
                         sessions.remove(session)
                     }
             }
-        }
-    }
-    
-    private fun loadServerConfiguration() {
-        println("Loading server configuration.")
-        runSettingsScript(Path("settings.server.kts")).onFailure { result ->
-            println("Failed to load settings.server.kts!\n" + result.reports
-                .map { it.toString() }
-                .filter { !it.startsWith("DEBUG") }
-                .joinToString("\n")
-            )
         }
     }
 
