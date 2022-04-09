@@ -45,9 +45,9 @@ tasks {
         kotlinOptions {
             jvmTarget = "1.8"
             freeCompilerArgs = listOf(
-                "-opt-in=kotlin.RequiresOptIn",
+                "-Xopt-in=kotlin.RequiresOptIn",
                 "-Xexplicit-api=strict",
-                "-Xbackend-threads=0"
+                "-Xbackend-threads=0" // Multi-threaded compilation 😎
             )
         }
     }

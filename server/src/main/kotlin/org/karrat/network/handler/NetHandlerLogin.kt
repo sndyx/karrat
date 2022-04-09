@@ -13,7 +13,6 @@ import org.karrat.event.dispatchEvent
 import org.karrat.network.AuthServer
 import org.karrat.network.NetHandler
 import org.karrat.network.Session
-import org.karrat.network.authenticate
 import org.karrat.network.translation.decodeSharedSecret
 import org.karrat.network.translation.decodeVerificationToken
 import org.karrat.network.translation.generateAESInstance
@@ -90,7 +89,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
 
         thread(name = "auth") {
     
-            val result = AuthServer.authenticate(hash, session.address, username)
+            val result = Server.auth.authenticate(hash, session.address, username)
     
             result.onSuccess { response ->
 

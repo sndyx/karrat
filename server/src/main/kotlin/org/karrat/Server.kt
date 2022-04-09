@@ -45,7 +45,7 @@ public object Server {
     
     public var sessions: MutableList<Session> = mutableListOf()
     public lateinit var socket: ServerSocketChannel
-    public val auth: AuthServer = AuthServer
+    public val auth: AuthServer = AuthServer()
 
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
     internal var tickTimeMillis: Long = 0L
