@@ -4,6 +4,9 @@
 
 package org.karrat.plugin
 
-@Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.RUNTIME)
+import kotlin.annotation.AnnotationRetention.RUNTIME
+import kotlin.annotation.AnnotationTarget.*
+
+@Target(CLASS, FILE)
+@Retention(RUNTIME)
 public annotation class Plugin(val name: String, val version: String)

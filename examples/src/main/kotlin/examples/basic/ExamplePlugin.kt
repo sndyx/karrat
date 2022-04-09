@@ -2,26 +2,23 @@
  * Copyright © Karrat - 2022.
  */
 
-package samples
+package examples.basic
 
 import org.karrat.Server
 import org.karrat.event.PacketEvent
 import org.karrat.event.StatusResponseEvent
 import org.karrat.event.on
 import org.karrat.packet.ServerboundPacket
-import org.karrat.plugin.Enable
+import org.karrat.plugin.Init
 import org.karrat.plugin.InitializeAfter
 import org.karrat.plugin.Plugin
 
-@Plugin(name="Example Plugin", version="1.17.1")
+@Plugin(name="Example Plugin", version="1.18.1")
 @InitializeAfter("Essentials", "WorldEdit")
 object ExamplePlugin {
     
-    @Enable
+    @Init
     fun enable() {
-        Server.on<PacketEvent<ServerboundPacket>> { println(it) }
-
-        //Lie to client pog. at least when this is implemented
         Server.on<StatusResponseEvent> {
             it.response.maxPlayers = 30
         }

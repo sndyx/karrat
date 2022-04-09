@@ -7,6 +7,6 @@ package org.karrat.plugin
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.*
 
-@Target(CLASS, FILE)
+@Target(FUNCTION)
 @Retention(RUNTIME)
-public annotation class InitializeAfter(vararg val after: String)
+public annotation class Init

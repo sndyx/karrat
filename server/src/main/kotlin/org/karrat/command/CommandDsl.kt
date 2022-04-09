@@ -4,6 +4,10 @@
 
 package org.karrat.command
 
+import kotlin.annotation.AnnotationRetention.BINARY
+import kotlin.annotation.AnnotationTarget.*
+
 @DslMarker
-@Target(AnnotationTarget.CLASS, AnnotationTarget.TYPE)
+@Target(CLASS, TYPE)
+@Retention(BINARY)
 public annotation class CommandDsl
