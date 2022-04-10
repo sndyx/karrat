@@ -4,6 +4,7 @@
 
 package org.karrat.bukkit
 
+import org.bukkit.OfflinePlayer
 import org.bukkit.Server
 import org.bukkit.World
 import org.bukkit.entity.Entity
@@ -19,3 +20,4 @@ public typealias BukkitEntity = Entity
 public typealias BukkitEntitySpigot = Entity.Spigot
 public typealias BukkitEntityLiving = LivingEntity
 public typealias BukkitPlayer = Player
+public typealias BukkitOfflinePlayer = OfflinePlayer

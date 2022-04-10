@@ -29,7 +29,7 @@ import org.bukkit.structure.StructureManager
 import org.bukkit.util.CachedServerIcon
 import org.karrat.Config
 import org.karrat.Server
-import org.karrat.World
+import org.karrat.bukkit.OfflinePlayer
 import org.karrat.entity.getByNameOrNull
 import org.karrat.entity.getByUuidOrNull
 import org.karrat.server.broadcast
@@ -46,9 +46,8 @@ public object ServerDelegate : BukkitServer {
         println("${source.name}: ${message.decodeToString()}")
     }
     
-    override fun getListeningPluginChannels(): MutableSet<String> {
-        TODO("Not yet implemented")
-    }
+    // Client-server communication channels
+    override fun getListeningPluginChannels(): MutableSet<String> = TODO()
     
     override fun getName(): String = "Karrat/Bukkit"
     
@@ -56,9 +55,8 @@ public object ServerDelegate : BukkitServer {
     
     override fun getBukkitVersion(): String = Config.versionName
     
-    override fun getOnlinePlayers(): MutableCollection<out Player> {
-        TODO("Not yet implemented")
-    }
+    override fun getOnlinePlayers(): MutableCollection<Player> =
+        Server.players.map { it.delegate() }.toMutableList()
     
     override fun getMaxPlayers(): Int = Config.maxPlayers
     
@@ -68,6 +66,7 @@ public object ServerDelegate : BukkitServer {
     
     override fun getSimulationDistance(): Int = Config.simulationDistance
     
+    // Not sure what this wants...
     override fun getIp(): String {
         TODO("Not yet implemented")
     }
@@ -98,19 +97,16 @@ public object ServerDelegate : BukkitServer {
         Config.isWhitelistOnly = value
     }
     
-    override fun isWhitelistEnforced(): Boolean = Config.isWhitelistOnly // ???
+    override fun isWhitelistEnforced(): Boolean = Config.isWhitelistOnly
     
     override fun setWhitelistEnforced(value: Boolean) {
         Config.isWhitelistOnly = value
     }
     
-    override fun getWhitelistedPlayers(): MutableSet<OfflinePlayer> {
-        TODO("Not yet implemented")
-    }
+    override fun getWhitelistedPlayers(): MutableSet<BukkitOfflinePlayer> =
+        Config.whitelist.map { OfflinePlayer(it) }.toMutableSet()
     
-    override fun reloadWhitelist() {
-        TODO("Not yet implemented")
-    }
+    override fun reloadWhitelist() { /* Ignore */ }
     
     override fun broadcastMessage(message: String): Int {
         Server.broadcast(message)
@@ -125,9 +121,8 @@ public object ServerDelegate : BukkitServer {
         TODO("Not yet implemented")
     }
     
-    override fun getConnectionThrottle(): Long {
-        TODO("Not yet implemented")
-    }
+    override fun getConnectionThrottle(): Long =
+        Config.connectionThrottle.inWholeMilliseconds
     
     override fun getTicksPerAnimalSpawns(): Int {
         TODO("Not yet implemented")

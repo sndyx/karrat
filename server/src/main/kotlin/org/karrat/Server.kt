@@ -70,7 +70,8 @@ public object Server {
 
         socket.configureBlocking(true)
         println("Bound to ip ${socket.localAddress}.")
-        thread(name = "Console") {
+        Config.lock = true
+        thread(name = "console") {
             startConsoleInput()
         }
         thread(name = "socket") {
