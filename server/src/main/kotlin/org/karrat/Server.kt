@@ -32,7 +32,7 @@ public object Server {
     
     @OptIn(DelicateCoroutinesApi::class)
     public val threadPool: CoroutineContext by lazy {
-        if (Config.threadCount > 0) {
+        if (Config.threadCount > 1) {
             newFixedThreadPoolContext(Config.threadCount - 1, "worker-thread")
         } else EmptyCoroutineContext
     }
