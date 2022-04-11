@@ -23,14 +23,19 @@ import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 import java.security.KeyPair
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
 public object Server {
     
     @OptIn(DelicateCoroutinesApi::class)
-    public val threadPool: ExecutorCoroutineDispatcher by lazy {
-        newFixedThreadPoolContext(Config.threadCount - 1, "worker-thread") }
+    public val threadPool: CoroutineContext by lazy {
+        if (Config.threadCount > 0) {
+            newFixedThreadPoolContext(Config.threadCount - 1, "worker-thread")
+        } else EmptyCoroutineContext
+    }
     
     public var worlds: MutableList<World> = mutableListOf()
     public var commands: MutableList<Command> = mutableListOf()
