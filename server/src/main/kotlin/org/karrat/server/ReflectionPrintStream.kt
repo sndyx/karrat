@@ -4,6 +4,7 @@
 
 package org.karrat.server
 
+import org.karrat.Config
 import java.io.OutputStream
 import java.io.PrintStream
 import java.text.SimpleDateFormat
@@ -22,7 +23,9 @@ public class ReflectionPrintStream(out: OutputStream) : PrintStream(out) {
         get() {
             val caller = Thread.currentThread().stackTrace[4].fileName
             val format = "$time <$caller${
-                if (Thread.currentThread().name == "main") ""
+                if (Thread.currentThread().id == Config.mainThreadId
+                    || Thread.currentThread().name.startsWith("worker-thread")
+                ) ""
                 else " @${Thread.currentThread().name}"
             }>"
             return if (format.length > 40) format.substring(0, 36) + "...>"

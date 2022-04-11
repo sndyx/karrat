@@ -49,7 +49,7 @@ public open class SocketChannel(private val socket: NioSocketChannel) : Closeabl
         }
 
         override fun write(src: ByteBuffer) { /* Ignore */ }
-
+        
     }
 
 }

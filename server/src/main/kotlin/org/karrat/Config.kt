@@ -29,6 +29,13 @@ public object Config {
     public var mainThreadId: Long = Thread.currentThread().id
     
     /**
+     * The amount of threads the server should use. Defaults to the number of
+     * available processors.
+     */
+    @LatchedValue
+    public var threadCount: Int by Latched { Runtime.getRuntime().availableProcessors() }
+    
+    /**
      * Whether the server should use a basic logger. By default, the server sets
      * [System.out] to a more resource-intensive PrintStream. Enabling basic
      * logging can increase server speeds.

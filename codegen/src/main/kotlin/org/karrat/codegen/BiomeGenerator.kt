@@ -40,7 +40,7 @@ fun generateBiomeClass() {
             
             public companion object BiomeRegistry : Loadable<Biome> {
 
-                override val list: MutableSet<Biome> = mutableSetOf()
+                override val list: MutableList<Biome> = mutableListOf()
 
                 public fun fromIdentifier(identifier: Identifier): Biome {
                     return list.first {

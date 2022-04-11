@@ -4,15 +4,16 @@
 
 package org.karrat.server
 
+import kotlinx.coroutines.*
 import org.karrat.Server
 import org.karrat.command.Command
-import org.karrat.command.ConsoleCommandScope
 
-internal fun Server.startConsoleInput() {
+internal suspend fun Server.startConsoleInput(): Unit = coroutineScope {
     runCatching {
-        while (true) {
+        while (currentCoroutineContext().isActive) {
             val line = readln()
             Command.run(line, null)
+            delay(1000L)
         }
     }.onFailure {
         if (it.message?.contains("EOF") == true) {

@@ -27,7 +27,8 @@ public class World(
     public companion object {
         public operator fun invoke(identifier: Identifier): World {
             return Server.worlds.firstOrNull { it.identifier == identifier }
-                ?: error("Unable to find world.")
+                // ?: error("Unable to find world.") commented now for testing purposes
+                ?: World(identifier, Dimension.Overworld, 0)
         }
     }
 

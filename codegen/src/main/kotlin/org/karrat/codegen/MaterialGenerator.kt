@@ -32,7 +32,7 @@ fun generateMaterialClass() {
                     
             public companion object MaterialRegistry : Loadable<Material> {
 
-                override val list: MutableSet<Material> = mutableSetOf()
+                override val list: MutableList<Material> = mutableListOf()
         
                 public fun fromIdentifier(identifier: Identifier): Material {
                     return list.first {
@@ -46,7 +46,7 @@ fun generateMaterialClass() {
                     }
                 }
     
-                override fun register(material: Material) {
+                override fun register(value: Material) {
                     list.add(material)
                 }
                 

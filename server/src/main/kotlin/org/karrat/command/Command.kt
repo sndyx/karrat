@@ -10,6 +10,7 @@ import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.elementDescriptors
 import kotlinx.serialization.serializer
+import org.karrat.Config
 import org.karrat.command.generic.*
 import org.karrat.command.generic.installCommand
 import org.karrat.command.generic.killCommand
@@ -76,7 +77,7 @@ public inline fun <reified T> Command.vararg(
 @CommandDsl
 public interface Command {
 
-    public val nodes: MutableSet<Command>
+    public val nodes: MutableList<Command>
     public val executor: CommandExecutor
 
     public fun matches(tokens: List<String>): Pair<Boolean, Int>
@@ -103,7 +104,7 @@ public interface Command {
                     return
                 }
             } ?: let {
-                respond(sender, "&cInvalid syntax".colored())
+                respond(sender, Config.invalidSyntaxMessage)
                 return
             }
         }
@@ -141,7 +142,7 @@ public interface Command {
 
     public companion object CommandRegistry : Loadable<Command> {
         
-        override val list: MutableSet<Command> get() = Root.nodes
+        override val list: MutableList<Command> get() = Root.nodes
         
         override fun register(value: Command) {
             check(value is CommandNodeLiteral) { "Root node must be a literal node." }
@@ -180,7 +181,7 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
     val literals: List<String>,
 ) : Command {
 
-    override val nodes: MutableSet<Command> = mutableSetOf()
+    override val nodes: MutableList<Command> = mutableListOf()
     override val executor: CommandExecutor = CommandExecutor()
 
 
@@ -220,7 +221,7 @@ internal class CommandNodeArgument<T> @PublishedApi internal constructor(
             CommandNodeArgument<T>(serializer(), label)
     }
 
-    override val nodes: MutableSet<Command> = mutableSetOf()
+    override val nodes: MutableList<Command> = mutableListOf()
     override val executor: CommandExecutor = CommandExecutor()
 
     override fun matches(tokens: List<String>): Pair<Boolean, Int> {

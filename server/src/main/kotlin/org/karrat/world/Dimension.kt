@@ -46,7 +46,7 @@ public abstract class Dimension(
     
     public companion object : Loadable<Dimension> {
 
-        override val list: MutableSet<Dimension> = mutableSetOf()
+        override val list: MutableList<Dimension> = mutableListOf()
 
         public fun fromId(id: Int): Dimension = list.first { it.id == id }
 

@@ -4,10 +4,7 @@
 
 package org.karrat
 
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.karrat.command.Command
 import org.karrat.configuration.eulaPrompt
 import org.karrat.configuration.genServerFiles
@@ -26,11 +23,14 @@ import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 import java.security.KeyPair
-import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
 public object Server {
+    
+    @OptIn(DelicateCoroutinesApi::class)
+    public val threadPool: ExecutorCoroutineDispatcher by lazy {
+        newFixedThreadPoolContext(Config.threadCount - 1, "worker-thread") }
     
     public var worlds: MutableList<World> = mutableListOf()
     public var commands: MutableList<Command> = mutableListOf()
@@ -49,7 +49,8 @@ public object Server {
 
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
     internal var tickTimeMillis: Long = 0L
-
+    
+    @Suppress("BlockingMethodInNonBlockingContext")
     public fun start() {
         System.setOut(
             if (Config.basicLogging) { FormattedPrintStream(System.out) }
@@ -71,23 +72,21 @@ public object Server {
         socket.configureBlocking(true)
         println("Bound to ip ${socket.localAddress}.")
         Config.lock = true
-        thread(name = "console") {
-            startConsoleInput()
-        }
-        thread(name = "socket") {
+        runBlocking {
+            launch(threadPool) { startConsoleInput() }
+            launch(threadPool) {
+                while (isActive) {
+                    tickTimeMillis =
+                        measureTimeMillis {
+                            tick() // Run game tick
+                        }
+                    delay(maxOf(0L, (1000 / Config.tps) - tickTimeMillis))
+                }
+            }
             while (true) {
                 val session = Session(SocketChannel(socket.accept()))
                 sessions.add(session)
                 println("Accepted $session.")
-            }
-        }
-        runBlocking {
-            while (isActive) {
-                tickTimeMillis =
-                    measureTimeMillis {
-                        tick() // Run game tick
-                    }
-                delay(maxOf(0L, (1000 / Config.tps) - tickTimeMillis))
             }
         }
     }
@@ -102,7 +101,7 @@ public object Server {
     public fun tick(): Unit = runBlocking {
         sessions.removeIf { !it.isAlive }
         sessions.forEach { session ->
-            launch {
+            launch(threadPool) {
                 runCatching { session.handle() }
                     .onFailure {
                         println("$session disconnected; internal error: ${it.message}")

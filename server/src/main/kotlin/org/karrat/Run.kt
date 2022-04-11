@@ -12,7 +12,6 @@ internal fun main(args: Array<String>) {
     while (i < args.size) {
         if (args[i].startsWith("--")) {
             when (args[i]) {
-                "--color-output" -> argumentColorOutput()
                 "--help" -> argumentHelp()
                 "--port" -> argumentPort(args[i + 1])
                 "--basic-logging" -> argumentBasicLogging()
@@ -21,7 +20,6 @@ internal fun main(args: Array<String>) {
         } else if (args[i].startsWith('-')) {
             args[i].removePrefix("-").forEach {
                 when (it) {
-                    'c' -> argumentColorOutput()
                     'h' -> argumentHelp()
                     'p' -> argumentPort(args[i + 1])
                 }
@@ -45,10 +43,6 @@ private fun printHelp() {
              --basic-logging Disables reflection in logging
     """.trimIndent()
     )
-}
-
-private fun argumentColorOutput() {
-    Config.colorOutput = true
 }
 
 private fun argumentHelp() {
