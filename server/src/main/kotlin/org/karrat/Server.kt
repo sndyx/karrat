@@ -34,7 +34,7 @@ public object Server {
     public val threadPool: CoroutineContext by lazy {
         if (Config.threadCount > 1) {
             newFixedThreadPoolContext(Config.threadCount - 1, "worker-thread")
-        } else EmptyCoroutineContext
+        } else EmptyCoroutineContext // I need a comment to commit it so sad
     }
     
     public var worlds: MutableList<World> = mutableListOf()
