@@ -86,7 +86,7 @@ public object Config {
     // Behavior
     
     /**
-     * The amount of times the server will tick in a second.
+     * The number of times the server will tick in a second.
      */
     public var tps: Int = 20
     
