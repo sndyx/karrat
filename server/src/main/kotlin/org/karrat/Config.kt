@@ -19,7 +19,20 @@ public object Config {
     
     // Constants
     
-    public const val versionName: String = "1.18.1"
+    /**
+     * The current version of Minecraft
+     */
+    public const val versionName: String = "1.18.2"
+
+    /**
+     * The protocol version number used by the current version of Minecraft.
+     */
+    public const val protocolVersion: Int = 758
+    
+    /**
+     * The session server used by [Server.auth] to authenticate players.
+     */
+    public const val sessionServer: String = "https://sessionserver.mojang.com"
     
     // Meta
     
@@ -70,11 +83,6 @@ public object Config {
      * Whether proxy connections should be refused.
      */
     public var preventProxyConnections: Boolean = false
-    
-    /**
-     * The session server used by [Server.auth] to authenticate players.
-     */
-    public var sessionServer: String = "https://sessionserver.mojang.com"
     
     // In-game
     
