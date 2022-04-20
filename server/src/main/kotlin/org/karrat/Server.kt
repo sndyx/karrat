@@ -76,6 +76,7 @@ public object Server {
         socket.configureBlocking(true)
         println("Bound to ip ${socket.localAddress}.")
         Config.lock = true
+        println("Creating fixed thread pool with ${Config.threadCount} threads.")
         runBlocking {
             launch(threadPool) { startConsoleInput() }
             launch(threadPool) {
