@@ -15,17 +15,26 @@ internal fun main(args: Array<String>) {
                 "--help" -> argumentHelp()
                 "--port" -> argumentPort(args[i + 1])
                 "--basic-logging" -> argumentBasicLogging()
-                else -> printHelp()
+                else -> {
+                    println("Unable to parse argument ${args[i]}")
+                    argumentHelp()
+                }
             }
         } else if (args[i].startsWith('-')) {
             args[i].removePrefix("-").forEach {
                 when (it) {
                     'h' -> argumentHelp()
                     'p' -> argumentPort(args[i + 1])
+                    else -> {
+                        println("Unable to parse single char parameter $it")
+                        argumentHelp()
+                    }
                 }
             }
         } else {
-            printHelp()
+            println("Unable to parse input ${args[i]}")
+            argumentHelp()
+            return
         }
 
         i++
