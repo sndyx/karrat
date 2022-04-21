@@ -9,6 +9,7 @@ import org.karrat.command.Command
 import org.karrat.configuration.eulaPrompt
 import org.karrat.configuration.genServerFiles
 import org.karrat.configuration.isFirstRun
+import org.karrat.configuration.launchWithThreadCount
 import org.karrat.entity.Player
 import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
@@ -23,18 +24,10 @@ import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 import java.security.KeyPair
-import kotlin.coroutines.CoroutineContext
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
 public object Server {
-    
-    @OptIn(DelicateCoroutinesApi::class)
-    public val threadPool: CoroutineContext by lazy {
-        if (Config.threadCount > 1) {
-            newFixedThreadPoolContext(Config.threadCount - 1, "worker-thread")
-        } else Dispatchers.Default // I need a comment to commit it so sad
-    }
     
     public var worlds: MutableList<World> = mutableListOf()
     public var commands: MutableList<Command> = mutableListOf()
@@ -78,8 +71,8 @@ public object Server {
         Config.lock = true
         println("Creating fixed thread pool with ${Config.threadCount} threads.")
         runBlocking {
-            launch(threadPool) { startConsoleInput() }
-            launch(threadPool) {
+            launchWithThreadCount { startConsoleInput() }
+            launchWithThreadCount {
                 while (isActive) {
                     tickTimeMillis =
                         measureTimeMillis {
@@ -106,7 +99,7 @@ public object Server {
     public fun tick(): Unit = runBlocking {
         sessions.removeIf { !it.isAlive }
         sessions.forEach { session ->
-            launch(threadPool) {
+            launchWithThreadCount {
                 runCatching { session.handle() }
                     .onFailure {
                         println("$session disconnected; internal error: ${it.message}")
