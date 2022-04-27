@@ -16,6 +16,8 @@ import org.karrat.command.generic.installCommand
 import org.karrat.command.generic.killCommand
 import org.karrat.command.generic.stopCommand
 import org.karrat.entity.Player
+import org.karrat.internal.success
+import org.karrat.internal.unreachable
 import org.karrat.play.colored
 import org.karrat.serialization.command.CommandDecoder
 import org.karrat.server.Loadable
@@ -86,31 +88,36 @@ public interface Command {
 
     public fun canUse(sender: Player?): Boolean
 
-    public fun run(
+    public fun eval(
         tokens: List<String>,
-        sender: Player? = null,
         args: MutableList<Any> = mutableListOf()
-    ) {
-        if (tokens.isEmpty()) executor.execute(CommandScope(sender, args))
+    ): Result<EvaluatedCommand> {
+        if (tokens.isEmpty()) return Result.success(EvaluatedCommand(this, CommandArguments(args)))
         else {
-            val next = resolveNextNode(tokens, sender)
-
+            val next = resolveNextNode(tokens)
             next?.first?.let {
-                if (it.canUse(sender)) {
-                    it.consume(tokens.take(next.second), args)
-                    it.run(tokens.drop(next.second), sender, args)
-                } else {
-                    respond(sender, "&cLacks permission".colored())
-                    return
-                }
+                return it.eval(tokens.drop(next.second), args)
             } ?: let {
-                respond(sender, Config.invalidSyntaxMessage)
-                return
+                return Result.failure(IllegalArgumentException("Invalid command syntax."))
             }
         }
     }
+    
+    public fun run(
+        tokens: List<String>,
+        sender: Player? = null
+    ): Result<Unit> {
+        eval(tokens).onSuccess {
+            it.run(sender)
+            return Result.success()
+        }.onFailure {
+            respond(sender, Config.invalidSyntaxMessage)
+            return Result.failure(it)
+        }
+        unreachable()
+    }
 
-    public fun resolveNextNode(tokens: List<String>, sender: Player?): Pair<Command, Int>? {
+    public fun resolveNextNode(tokens: List<String>): Pair<Command, Int>? {
         var bestFit: Pair<Command, Int>? = null
         nodes.forEach {
             val result = it.matches(tokens)
@@ -163,14 +170,15 @@ public interface Command {
             register(sudoCommand())
             register(testCommand())
         }
-
-        public fun run(command: String, sender: Player? = null) {
-            val tokens = command.split(" ")
-            run(tokens, sender)
-        }
         
-        public fun run(tokens: List<String>, sender: Player? = null) {
-            Root.run(tokens, sender)
+        public fun eval(command: String): Result<EvaluatedCommand> {
+            val tokens = command.split(' ')
+            return Root.eval(tokens)
+        }
+
+        public fun run(command: String, sender: Player? = null): Result<Unit> {
+            val tokens = command.split(' ')
+            return Root.run(tokens, sender)
         }
 
     }

@@ -10,8 +10,8 @@ import org.karrat.struct.DynamicByteBuffer
 import org.karrat.struct.writeBytes
 
 /**
- * Handles Legacy Clients by sending a kick packet, allowing customization of response
- * Ironically Modern Clients can also send this packet as a backup for the normal ping failing
+ * Handles Legacy Clients by sending a kick packet, allowing customization of
+ * response.
  */
 internal fun Session.handleLegacyPing() {
     val response = DynamicByteBuffer()

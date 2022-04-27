@@ -14,6 +14,7 @@ public fun runExclusively(player: Player, action: ExclusiveScope.() -> Unit) {
 
 public fun exclusiveScope(player: Player): ExclusiveScope {
     val scope = ExclusiveScope(player)
+    return scope
 }
 
 public fun test() {

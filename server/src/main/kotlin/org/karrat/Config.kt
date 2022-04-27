@@ -9,6 +9,7 @@ import org.karrat.play.colored
 import org.karrat.server.LatchedValue
 import org.karrat.struct.Uuid
 import org.karrat.struct.id
+import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -20,7 +21,7 @@ public object Config {
     // Constants
     
     /**
-     * The current version of Minecraft
+     * The current version of Minecraft.
      */
     public const val versionName: String = "1.18.2"
 
@@ -43,7 +44,8 @@ public object Config {
     
     /**
      * The amount of threads the server should use. Defaults to the number of
-     * available processors.
+     * available processors. The lowest amount of threads the server will use is
+     * two.
      */
     @LatchedValue
     public var threadCount: Int by Latched { Runtime.getRuntime().availableProcessors() }
@@ -72,12 +74,12 @@ public object Config {
     /**
      * The network compression threshold, in bytes.
      */
-    public var compressionThreshold: Int = 128
+    public var compressionThreshold: Int by positive(128)
     
     /**
      * The maximum capacity of a network buffer, in bytes.
      */
-    public var networkBufferSize: Int = 32767
+    public var networkBufferSize: Int by positive(32767)
     
     /**
      * Whether proxy connections should be refused.
@@ -96,17 +98,17 @@ public object Config {
     /**
      * The number of times the server will tick in a second.
      */
-    public var tps: Int = 20
+    public var tps: Int by positive(20)
     
     /**
      * The number of chunks around a given player to be sent to the client.
      */
-    public var viewDistance: Int = 8
+    public var viewDistance: Int by positive(8)
     
     /**
      * The number of chunks around a given player to be simulated.
      */
-    public var simulationDistance: Int = 8
+    public var simulationDistance: Int by positive(8)
     
     // Administration
     
@@ -132,7 +134,7 @@ public object Config {
      * The maximum amount of players that can join before connections will be
      * refused.
      */
-    public var maxPlayers: Int = 100
+    public var maxPlayers: Int by positive(100)
     
     // Display
     
@@ -184,5 +186,10 @@ public object Config {
         }
         
     }
+    
+    private fun <T : Number> positive(value: T) =
+        Delegates.vetoable(value) { _, _, newValue ->
+            newValue.toDouble() > 0
+        }
     
 }

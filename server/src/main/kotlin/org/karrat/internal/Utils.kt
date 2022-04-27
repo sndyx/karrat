@@ -86,3 +86,7 @@ internal class LazyMutable<T>(val initializer: () -> T) : ReadWriteProperty<Any?
     }
 
 }
+
+internal fun Result.Companion.success(): Result<Unit> = success(Unit)
+
+internal fun unreachable(): Nothing = throw IllegalStateException("Statement is not unreachable.")
