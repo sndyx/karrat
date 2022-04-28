@@ -25,10 +25,10 @@ public class VarArray64<T : Number>(public val size: Int, public val blockSize: 
     public val chunks: List<Chunk> = List((size + chunkCapacity - 1) / chunkCapacity) { Chunk() }
     
     override operator fun get(index: Int): T =
-        chunks[(index + chunkCapacity - 1) / chunkCapacity][index.mod(chunkCapacity)]
+        chunks[(index + chunkCapacity) / chunkCapacity - 1][index.mod(chunkCapacity)]
     
     override operator fun set(index: Int, value: T) {
-        chunks[(index + chunkCapacity - 1) / chunkCapacity][index.mod(chunkCapacity)] = value
+        chunks[(index + chunkCapacity) / chunkCapacity - 1][index.mod(chunkCapacity)] = value
     }
     
     public inner class Chunk {
