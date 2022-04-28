@@ -101,6 +101,7 @@ Credits to *wiki.vg* for the great amount of help provided through its protocol 
 The following files are used in this program:
  - *dimension_codec.json*, courtesy of *wiki.vg*.
  - *materials.json*, courtesy of *prismarine.js*
+ - *blocks.json*, courtesy of *prismarine.js*
 
 # License
 
