@@ -43,7 +43,7 @@ Using the Karrat API requires Kotlin compiler `1.6.0` or higher.
 
 ### Gradle
 
-To set up your plugin development environment, simply add the artifact to your
+To set up your plugin development environment, add the artifact to your
  `build.gradle`(`.kts`) file.
 
 Kotlin DSL:
@@ -74,9 +74,9 @@ dependencies {
 
 ---
 
-### Maven (Not Recommended)
+### Maven
 
-To set up your plugin development environment, simply add the artifact to your
+To set up your plugin development environment, add the artifact to your
  `pom.xml` file.
 
 ```xml
