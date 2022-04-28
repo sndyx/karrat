@@ -9,6 +9,8 @@ package org.karrat.struct
  */
 public interface VarArray<T : Number> {
     
+    public var blockSize: Int
+    
     public operator fun get(index: Int): T
     
     public operator fun set(index: Int, value: T)
@@ -19,16 +21,28 @@ public interface VarArray<T : Number> {
  * A low-memory-impact [VarArray] implementation where data is stored in 64-bit
  * chunks.
  */
-public class VarArray64<T : Number>(public val size: Int, public val blockSize: Int) : VarArray<T> {
+public class VarArray64<T : Number>(public val size: Int, bitsPerValue: Int) : VarArray<T> {
     
     public val chunkCapacity: Int = 64 / blockSize
-    public val chunks: List<Chunk> = List((size + chunkCapacity - 1) / chunkCapacity) { Chunk() }
+    public val chunks: MutableList<Chunk> = MutableList((size - 1) / chunkCapacity + 1) { Chunk() }
+    
+    private var _blockSize: Int = bitsPerValue
+    override var blockSize: Int
+        get() = _blockSize
+        set(value) {
+            _blockSize = value
+            resize()
+        }
     
     override operator fun get(index: Int): T =
-        chunks[(index + chunkCapacity) / chunkCapacity - 1][index.mod(chunkCapacity)]
+        chunks[index / chunkCapacity][index.mod(chunkCapacity)]
     
     override operator fun set(index: Int, value: T) {
-        chunks[(index + chunkCapacity) / chunkCapacity - 1][index.mod(chunkCapacity)] = value
+        chunks[index / chunkCapacity][index.mod(chunkCapacity)] = value
+    }
+    
+    private fun resize() {
+        TODO("This is hard :( ...")
     }
     
     public inner class Chunk {
