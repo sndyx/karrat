@@ -4,6 +4,7 @@
 
 package org.karrat.struct
 
+import org.karrat.World
 import kotlin.math.sqrt
 
 public data class Vec3i(
@@ -14,6 +15,18 @@ public data class Vec3i(
 
     public operator fun plus(other: Vec3i): Vec3i =
         Vec3i(x + other.x, y + other.y, z + other.z)
+
+    public operator fun minus(other: Vec3i): Vec3i =
+        Vec3i(x - other.x, y - other.y, z - other.z)
+
+    public operator fun times(other: Int): Vec3i =
+        Vec3i(x * other, y * other, z * other)
+    
+    public operator fun times(other: Double): Vec3d =
+        Vec3d(x * other, y * other, z * other)
+
+    public operator fun div(other: Double): Vec3d =
+        Vec3d(x / other, y / other, z / other)
 
 }
 
@@ -26,6 +39,18 @@ public data class Vec3d(
     public operator fun plus(other: Vec3d): Vec3d =
         Vec3d(x + other.x, y + other.y, z + other.z)
 
+    public operator fun plus(other: Vec3i): Vec3d =
+        Vec3d(x + other.x, y + other.y, z + other.z)
+
+    public operator fun minus(other: Vec3d): Vec3d =
+        Vec3d(x - other.x, y - other.y, z - other.z)
+    
+    public operator fun times(other: Double): Vec3d =
+        Vec3d(x * other, y * other, z * other)
+
+    public operator fun div(other: Double): Vec3d =
+        Vec3d(x / other, y / other, z / other)
+
 }
 
 public data class Location(
@@ -34,10 +59,21 @@ public data class Location(
     public var y: Double,
     public var z: Double
 ) {
-
-    public operator fun plus(other: Location): Location =
+    
+    public operator fun plus(other: Vec3i): Location =
         Location(world, x + other.x, y + other.y, z + other.z)
 
+    public operator fun plus(other: Vec3d): Location =
+        Location(world, x + other.x, y + other.y, z + other.z)
+    
+    public operator fun minus(other: Vec3d): Location =
+        Location(world, x - other.x, y - other.y, z - other.z)
+
+    public operator fun times(other: Double): Location =
+        Location(world, x * other, y * other, z * other)
+
+    public operator fun div(other: Double): Location =
+        Location(world, x / other, y / other, z / other)
 }
 
 public fun Vec3i.toVec3d(): Vec3d =
@@ -52,20 +88,44 @@ public fun Location.toVec3i(): Vec3i =
 public fun Location.toVec3d(): Vec3d =
     Vec3d(x, y, z)
     
+public fun Vec3d.floor(): Vec3d =
+    Vec3d(kotlin.math.floor(x), kotlin.math.floor(y), kotlin.math.floor(z))
+    
+public fun Location.floor(): Location =
+    Location(world, kotlin.math.floor(x), kotlin.math.floor(y), kotlin.math.floor(z))
+
+public fun Vec3d.ceil(): Vec3d =
+    Vec3d(kotlin.math.ceil(x), kotlin.math.ceil(y), kotlin.math.ceil(z))
+
+public fun Location.ceil(): Location =
+    Location(world, kotlin.math.ceil(x), kotlin.math.ceil(y), kotlin.math.ceil(z))
+
 public fun Vec3d.normalized(): Vec3d =
-    Vec3d(x.toInt().toDouble(), y.toInt().toDouble(), z.toInt().toDouble())
-    
+    div(mag())
+
 public fun Location.normalized(): Location =
-    Location(world, x.toInt().toDouble(), y.toInt().toDouble(), z.toInt().toDouble())
-    
+    div(mag())
+
+public fun Vec3i.normalized(): Vec3d =
+    div(mag())
+
+public fun Location.mag(): Double =
+    sqrt(x * x + y * y + z * z)
+
+public fun Vec3d.mag(): Double =
+    sqrt(x * x + y * y + z * z)
+
+public fun Vec3i.mag(): Double =
+    sqrt((x * x + y * y + z * z).toDouble())
+
 public fun Vec3d.centered(deltaY: Double): Vec3d =
-    normalized().apply { x += 0.5; y += deltaY; z += 0.5 }
+    floor().apply { x += 0.5; y += deltaY; z += 0.5 }
     
 public fun Vec3d.centered(centerY: Boolean = true): Vec3d =
     centered(0.5)
     
 public fun Location.centered(deltaY: Double): Location =
-    normalized().apply { x += 0.5; y += deltaY; z += 0.5 }
+    floor().apply { x += 0.5; y += deltaY; z += 0.5 }
     
 public fun Location.centered(centerY: Boolean = true): Location =
     centered(0.5)
@@ -101,7 +161,7 @@ public fun Location.crossProduct(other: Location): Location =
         x * other.y - y * other.x
     )
     
-public fun Vec3i.squareDistanceTo(other: Vec3i): Double =
+public fun Vec3i.squareDistanceTo(other: Vec3i): Int =
     (x - other.x) * (x - other.x) + (y - other.y) * (y - other.y) + (z - other.z) * (z - other.z)
     
 public fun Vec3i.distanceTo(other: Vec3i): Double =
@@ -111,10 +171,10 @@ public fun Vec3d.squareDistanceTo(other: Vec3d): Double =
     (x - other.x) * (x - other.x) + (y - other.y) * (y - other.y) + (z - other.z) * (z - other.z)
     
 public fun Vec3d.distanceTo(other: Vec3d): Double =
-    sqrt(distanceTo(other))
+    sqrt(squareDistanceTo(other))
  
 public fun Location.squareDistanceTo(other: Location): Double =
     (x - other.x) * (x - other.x) + (y - other.y) * (y - other.y) + (z - other.z) * (z - other.z)
     
 public fun Location.distanceTo(other: Location): Double =
-    sqrt(distanceTo(other))
+    sqrt(squareDistanceTo(other))
