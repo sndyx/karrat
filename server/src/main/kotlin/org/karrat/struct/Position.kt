@@ -40,60 +40,60 @@ public data class Location(
 
 }
 
-fun Vec3i.toVec3d(): Vec3d =
+public fun Vec3i.toVec3d(): Vec3d =
     Vec3d(x.toDouble(), y.toDouble(), z.toDouble())
 
-fun Vec3d.toVec3i(): Vec3i =
+public fun Vec3d.toVec3i(): Vec3i =
     Vec3i(x.toInt(), y.toInt(), z.toInt())
 
-fun Location.toVec3i(): Vec3i =
+public fun Location.toVec3i(): Vec3i =
     Vec3i(x.toInt(), y.toInt(), z.toInt())
 
-fun Location.toVec3d(): Vec3d =
+public fun Location.toVec3d(): Vec3d =
     Vec3d(x, y, z)
     
-fun Vec3d.normalized(): Vec3d =
+public fun Vec3d.normalized(): Vec3d =
     Vec3d(x.toInt().toDouble(), y.toInt().toDouble(), z.toInt().toDouble())
     
-fun Location.normalized(): Location =
+public fun Location.normalized(): Location =
     Location(world, x.toInt().toDouble(), y.toInt().toDouble(), z.toInt().toDouble())
     
-fun Vec3d.centered(deltaY: Double): Vec3d =
+public fun Vec3d.centered(deltaY: Double): Vec3d =
     normalized().apply { x += 0.5; y += deltaY; z += 0.5 }
     
-fun Vec3d.centered(centerY: Boolean = true): Vec3d =
+public fun Vec3d.centered(centerY: Boolean = true): Vec3d =
     centered(0.5)
     
-fun Location.centered(deltaY: Double): Location =
+public fun Location.centered(deltaY: Double): Location =
     normalized().apply { x += 0.5; y += deltaY; z += 0.5 }
     
-fun Location.centered(centerY: Boolean = true): Location =
+public fun Location.centered(centerY: Boolean = true): Location =
     centered(0.5)
     
-fun Vec3i.dotProduct(other: Vec3i): Vec3i =
+public fun Vec3i.dotProduct(other: Vec3i): Vec3i =
     Vec3i(x * other.x, y * other.y, z * other.z)
     
-fun Vec3i.crossProduct(other: Vec3i): Vec3i =
+public fun Vec3i.crossProduct(other: Vec3i): Vec3i =
     Vec3i(
         y * other.z - z * other.y,
         z * other.x - x * other.z,
         x * other.y - y * other.x
     )
     
-fun Vec3d.dotProduct(other: Vec3d): Vec3d =
+public fun Vec3d.dotProduct(other: Vec3d): Vec3d =
     Vec3d(x * other.x, y * other.y, z * other.z)
     
-fun Vec3d.crossProduct(other: Vec3d): Vec3d =
+public fun Vec3d.crossProduct(other: Vec3d): Vec3d =
     Vec3d(
         y * other.z - z * other.y,
         z * other.x - x * other.z,
         x * other.y - y * other.x
     )
     
-fun Location.dotProduct(other: Location): Location =
+public fun Location.dotProduct(other: Location): Location =
     Location(world, x * other.x, y * other.y, z * other.z)
     
-fun Location.crossProduct(other: Location): Location =
+public fun Location.crossProduct(other: Location): Location =
     Location(
         world,
         y * other.z - z * other.y,
@@ -101,20 +101,20 @@ fun Location.crossProduct(other: Location): Location =
         x * other.y - y * other.x
     )
     
-fun Vec3i.squareDistanceTo(other: Vec3i): Double =
+public fun Vec3i.squareDistanceTo(other: Vec3i): Double =
     (x - other.x) * (x - other.x) + (y - other.y) * (y - other.y) + (z - other.z) * (z - other.z)
     
-fun Vec3i.distanceTo(other: Vec3i): Double =
+public fun Vec3i.distanceTo(other: Vec3i): Double =
     sqrt(distanceTo(other))
     
-fun Vec3d.squareDistanceTo(other: Vec3d): Double =
+public fun Vec3d.squareDistanceTo(other: Vec3d): Double =
     (x - other.x) * (x - other.x) + (y - other.y) * (y - other.y) + (z - other.z) * (z - other.z)
     
-fun Vec3d.distanceTo(other: Vec3d): Double =
+public fun Vec3d.distanceTo(other: Vec3d): Double =
     sqrt(distanceTo(other))
  
-fun Location.squareDistanceTo(other: Location): Double =
+public fun Location.squareDistanceTo(other: Location): Double =
     (x - other.x) * (x - other.x) + (y - other.y) * (y - other.y) + (z - other.z) * (z - other.z)
     
-fun Location.distanceTo(other: Location): Double =
+public fun Location.distanceTo(other: Location): Double =
     sqrt(distanceTo(other))
