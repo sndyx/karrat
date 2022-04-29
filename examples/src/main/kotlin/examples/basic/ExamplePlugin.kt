@@ -5,10 +5,8 @@
 package examples.basic
 
 import org.karrat.Server
-import org.karrat.event.PacketEvent
 import org.karrat.event.StatusResponseEvent
 import org.karrat.event.on
-import org.karrat.packet.ServerboundPacket
 import org.karrat.plugin.Init
 import org.karrat.plugin.InitializeAfter
 import org.karrat.plugin.Plugin

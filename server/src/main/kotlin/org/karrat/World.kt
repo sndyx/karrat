@@ -4,24 +4,28 @@
 
 package org.karrat
 
+import WorldGenerator
+import kotlinx.serialization.Serializable
 import org.karrat.entity.Entity
 import org.karrat.entity.Player
 import org.karrat.internal.hash
 import org.karrat.play.BlockPos
+import org.karrat.play.Vec2i
+import org.karrat.serialization.serializer.PrimitiveWorldSerializer
 import org.karrat.struct.Identifier
 import org.karrat.struct.MutableByteBuffer
 import org.karrat.struct.toByteBuffer
 import org.karrat.world.Block
 import org.karrat.world.Chunk
 import org.karrat.world.Dimension
-import kotlinx.serialization.Serializable
-import org.karrat.serialization.serializer.PrimitiveWorldSerializer
 
 @Serializable(with = PrimitiveWorldSerializer::class)
 public class World(
     public val identifier: Identifier,
     public val dimension: Dimension,
-    public val seed: Long
+    public val seed: Long,
+    public val generator: WorldGenerator = WorldGenerator.Default,
+    public val height: Int = 384
 ) {
 
     public companion object {
@@ -35,7 +39,7 @@ public class World(
     public val name: String
         get() = identifier.name // This is: right :)
 
-    public val chunks: MutableSet<Chunk> = mutableSetOf()
+    public val chunks: MutableMap<Vec2i, Chunk> = mutableMapOf()
     public val entities: MutableSet<Entity> = mutableSetOf()
     public val players: List<Player>
         get() = entities.filterIsInstance<Player>()
@@ -47,33 +51,40 @@ public class World(
         hash(MutableByteBuffer(8)
             .apply { writeLong(seed) }.bytes
         ).toByteBuffer().readLong()
-
-    // Block accessors
-
-    public fun blockAt(x: Int, y: Int, z: Int): Block {
-        TODO()
-    }
-
+    
+    /**
+     * Gets the [Block] at position [pos].
+     */
     public fun blockAt(pos: BlockPos): Block =
-        blockAt(pos.xPos, pos.yPos, pos.zPos)
-
+        get(pos.x, pos.y, pos.z)
+    
+    /**
+     * Gets the [Block] at the given [x], [y], and [z] coordinates.
+     */
     public operator fun get(x: Int, y: Int, z: Int): Block =
-        blockAt(x, y, z)
-
-    public operator fun get(pos: BlockPos): Block =
-        blockAt(pos)
-
-    public fun setBlock(x: Int, y: Int, z: Int, block: Block) {
-        TODO()
-    }
-
+        get(x / 16, z / 16)[x % 16, y, z % 16]
+    
+    /**
+     * Sets the [Block] at position [pos].
+     */
     public fun setBlock(pos: BlockPos, block: Block): Unit =
-        setBlock(pos.xPos, pos.yPos, pos.zPos, block)
-
+        set(pos.x, pos.y, pos.z, block)
+    
+    /**
+     * Sets the [Block] at the given [x], [y], and [z] coordinates.
+     */
     public operator fun set(x: Int, y: Int, z: Int, block: Block): Unit =
-        setBlock(x, y, z, block)
-
-    public operator fun set(pos: BlockPos, block: Block): Unit =
-        setBlock(pos, block)
-
+        chunkAt(Vec2i(x / 16, z / 16)).set(x % 16, y, z % 16, block)
+    
+    /**
+     * Gets the [Chunk] at the position [pos].
+     */
+    public fun chunkAt(pos: Vec2i): Chunk =
+        chunks[pos] ?: run { generator.generateChunk(this, pos); chunks[pos]!! }
+    
+    /**
+     * Gets the [Chunk] at the given [x] and [z] coordinates.
+     */
+    public operator fun get(x: Int, z: Int): Chunk = chunkAt(Vec2i(x, z))
+    
 }

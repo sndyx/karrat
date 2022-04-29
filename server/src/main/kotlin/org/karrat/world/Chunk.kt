@@ -4,17 +4,15 @@
 
 package org.karrat.world
 
-import kotlin.math.mod
-
-public class Chunk(minY: Int, height: Int) {
+public class Chunk(height: Int) {
     
-    public val sections: List<ChunkSection>(height / 16) { ChunkSection() }
+    public val sections: List<ChunkSection> = List(height / 16) { ChunkSection() }
     
     public operator fun get(x: Int, y: Int, z: Int): Block =
-        sections[y / 16][x, y mod 16, z]
+        sections[y / 16][x, y % 16, z]
     
     public operator fun set(x: Int, y: Int, z: Int, value: Block) {
-        sections[y / 16][x, y mod 16, z] = value  
+        sections[y / 16][x, y % 16, z] = value
     }
 
 }

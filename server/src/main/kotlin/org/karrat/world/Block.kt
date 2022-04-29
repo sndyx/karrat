@@ -4,5 +4,8 @@
 
 package org.karrat.world
 
-public class Block {
+public open class Block {
+    
+    public object Stone : Block()
+    
 }
