@@ -8,7 +8,7 @@ import org.karrat.Server
 import org.karrat.World
 import org.karrat.network.Session
 import org.karrat.network.SocketChannel
-import org.karrat.play.Location
+import org.karrat.struct.Location
 import org.karrat.struct.Uuid
 import org.karrat.struct.id
 

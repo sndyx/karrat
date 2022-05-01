@@ -5,7 +5,7 @@
 package org.karrat.entity
 
 import org.karrat.internal.lazyMutable
-import org.karrat.play.Location
+import org.karrat.struct.Location
 
 public abstract class EntityLiving(location: Location) : Entity(location) {
 

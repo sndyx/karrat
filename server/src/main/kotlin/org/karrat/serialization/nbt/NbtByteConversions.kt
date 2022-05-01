@@ -6,16 +6,10 @@ package org.karrat.serialization.nbt
 
 import org.karrat.struct.*
 
-/**
- * Writes a nameless NbtCompound to a buffer
- */
 internal fun writeNbtCompound(buffer: MutableByteBuffer, value: NbtCompound) {
     writeNbt(buffer, value)
 }
 
-/**
- * Writes a nameless NBTList to a buffer
- */
 internal fun writeNbtList(buffer: MutableByteBuffer, value: List<*>) {
     writeNbt(buffer, value)
 }
@@ -90,9 +84,6 @@ internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
     }
 }
 
-/**
- * Reads a nameless Nbt Compound value
- */
 internal fun readNbtCompound(buffer: ByteBuffer): Any {
     return readNbt(buffer, 10)
 }

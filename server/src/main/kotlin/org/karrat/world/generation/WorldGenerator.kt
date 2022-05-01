@@ -1,5 +1,5 @@
 import org.karrat.World
-import org.karrat.play.Vec2i
+import org.karrat.struct.Vec2i
 import org.karrat.world.Block
 import org.karrat.world.Chunk
 

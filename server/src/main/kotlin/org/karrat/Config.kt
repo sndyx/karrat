@@ -4,9 +4,9 @@
 
 package org.karrat
 
-import org.karrat.play.Location
 import org.karrat.play.colored
 import org.karrat.server.LatchedValue
+import org.karrat.struct.Location
 import org.karrat.struct.Uuid
 import org.karrat.struct.id
 import kotlin.properties.Delegates

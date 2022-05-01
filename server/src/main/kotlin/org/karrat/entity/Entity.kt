@@ -4,8 +4,8 @@
 
 package org.karrat.entity
 
-import org.karrat.play.Location
-import org.karrat.play.Vec3d
+import org.karrat.struct.Location
+import org.karrat.struct.Vec3d
 
 public abstract class Entity(loc: Location) {
 

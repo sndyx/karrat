@@ -9,16 +9,19 @@ import kotlinx.serialization.Serializable
 import org.karrat.entity.Entity
 import org.karrat.entity.Player
 import org.karrat.internal.hash
-import org.karrat.play.BlockPos
-import org.karrat.play.Vec2i
 import org.karrat.serialization.serializer.PrimitiveWorldSerializer
-import org.karrat.struct.Identifier
-import org.karrat.struct.MutableByteBuffer
-import org.karrat.struct.toByteBuffer
+import org.karrat.struct.*
 import org.karrat.world.Block
 import org.karrat.world.Chunk
 import org.karrat.world.Dimension
 
+/**
+ * Represents a Minecraft world. Contains [chunks], [entities], and [players].
+ *
+ * @param seed 64-bit value used during world generation.
+ * @param generator [World chunk generator][WorldGenerator], or [WorldGenerator.Default].
+ * @param height Maximum build height. Must be below 20,000.
+ */
 @Serializable(with = PrimitiveWorldSerializer::class)
 public class World(
     public val identifier: Identifier,
