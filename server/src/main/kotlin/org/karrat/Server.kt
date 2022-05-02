@@ -39,7 +39,6 @@ public object Server {
     
     internal var tickTimeMillis: Long = 0L
     
-    @Suppress("BlockingMethodInNonBlockingContext")
     public fun start() {
         System.setOut(
             if (Config.basicLogging) { FormattedPrintStream(System.out) }
@@ -74,6 +73,7 @@ public object Server {
             }
             launchInThreadPool {
                 while (true) {
+                    @Suppress("BlockingMethodInNonBlockingContext") // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
                     val session = Session(SocketChannel(socket.accept()))
                     sessions.add(session)
                     println("Accepted $session.")
