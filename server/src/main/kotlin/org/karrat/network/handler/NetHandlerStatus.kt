@@ -22,7 +22,7 @@ public open class NetHandlerStatus(private val session: Session) : NetHandler {
     override fun read(id: Int, data: ByteBuffer): ServerboundPacket = when (id) {
         0x00 -> StatusRequestPacket
         0x01 -> PingPacket(data)
-        else -> error("Invalid packet id $id in state handshake.")
+        else -> error("Invalid packet id $id in state status.")
     }
 
     override fun process(packet: ServerboundPacket): Unit = when (packet) {

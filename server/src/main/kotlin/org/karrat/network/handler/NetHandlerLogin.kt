@@ -42,7 +42,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
     ): ServerboundPacket = when (id) {
         0x00 -> LoginStartPacket(data)
         0x01 -> EncryptionResponsePacket(data)
-        else -> error("Invalid packet id $id in state handshake.")
+        else -> error("Invalid packet id $id in state play.")
     }
 
     override fun process(packet: ServerboundPacket): Unit = when (packet) {

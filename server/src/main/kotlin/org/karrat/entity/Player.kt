@@ -32,14 +32,15 @@ public open class Player(
 }
 
 /**
- * A dummy player with a [session] that ignores all read/write
- * operations, by means of [SocketChannel.DummySocketChannel].
+ * A dummy player with a [session] that ignores all read/write operations.
+ *
+ * @see SocketChannel.DummySocketChannel
  */
 public class DummyPlayer(
     uuid: Uuid,
     name: String,
     location: Location = Location(
-        World(id("TestNameSpace", "Main_World")),
+        World(id("dummy", "dummy")),
         0.0,
         0.0,
         0.0
