@@ -15,6 +15,7 @@ internal fun main(args: Array<String>) {
                 "--help" -> argumentHelp()
                 "--port" -> argumentPort(args[i + 1])
                 "--basic-logging" -> argumentBasicLogging()
+                "--dev-env" -> argumentDevEnv()
                 else -> {
                     println("Unable to parse argument ${args[i]}")
                     argumentHelp()
@@ -25,6 +26,7 @@ internal fun main(args: Array<String>) {
                 when (it) {
                     'h' -> argumentHelp()
                     'p' -> argumentPort(args[i + 1])
+                    'd' -> argumentDevEnv()
                     else -> {
                         println("Unable to parse single char parameter $it")
                         argumentHelp()
@@ -36,7 +38,6 @@ internal fun main(args: Array<String>) {
             argumentHelp()
             return
         }
-
         i++
     }
     Server.start()
@@ -46,9 +47,9 @@ private fun printHelp() {
     println(
         """
         Usage: karrat [options...]
-         -c, --color-output  Color codes logging messages
          -h, --help          This help text
          -p, --port          Sets the port to listen on
+         -d, --dev-env       Enables developer environment
              --basic-logging Disables reflection in logging
     """.trimIndent()
     )
@@ -72,4 +73,8 @@ private fun argumentPort(next: String) {
 
 private fun argumentBasicLogging() {
     Config.basicLogging = true
+}
+
+private fun argumentDevEnv() {
+    Config.isDevEnvironment = true
 }

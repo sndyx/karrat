@@ -17,6 +17,7 @@ import org.karrat.play.Material
 import org.karrat.server.FormattedPrintStream
 import org.karrat.server.ReflectionPrintStream
 import org.karrat.server.startConsoleInput
+import org.karrat.struct.id
 import org.karrat.world.Biome
 import org.karrat.world.Dimension
 import java.net.InetAddress
@@ -39,16 +40,24 @@ public object Server {
     
     internal var tickTimeMillis: Long = 0L
     
-    public fun start() {
+    @Suppress("BlockingMethodInNonBlockingContext")
+    public fun start(): Unit = runBlocking {
+        Config.lock = true
         System.setOut(
-            if (Config.basicLogging) { FormattedPrintStream(System.out) }
-            else { ReflectionPrintStream(System.out) }
+            if (Config.basicLogging) {
+                FormattedPrintStream(System.out)
+            } else {
+                ReflectionPrintStream(System.out)
+            }
         )
         println("Server starting.")
         if (isFirstRun) {
             genServerFiles()
+            worlds.add(World(id("minecraft:main"), Dimension.Overworld, 0))
         }
-        eulaPrompt()
+        if (!Config.isDevEnvironment) {
+            eulaPrompt()
+        }
         loadResources()
         socket = ServerSocketChannel.open()
         runCatching {
@@ -58,26 +67,22 @@ public object Server {
         }
         socket.configureBlocking(true)
         println("Bound to ip ${socket.localAddress}.")
-        Config.lock = true
         println("Creating fixed thread pool with ${Config.threadCount} threads.")
-        runBlocking {
-            launchInThreadPool { startConsoleInput() }
-            launchInThreadPool {
-                while (isActive) {
-                    tickTimeMillis =
-                        measureTimeMillis {
-                            tick() // Run game tick
-                        }
-                    delay(maxOf(0L, (1000 / Config.tps) - tickTimeMillis))
-                }
+        launchInThreadPool { startConsoleInput() }
+        launchInThreadPool {
+            while (isActive) {
+                tickTimeMillis =
+                    measureTimeMillis {
+                        tick() // Run game tick
+                    }
+                delay(maxOf(0L, (1000 / Config.tps) - tickTimeMillis))
             }
-            launchInThreadPool {
-                while (true) {
-                    @Suppress("BlockingMethodInNonBlockingContext") // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
-                    val session = Session(SocketChannel(socket.accept()))
-                    sessions.add(session)
-                    println("Accepted $session.")
-                }
+        }
+        launchInThreadPool {
+            while (true) {
+                val session = Session(SocketChannel(socket.accept()))
+                sessions.add(session)
+                println("Accepted $session.")
             }
         }
     }
@@ -89,8 +94,8 @@ public object Server {
         exitProcess(0)
     }
 
-    public fun tick(): Unit = runBlocking {
-        sessions.removeIf { !it.isAlive }
+    public suspend fun tick(): Unit = coroutineScope {
+        sessions.removeAll { !it.isAlive }
         sessions.forEach { session ->
             launchInThreadPool {
                 runCatching { session.handle() }

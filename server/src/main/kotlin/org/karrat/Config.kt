@@ -58,6 +58,9 @@ public object Config {
     @LatchedValue
     public var basicLogging: Boolean by Latched { false }
     
+    @LatchedValue
+    public var isDevEnvironment: Boolean by Latched { false }
+    
     // Network
     
     /**

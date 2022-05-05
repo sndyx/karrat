@@ -45,11 +45,31 @@ tasks {
         kotlinOptions {
             jvmTarget = "1.8"
             freeCompilerArgs = listOf(
-                "-Xopt-in=kotlin.RequiresOptIn",
+                "-opt-in=kotlin.RequiresOptIn",
                 "-Xexplicit-api=strict",
                 "-Xbackend-threads=0" // Multi-threaded compilation 😎
             )
         }
     }
     
+}
+
+task<Copy>("copyJar") {
+    group = "server"
+    dependsOn("build")
+    from("build/libs/server-1.18.2.jar")
+    into("build/server")
+}
+
+task("clear") {
+    group = "server"
+    files("build/server").forEach { it.delete() }
+}
+
+task<JavaExec>("run") {
+    group = "server"
+    dependsOn("copyJar")
+    workingDir = file("build/server")
+    classpath = files("build/server/server-1.18.2.jar")
+    args = listOf("--dev-env")
 }
