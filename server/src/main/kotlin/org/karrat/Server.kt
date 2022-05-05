@@ -64,6 +64,7 @@ public object Server {
         }.onFailure {
             exitProcessWithMessage("Port ${Config.port} is already in use! Shutting down server...", 1)
         }
+        socket.configureBlocking(false)
         println("Bound to ip ${socket.localAddress}.")
         println("Creating fixed thread pool with ${Config.threadCount} threads.")
         launchInThreadPool { startConsoleInput() }
