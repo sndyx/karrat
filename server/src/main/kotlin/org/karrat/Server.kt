@@ -80,6 +80,7 @@ public object Server {
             while (true) {
                 @Suppress("BlockingMethodInNonBlockingContext") // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
                 socket.accept()?.let {
+                    it.configureBlocking(false)
                     val session = Session(SocketChannel(it))
                     sessions.add(session)
                     println("Accepted $session")
