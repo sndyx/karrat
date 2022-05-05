@@ -40,7 +40,6 @@ public object Server {
     
     internal var tickTimeMillis: Long = 0L
     
-    @Suppress("BlockingMethodInNonBlockingContext")
     public fun start(): Unit = runBlocking {
         Config.lock = true
         System.setOut(
@@ -65,7 +64,6 @@ public object Server {
         }.onFailure {
             exitProcessWithMessage("Port ${Config.port} is already in use! Shutting down server...", 1)
         }
-        socket.configureBlocking(true)
         println("Bound to ip ${socket.localAddress}.")
         println("Creating fixed thread pool with ${Config.threadCount} threads.")
         launchInThreadPool { startConsoleInput() }
@@ -80,9 +78,13 @@ public object Server {
         }
         launchInThreadPool {
             while (true) {
-                val session = Session(SocketChannel(socket.accept()))
-                sessions.add(session)
-                println("Accepted $session.")
+                @Suppress("BlockingMethodInNonBlockingContext") // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
+                socket.accept()?.let {
+                    val session = Session(SocketChannel(it))
+                    sessions.add(session)
+                    println("Accepted $session")
+                }
+                delay(1000L)
             }
         }
     }
