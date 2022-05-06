@@ -18,10 +18,8 @@ import org.karrat.command.generic.stopCommand
 import org.karrat.entity.Player
 import org.karrat.internal.success
 import org.karrat.internal.unreachable
-import org.karrat.play.colored
 import org.karrat.serialization.command.CommandDecoder
-import org.karrat.server.Loadable
-import java.lang.RuntimeException
+import org.karrat.struct.Loadable
 
 public inline fun command(
     literals: List<String>,

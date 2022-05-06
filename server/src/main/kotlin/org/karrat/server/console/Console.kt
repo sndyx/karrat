@@ -2,13 +2,24 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.server
+package org.karrat.server.console
 
 import kotlinx.coroutines.*
+import org.karrat.Config
 import org.karrat.Server
 import org.karrat.command.Command
 
-internal suspend fun Server.startConsoleInput(): Unit = coroutineScope {
+internal fun Server.registerConsoleOutput() {
+    System.setOut(
+        if (Config.basicLogging) {
+            SimplePrintStream(System.out)
+        } else {
+            ReflectionPrintStream(System.out)
+        }
+    )
+}
+
+internal suspend fun Server.registerConsoleInput(): Unit = coroutineScope {
     runCatching {
         while (currentCoroutineContext().isActive) {
             val line = readln()
@@ -21,7 +32,7 @@ internal suspend fun Server.startConsoleInput(): Unit = coroutineScope {
         } else {
             println("Exception in console thread!")
             it.printStackTrace()
-            startConsoleInput()
+            registerConsoleInput()
         }
     }
 }

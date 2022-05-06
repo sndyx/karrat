@@ -4,7 +4,7 @@
 
 package org.karrat.play
 
-import org.karrat.server.Loadable
+import org.karrat.struct.Loadable
 import org.karrat.struct.Identifier
 
 /*

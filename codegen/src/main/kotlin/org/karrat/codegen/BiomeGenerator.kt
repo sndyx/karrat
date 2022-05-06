@@ -24,7 +24,7 @@ fun generateBiomeClass() {
         source("dimension_codec.json")
     
         import("kotlinx.serialization.Serializable")
-        import("org.karrat.server.Loadable")
+        import("org.karrat.struct.Loadable")
         import("org.karrat.struct.Identifier")
 
         + """

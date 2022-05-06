@@ -4,6 +4,7 @@
 
 package org.karrat
 
+import kotlinx.coroutines.Dispatchers
 import org.karrat.play.colored
 import org.karrat.server.LatchedValue
 import org.karrat.struct.Location
@@ -43,9 +44,9 @@ public object Config {
     public var mainThreadId: Long = Thread.currentThread().id
     
     /**
-     * The amount of threads the server should use. Defaults to the number of
+     * The amount of threads the server should use, in addition to the main one. Defaults to the number of
      * available processors. The lowest amount of threads the server will use is
-     * two.
+     * two, Setting thread count to zero or less means default corountine launch settings are used
      */
     @LatchedValue
     public var threadCount: Int by Latched { Runtime.getRuntime().availableProcessors() }

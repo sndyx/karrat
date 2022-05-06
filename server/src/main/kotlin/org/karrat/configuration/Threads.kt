@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.server
+package org.karrat.configuration
 
 import kotlinx.coroutines.*
 import org.karrat.Config
@@ -10,7 +10,8 @@ import org.karrat.Server
 
 @OptIn(DelicateCoroutinesApi::class)
 public val Server.threadPool: ExecutorCoroutineDispatcher? by lazy {
-    if (Config.threadCount > 1) newFixedThreadPoolContext(Config.threadCount, "worker-thread")
+    println("Created fixed thread pool with ${Config.threadCount} threads.")
+    if (Config.threadCount > 0) newFixedThreadPoolContext(Config.threadCount, "worker-thread")
     else null
 }
 

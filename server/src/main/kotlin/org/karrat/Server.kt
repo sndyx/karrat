@@ -14,10 +14,9 @@ import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.play.Material
-import org.karrat.server.FormattedPrintStream
-import org.karrat.server.ReflectionPrintStream
-import org.karrat.server.launchInThreadPool
-import org.karrat.server.startConsoleInput
+import org.karrat.server.console.registerConsoleInput
+import org.karrat.server.console.registerConsoleOutput
+import org.karrat.configuration.launchInThreadPool
 import org.karrat.struct.id
 import org.karrat.world.Biome
 import org.karrat.world.Dimension
@@ -43,22 +42,23 @@ public object Server {
     
     public fun start(): Unit = runBlocking {
         Config.lock = true
-        System.setOut(
-            if (Config.basicLogging) {
-                FormattedPrintStream(System.out)
-            } else {
-                ReflectionPrintStream(System.out)
-            }
-        )
+
+        registerConsoleOutput()
+
         println("Server starting.")
-        if (isFirstRun) {
-            genServerFiles()
-            worlds.add(World(id("minecraft:main"), Dimension.Overworld, 0))
-        }
+
+        // somehow abstract this away
         if (!Config.isDevEnvironment) {
+            if (isFirstRun) {
+                genServerFiles()
+                worlds.add(World(id("minecraft:main"), Dimension.Overworld, 0)) // make this optional somehow
+            }
+
             eulaPrompt()
         }
+
         loadResources()
+
         socket = ServerSocketChannel.open()
         runCatching {
             socket.bind(InetSocketAddress(InetAddress.getLocalHost(), Config.port))
@@ -67,8 +67,9 @@ public object Server {
         }
         socket.configureBlocking(false)
         println("Bound to ip ${socket.localAddress}.")
-        println("Creating fixed thread pool with ${Config.threadCount} threads.")
-        launchInThreadPool { startConsoleInput() }
+
+        registerConsoleInput()
+
         launchInThreadPool {
             while (isActive) {
                 tickTimeMillis =

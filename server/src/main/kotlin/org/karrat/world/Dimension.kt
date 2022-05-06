@@ -7,7 +7,7 @@ package org.karrat.world
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import org.karrat.server.Loadable
+import org.karrat.struct.Loadable
 import org.karrat.struct.Identifier
 import org.karrat.struct.id
 

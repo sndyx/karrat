@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.server
+package org.karrat.struct
 
 public interface Loadable<T> {
 
