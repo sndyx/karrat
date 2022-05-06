@@ -47,10 +47,11 @@ public object Server {
 
         println("Server starting.")
 
-        // somehow abstract this away
+
+        genServerFiles()
+
         if (!Config.isDevEnvironment) {
             if (isFirstRun) {
-                genServerFiles()
                 worlds.add(World(id("minecraft:main"), Dimension.Overworld, 0)) // make this optional somehow
             }
 
