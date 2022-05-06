@@ -5,7 +5,6 @@
 package org.karrat.configuration
 
 import org.karrat.Server
-import org.karrat.internal.exitProcessWithMessage
 import java.util.*
 import kotlin.io.path.*
 
@@ -16,6 +15,10 @@ public val Server.isFirstRun: Boolean get() {
 }
 
 internal fun Server.genServerFiles() {
+    val eulaFile = Path("EULA.txt")
+    val eula = getResource("defaults/EULA.txt")
+    eulaFile.takeIf { !it.exists() }?.writeText(eula)
+
     val settingsFile = Path("settings.server.kts")
     val settings = getResource("defaults/settings.server.kts")
     settingsFile.takeIf { !it.exists() }?.writeText(settings)
@@ -28,20 +31,13 @@ internal fun Server.eulaPrompt() {
         val response = readln()
         if (response.equals("yes", true) || response.equals("y", true)) {
             signEula()
-        } else if (response.equals("no", true) || response.equals("n", true)) {
-            exitProcessWithMessage("You need to sign the EULA to use this server software", 1)
         }
     }
 }
 
 private fun isEulaSigned(): Boolean {
     val eulaFile = Path("EULA.txt")
-
-    return if (!eulaFile.exists()) {
-        val eula = getResource("defaults/EULA.txt")
-        eulaFile.writeText(eula)
-        false
-    } else (eulaFile.bufferedReader().use { it.readLine().startsWith("Agreed upon at") })
+    return (eulaFile.bufferedReader().use { it.readLine().startsWith("Agreed upon at") })
 }
 
 private fun signEula() {
