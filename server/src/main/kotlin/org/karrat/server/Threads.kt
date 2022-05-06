@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.configuration
+package org.karrat.server
 
 import kotlinx.coroutines.*
 import org.karrat.Config

@@ -16,6 +16,7 @@ import org.karrat.network.translation.generateKeyPair
 import org.karrat.play.Material
 import org.karrat.server.FormattedPrintStream
 import org.karrat.server.ReflectionPrintStream
+import org.karrat.server.launchInThreadPool
 import org.karrat.server.startConsoleInput
 import org.karrat.struct.id
 import org.karrat.world.Biome
