@@ -5,6 +5,7 @@
 package org.karrat.configuration
 
 import org.karrat.Server
+import org.karrat.internal.exitProcessWithMessage
 import java.util.*
 import kotlin.io.path.*
 
@@ -31,6 +32,8 @@ internal fun Server.eulaPrompt() {
         val response = readln()
         if (response.equals("yes", true) || response.equals("y", true)) {
             signEula()
+        } else {
+            exitProcessWithMessage("You need to sign the EULA", 1)
         }
     }
 }
