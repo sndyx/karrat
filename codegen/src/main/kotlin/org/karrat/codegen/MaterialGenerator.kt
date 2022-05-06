@@ -47,7 +47,7 @@ fun generateMaterialClass() {
                 }
     
                 override fun register(value: Material) {
-                    list.add(material)
+                    list.add(value)
                 }
                 
                 override fun unregister(value: Material) {

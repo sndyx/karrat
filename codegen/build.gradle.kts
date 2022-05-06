@@ -24,5 +24,5 @@ application {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().forEach {
-    it.kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    it.kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }

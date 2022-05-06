@@ -4,6 +4,7 @@
 
 package org.karrat.world
 
+import kotlinx.serialization.Serializable
 import org.karrat.server.Loadable
 import org.karrat.struct.Identifier
 
@@ -13,6 +14,7 @@ import org.karrat.struct.Identifier
  * DO NOT EDIT!
  */
 
+@Serializable
 public abstract class Biome(
     public val category: BiomeCategory,
     public val downfall: Float,
@@ -20,7 +22,7 @@ public abstract class Biome(
     public val precipitation: BiomePrecipitation,
     public val temperature: Float,
     public val id: Identifier,
-    public val idNumber: Int,
+    public val ordinal: Int,
     public val name: String
 ) {
     
@@ -107,6 +109,7 @@ public abstract class Biome(
         }
     }
 
+    @Serializable
     public object TheVoid : Biome(
         category = BiomeCategory.None,
         downfall = 0.5f,
@@ -125,10 +128,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 0.5f,
         id = Identifier("minecraft:the_void"),
-        idNumber = 0,
+        ordinal = 0,
         name = "The Void"
     )
     
+    @Serializable
     public object Plains : Biome(
         category = BiomeCategory.Plains,
         downfall = 0.4f,
@@ -147,10 +151,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.8f,
         id = Identifier("minecraft:plains"),
-        idNumber = 1,
+        ordinal = 1,
         name = "Plains"
     )
     
+    @Serializable
     public object SunflowerPlains : Biome(
         category = BiomeCategory.Plains,
         downfall = 0.4f,
@@ -169,10 +174,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.8f,
         id = Identifier("minecraft:sunflower_plains"),
-        idNumber = 2,
+        ordinal = 2,
         name = "Sunflower Plains"
     )
     
+    @Serializable
     public object SnowyPlains : Biome(
         category = BiomeCategory.Icy,
         downfall = 0.5f,
@@ -191,10 +197,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = 0.0f,
         id = Identifier("minecraft:snowy_plains"),
-        idNumber = 3,
+        ordinal = 3,
         name = "Snowy Plains"
     )
     
+    @Serializable
     public object IceSpikes : Biome(
         category = BiomeCategory.Icy,
         downfall = 0.5f,
@@ -213,10 +220,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = 0.0f,
         id = Identifier("minecraft:ice_spikes"),
-        idNumber = 4,
+        ordinal = 4,
         name = "Ice Spikes"
     )
     
+    @Serializable
     public object Desert : Biome(
         category = BiomeCategory.Desert,
         downfall = 0.0f,
@@ -235,10 +243,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:desert"),
-        idNumber = 5,
+        ordinal = 5,
         name = "Desert"
     )
     
+    @Serializable
     public object Swamp : Biome(
         category = BiomeCategory.Swamp,
         downfall = 0.9f,
@@ -257,10 +266,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.8f,
         id = Identifier("minecraft:swamp"),
-        idNumber = 6,
+        ordinal = 6,
         name = "Swamp"
     )
     
+    @Serializable
     public object Forest : Biome(
         category = BiomeCategory.Forest,
         downfall = 0.8f,
@@ -279,10 +289,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.7f,
         id = Identifier("minecraft:forest"),
-        idNumber = 7,
+        ordinal = 7,
         name = "Forest"
     )
     
+    @Serializable
     public object FlowerForest : Biome(
         category = BiomeCategory.Forest,
         downfall = 0.8f,
@@ -301,10 +312,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.7f,
         id = Identifier("minecraft:flower_forest"),
-        idNumber = 8,
+        ordinal = 8,
         name = "Flower Forest"
     )
     
+    @Serializable
     public object BirchForest : Biome(
         category = BiomeCategory.Forest,
         downfall = 0.6f,
@@ -323,10 +335,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.6f,
         id = Identifier("minecraft:birch_forest"),
-        idNumber = 9,
+        ordinal = 9,
         name = "Birch Forest"
     )
     
+    @Serializable
     public object DarkForest : Biome(
         category = BiomeCategory.Forest,
         downfall = 0.8f,
@@ -345,10 +358,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.7f,
         id = Identifier("minecraft:dark_forest"),
-        idNumber = 10,
+        ordinal = 10,
         name = "Dark Forest"
     )
     
+    @Serializable
     public object OldGrowthBirchForest : Biome(
         category = BiomeCategory.Forest,
         downfall = 0.6f,
@@ -367,10 +381,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.6f,
         id = Identifier("minecraft:old_growth_birch_forest"),
-        idNumber = 11,
+        ordinal = 11,
         name = "Old Growth Birch Forest"
     )
     
+    @Serializable
     public object OldGrowthPineTaiga : Biome(
         category = BiomeCategory.Taiga,
         downfall = 0.8f,
@@ -389,10 +404,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.3f,
         id = Identifier("minecraft:old_growth_pine_taiga"),
-        idNumber = 12,
+        ordinal = 12,
         name = "Old Growth Pine Taiga"
     )
     
+    @Serializable
     public object OldGrowthSpruceTaiga : Biome(
         category = BiomeCategory.Taiga,
         downfall = 0.8f,
@@ -411,10 +427,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.25f,
         id = Identifier("minecraft:old_growth_spruce_taiga"),
-        idNumber = 13,
+        ordinal = 13,
         name = "Old Growth Spruce Taiga"
     )
     
+    @Serializable
     public object Taiga : Biome(
         category = BiomeCategory.Taiga,
         downfall = 0.8f,
@@ -433,10 +450,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.25f,
         id = Identifier("minecraft:taiga"),
-        idNumber = 14,
+        ordinal = 14,
         name = "Taiga"
     )
     
+    @Serializable
     public object SnowyTaiga : Biome(
         category = BiomeCategory.Taiga,
         downfall = 0.4f,
@@ -455,10 +473,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = -0.5f,
         id = Identifier("minecraft:snowy_taiga"),
-        idNumber = 15,
+        ordinal = 15,
         name = "Snowy Taiga"
     )
     
+    @Serializable
     public object Savanna : Biome(
         category = BiomeCategory.Savanna,
         downfall = 0.0f,
@@ -477,10 +496,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:savanna"),
-        idNumber = 16,
+        ordinal = 16,
         name = "Savanna"
     )
     
+    @Serializable
     public object SavannaPlateau : Biome(
         category = BiomeCategory.Savanna,
         downfall = 0.0f,
@@ -499,10 +519,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:savanna_plateau"),
-        idNumber = 17,
+        ordinal = 17,
         name = "Savanna Plateau"
     )
     
+    @Serializable
     public object WindsweptHills : Biome(
         category = BiomeCategory.ExtremeHills,
         downfall = 0.3f,
@@ -521,10 +542,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.2f,
         id = Identifier("minecraft:windswept_hills"),
-        idNumber = 18,
+        ordinal = 18,
         name = "Windswept Hills"
     )
     
+    @Serializable
     public object WindsweptGravellyHills : Biome(
         category = BiomeCategory.ExtremeHills,
         downfall = 0.3f,
@@ -543,10 +565,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.2f,
         id = Identifier("minecraft:windswept_gravelly_hills"),
-        idNumber = 19,
+        ordinal = 19,
         name = "Windswept Gravelly Hills"
     )
     
+    @Serializable
     public object WindsweptForest : Biome(
         category = BiomeCategory.ExtremeHills,
         downfall = 0.3f,
@@ -565,10 +588,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.2f,
         id = Identifier("minecraft:windswept_forest"),
-        idNumber = 20,
+        ordinal = 20,
         name = "Windswept Forest"
     )
     
+    @Serializable
     public object WindsweptSavanna : Biome(
         category = BiomeCategory.Savanna,
         downfall = 0.0f,
@@ -587,10 +611,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:windswept_savanna"),
-        idNumber = 21,
+        ordinal = 21,
         name = "Windswept Savanna"
     )
     
+    @Serializable
     public object Jungle : Biome(
         category = BiomeCategory.Jungle,
         downfall = 0.9f,
@@ -609,10 +634,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.95f,
         id = Identifier("minecraft:jungle"),
-        idNumber = 22,
+        ordinal = 22,
         name = "Jungle"
     )
     
+    @Serializable
     public object SparseJungle : Biome(
         category = BiomeCategory.Jungle,
         downfall = 0.8f,
@@ -631,10 +657,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.95f,
         id = Identifier("minecraft:sparse_jungle"),
-        idNumber = 23,
+        ordinal = 23,
         name = "Sparse Jungle"
     )
     
+    @Serializable
     public object BambooJungle : Biome(
         category = BiomeCategory.Jungle,
         downfall = 0.9f,
@@ -653,10 +680,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.95f,
         id = Identifier("minecraft:bamboo_jungle"),
-        idNumber = 24,
+        ordinal = 24,
         name = "Bamboo Jungle"
     )
     
+    @Serializable
     public object Badlands : Biome(
         category = BiomeCategory.Mesa,
         downfall = 0.0f,
@@ -675,10 +703,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:badlands"),
-        idNumber = 25,
+        ordinal = 25,
         name = "Badlands"
     )
     
+    @Serializable
     public object ErodedBadlands : Biome(
         category = BiomeCategory.Mesa,
         downfall = 0.0f,
@@ -697,10 +726,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:eroded_badlands"),
-        idNumber = 26,
+        ordinal = 26,
         name = "Eroded Badlands"
     )
     
+    @Serializable
     public object WoodedBadlands : Biome(
         category = BiomeCategory.Mesa,
         downfall = 0.0f,
@@ -719,10 +749,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:wooded_badlands"),
-        idNumber = 27,
+        ordinal = 27,
         name = "Wooded Badlands"
     )
     
+    @Serializable
     public object Meadow : Biome(
         category = BiomeCategory.Mountain,
         downfall = 0.8f,
@@ -741,10 +772,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:meadow"),
-        idNumber = 28,
+        ordinal = 28,
         name = "Meadow"
     )
     
+    @Serializable
     public object Grove : Biome(
         category = BiomeCategory.Forest,
         downfall = 0.8f,
@@ -763,10 +795,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = -0.2f,
         id = Identifier("minecraft:grove"),
-        idNumber = 29,
+        ordinal = 29,
         name = "Grove"
     )
     
+    @Serializable
     public object SnowySlopes : Biome(
         category = BiomeCategory.Mountain,
         downfall = 0.9f,
@@ -785,10 +818,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = -0.3f,
         id = Identifier("minecraft:snowy_slopes"),
-        idNumber = 30,
+        ordinal = 30,
         name = "Snowy Slopes"
     )
     
+    @Serializable
     public object FrozenPeaks : Biome(
         category = BiomeCategory.Mountain,
         downfall = 0.9f,
@@ -807,10 +841,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = -0.7f,
         id = Identifier("minecraft:frozen_peaks"),
-        idNumber = 31,
+        ordinal = 31,
         name = "Frozen Peaks"
     )
     
+    @Serializable
     public object JaggedPeaks : Biome(
         category = BiomeCategory.Mountain,
         downfall = 0.9f,
@@ -829,10 +864,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = -0.7f,
         id = Identifier("minecraft:jagged_peaks"),
-        idNumber = 32,
+        ordinal = 32,
         name = "Jagged Peaks"
     )
     
+    @Serializable
     public object StonyPeaks : Biome(
         category = BiomeCategory.Mountain,
         downfall = 0.3f,
@@ -851,10 +887,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 1.0f,
         id = Identifier("minecraft:stony_peaks"),
-        idNumber = 33,
+        ordinal = 33,
         name = "Stony Peaks"
     )
     
+    @Serializable
     public object River : Biome(
         category = BiomeCategory.River,
         downfall = 0.5f,
@@ -873,10 +910,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:river"),
-        idNumber = 34,
+        ordinal = 34,
         name = "River"
     )
     
+    @Serializable
     public object FrozenRiver : Biome(
         category = BiomeCategory.River,
         downfall = 0.5f,
@@ -895,10 +933,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = 0.0f,
         id = Identifier("minecraft:frozen_river"),
-        idNumber = 35,
+        ordinal = 35,
         name = "Frozen River"
     )
     
+    @Serializable
     public object Beach : Biome(
         category = BiomeCategory.Beach,
         downfall = 0.4f,
@@ -917,10 +956,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.8f,
         id = Identifier("minecraft:beach"),
-        idNumber = 36,
+        ordinal = 36,
         name = "Beach"
     )
     
+    @Serializable
     public object SnowyBeach : Biome(
         category = BiomeCategory.Beach,
         downfall = 0.3f,
@@ -939,10 +979,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = 0.05f,
         id = Identifier("minecraft:snowy_beach"),
-        idNumber = 37,
+        ordinal = 37,
         name = "Snowy Beach"
     )
     
+    @Serializable
     public object StonyShore : Biome(
         category = BiomeCategory.Beach,
         downfall = 0.3f,
@@ -961,10 +1002,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.2f,
         id = Identifier("minecraft:stony_shore"),
-        idNumber = 38,
+        ordinal = 38,
         name = "Stony Shore"
     )
     
+    @Serializable
     public object WarmOcean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -983,10 +1025,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:warm_ocean"),
-        idNumber = 39,
+        ordinal = 39,
         name = "Warm Ocean"
     )
     
+    @Serializable
     public object LukewarmOcean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -1005,10 +1048,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:lukewarm_ocean"),
-        idNumber = 40,
+        ordinal = 40,
         name = "Lukewarm Ocean"
     )
     
+    @Serializable
     public object DeepLukewarmOcean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -1027,10 +1071,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:deep_lukewarm_ocean"),
-        idNumber = 41,
+        ordinal = 41,
         name = "Deep Lukewarm Ocean"
     )
     
+    @Serializable
     public object Ocean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -1049,10 +1094,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:ocean"),
-        idNumber = 42,
+        ordinal = 42,
         name = "Ocean"
     )
     
+    @Serializable
     public object DeepOcean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -1071,10 +1117,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:deep_ocean"),
-        idNumber = 43,
+        ordinal = 43,
         name = "Deep Ocean"
     )
     
+    @Serializable
     public object ColdOcean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -1093,10 +1140,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:cold_ocean"),
-        idNumber = 44,
+        ordinal = 44,
         name = "Cold Ocean"
     )
     
+    @Serializable
     public object DeepColdOcean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -1115,10 +1163,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:deep_cold_ocean"),
-        idNumber = 45,
+        ordinal = 45,
         name = "Deep Cold Ocean"
     )
     
+    @Serializable
     public object FrozenOcean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -1137,10 +1186,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Snow,
         temperature = 0.0f,
         id = Identifier("minecraft:frozen_ocean"),
-        idNumber = 46,
+        ordinal = 46,
         name = "Frozen Ocean"
     )
     
+    @Serializable
     public object DeepFrozenOcean : Biome(
         category = BiomeCategory.Ocean,
         downfall = 0.5f,
@@ -1159,10 +1209,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:deep_frozen_ocean"),
-        idNumber = 47,
+        ordinal = 47,
         name = "Deep Frozen Ocean"
     )
     
+    @Serializable
     public object MushroomFields : Biome(
         category = BiomeCategory.Mushroom,
         downfall = 1.0f,
@@ -1181,10 +1232,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.9f,
         id = Identifier("minecraft:mushroom_fields"),
-        idNumber = 48,
+        ordinal = 48,
         name = "Mushroom Fields"
     )
     
+    @Serializable
     public object DripstoneCaves : Biome(
         category = BiomeCategory.Underground,
         downfall = 0.4f,
@@ -1203,10 +1255,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.8f,
         id = Identifier("minecraft:dripstone_caves"),
-        idNumber = 49,
+        ordinal = 49,
         name = "Dripstone Caves"
     )
     
+    @Serializable
     public object LushCaves : Biome(
         category = BiomeCategory.Underground,
         downfall = 0.5f,
@@ -1225,10 +1278,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.Rain,
         temperature = 0.5f,
         id = Identifier("minecraft:lush_caves"),
-        idNumber = 50,
+        ordinal = 50,
         name = "Lush Caves"
     )
     
+    @Serializable
     public object NetherWastes : Biome(
         category = BiomeCategory.Nether,
         downfall = 0.0f,
@@ -1247,10 +1301,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:nether_wastes"),
-        idNumber = 51,
+        ordinal = 51,
         name = "Nether Wastes"
     )
     
+    @Serializable
     public object WarpedForest : Biome(
         category = BiomeCategory.Nether,
         downfall = 0.0f,
@@ -1269,10 +1324,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:warped_forest"),
-        idNumber = 52,
+        ordinal = 52,
         name = "Warped Forest"
     )
     
+    @Serializable
     public object CrimsonForest : Biome(
         category = BiomeCategory.Nether,
         downfall = 0.0f,
@@ -1291,10 +1347,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:crimson_forest"),
-        idNumber = 53,
+        ordinal = 53,
         name = "Crimson Forest"
     )
     
+    @Serializable
     public object SoulSandValley : Biome(
         category = BiomeCategory.Nether,
         downfall = 0.0f,
@@ -1313,10 +1370,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:soul_sand_valley"),
-        idNumber = 54,
+        ordinal = 54,
         name = "Soul Sand Valley"
     )
     
+    @Serializable
     public object BasaltDeltas : Biome(
         category = BiomeCategory.Nether,
         downfall = 0.0f,
@@ -1335,10 +1393,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 2.0f,
         id = Identifier("minecraft:basalt_deltas"),
-        idNumber = 55,
+        ordinal = 55,
         name = "Basalt Deltas"
     )
     
+    @Serializable
     public object TheEnd : Biome(
         category = BiomeCategory.TheEnd,
         downfall = 0.5f,
@@ -1357,10 +1416,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 0.5f,
         id = Identifier("minecraft:the_end"),
-        idNumber = 56,
+        ordinal = 56,
         name = "The End"
     )
     
+    @Serializable
     public object EndHighlands : Biome(
         category = BiomeCategory.TheEnd,
         downfall = 0.5f,
@@ -1379,10 +1439,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 0.5f,
         id = Identifier("minecraft:end_highlands"),
-        idNumber = 57,
+        ordinal = 57,
         name = "End Highlands"
     )
     
+    @Serializable
     public object EndMidlands : Biome(
         category = BiomeCategory.TheEnd,
         downfall = 0.5f,
@@ -1401,10 +1462,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 0.5f,
         id = Identifier("minecraft:end_midlands"),
-        idNumber = 58,
+        ordinal = 58,
         name = "End Midlands"
     )
     
+    @Serializable
     public object SmallEndIslands : Biome(
         category = BiomeCategory.TheEnd,
         downfall = 0.5f,
@@ -1423,10 +1485,11 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 0.5f,
         id = Identifier("minecraft:small_end_islands"),
-        idNumber = 59,
+        ordinal = 59,
         name = "Small End Islands"
     )
     
+    @Serializable
     public object EndBarrens : Biome(
         category = BiomeCategory.TheEnd,
         downfall = 0.5f,
@@ -1445,7 +1508,7 @@ public abstract class Biome(
         precipitation = BiomePrecipitation.None,
         temperature = 0.5f,
         id = Identifier("minecraft:end_barrens"),
-        idNumber = 60,
+        ordinal = 60,
         name = "End Barrens"
     )
     
@@ -1483,6 +1546,7 @@ public enum class BiomePrecipitation {
     
 }
 
+@Serializable
 public data class BiomeEffects(
     public val fogColor: Int,
     public val skyColor: Int,
@@ -1491,6 +1555,7 @@ public data class BiomeEffects(
     public val moodSound: BiomeMoodSound
 )
 
+@Serializable
 public data class BiomeMoodSound(
     public val blockSearchExtent: Int,
     public val offset: Int,

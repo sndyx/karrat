@@ -78,7 +78,7 @@ public object Server {
             }
         }
         launchInThreadPool {
-            while (true) {
+            while (isActive) {
                 @Suppress("BlockingMethodInNonBlockingContext") // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
                 socket.accept()?.let {
                     it.configureBlocking(false)

@@ -14,8 +14,6 @@ public val Server.threadPool: ExecutorCoroutineDispatcher? by lazy {
     else null
 }
 
-public suspend fun launchInThreadPool(block: suspend CoroutineScope.() -> Unit): Job =
-    coroutineScope {
-        if (Server.threadPool != null) launch(Server.threadPool!!) { block() }
-        else launch { block() }
-    }
+public fun CoroutineScope.launchInThreadPool(block: suspend CoroutineScope.() -> Unit): Job =
+    if (Server.threadPool != null) launch(Server.threadPool!!) { block() }
+    else launch { block() }

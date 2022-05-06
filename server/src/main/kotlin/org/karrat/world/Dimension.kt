@@ -5,11 +5,13 @@
 package org.karrat.world
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.karrat.server.Loadable
 import org.karrat.struct.Identifier
 import org.karrat.struct.id
 
+@Serializable
 public abstract class Dimension(
     @SerialName("piglin_safe")
     public val piglinSafe: Boolean,
@@ -67,6 +69,7 @@ public abstract class Dimension(
 
     }
     
+    @Serializable
     public object Overworld : Dimension(
         piglinSafe = false,
         natural = true,
@@ -90,6 +93,7 @@ public abstract class Dimension(
     
     }
     
+    @Serializable
     public object OverworldCaves : Dimension(
         piglinSafe = false,
         natural = true,
@@ -113,6 +117,7 @@ public abstract class Dimension(
         
     }
     
+    @Serializable
     public object Nether : Dimension(
         piglinSafe = true,
         natural = false,
@@ -136,6 +141,7 @@ public abstract class Dimension(
         
     }
     
+    @Serializable
     public object End : Dimension(
         piglinSafe = false,
         natural = false,

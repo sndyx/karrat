@@ -22,11 +22,13 @@ fun generateBiomeClass() {
 
         generator("BiomeGenerator.kt")
         source("dimension_codec.json")
-
+    
+        import("kotlinx.serialization.Serializable")
         import("org.karrat.server.Loadable")
         import("org.karrat.struct.Identifier")
 
         + """
+        @Serializable
         public abstract class Biome(
             public val category: BiomeCategory,
             public val downfall: Float,
@@ -34,7 +36,7 @@ fun generateBiomeClass() {
             public val precipitation: BiomePrecipitation,
             public val temperature: Float,
             public val id: Identifier,
-            public val idNumber: Int,
+            public val ordinal: Int,
             public val name: String
         ) {
             
@@ -70,7 +72,7 @@ fun generateBiomeClass() {
         indent {
             elements.forEach {
                 val id = it.jsonObject["name"]!!.jsonPrimitive.content
-                val idNumber = it.jsonObject["id"]!!.jsonPrimitive.int
+                val ordinal = it.jsonObject["id"]!!.jsonPrimitive.int
                 val element = it.jsonObject["element"]!!.jsonObject
 
                 val category = element["category"]!!.jsonPrimitive.content.split("_").joinToString("") { part -> part.replaceFirstChar { char -> char.uppercaseChar() } }
@@ -96,6 +98,7 @@ fun generateBiomeClass() {
                 val formattedName =
                     nameParts.joinToString(" ") { part -> part.replaceFirstChar { char -> char.uppercaseChar() } }
 
+                + "@Serializable"
                 + "public object ${formattedName.replace(" ", "")} : Biome("
                 indent {
                     + "category = BiomeCategory.$category,"
@@ -119,7 +122,7 @@ fun generateBiomeClass() {
                     + "precipitation = BiomePrecipitation.$precipitation,"
                     + "temperature = ${temperature}f,"
                     + "id = Identifier(\"$id\"),"
-                    + "idNumber = $idNumber,"
+                    + "ordinal = $ordinal,"
                     + "name = \"$formattedName\""
                 }
                 + ")"
@@ -149,6 +152,7 @@ fun generateBiomeClass() {
         + """
             }
             
+            @Serializable
             public data class BiomeEffects(
                 public val fogColor: Int,
                 public val skyColor: Int,
@@ -157,6 +161,7 @@ fun generateBiomeClass() {
                 public val moodSound: BiomeMoodSound
             )
             
+            @Serializable
             public data class BiomeMoodSound(
                 public val blockSearchExtent: Int,
                 public val offset: Int,

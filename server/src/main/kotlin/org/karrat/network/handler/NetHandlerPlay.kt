@@ -11,18 +11,26 @@ import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.play.JoinGamePacket
 import org.karrat.play.GameMode
 import org.karrat.struct.ByteBuffer
+import org.karrat.struct.NbtCompound
 
 public class NetHandlerPlay(private val session: Session) : NetHandler {
 
     init {
-        /*
         session.send(JoinGamePacket(
             entityId = 0,
             isHardcore = false,
             gameMode = GameMode.Survival,
             previousGameMode = GameMode.Survival,
             worlds = Server.worlds,
-            dimensionCodec =
+            dimensionCodec = NbtCompound(),
+            dimension = NbtCompound(),
+            world = Server.worlds.first(),
+            viewDistance = 10,
+            simulationDistance = 10,
+            reducedDebugInfo = false,
+            enableRespawnScreen = true,
+            isDebug = false,
+            isFlat = false
         ))
         /*
         S → C: Join Game
@@ -50,10 +58,10 @@ public class NetHandlerPlay(private val session: Session) : NetHandler {
         C → S: Player Position And Look (to confirm the spawn position)
         C → S: Client Status (sent either before or while receiving chunks, further testing needed, server handles correctly if not sent)
         S → C: inventory, entities, etc
-         */*/
+         */
     }
 
-    override fun read(id: Int, data: ByteBuffer): ServerboundPacket = when(id) {
+    override fun read(id: Int, data: ByteBuffer): ServerboundPacket = when (id) {
         0x26 -> TODO()
         else -> error("Failed")
     }

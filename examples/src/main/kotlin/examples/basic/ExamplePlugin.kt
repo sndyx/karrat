@@ -8,11 +8,11 @@ import org.karrat.Server
 import org.karrat.event.StatusResponseEvent
 import org.karrat.event.on
 import org.karrat.plugin.Init
-import org.karrat.plugin.InitializeAfter
+import org.karrat.plugin.DependsOn
 import org.karrat.plugin.Plugin
 
 @Plugin(name="Example Plugin", version="1.18.1")
-@InitializeAfter("Essentials", "WorldEdit")
+@DependsOn("Essentials", "WorldEdit")
 object ExamplePlugin {
     
     @Init
