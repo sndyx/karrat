@@ -15,10 +15,13 @@ public fun Server.tps(): Float =
     
 /**
  * Returns the maximum amount of ticks that could take place in a single second,
- * given an uncapped tickrate. 
+ * given an uncapped tick-rate.
  */
 public fun Server.mtps(): Float =
     1000.0f / tickTimeMillis
 
+/**
+ * Sends a given message to every player present in the server.
+ */
 public fun Server.broadcast(message: String): Unit =
     players.forEach { it.sendMessage(message) }

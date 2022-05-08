@@ -4,19 +4,21 @@
 
 package org.karrat
 
-import kotlinx.coroutines.Dispatchers
 import org.karrat.play.colored
 import org.karrat.server.LatchedValue
 import org.karrat.struct.Location
 import org.karrat.struct.Uuid
 import org.karrat.struct.id
+import kotlin.math.max
 import kotlin.properties.Delegates
+import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 public object Config {
     
+    @PublishedApi
     internal var lock: Boolean = false
     
     // Constants
@@ -44,12 +46,11 @@ public object Config {
     public var mainThreadId: Long = Thread.currentThread().id
     
     /**
-     * The amount of threads the server should use, in addition to the main one. Defaults to the number of
-     * available processors. The lowest amount of threads the server will use is
-     * two, Setting thread count to zero or less means default corountine launch settings are used
+     * The amount of threads the server should use. Defaults to the number of
+     * available processors. Must be at least two.
      */
     @LatchedValue
-    public var threadCount: Int by Latched { Runtime.getRuntime().availableProcessors() }
+    public var threadCount: Int by latched(vetoable(max(2, Runtime.getRuntime().availableProcessors())) { it > 2 })
     
     /**
      * Whether the server should use a basic logger. By default, the server sets
@@ -57,10 +58,10 @@ public object Config {
      * logging can increase server speeds.
      */
     @LatchedValue
-    public var basicLogging: Boolean by Latched { false }
+    public var basicLogging: Boolean by latched { false }
     
     @LatchedValue
-    public var isDevEnvironment: Boolean by Latched { false }
+    public var isDevEnvironment: Boolean by latched { false }
     
     // Network
     
@@ -68,7 +69,7 @@ public object Config {
      * The port on which the server will run. Defaults to 25565.
      */
     @LatchedValue
-    public var port: Int by Latched { 25565 }
+    public var port: Int by latched { 25565 }
     
     /**
      * The duration clients will have to wait before reconnecting.
@@ -176,24 +177,31 @@ public object Config {
      */
     public var invalidSyntaxMessage: String = "&cInvalid syntax.".colored()
     
-    private class Latched<T>(initializer: () -> T) {
+    public inline fun <T> latched(initializer: () -> T): ReadWriteProperty<Any?, T> =
+        Delegates.vetoable(initializer.invoke()) { property, _, _ ->
+            if (lock) throw IllegalStateException("Cannot modify post-init-immutable variable ${property::name} after initialization.") else true
+        }
     
-        private var value: T = initializer()
-        
-        operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-            return value
-        }
-        
-        operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+    public fun <T> latched(property: ReadWriteProperty<Any?, T>): ReadWriteProperty<Any?, T> =
+        LatchWrapper(property)
+    
+    private class LatchWrapper<T>(val wrapped: ReadWriteProperty<Any?, T>) : ReadWriteProperty<Any?, T> {
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T = wrapped.getValue(thisRef, property)
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
             if (lock) throw IllegalStateException("Cannot modify post-init-immutable variable ${property::name} after initialization.")
-            this.value = value
+            wrapped.setValue(thisRef, property, value)
         }
-        
     }
     
-    private fun <T : Number> positive(value: T) =
-        Delegates.vetoable(value) { _, _, newValue ->
-            newValue.toDouble() > 0
+    public inline fun <T : Number> vetoable(
+        value: T,
+        crossinline onChange: (newValue: T) -> Boolean
+    ): ReadWriteProperty<Any?, T> =
+        Delegates.vetoable(value) { _, _, newValue -> onChange.invoke(newValue) }
+    
+    public fun <T : Number> positive(value: T): ReadWriteProperty<Any?, T> =
+        vetoable(value) {
+            it.toDouble() > 0
         }
     
 }

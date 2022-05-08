@@ -14,9 +14,8 @@ import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.play.Material
-import org.karrat.server.console.registerConsoleInput
-import org.karrat.server.console.registerConsoleOutput
-import org.karrat.configuration.launchInThreadPool
+import org.karrat.server.*
+import org.karrat.server.startConsoleInput
 import org.karrat.struct.id
 import org.karrat.world.Biome
 import org.karrat.world.Dimension
@@ -24,10 +23,15 @@ import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 import java.security.KeyPair
+import kotlin.coroutines.CoroutineContext
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
-public object Server {
+public object Server : CoroutineScope {
+    
+    @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
+    override val coroutineContext: CoroutineContext =
+        newFixedThreadPoolContext(Config.threadCount, "worker-thread")
     
     public lateinit var socket: ServerSocketChannel
     public var auth: AuthServer = AuthServer()
@@ -42,22 +46,19 @@ public object Server {
     
     public fun start(): Unit = runBlocking {
         Config.lock = true
-
-        registerConsoleOutput()
-
+        System.setOut(
+            if (Config.basicLogging) FormattedPrintStream(System.out)
+            else ReflectionPrintStream(System.out)
+        )
         println("Server starting.")
-
         if (isFirstRun) {
             genServerFiles()
-            worlds.add(World(id("minecraft:main"), Dimension.Overworld, 0)) // make this optional somehow
+            worlds.add(World(id("minecraft:main"), Dimension.Overworld, 0))
         }
-
         if (!Config.isDevEnvironment) {
             eulaPrompt()
         }
-
         loadResources()
-
         socket = ServerSocketChannel.open()
         runCatching {
             socket.bind(InetSocketAddress(InetAddress.getLocalHost(), Config.port))
@@ -66,10 +67,9 @@ public object Server {
         }
         socket.configureBlocking(false)
         println("Bound to ip ${socket.localAddress}.")
-
-        registerConsoleInput()
-
-        launchInThreadPool {
+        println("Creating fixed thread pool with ${Config.threadCount} threads.")
+        launch { startConsoleInput() }
+        launch {
             while (isActive) {
                 tickTimeMillis =
                     measureTimeMillis {
@@ -78,7 +78,7 @@ public object Server {
                 delay(maxOf(0L, (1000 / Config.tps) - tickTimeMillis))
             }
         }
-        launchInThreadPool {
+        launch {
             while (isActive) {
                 @Suppress("BlockingMethodInNonBlockingContext") // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
                 socket.accept()?.let {
@@ -99,10 +99,10 @@ public object Server {
         exitProcess(0)
     }
 
-    public suspend fun tick(): Unit = coroutineScope {
+    public fun tick() {
         sessions.removeAll { !it.isAlive }
         sessions.forEach { session ->
-            launchInThreadPool {
+            launch {
                 runCatching { session.handle() }
                     .onFailure {
                         println("$session disconnected; internal error: ${it.message}")
@@ -127,5 +127,5 @@ public object Server {
             Material.load()
         }.let { println("Loaded ${Material.list.size} materials in ${it}ms.") }
     }
-
+    
 }
