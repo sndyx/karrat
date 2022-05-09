@@ -13,11 +13,12 @@ import org.karrat.entity.Player
 import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
-import org.karrat.play.Material
+import org.karrat.plugin.LoadedPlugin
+import org.karrat.plugin.loadPlugins
 import org.karrat.server.console.startConsoleInput
 import org.karrat.server.console.setConsoleOutput
+import org.karrat.server.loadResources
 import org.karrat.struct.id
-import org.karrat.world.Biome
 import org.karrat.world.Dimension
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -40,6 +41,7 @@ public object Server : CoroutineScope {
     public var worlds: MutableList<World> = mutableListOf()
     public var commands: MutableList<Command> = mutableListOf()
     public var sessions: MutableList<Session> = mutableListOf()
+    public var plugins: MutableList<LoadedPlugin> = mutableListOf()
     public val players: List<Player> get() = worlds.flatMap { it.players }
     
     internal var tickTimeMillis: Long = 0L
@@ -65,6 +67,7 @@ public object Server : CoroutineScope {
         socket.configureBlocking(false)
         println("Bound to ip ${socket.localAddress}.")
         println("Creating fixed thread pool with ${Config.threadCount} threads.")
+        loadPlugins()
         launch { startConsoleInput() }
         launch {
             while (isActive) {
@@ -108,21 +111,6 @@ public object Server : CoroutineScope {
                     }
             }
         }
-    }
-
-    private fun loadResources() {
-        measureTimeMillis {
-            Biome.load()
-        }.let { println("Loaded ${Biome.list.size} biomes in ${it}ms.") }
-        measureTimeMillis {
-            Command.load()
-        }.let { println("Loaded ${Command.list.size} commands in ${it}ms.") }
-        measureTimeMillis {
-            Dimension.load()
-        }.let { println("Loaded ${Dimension.list.size} dimensions in ${it}ms.") }
-        measureTimeMillis {
-            Material.load()
-        }.let { println("Loaded ${Material.list.size} materials in ${it}ms.") }
     }
     
 }

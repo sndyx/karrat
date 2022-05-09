@@ -38,7 +38,7 @@ public class ItemStack private constructor() {
         }
     
     public var name: String
-        get() = nbt.getValueOrDefault("name", "") // Return default name if absent?
+        get() = nbt.getValueOrDefault("name", material.displayName)
         set(value) {
             nbt["name"] = value
         }

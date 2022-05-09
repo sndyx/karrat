@@ -9,4 +9,4 @@ import kotlin.annotation.AnnotationTarget.*
 
 @Target(CLASS, FILE)
 @Retention(RUNTIME)
-public annotation class DependsOn(vararg val after: String)
+public annotation class DependsOn(vararg val plugins: String)

@@ -13,7 +13,7 @@ import kotlin.time.Duration
 
 public fun Server.schedule(wait: Duration, action: suspend () -> Unit) {
     launch {
-        delay(wait.inWholeMilliseconds)
+        delay(wait)
         action()
     }
 }
@@ -21,7 +21,7 @@ public fun Server.schedule(wait: Duration, action: suspend () -> Unit) {
 public fun Server.scheduleEvery(wait: Duration, action: suspend () -> Unit): Job {
     return launch {
         while (isActive) {
-            delay(wait.inWholeMilliseconds)
+            delay(wait)
             action()
         }
     }

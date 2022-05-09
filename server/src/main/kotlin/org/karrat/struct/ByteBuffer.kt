@@ -24,6 +24,8 @@ public interface ByteBuffer {
     public fun readFloat(): Float
 
     public fun readDouble(): Double
+    
+    public fun skip(bytes: Int)
 
     public fun reset()
 
@@ -64,7 +66,11 @@ internal open class ByteBufferImpl(override var bytes: ByteArray) : ByteBuffer {
     override fun readFloat() = Float.fromBits(readInt())
 
     override fun readDouble() = Double.fromBits(readLong())
-
+    
+    override fun skip(bytes: Int) {
+        pos += bytes
+    }
+    
     override fun reset() {
         pos = 0
     }
