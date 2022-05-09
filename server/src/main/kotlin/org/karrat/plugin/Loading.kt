@@ -38,7 +38,7 @@ public fun Server.loadPlugin(jar: Path): LoadedPlugin {
         Server::class.java.classLoader
     )
     val instance = Class.forName(pluginClassName, true, loader)
-    return LoadedPlugin(instance.kotlin)
+    return LoadedPlugin(instance)
 }
 
 /**
@@ -54,7 +54,7 @@ private fun resolvePluginClass(jar: Path): String {
         while (zip.nextEntry.also { entry = it } != null) {
             if (entry.isDirectory || !entry.name.endsWith(".class")) continue
             pluginClassOrNull(zip.readBytes().toByteBuffer())?.let {
-                return it
+                return it.replace('/', '.')
             }
         }
     }
@@ -71,7 +71,7 @@ private fun pluginClassOrNull(data: ByteBuffer): String? = data.run {
     skip(8)
     val cpSize = readShort()
     val constants = buildMap<Int, Any> {
-        repeat(cpSize.toInt()) {
+        repeat(cpSize.toInt() - 1) {
             when (read().toInt()) {
                 1 -> set(it + 1, readBytes(readShort().toInt()).decodeToString())
                 7 -> set(it + 1, readShort())
@@ -81,6 +81,9 @@ private fun pluginClassOrNull(data: ByteBuffer): String? = data.run {
                 5, 6 -> skip(8)
             }
         }
+    }
+    constants.entries.forEach {
+        println("[${it.key}: ${it.value}]")
     }
     skip(2)
     val classIndex = readShort()
