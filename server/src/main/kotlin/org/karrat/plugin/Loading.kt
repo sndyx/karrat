@@ -4,6 +4,7 @@
 
 package org.karrat.plugin
 
+import kotlinx.coroutines.awaitAll
 import org.karrat.Server
 import org.karrat.server.parallelize
 import org.karrat.struct.*
@@ -26,10 +27,11 @@ internal suspend fun Server.loadPlugins() {
                 plugin = loadPlugin(jar)
             }
             println("Loaded plugin ${plugin.name} in ${time}ms.")
+            plugins.add(plugin)
         }.onFailure {
             println("Failed to load plugin for jar ${jar.name}.")
         }
-    }
+    }.awaitAll()
     plugins.sorted().forEach {
         it.init()
     }
