@@ -27,10 +27,10 @@ public fun Server.scheduleEvery(wait: Duration, action: suspend () -> Unit): Job
     }
 }
 
-public suspend inline fun <T, R> Server.parallelize(
+public inline fun <T, R> Server.parallelize(
     items: Collection<T>,
     crossinline action: suspend (T) -> R
-): List<Deferred<R>> = with(Server) { // T̶h̶i̶s̶ ̶i̶s̶ ̶s̶t̶u̶p̶i̶d̶ This is awesome.
+): List<Deferred<R>> { // T̶h̶i̶s̶ ̶i̶s̶ ̶s̶t̶u̶p̶i̶d̶ This is awesome.
     return items.map {
         async { action(it) }
     }
