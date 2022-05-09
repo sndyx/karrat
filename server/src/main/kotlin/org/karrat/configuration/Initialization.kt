@@ -23,6 +23,8 @@ internal fun Server.genServerFiles() {
     val settingsFile = Path("settings.server.kts")
     val settings = getResource("defaults/settings.server.kts")
     settingsFile.takeIf { !it.exists() }?.writeText(settings)
+
+    Path("plugins").mkdir()
 }
 
 internal fun Server.eulaPrompt() {

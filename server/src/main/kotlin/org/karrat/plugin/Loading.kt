@@ -16,15 +16,20 @@ import java.nio.file.Path
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import kotlin.io.path.*
+import kotlin.system.measureTimeMillis
 
 internal fun Server.loadPlugins() {
-    @Suppress("BlockingMethodInNonBlockingContext")
-    val jars = Path("plugins").listDirectoryEntries().filter { it.extension == "jar" }
+    val path = Path("plugins")
+    if (!path.exists()) return
+    val jars = path.listDirectoryEntries().filter { it.extension == "jar" }
     jars.forEach {
-        println("Loading plugin: ${it.nameWithoutExtension}.")
-        runCatching { loadPlugin(it) }
-            .onSuccess { p -> plugins.add(p) }
-            .onFailure { e -> e.printStackTrace() }
+        measureTimeMillis {
+            runCatching { loadPlugin(it) }
+                .onSuccess { p -> plugins.add(p) }
+                .onFailure { e -> println("failed to load plugin: ${it.nameWithoutExtension}."); e.printStackTrace() }
+        }.let { time ->
+            println("Loaded plugin: ${it.nameWithoutExtension} in ${time}ms.")
+        }
     }
     plugins.forEach {
         it.init()
@@ -81,9 +86,6 @@ private fun pluginClassOrNull(data: ByteBuffer): String? = data.run {
                 5, 6 -> skip(8)
             }
         }
-    }
-    constants.entries.forEach {
-        println("[${it.key}: ${it.value}]")
     }
     skip(2)
     val classIndex = readShort()

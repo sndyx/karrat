@@ -103,7 +103,7 @@ public object Config {
     /**
      * The number of times the server will tick in a second.
      */
-    public var tps: Int by positive(20)
+    public var tickrate: Int by positive(20)
     
     /**
      * The number of chunks around a given player to be sent to the client.

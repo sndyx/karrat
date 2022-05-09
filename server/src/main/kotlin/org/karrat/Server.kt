@@ -75,7 +75,7 @@ public object Server : CoroutineScope {
                     measureTimeMillis {
                         tick() // Run game tick
                     }
-                delay(maxOf(0L, (1000 / Config.tps) - tickTimeMillis))
+                delay(maxOf(0L, (1000 / Config.tickrate) - tickTimeMillis))
             }
         }
         launch {

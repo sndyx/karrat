@@ -16,7 +16,7 @@ import kotlin.system.measureTimeMillis
  * Returns the current tps (ticks per second) value.
  */
 public fun Server.tps(): Float =
-    1000.0f / maxOf((1000 / Config.tps).toLong(), tickTimeMillis)
+    1000.0f / maxOf((1000 / Config.tickrate).toLong(), tickTimeMillis)
     
 /**
  * Returns the maximum amount of ticks that could take place in a single second,
