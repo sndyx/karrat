@@ -14,8 +14,8 @@ import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.translation.generateKeyPair
 import org.karrat.play.Material
-import org.karrat.server.*
-import org.karrat.server.startConsoleInput
+import org.karrat.server.console.startConsoleInput
+import org.karrat.server.console.setConsoleOutput
 import org.karrat.struct.id
 import org.karrat.world.Biome
 import org.karrat.world.Dimension
@@ -46,10 +46,7 @@ public object Server : CoroutineScope {
     
     public fun start(): Unit = runBlocking {
         Config.lock = true
-        System.setOut(
-            if (Config.basicLogging) FormattedPrintStream(System.out)
-            else ReflectionPrintStream(System.out)
-        )
+        setConsoleOutput()
         println("Server starting.")
         if (isFirstRun) {
             genServerFiles()

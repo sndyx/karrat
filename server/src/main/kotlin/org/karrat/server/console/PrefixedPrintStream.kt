@@ -2,11 +2,11 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.server.console.inherit
+package org.karrat.server.console
 
 import java.io.OutputStream
 
-public abstract class PrefixedPrintStream(out: OutputStream) : FormattedPrintStream(out) {
+internal abstract class PrefixedPrintStream(out: OutputStream) : FormattedPrintStream(out) {
 
     protected abstract val prefix: String
 

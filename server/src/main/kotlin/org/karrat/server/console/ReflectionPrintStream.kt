@@ -5,12 +5,11 @@
 package org.karrat.server.console
 
 import org.karrat.Config
-import org.karrat.server.console.inherit.PrefixedPrintStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-public class ReflectionPrintStream(out: OutputStream) : PrefixedPrintStream(out) {
+internal class ReflectionPrintStream(out: OutputStream) : PrefixedPrintStream(out) {
 
     private val time: String
         get() {
@@ -31,4 +30,5 @@ public class ReflectionPrintStream(out: OutputStream) : PrefixedPrintStream(out)
             return if (format.length > 40) format.substring(0, 36) + "...>"
             else format.padEnd(40)
         }
+    
 }

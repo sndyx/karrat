@@ -4,12 +4,11 @@
 
 package org.karrat.server.console
 
-import org.karrat.server.console.inherit.PrefixedPrintStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-public class SimplePrintStream(out: OutputStream) : PrefixedPrintStream(out) {
+internal class SimplePrintStream(out: OutputStream) : PrefixedPrintStream(out) {
     private val time: String
         get() {
             val time = Calendar.getInstance().time

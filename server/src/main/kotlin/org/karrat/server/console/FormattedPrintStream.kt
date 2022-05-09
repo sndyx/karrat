@@ -2,12 +2,12 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.server.console.inherit
+package org.karrat.server.console
 
 import java.io.OutputStream
 import java.io.PrintStream
 
-public abstract class FormattedPrintStream(out: OutputStream) : PrintStream(out) {
+internal abstract class FormattedPrintStream(out: OutputStream) : PrintStream(out) {
 
     override fun println(x: Any?) {
         super.println(format(x.toString()))

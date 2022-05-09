@@ -9,7 +9,7 @@ import org.karrat.Config
 import org.karrat.Server
 import org.karrat.command.Command
 
-internal fun Server.registerConsoleOutput() {
+internal fun Server.setConsoleOutput() {
     System.setOut(
         if (Config.basicLogging) {
             SimplePrintStream(System.out)
@@ -19,7 +19,7 @@ internal fun Server.registerConsoleOutput() {
     )
 }
 
-internal suspend fun Server.registerConsoleInput(): Unit = coroutineScope {
+internal suspend fun Server.startConsoleInput(): Unit = coroutineScope {
     runCatching {
         while (currentCoroutineContext().isActive) {
             val line = readln()
@@ -32,7 +32,7 @@ internal suspend fun Server.registerConsoleInput(): Unit = coroutineScope {
         } else {
             println("Exception in console thread!")
             it.printStackTrace()
-            registerConsoleInput()
+            startConsoleInput()
         }
     }
 }
