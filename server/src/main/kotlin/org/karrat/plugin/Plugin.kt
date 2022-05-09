@@ -9,4 +9,4 @@ import kotlin.annotation.AnnotationTarget.*
 
 @Target(CLASS, FILE)
 @Retention(RUNTIME)
-public annotation class Plugin(val name: String, val version: String)
+public annotation class Plugin(val id: String, val name: String, val version: String)

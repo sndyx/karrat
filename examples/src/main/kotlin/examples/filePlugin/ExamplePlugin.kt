@@ -1,7 +1,7 @@
 /*
  * Copyright © Karrat - 2022.
  */
-@file:Plugin("Example Plugin File", "1.18.1")
+@file:Plugin("example-plugin", "Example Plugin File", "1.18.1")
 @file:DependsOn("Essentials", "WorldEdit")
 
 package examples.filePlugin

@@ -27,13 +27,11 @@ public fun Server.scheduleEvery(wait: Duration, action: suspend () -> Unit): Job
     }
 }
 
-public inline fun <T, R> Server.parallelize(
+public suspend inline fun <T, R> Server.parallelize(
     items: Collection<T>,
     crossinline action: suspend (T) -> R
-): Flow<R> = flow {
-    items.forEach {
-        launch {
-            emit(action(it))
-        }
-    }
+): Unit = with(Server) { // This is stupid
+    items.map {
+        async { action(it) }
+    }.awaitAll()
 }

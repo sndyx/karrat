@@ -4,13 +4,9 @@
 
 package org.karrat.plugin
 
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.karrat.Server
 import org.karrat.server.parallelize
-import org.karrat.struct.ByteBuffer
-import org.karrat.struct.readBytes
-import org.karrat.struct.toByteBuffer
+import org.karrat.struct.*
 import java.net.URLClassLoader
 import java.nio.file.Path
 import java.util.zip.ZipEntry
@@ -18,20 +14,23 @@ import java.util.zip.ZipInputStream
 import kotlin.io.path.*
 import kotlin.system.measureTimeMillis
 
-internal fun Server.loadPlugins() {
+internal suspend fun Server.loadPlugins() {
     val path = Path("plugins")
     if (!path.exists()) return
+    @Suppress("BlockingMethodInNonBlockingContext")
     val jars = path.listDirectoryEntries().filter { it.extension == "jar" }
-    jars.forEach {
-        measureTimeMillis {
-            runCatching { loadPlugin(it) }
-                .onSuccess { p -> plugins.add(p) }
-                .onFailure { e -> println("failed to load plugin: ${it.nameWithoutExtension}."); e.printStackTrace() }
-        }.let { time ->
-            println("Loaded plugin: ${it.nameWithoutExtension} in ${time}ms.")
+    Server.parallelize(jars) { jar ->
+        runCatching {
+            var plugin: LoadedPlugin
+            val time = measureTimeMillis {
+                plugin = loadPlugin(jar)
+            }
+            println("Loaded plugin ${plugin.name} in ${time}ms.")
+        }.onFailure {
+            println("Failed to load plugin for jar ${jar.name}.")
         }
     }
-    plugins.forEach {
+    plugins.sorted().forEach {
         it.init()
     }
 }
@@ -63,7 +62,7 @@ private fun resolvePluginClass(jar: Path): String {
             }
         }
     }
-    throw PluginInitializationException("Plugin class for: ${jar.nameWithoutExtension} could not be resolved.")
+    throw PluginInitializationException("Plugin for jar: '${jar.name}' could not be resolved.")
 }
 
 /**
@@ -74,44 +73,43 @@ private fun resolvePluginClass(jar: Path): String {
  */
 private fun pluginClassOrNull(data: ByteBuffer): String? = data.run {
     skip(8)
-    val cpSize = readShort()
-    val constants = buildMap<Int, Any> {
-        repeat(cpSize.toInt() - 1) {
-            when (read().toInt()) {
-                1 -> set(it + 1, readBytes(readShort().toInt()).decodeToString())
-                7 -> set(it + 1, readShort())
-                8, 16, 19, 20 -> skip(2)
-                15 -> skip(3)
-                3, 4, 9, 10, 11, 12, 17, 18 -> skip(4)
-                5, 6 -> skip(8)
-            }
+    val poolSize = readShort()
+    val utf8Pool = mutableMapOf<Int, String>()
+    val classPool = mutableMapOf<Int, UShort>()
+    repeat(poolSize.toInt() - 1) {
+        when (read().toInt()) {
+            1 -> utf8Pool[it + 1] = readBytes(readUShort().toInt()).decodeToString()
+            7 -> classPool[it + 1] = readUShort()
+            8, 16, 19, 20 -> skip(2)
+            15 -> skip(3)
+            3, 4, 9, 10, 11, 12, 17, 18 -> skip(4)
+            5, 6 -> skip(8)
         }
     }
     skip(2)
-    val classIndex = readShort()
+    val thisClass = readUShort().toInt()
     skip(2)
-    skip(readShort() * 2)
+    skip(readUShort().toInt() * 2)
     repeat(2) {
-        repeat(readShort().toInt()) {
+        repeat(readUShort().toInt()) {
             skip(6)
-            val aCount = readShort()
-            repeat(aCount.toInt()) {
+            val attributeCount = readUShort()
+            repeat(attributeCount.toInt()) {
                 skip(2)
                 skip(readInt())
             }
         }
     }
-    val aCount = readShort()
-    repeat(aCount.toInt()) {
-        val aNameIndex = readShort()
-        val attributeName = constants[aNameIndex.toInt()]
+    val attributeCount = readUShort().toInt()
+    repeat(attributeCount) {
+        val aNameIndex = readUShort()
+        val attributeName = utf8Pool[aNameIndex.toInt()]
         if (attributeName == "RuntimeVisibleAnnotations") {
             skip(4)
-            val count = readShort()
-            repeat(count.toInt()) {
-                val type = constants[readShort().toInt()]
-                if (type == "Lorg/karrat/plugin/Plugin;")
-                    return constants[(constants[classIndex.toInt()] as Short).toInt()] as String
+            val annotationCount = readUShort().toInt()
+            repeat(annotationCount) {
+                val type = utf8Pool[readUShort().toInt()]
+                if (type == "Lorg/karrat/plugin/Plugin;") return utf8Pool[classPool[thisClass]!!.toInt()]
             }
         } else {
             skip(readInt())
