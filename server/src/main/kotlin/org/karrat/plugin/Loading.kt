@@ -71,7 +71,7 @@ private fun resolvePluginClass(jar: Path): String {
  * Determines whether a class is annotated with the [Plugin] annotation from
  * its bytecode.
  *
- * @return class name, or `null` if not annotated with `Plugin`.
+ * @return internal class name, or `null` if not annotated with `Plugin`.
  */
 private fun pluginClassOrNull(data: ByteBuffer): String? = data.run {
     skip(8)

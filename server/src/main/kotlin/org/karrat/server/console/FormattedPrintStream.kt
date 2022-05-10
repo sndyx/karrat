@@ -45,5 +45,6 @@ internal abstract class FormattedPrintStream(out: OutputStream) : PrintStream(ou
         super.println(format(x.toString()))
     }
 
-    public abstract fun format(text: String): String
+    abstract fun format(text: String): String
+    
 }
