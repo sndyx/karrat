@@ -67,6 +67,7 @@ task("clear") {
 }
 
 task<JavaExec>("run") {
+    standardInput = System.`in`
     group = "server"
     dependsOn("copyJar")
     workingDir = file("build/server")

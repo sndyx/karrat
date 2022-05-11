@@ -94,6 +94,7 @@ public interface Command {
         else {
             val next = resolveNextNode(tokens)
             next?.first?.let {
+                it.consume(tokens.take(next.second), args)
                 return it.eval(tokens.drop(next.second), args)
             } ?: let {
                 return Result.failure(IllegalArgumentException("Invalid command syntax."))

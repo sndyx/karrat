@@ -1,6 +1,7 @@
 /*
  * Copyright © Karrat - 2022.
  */
+@file:Suppress("BlockingMethodInNonBlockingContext")
 
 package org.karrat
 
@@ -30,7 +31,7 @@ import kotlin.system.measureTimeMillis
 
 public object Server : CoroutineScope {
     
-    @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
+    @OptIn(DelicateCoroutinesApi::class)
     override val coroutineContext: CoroutineContext =
         newFixedThreadPoolContext(Config.threadCount, "worker-thread")
     
@@ -80,7 +81,7 @@ public object Server : CoroutineScope {
         }
         launch {
             while (isActive) {
-                @Suppress("BlockingMethodInNonBlockingContext") // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
+                // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
                 socket.accept()?.let {
                     it.configureBlocking(false)
                     val session = Session(SocketChannel(it))

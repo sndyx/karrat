@@ -6,7 +6,55 @@
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" default="true" project-jdk-name="16" project-jdk-type="JavaSDK">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="UnattendedHostPersistenceState">
+    <option name="openedFilesInfos">
+      <list>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1606" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server/build.gradle.kts" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="602" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server/src/main/kotlin/org/karrat/server/console/Console.kt" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/build.gradle.kts" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server/src/main/kotlin/org/karrat/command/generic/TestCommand.kt" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server/src/main/kotlin/org/karrat/command/generic/StopCommand.kt" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="347" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server/src/main/kotlin/org/karrat/command/generic/EchoCommand.kt" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server/src/main/kotlin/org/karrat/command/generic/ComplexCommand.kt" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1112" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server/src/main/kotlin/org/karrat/command/CommandScope.kt" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="fileUrl" value="mock:///DiffPreview" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="2723" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server/src/main/kotlin/org/karrat/command/Command.kt" />
+        </OpenedFileInfo>
+      </list>
+    </option>
   </component>
 </project>

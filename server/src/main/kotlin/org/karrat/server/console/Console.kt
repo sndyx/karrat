@@ -19,12 +19,14 @@ internal fun Server.setConsoleOutput() {
     )
 }
 
-internal suspend fun Server.startConsoleInput(): Unit = coroutineScope {
+internal suspend fun Server.startConsoleInput() {
+    delay(1000L)
     runCatching {
-        while (currentCoroutineContext().isActive) {
-            val line = readln()
-            Command.run(line, null)
-            delay(1000L)
+        while (isActive) {
+            readlnOrNull()?.let {
+                Command.run(it, null)
+            }
+            delay(200L)
         }
     }.onFailure {
         if (it.message?.contains("EOF") == true) {

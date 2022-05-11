@@ -19,7 +19,7 @@ public interface CommandScope {
         }
     }
 
-    public fun respond(value: String)
+    public fun respond(value: Any)
     
     public fun <T> argument(index: Int): T {
         return args.getValue(index)
@@ -31,8 +31,8 @@ public class ConsoleCommandScope(
     override val args: CommandArguments,
 ) : CommandScope {
 
-    override fun respond(value: String) {
-        println(value.stripColor())
+    override fun respond(value: Any) {
+        println(value.toString().stripColor())
     }
 
 }
@@ -42,15 +42,15 @@ public class PlayerCommandScope(
     public val sender: Player,
 ) : CommandScope {
 
-    override fun respond(value: String) {
-        sender.sendMessage(value)
+    override fun respond(value: Any) {
+        sender.sendMessage(value.toString())
     }
 
 }
 
 public class CommandArguments internal constructor(
     args: List<Any>
-) : List<Any> by listOf(args) {
+) : List<Any> by args {
 
     @Suppress("Unchecked_Cast")
     public fun <T> getValue(index: Int): T {
