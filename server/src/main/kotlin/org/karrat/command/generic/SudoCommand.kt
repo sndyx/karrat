@@ -14,7 +14,7 @@ internal fun Command.CommandRegistry.sudoCommand(): Command =
     command("sudo") {
         argument<String> {
             vararg<String>().onRun {
-                val player = Player(argument<String>(0))
+                val player = Player(args.get<String>(0))
                 val command = args.drop(1).joinToString(" ") { it as String }
                 run(command, player)
             }

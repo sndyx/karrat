@@ -12,6 +12,9 @@ import org.karrat.entity.Player
 import org.karrat.struct.TextComponent
 import org.karrat.struct.Uuid
 import java.util.*
+import kotlin.io.path.Path
+import kotlin.io.path.exists
+import kotlin.io.path.readBytes
 
 /**
  * Represents the data sent to display a server banner on a client's server list
@@ -37,7 +40,8 @@ public class StatusResponse(
             Server.players.size,
             listOf(DummyPlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
             TextComponent(Config.motd),
-            StatusResponse::class.java.getResource("/icon.png")?.readBytes()
+            Path("icon.jpeg").takeIf { it.exists() }?.readBytes()
+                ?: StatusResponse::class.java.getResource("/defaults/icon.jpeg")?.readBytes()
         )
 
     }

@@ -11,6 +11,6 @@ import org.karrat.command.vararg
 public fun Command.CommandRegistry.echoCommand(): Command =
     command("echo") {
         vararg<String>().onRun {
-            respond(args.joinToString())
+            respond(args.get<List<String>>(0).joinToString(" "))
         }
     }

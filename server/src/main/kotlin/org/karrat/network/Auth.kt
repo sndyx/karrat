@@ -15,7 +15,6 @@ import java.net.InetAddress
 
 public open class AuthServer {
     
-    @OptIn(ExperimentalSerializationApi::class)
     public open fun authenticate(serverHash: ByteArray, ip: InetAddress, username: String): Result<SessionServerResponse> {
         val response = request<SessionServerResponse>(
             "${Config.sessionServer}/session/minecraft/hasJoined",

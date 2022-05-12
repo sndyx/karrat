@@ -10,69 +10,64 @@ import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.elementDescriptors
 import kotlinx.serialization.serializer
-import org.karrat.Config
 import org.karrat.command.generic.*
 import org.karrat.command.generic.installCommand
 import org.karrat.command.generic.killCommand
 import org.karrat.command.generic.stopCommand
 import org.karrat.entity.Player
-import org.karrat.internal.success
-import org.karrat.internal.unreachable
 import org.karrat.serialization.command.CommandDecoder
 import org.karrat.struct.Loadable
 
 public inline fun command(
-    literals: List<String>,
+    literal: String,
+    vararg aliases: String,
     structure: Command.() -> Unit = { }
-): Command {
-    val command = CommandNodeLiteral(literals)
-    command.structure()
-    return command
-}
-
-public inline fun command(
-    vararg literal: String,
-    structure: Command.() -> Unit = { }
-): Command = command(literal.asList(), structure)
-
-public fun Command.route(
-    literals: List<String>,
-    structure: Command.() -> Unit = { }
-): Command = command(literals, structure).also {
-    nodes.add(it)
-}
+): Command = CommandNodeLiteral(listOf(literal, *aliases))
+    .apply(structure)
 
 public fun Command.route(
     literal: String,
+    vararg aliases: String,
     structure: Command.() -> Unit = { }
-): Command = route(listOf(literal), structure)
+): Command = command(literal, *aliases, structure = structure)
+    .also { nodes.add(it) }
 
-public inline fun <reified T> Command.argument(
+public inline fun <reified T : Any> Command.argument(
+    mapTo: String? = null,
     label: String? = null,
     structure: Command.() -> Unit = { }
-): Command {
-    val command = CommandNodeArgument<T>(label)
-    command.structure()
-    nodes.add(command)
-    return command
-}
+): Command = CommandNodeArgument<T>(mapTo, label)
+    .apply(structure)
+    .also { nodes.add(it) }
 
 public fun Command.redirect(
-    redirect: Command
-) {
-    val command = CommandNodeRedirect(redirect)
-    nodes.add(command)
-}
+    to: Command
+): Unit = CommandNodeRedirect(to)
+    .let { nodes.add(it) }
 
-
-public inline fun <reified T> Command.vararg(
+public inline fun <reified T : Any> Command.vararg(
+    mapTo: String? = null,
     label: String? = null
-): Command {
-    val command = CommandNodeArgument<T>(label)
-    nodes.add(command)
-    command.nodes.add(command)
-    return command
+): Command = CommandNodeArgument<List<T>>(mapTo, label)
+    .also { nodes.add(it) }
+    .also { it.nodes.add(it) }
+
+public fun Command.eval(
+    tokens: List<String>,
+    args: MutableList<Any> = mutableListOf(),
+    mappings: MutableList<String?> = mutableListOf()
+): Result<EvaluatedCommand> {
+    if (tokens.isEmpty()) return Result.success(EvaluatedCommand(this, CommandArguments(args, mappings)))
+    return resolveNextNode(tokens)?.let {
+        it.first.consume(tokens.take(it.second), args, mappings)
+        it.first.eval(tokens.drop(it.second), args, mappings)
+    } ?: Result.failure(IllegalArgumentException("Invalid command syntax."))
 }
+
+public fun Command.run(
+    tokens: List<String>,
+    sender: Player? = null
+): Result<Unit> = eval(tokens).map { it.run(sender) }
 
 @CommandDsl
 public interface Command {
@@ -80,72 +75,18 @@ public interface Command {
     public val nodes: MutableList<Command>
     public val executor: CommandExecutor
 
-    public fun matches(tokens: List<String>): Pair<Boolean, Int>
+    public fun matches(tokens: List<String>): Int
 
-    public fun consume(consumedTokens: List<String>, args: MutableList<Any>)
+    public fun consume(
+        consumedTokens: List<String>,
+        args: MutableList<Any>,
+        mappings: MutableList<String?>
+    )
 
     public fun canUse(sender: Player?): Boolean
-
-    public fun eval(
-        tokens: List<String>,
-        args: MutableList<Any> = mutableListOf()
-    ): Result<EvaluatedCommand> {
-        if (tokens.isEmpty()) return Result.success(EvaluatedCommand(this, CommandArguments(args)))
-        else {
-            val next = resolveNextNode(tokens)
-            next?.first?.let {
-                it.consume(tokens.take(next.second), args)
-                return it.eval(tokens.drop(next.second), args)
-            } ?: let {
-                return Result.failure(IllegalArgumentException("Invalid command syntax."))
-            }
-        }
-    }
     
-    public fun run(
-        tokens: List<String>,
-        sender: Player? = null
-    ): Result<Unit> {
-        eval(tokens).onSuccess {
-            it.run(sender)
-            return Result.success()
-        }.onFailure {
-            respond(sender, Config.invalidSyntaxMessage)
-            return Result.failure(it)
-        }
-        unreachable()
-    }
-
-    public fun resolveNextNode(tokens: List<String>): Pair<Command, Int>? {
-        var bestFit: Pair<Command, Int>? = null
-        nodes.forEach {
-            val result = it.matches(tokens)
-            if (result.first) {
-                if (bestFit == null || bestFit!!.second < result.second) {
-                    bestFit = Pair(it, result.second)
-                }
-            }
-        }
-        return bestFit
-    }
-
-    public fun onRun(block: CommandScope.() -> Unit): Command {
-        executor.globalExecutor = block
-        return this
-    }
-
-    public fun onRunByConsole(block: CommandScope.() -> Unit): Command {
-        executor.consoleExecutor = block
-        return this
-    }
-
-    public fun onRunByPlayer(block: PlayerCommandScope.() -> Unit): Command {
-        executor.playerExecutor = block
-        return this
-    }
+    public object Root : Command by command("root")
     
-    public object Root : Command by command()
-
     public companion object CommandRegistry : Loadable<Command> {
         
         override val list: MutableList<Command> get() = Root.nodes
@@ -156,8 +97,7 @@ public interface Command {
         }
 
         override fun unregister(value: Command) {
-            check(value is CommandNodeLiteral) { "Root node must be a literal node." }
-            Root.nodes.add(value)
+            Root.nodes.remove(value)
         }
 
         override fun load() {
@@ -170,17 +110,29 @@ public interface Command {
             register(testCommand())
         }
         
-        public fun eval(command: String): Result<EvaluatedCommand> {
-            val tokens = command.split(' ')
-            return Root.eval(tokens)
-        }
+        public fun eval(command: String): Result<EvaluatedCommand> =
+            Root.eval(command.split(' '))
 
-        public fun run(command: String, sender: Player? = null): Result<Unit> {
-            val tokens = command.split(' ')
-            return Root.run(tokens, sender)
-        }
+        public fun run(command: String, sender: Player? = null): Result<Unit> =
+            Root.run(command.split(' '), sender)
 
     }
+    
+    public fun resolveNextNode(tokens: List<String>): Pair<Command, Int>? =
+        nodes.fold<Command, Pair<Command, Int>?>(null) { best, it ->
+            val result = it.matches(tokens)
+            if (result != -1 && (best == null || best.second < result)) Pair(it, result) else best
+        }
+    
+    public fun onRun(block: CommandScope.() -> Unit): Command =
+        also { executor.globalExecutor = block }
+    
+    public fun onRunByConsole(block: CommandScope.() -> Unit): Command =
+        also { executor.consoleExecutor = block }
+    
+    public fun onRunByPlayer(block: PlayerCommandScope.() -> Unit): Command =
+        also { executor.playerExecutor = block }
+    
 }
 
 @PublishedApi
@@ -192,12 +144,14 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
     override val executor: CommandExecutor = CommandExecutor()
 
 
-    override fun matches(tokens: List<String>): Pair<Boolean, Int> {
-        val matches = literals.firstOrNull { it == tokens.first() } != null
-        return Pair(matches, 1)
-    }
+    override fun matches(tokens: List<String>): Int =
+        if (literals.firstOrNull { it == tokens.first() } != null) 1 else -1
 
-    override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {}
+    override fun consume(
+        consumedTokens: List<String>,
+        args: MutableList<Any>,
+        mappings: MutableList<String?>
+    ) { /* Ignore */ }
 
     override fun canUse(sender: Player?): Boolean {
         return true
@@ -209,38 +163,42 @@ internal class CommandNodeRedirect @PublishedApi internal constructor(
     val redirectNode: Command,
 ) : Command by redirectNode {
     
-    override fun matches(tokens: List<String>): Pair<Boolean, Int> {
-        return Pair(true, 0)
-    }
+    override fun matches(tokens: List<String>): Int = 0
     
 }
 
 
 @PublishedApi
 @OptIn(ExperimentalSerializationApi::class)
-internal class CommandNodeArgument<T> @PublishedApi internal constructor(
+internal class CommandNodeArgument<T : Any> @PublishedApi internal constructor(
     val serializer: KSerializer<T>,
+    val mapTo: String? = null,
     val label: String? = null
 ) : Command {
 
     companion object {
-        inline operator fun <reified T> invoke(label: String? = null) =
-            CommandNodeArgument<T>(serializer(), label)
+        inline operator fun <reified T : Any> invoke(mapTo: String?, label: String?) =
+            CommandNodeArgument<T>(serializer(), mapTo, label)
     }
 
     override val nodes: MutableList<Command> = mutableListOf()
     override val executor: CommandExecutor = CommandExecutor()
 
-    override fun matches(tokens: List<String>): Pair<Boolean, Int> {
+    override fun matches(tokens: List<String>): Int {
         val descriptor = serializer.descriptor
         val size = decompiledElementsCount(descriptor)
-        if (size > tokens.size) return Pair(false, 0)
-        return Pair(checkMatch(descriptor, ArrayDeque(tokens)), size)
+        if (size > tokens.size) return -1
+        return if (checkMatch(descriptor, ArrayDeque(tokens))) size else -1
     }
 
-    override fun consume(consumedTokens: List<String>, args: MutableList<Any>) {
+    override fun consume(
+        consumedTokens: List<String>,
+        args: MutableList<Any>,
+        mappings: MutableList<String?>
+    ) {
         val decoder = CommandDecoder(ArrayDeque(consumedTokens))
-        args.add(serializer.deserialize(decoder)!!)
+        args.add(serializer.deserialize(decoder))
+        mappings.add(mapTo)
     }
 
     override fun canUse(sender: Player?): Boolean {
@@ -248,18 +206,10 @@ internal class CommandNodeArgument<T> @PublishedApi internal constructor(
     }
 
     private fun checkMatch(descriptor: SerialDescriptor, tokens: ArrayDeque<String>): Boolean {
-        if (descriptor.kind is PrimitiveKind) {
-            return ensurePrimitiveMatch(
-                tokens.removeFirst(),
-                descriptor.kind as PrimitiveKind
-            )
+        return if (descriptor.kind is PrimitiveKind) {
+            ensurePrimitiveMatch(tokens.removeFirst(), descriptor.kind as PrimitiveKind)
         }
-        descriptor.elementDescriptors.forEach {
-            if (!checkMatch(it, tokens)) {
-                return false
-            }
-        }
-        return true
+        else descriptor.elementDescriptors.all { checkMatch(it, tokens) }
     }
 
     private fun ensurePrimitiveMatch(token: String, kind: PrimitiveKind): Boolean {
@@ -273,31 +223,13 @@ internal class CommandNodeArgument<T> @PublishedApi internal constructor(
                 PrimitiveKind.FLOAT -> token.toFloat()
                 PrimitiveKind.DOUBLE -> token.toDouble()
                 PrimitiveKind.STRING -> { /* Ignore */ }
-                else -> {
-                    return false // Unexpected argument type.
-                }
+                else -> { return false /* Unexpected argument type. */ }
             }
         }.isSuccess
     }
 
-    private fun decompiledElementsCount(descriptor: SerialDescriptor): Int {
-        return if (descriptor.kind is PrimitiveKind) {
-            1
-        } else {
-            var total = 0
-            descriptor.elementDescriptors.forEach {
-                total += decompiledElementsCount(it)
-            }
-            total
-        }
-    }
+    private fun decompiledElementsCount(descriptor: SerialDescriptor): Int =
+        if (descriptor.kind is PrimitiveKind) 1
+        else descriptor.elementDescriptors.sumOf { decompiledElementsCount(it) }
 
-}
-
-private fun respond(sender: Player?, response: String) {
-    if (sender != null) {
-        sender.sendMessage(response)
-    } else {
-        println(response)
-    }
 }

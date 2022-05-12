@@ -10,36 +10,36 @@ internal fun Command.CommandRegistry.executeCommand(): Command =
     command("execute") execute@{
         
         route("align") {
-            argument<String>("axes") {
+            argument<String>("align", "axes") {
                 redirect(this@execute)
             }
         }
         
         route("anchored") {
-            argument<String>("anchor") {
+            argument<String>("anchored", "anchor") {
                 redirect(this@execute)
             }
         }
         
         route("as") {
-            argument<String>("targets") {
+            argument<String>("as", "targets") {
                 redirect(this@execute)
             }
         }
         
         route("at") {
-            argument<String>("targets") {
+            argument<String>("at","targets") {
                 redirect(this@execute)
             }
         }
         
         route("facing") {
-            argument<String>("pos") {
+            argument<String>("facing", "pos") {
                 redirect(this@execute)
             }
             route("entity") {
-                argument<String>("targets") {
-                    argument<String>("anchor") {
+                argument<String>("entity/targets", "targets") {
+                    argument<String>("entity/anchor", "anchor") {
                         redirect(this@execute)
                     }
                 }

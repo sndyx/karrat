@@ -18,12 +18,16 @@ public val Server.isFirstRun: Boolean get() {
 internal fun Server.genServerFiles() {
     val eulaFile = Path("EULA.txt")
     val eula = getResource("defaults/EULA.txt")
-    eulaFile.takeIf { !it.exists() }?.writeText(eula)
+    eulaFile.takeIf { !it.exists() }?.writeBytes(eula)
 
     val settingsFile = Path("settings.server.kts")
     val settings = getResource("defaults/settings.server.kts")
-    settingsFile.takeIf { !it.exists() }?.writeText(settings)
-
+    settingsFile.takeIf { !it.exists() }?.writeBytes(settings)
+    
+    val iconFile = Path("icon.jpeg")
+    val icon = getResource("defaults/icon.jpeg")
+    iconFile.takeIf { !it.exists() }?.writeBytes(icon)
+    
     Path("plugins").createDirectory()
 }
 
@@ -52,9 +56,8 @@ private fun signEula() {
     eulaFile.writeText(signedEula)
 }
 
-private fun getResource(path: String): String =
+private fun getResource(path: String): ByteArray =
     Thread.currentThread()
         .contextClassLoader
         .getResourceAsStream(path)!!
         .readAllBytes()
-        .decodeToString()

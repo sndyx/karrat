@@ -13,17 +13,13 @@ public interface CommandScope {
     public val args: CommandArguments
 
     public companion object {
-        public operator fun invoke(sender: Player?, args: List<Any>): CommandScope {
-            return if (sender != null) PlayerCommandScope(CommandArguments(args), sender)
-            else ConsoleCommandScope(CommandArguments(args))
+        public operator fun invoke(sender: Player?, args: CommandArguments): CommandScope {
+            return if (sender != null) PlayerCommandScope(args, sender)
+            else ConsoleCommandScope(args)
         }
     }
 
-    public fun respond(value: Any)
-    
-    public fun <T> argument(index: Int): T {
-        return args.getValue(index)
-    }
+    public fun respond(value: String)
 
 }
 
@@ -31,8 +27,8 @@ public class ConsoleCommandScope(
     override val args: CommandArguments,
 ) : CommandScope {
 
-    override fun respond(value: Any) {
-        println(value.toString().stripColor())
+    override fun respond(value: String) {
+        println(value.stripColor())
     }
 
 }
@@ -42,19 +38,25 @@ public class PlayerCommandScope(
     public val sender: Player,
 ) : CommandScope {
 
-    override fun respond(value: Any) {
-        sender.sendMessage(value.toString())
+    override fun respond(value: String) {
+        sender.sendMessage(value)
     }
 
 }
 
+@Suppress("Unchecked_Cast")
 public class CommandArguments internal constructor(
-    args: List<Any>
-) : List<Any> by args {
+    private val args: List<Any>, private val mappings: List<String?>
+) : Iterable<Any> {
 
-    @Suppress("Unchecked_Cast")
-    public fun <T> getValue(index: Int): T {
-        return get(index) as T
+    public fun <T> get(index: Int): T {
+        return args[index] as T
     }
-
+    
+    public fun <T> get(key: String): T {
+        return args[mappings.indexOf(key)] as T
+    }
+    
+    override fun iterator(): Iterator<Any> = args.iterator()
+    
 }

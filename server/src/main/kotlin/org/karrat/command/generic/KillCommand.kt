@@ -11,12 +11,10 @@ import org.karrat.command.command
 import org.karrat.entity.Player
 
 internal fun Command.CommandRegistry.killCommand(): Command =
-    command("kill", "assassinate") {
+    command("kill") {
         argument<String>().onRun {
-            Server.players.firstOrNull { it.name == args[0] }?.remove()
-            ?: let {
-                respond("Can't find target of ${args[0]}")
-            }
+            Server.players.firstOrNull { it.name == args.get<String>(0) }?.remove()
+            ?: respond("Can't find target of ${args.get<String>(0)}")
         }
     }.onRunByPlayer {
         sender.remove()
