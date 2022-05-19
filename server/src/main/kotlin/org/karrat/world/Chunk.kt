@@ -4,7 +4,7 @@
 
 package org.karrat.world
 
-public class Chunk(height: Int) {
+public class Chunk(height: Int) : Iterable<Block> {
     
     public val sections: List<ChunkSection> = List(height / 16) { ChunkSection() }
     
@@ -14,5 +14,12 @@ public class Chunk(height: Int) {
     public operator fun set(x: Int, y: Int, z: Int, value: Block) {
         sections[y / 16][x, y % 16, z] = value
     }
+
+    override fun iterator(): Iterator<Block> =
+        iterator {
+            sections.forEach {
+                yieldAll(it.iterator())
+            }
+        }
 
 }

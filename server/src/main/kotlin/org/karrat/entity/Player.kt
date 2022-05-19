@@ -26,8 +26,10 @@ public open class Player(
         session.send(TODO())
     }
 
-    public fun disconnect(message: String): Unit =
+    public fun disconnect(message: String): Unit {
         session.disconnect(message)
+        remove()
+    }
 
 }
 

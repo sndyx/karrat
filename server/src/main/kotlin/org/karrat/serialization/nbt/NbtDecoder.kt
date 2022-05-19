@@ -63,7 +63,7 @@ private abstract class AbstractNbtDecoder(
 
     // >:)
     // block of code > block of diamond
-    override fun decodeBoolean(): Boolean = decodeElement(pop())
+    override fun decodeBoolean(): Boolean = decodeElement<Byte>(pop()) == 1.toByte()
     override fun decodeByte(): Byte = decodeElement(pop())
     override fun decodeShort(): Short = decodeElement(pop())
     override fun decodeInt(): Int = decodeElement(pop())
@@ -73,7 +73,7 @@ private abstract class AbstractNbtDecoder(
     override fun decodeChar(): Char = decodeElement<Int>(pop()).toChar()
     override fun decodeString(): String = decodeElement(pop())
     override fun decodeBooleanElement(descriptor: SerialDescriptor, index: Int): Boolean =
-        decodeElement(descriptor.getElementName(index))
+        decodeElement<Byte>(descriptor.getElementName(index)) == 1.toByte()
 
     override fun decodeByteElement(descriptor: SerialDescriptor, index: Int): Byte =
         decodeElement(descriptor.getElementName(index))
@@ -154,9 +154,7 @@ private class NbtDecoder(value: Any) : AbstractNbtDecoder(value) {
 
     @Suppress("Unchecked_Cast")
     override fun <T> decodeElement(tag: String): T {
-        (value as NbtCompound).let {
-            return it[tag] as T
-        }
+        return (value as NbtCompound)[tag] as T
     }
 
 }

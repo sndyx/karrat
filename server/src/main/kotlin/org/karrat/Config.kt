@@ -133,7 +133,7 @@ public object Config {
      * A list of uuids corresponding to the players who are banned from the
      * server.
      */
-    public var bannedPlayers: MutableList<Uuid> = mutableListOf(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"))
+    public var bannedPlayers: MutableList<Uuid> = mutableListOf(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79b"))
     
     /**
      * The maximum amount of players that can join before connections will be

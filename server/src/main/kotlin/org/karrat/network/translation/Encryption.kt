@@ -83,12 +83,10 @@ internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: Public
     }
 }
 
-private fun digestOperation(vararg hashed: ByteArray): ByteArray? {
+private fun digestOperation(vararg hashed: ByteArray): ByteArray {
     return runCatching {
         val digest = MessageDigest.getInstance("SHA-1")
-        for (element in hashed) {
-            digest.update(element)
-        }
+        hashed.forEach { digest.update(it) }
         digest.digest()
     }.getOrElse {
         error("Digest creation failed!")

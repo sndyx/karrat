@@ -4,9 +4,9 @@
 
 package org.karrat.struct
 
-public class PalettedArray<T>(public val size: Int) {
+public class PalettedArray<T>(public val size: Int) : Iterable<T> {
     
-    public val palette: Palette<T> = Palette()
+    public val palette: Palette = Palette()
     public val data: VarArray<Int> = VarArray64(size, 0)
     
     public operator fun get(index: Int): T = palette[data[index]]
@@ -18,7 +18,7 @@ public class PalettedArray<T>(public val size: Int) {
         data[index] = palette.indexOf(value)
     }
     
-    public inner class Palette<T> {
+    public inner class Palette {
     
         private val set = mutableSetOf<T>()
         public val size: Int get() = set.size
@@ -41,5 +41,12 @@ public class PalettedArray<T>(public val size: Int) {
         public fun indexOf(element: T): Int = set.indexOf(element)
     
     }
-    
+
+    override fun iterator(): Iterator<T> =
+        iterator {
+            repeat(size) {
+                yield(get(it))
+            }
+        }
+
 }

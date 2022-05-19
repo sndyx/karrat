@@ -38,7 +38,6 @@ internal class CommandDecoder(val list: ArrayDeque<String>, var elementsCount: I
 
     override fun decodeSequentially(): Boolean = true
 
-    override fun decodeCollectionSize(descriptor: SerialDescriptor): Int =
-        decodeInt().also { elementsCount = it }
+    override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = list.size.also { elementsCount = it }
 
 }

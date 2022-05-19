@@ -4,7 +4,7 @@
 
 package org.karrat.play
 
-import org.karrat.struct.Loadable
+import org.karrat.server.Registry
 import org.karrat.struct.Identifier
 
 /*
@@ -20,7 +20,7 @@ public open class Material(
     public val stackSize: Int
 ) {
             
-    public companion object MaterialRegistry : Loadable<Material> {
+    public companion object MaterialRegistry : Registry<Material> {
 
         override val list: MutableList<Material> = mutableListOf()
 

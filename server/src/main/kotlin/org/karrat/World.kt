@@ -8,7 +8,7 @@ import WorldGenerator
 import kotlinx.serialization.Serializable
 import org.karrat.entity.Entity
 import org.karrat.entity.Player
-import org.karrat.internal.hash
+import org.karrat.internal.sha256
 import org.karrat.serialization.serializer.PrimitiveWorldSerializer
 import org.karrat.struct.*
 import org.karrat.world.Block
@@ -19,7 +19,7 @@ import org.karrat.world.Dimension
  * Represents a Minecraft world. Contains [chunks], [entities], and [players].
  *
  * @param seed 64-bit value used during world generation.
- * @param generator [World chunk generator][WorldGenerator], or [WorldGenerator.Default].
+ * @param generator [World chunk generator][WorldGenerator], or [WorldGenerator.Empty].
  * @param height Maximum build height. Must be below 20,000.
  */
 @Serializable(with = PrimitiveWorldSerializer::class)
@@ -27,7 +27,7 @@ public class World(
     public val identifier: Identifier,
     public val dimension: Dimension,
     public val seed: Long,
-    public val generator: WorldGenerator = WorldGenerator.Default,
+    public val generator: WorldGenerator = WorldGenerator.Empty,
     public val height: Int = 384
 ) {
 
@@ -51,7 +51,7 @@ public class World(
      * SHA-256 hashed [seed] used by the client for biome noise.
      */
     internal val hashedSeed: Long =
-        hash(MutableByteBuffer(8)
+        sha256(MutableByteBuffer(8)
             .apply { writeLong(seed) }.bytes
         ).toByteBuffer().readLong()
     

@@ -21,18 +21,17 @@ public class NbtCompound : LinkedHashMap<String, Any>() {
             }
             return
         }
-        check(
-            value is Byte
-                    || value is Short
-                    || value is Int
-                    || value is Long
-                    || value is Float
-                    || value is Double
-                    || value is String
-                    || value is ByteArray
-                    || value is NbtCompound
-                    || value is IntArray
-                    || value is LongArray
+        check(value is Byte
+                || value is Short
+                || value is Int
+                || value is Long
+                || value is Float
+                || value is Double
+                || value is String
+                || value is ByteArray
+                || value is NbtCompound
+                || value is IntArray
+                || value is LongArray
         ) { "NbtCompound does not accept type ${value::class.simpleName}." }
     }
 

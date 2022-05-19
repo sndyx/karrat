@@ -55,7 +55,7 @@ public object Nbt {
      */
     public fun encodeToBytes(value: NbtCompound): ByteArray {
         val buffer = DynamicByteBuffer()
-        writeNbtCompound(buffer, value)
+        writeNbt(buffer, value)
         return buffer.array()
     }
 

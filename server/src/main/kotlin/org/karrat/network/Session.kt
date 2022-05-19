@@ -9,6 +9,7 @@ import org.karrat.Server
 import org.karrat.entity.Player
 import org.karrat.event.PacketEvent
 import org.karrat.event.dispatchEvent
+import org.karrat.network.handler.NetHandler
 import org.karrat.network.handler.NetHandlerHandshake
 import org.karrat.network.translation.cipher
 import org.karrat.network.translation.compress

@@ -2,9 +2,9 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.struct
+package org.karrat.server
 
-public interface Loadable<T> {
+public interface Registry<T> {
 
     public val list: MutableList<T>
 

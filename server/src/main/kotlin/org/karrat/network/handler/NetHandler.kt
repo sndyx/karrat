@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.network
+package org.karrat.network.handler
 
 import org.karrat.packet.ServerboundPacket
 import org.karrat.struct.ByteBuffer

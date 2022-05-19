@@ -8,6 +8,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.elementDescriptors
 import kotlinx.serialization.serializer
 import org.karrat.command.generic.*
@@ -16,7 +17,7 @@ import org.karrat.command.generic.killCommand
 import org.karrat.command.generic.stopCommand
 import org.karrat.entity.Player
 import org.karrat.serialization.command.CommandDecoder
-import org.karrat.struct.Loadable
+import org.karrat.server.Registry
 
 public inline fun command(
     literal: String,
@@ -50,7 +51,6 @@ public inline fun <reified T : Any> Command.vararg(
     label: String? = null
 ): Command = CommandNodeArgument<List<T>>(mapTo, label)
     .also { nodes.add(it) }
-    .also { it.nodes.add(it) }
 
 public fun Command.eval(
     tokens: List<String>,
@@ -87,7 +87,7 @@ public interface Command {
     
     public object Root : Command by command("root")
     
-    public companion object CommandRegistry : Loadable<Command> {
+    public companion object CommandRegistry : Registry<Command> {
         
         override val list: MutableList<Command> get() = Root.nodes
         
@@ -143,7 +143,6 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
     override val nodes: MutableList<Command> = mutableListOf()
     override val executor: CommandExecutor = CommandExecutor()
 
-
     override fun matches(tokens: List<String>): Int =
         if (literals.firstOrNull { it == tokens.first() } != null) 1 else -1
 
@@ -185,6 +184,14 @@ internal class CommandNodeArgument<T : Any> @PublishedApi internal constructor(
     override val executor: CommandExecutor = CommandExecutor()
 
     override fun matches(tokens: List<String>): Int {
+        if (serializer.descriptor.kind is StructureKind.LIST) {
+            val descriptor = serializer.descriptor.elementDescriptors.first()
+            var matches = 0
+            tokens.forEach {
+                if (checkMatch(descriptor, ArrayDeque(listOf(it)))) matches++
+                else return matches
+            }
+        }
         val descriptor = serializer.descriptor
         val size = decompiledElementsCount(descriptor)
         if (size > tokens.size) return -1

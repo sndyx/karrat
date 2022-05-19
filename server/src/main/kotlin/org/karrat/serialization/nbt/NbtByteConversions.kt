@@ -5,54 +5,38 @@
 package org.karrat.serialization.nbt
 
 import org.karrat.struct.*
-
-internal fun writeNbtCompound(buffer: MutableByteBuffer, value: NbtCompound) {
-    writeNbt(buffer, value)
-}
-
-internal fun writeNbtList(buffer: MutableByteBuffer, value: List<*>) {
-    writeNbt(buffer, value)
-}
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.DataInputStream
+import java.io.DataOutputStream
 
 internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
     buffer.apply {
         when (value) {
-            is Byte -> {
-                write(value)
-            }
-            is Short -> {
-                writeShort(value)
-            }
-            is Int -> {
-                writeInt(value)
-            }
-            is Long -> {
-                writeLong(value)
-            }
-            is Float -> {
-                writeFloat(value)
-            }
-            is Double -> {
-                writeDouble(value)
-            }
+            is Byte -> write(value)
+            is Short -> writeShort(value)
+            is Int -> writeInt(value)
+            is Long -> writeLong(value)
+            is Float -> writeFloat(value)
+            is Double -> writeDouble(value)
             is ByteArray -> {
                 writeInt(value.size)
                 writeBytes(value)
             }
             is String -> {
-                val bytes = value.encodeToByteArray()
+                val os = ByteArrayOutputStream()
+                DataOutputStream(os).use { it.writeUTF(value) }
+                val bytes = os.toByteArray()
                 writeUShort(bytes.size.toUShort())
                 writeBytes(bytes)
             }
             is List<*> -> {
                 val filteredVal = value.filterNotNull()
-
                 if (filteredVal.isNotEmpty()) {
                     filteredVal.first().let { first ->
                         val type = typeOf(first)
                         write(type)
                     }
-
                     writeInt(filteredVal.size)
                     filteredVal.forEach {
                         writeNbt(buffer, it)
@@ -104,7 +88,8 @@ internal fun readNbt(buffer: ByteBuffer, type: Int = -1): Any {
             8 -> {
                 val length = readUShort()
                 val bytes = readBytes(length.toInt())
-                bytes.decodeToString()
+                val input = ByteArrayInputStream(bytes)
+                DataInputStream(input).use { it.readUTF() }
             }
             9 -> {
                 val innerType = read().toInt()
@@ -147,6 +132,7 @@ internal fun readNbt(buffer: ByteBuffer, type: Int = -1): Any {
 }
 
 private fun typeOf(value: Any): Byte = when (value) {
+    is Boolean -> 1 // stupid
     is Byte -> 1
     is Short -> 2
     is Int -> 3

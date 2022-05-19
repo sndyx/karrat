@@ -6,7 +6,7 @@ package org.karrat.world
 
 import org.karrat.struct.PalettedArray
 
-public class ChunkSection {
+public class ChunkSection : Iterable<Block> {
 
     public val data: PalettedArray<Block> = PalettedArray(4096) // 16x16x16
     public var airBlocks: Int = 4096
@@ -15,13 +15,14 @@ public class ChunkSection {
         data[x + y * 16 + z * 256]
     
     public operator fun set(x: Int, y: Int, z: Int, value: Block) {
-        // if (get(x, y, z) == Block.Air && value != Block.Air) airBlocks-- 
-        // else if (value == Block.Air) airBlocks++
-        // Commented until Block.kt is "done"
+        if (get(x, y, z) == Block.Air && value != Block.Air) airBlocks--
+        else if (value == Block.Air) airBlocks++
         data[x + y * 16 + z * 256] = value
     }
     
     public fun isEmpty(): Boolean = airBlocks == 4096
     public fun isNotEmpty(): Boolean = !isEmpty()
-    
+
+    override fun iterator(): Iterator<Block> = data.iterator()
+
 }

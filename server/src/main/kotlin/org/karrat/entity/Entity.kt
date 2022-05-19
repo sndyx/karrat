@@ -29,7 +29,7 @@ public abstract class Entity(loc: Location) {
     public var invulnerable: Boolean = false
 
     public open fun remove() {
-
+        // location.world.entities.indexOfFirst { it.eid == eid }
     }
 
 }

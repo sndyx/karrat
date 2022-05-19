@@ -5,7 +5,8 @@
 package org.karrat.world
 
 import kotlinx.serialization.Serializable
-import org.karrat.struct.Loadable
+import kotlinx.serialization.Transient
+import org.karrat.server.Registry
 import org.karrat.struct.Identifier
 
 /*
@@ -15,18 +16,20 @@ import org.karrat.struct.Identifier
  */
 
 @Serializable
-public abstract class Biome(
+public open class Biome(
     public val category: BiomeCategory,
     public val downfall: Float,
     public val effects: BiomeEffects,
     public val precipitation: BiomePrecipitation,
     public val temperature: Float,
-    public val id: Identifier,
+    @Transient
+    public val id: Identifier = Identifier(""),
     public val ordinal: Int,
-    public val name: String
+    @Transient
+    public val name: String = ""
 ) {
     
-    public companion object BiomeRegistry : Loadable<Biome> {
+    public companion object BiomeRegistry : Registry<Biome> {
 
         override val list: MutableList<Biome> = mutableListOf()
 

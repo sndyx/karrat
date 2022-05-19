@@ -24,20 +24,23 @@ fun generateBiomeClass() {
         source("dimension_codec.json")
     
         import("kotlinx.serialization.Serializable")
+        import("kotlinx.serialization.Transient")
         import("org.karrat.struct.Loadable")
         import("org.karrat.struct.Identifier")
 
         + """
         @Serializable
-        public abstract class Biome(
+        public open class Biome(
             public val category: BiomeCategory,
             public val downfall: Float,
             public val effects: BiomeEffects,
             public val precipitation: BiomePrecipitation,
             public val temperature: Float,
-            public val id: Identifier,
+            @Transient
+            public val id: Identifier = Identifier(""),
             public val ordinal: Int,
-            public val name: String
+            @Transient
+            public val name: String = ""
         ) {
             
             public companion object BiomeRegistry : Loadable<Biome> {

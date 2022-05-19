@@ -4,7 +4,6 @@
 
 package org.karrat.network.handler
 
-import org.karrat.network.NetHandler
 import org.karrat.network.Session
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.handshake.HandshakePacket

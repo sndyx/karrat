@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 
 //TODO custom optimized serialization
 @Serializable
-public sealed class ChatComponent: Style() {
+public sealed class ChatComponent : Style() {
     public val attributes: TextAttributes = TextAttributes()
 
     public fun attributes(modifier: TextAttributes.() -> Unit): ChatComponent {

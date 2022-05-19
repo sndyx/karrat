@@ -10,8 +10,6 @@ import org.karrat.entity.Player
 import org.karrat.event.BannedPlayerLoginEvent
 import org.karrat.event.PlayerLoginEvent
 import org.karrat.event.dispatchEvent
-import org.karrat.network.AuthServer
-import org.karrat.network.NetHandler
 import org.karrat.network.Session
 import org.karrat.network.translation.decodeSharedSecret
 import org.karrat.network.translation.decodeVerificationToken
@@ -52,9 +50,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
     }
 
     internal fun handleLoginStartPacket(packet: LoginStartPacket) {
-        check(state == LoginState.Initial) {
-            error("Unexpected Login Start Packet!")
-        }
+        check(state == LoginState.Initial) { "Unexpected Login Start Packet!" }
         username = packet.username
         state = LoginState.ReadyForEncryption
         session.send(
@@ -68,11 +64,9 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
 
     internal fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {
         check(state == LoginState.ReadyForEncryption) {
-            error("Unexpected Encryption Response Packet!")
-        }
+            "Unexpected Encryption Response Packet!" }
         check(verificationToken contentEquals packet.decodeVerificationToken(Server.keyPair.private)) {
-            error("Invalid verification return!")
-        }
+            "Invalid verification return!" }
         val sharedSecret: SecretKey =
             packet.decodeSharedSecret(Server.keyPair.private)
 
@@ -88,13 +82,11 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
         )
 
         thread(name = "auth") {
-    
             val result = Server.auth.authenticate(hash, session.address, username)
-    
             result.onSuccess { response ->
-
+                uuid = response.uuid
                 state = LoginState.ReadyToAccept
-        
+
                 if (uuid in Config.bannedPlayers) {
                     val event = BannedPlayerLoginEvent(uuid, username)
                     if (Server.dispatchEvent(event)) {
@@ -112,17 +104,14 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
                     session.disconnect("Unable to join server.")
                     return@thread
                 }
-        
-                session.enableCompression()
+                // session.enableCompression()
                 session.netHandler = NetHandlerPlay(session)
                 session.send(LoginSuccessPacket(uuid, username))
-
             }
-    
             result.onFailure {
+                it.printStackTrace()
                 session.disconnect("Failed to authenticate user.")
             }
-    
         }
         
     }

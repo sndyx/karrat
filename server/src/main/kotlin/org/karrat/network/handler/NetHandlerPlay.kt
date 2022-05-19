@@ -5,13 +5,13 @@
 package org.karrat.network.handler
 
 import org.karrat.Server
-import org.karrat.network.NetHandler
 import org.karrat.network.Session
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.play.JoinGamePacket
 import org.karrat.play.GameMode
+import org.karrat.serialization.nbt.Nbt
 import org.karrat.struct.ByteBuffer
-import org.karrat.struct.NbtCompound
+import org.karrat.world.Dimension
 
 public class NetHandlerPlay(private val session: Session) : NetHandler {
 
@@ -22,8 +22,8 @@ public class NetHandlerPlay(private val session: Session) : NetHandler {
             gameMode = GameMode.Survival,
             previousGameMode = GameMode.Survival,
             worlds = Server.worlds,
-            dimensionCodec = NbtCompound(),
-            dimension = NbtCompound(),
+            dimensionCodec = Dimension.codec,
+            dimension = Nbt.encodeToNbt(Dimension.Overworld as Dimension), // ?? ???? ? ???
             world = Server.worlds.first(),
             viewDistance = 10,
             simulationDistance = 10,

@@ -19,7 +19,7 @@ fun generateMaterialClass() {
         generator("MaterialGenerator.kt")
         source("materials.json")
 
-        import("org.karrat.struct`.Loadable")
+        import("org.karrat.struct.Loadable")
         import("org.karrat.struct.Identifier")
 
         + """

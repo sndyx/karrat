@@ -34,7 +34,7 @@ private abstract class AbstractNbtEncoder(
             if (currentTagOrNull == null) consumer
             else { node -> encodeElement(currentTag, node) }
         val encoder = when (descriptor.kind) {
-            StructureKind.LIST, is PolymorphicKind -> NbtListEncoder(consumer)
+            StructureKind.LIST -> NbtListEncoder(consumer)
             else -> NbtEncoder(consumer)
         }
         return encoder
@@ -77,7 +77,7 @@ private abstract class AbstractNbtEncoder(
     // >:)
     // block of code > block of diamond
     override fun encodeBoolean(value: Boolean) {
-        encodeElement(pop(), value)
+        encodeElement(pop(), (if (value) 1 else 0).toByte())
     }
 
     override fun encodeByte(value: Byte) {
@@ -113,7 +113,7 @@ private abstract class AbstractNbtEncoder(
     }
 
     override fun encodeBooleanElement(descriptor: SerialDescriptor, index: Int, value: Boolean) {
-        encodeElement(descriptor.getElementName(index), value)
+        encodeElement(descriptor.getElementName(index), (if (value) 1 else 0).toByte())
     }
 
     override fun encodeByteElement(descriptor: SerialDescriptor, index: Int, value: Byte) {

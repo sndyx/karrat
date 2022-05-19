@@ -7,6 +7,10 @@ package org.karrat.internal
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.DataInputStream
+import java.io.DataOutputStream
 import java.net.*
 import java.security.MessageDigest
 import kotlin.properties.ReadWriteProperty
@@ -51,7 +55,7 @@ internal fun postRequest(url: String, requestProperties: Map<String, String>): S
     TODO() //when a post request is needed >:)
 }
 
-internal fun hash(data: ByteArray): ByteArray {
+internal fun sha256(data: ByteArray): ByteArray {
     val digest = MessageDigest.getInstance("SHA-256")
     return digest.digest(data)
 }
@@ -68,6 +72,7 @@ internal fun <T> lazyMutable(initializer: () -> T): LazyMutable<T> =
 internal class LazyMutable<T>(val initializer: () -> T) : ReadWriteProperty<Any?, T> {
 
     private object Null
+
     private var prop: Any? = Null
 
     @Suppress("UNCHECKED_CAST")
@@ -86,8 +91,3 @@ internal class LazyMutable<T>(val initializer: () -> T) : ReadWriteProperty<Any?
     }
 
 }
-
-internal fun Result.Companion.success(): Result<Unit> = success(Unit)
-
-@PublishedApi
-internal fun unreachable(): Nothing = throw IllegalStateException("Unreachable should never be called.")

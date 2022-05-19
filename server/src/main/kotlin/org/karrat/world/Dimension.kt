@@ -7,12 +7,18 @@ package org.karrat.world
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import org.karrat.struct.Loadable
+import org.karrat.serialization.nbt.Nbt
+import org.karrat.server.Registry
 import org.karrat.struct.Identifier
+import org.karrat.struct.NbtCompound
 import org.karrat.struct.id
+import kotlin.io.path.Path
+import kotlin.io.path.writeBytes
 
 @Serializable
-public abstract class Dimension(
+public open class Dimension(
+    @Transient
+    public val id: Identifier = id(""),
     @SerialName("piglin_safe")
     public val piglinSafe: Boolean,
     public val natural: Boolean,
@@ -40,17 +46,15 @@ public abstract class Dimension(
     @SerialName("ultrawarm")
     public val ultraWarm: Boolean,
     @SerialName("has_ceiling")
-    public val hasCeiling: Boolean
+    public val hasCeiling: Boolean,
 ) {
-    
-    @Transient
-    public abstract val id: Int
-    
-    public companion object : Loadable<Dimension> {
 
+    public companion object : Registry<Dimension> {
+
+        public val codec: NbtCompound = NbtCompound()
         override val list: MutableList<Dimension> = mutableListOf()
 
-        public fun fromId(id: Int): Dimension = list.first { it.id == id }
+        public fun fromId(id: Int): Dimension = list[id]
 
         override fun register(value: Dimension) {
             list.add(value)
@@ -65,12 +69,34 @@ public abstract class Dimension(
             register(OverworldCaves)
             register(Nether)
             register(End)
+            val dimensionNbt = NbtCompound()
+            dimensionNbt["type"] = "minecraft:dimension_type"
+            dimensionNbt["value"] = list.mapIndexed { index, value ->
+                val nbt = NbtCompound()
+                nbt["name"] = value.id.toString()
+                nbt["id"] = index
+                nbt["element"] = Nbt.encodeToNbt(value)
+                nbt
+            }
+            val biomeNbt = NbtCompound()
+            biomeNbt["type"] = "minecraft:worldgen/biome"
+            biomeNbt["value"] = Biome.list.mapIndexed { index, value ->
+                val nbt = NbtCompound()
+                nbt["name"] = value.id.toString()
+                nbt["id"] = index
+                nbt["element"] = Nbt.encodeToNbt(value)
+                nbt
+            }
+            codec["minecraft:dimension_type"] = dimensionNbt
+            codec["minecraft:worldgen/biome"] = biomeNbt
+            Path("new_codec.nbt").writeBytes(Nbt.encodeToBytes(codec))
         }
 
     }
     
     @Serializable
     public object Overworld : Dimension(
+        id = id("minecraft:overworld"),
         piglinSafe = false,
         natural = true,
         ambientLight = 0.0f,
@@ -87,14 +113,11 @@ public abstract class Dimension(
         coordinateScale = 1.0,
         ultraWarm = false,
         hasCeiling = false
-    ) {
-    
-        override val id: Int = 0
-    
-    }
+    )
     
     @Serializable
     public object OverworldCaves : Dimension(
+        id = id("minecraft:overworld_caves"),
         piglinSafe = false,
         natural = true,
         ambientLight = 0.0f,
@@ -111,14 +134,11 @@ public abstract class Dimension(
         coordinateScale = 1.0,
         ultraWarm = false,
         hasCeiling = true
-    ) {
-        
-        override val id: Int = 1
-        
-    }
+    )
     
     @Serializable
     public object Nether : Dimension(
+        id = id("minecraft:the_nether"),
         piglinSafe = true,
         natural = false,
         ambientLight = 0.1f,
@@ -135,14 +155,11 @@ public abstract class Dimension(
         coordinateScale = 8.0,
         ultraWarm = true,
         hasCeiling = true
-    ) {
-        
-        override val id: Int = 2
-        
-    }
+    )
     
     @Serializable
     public object End : Dimension(
+        id = id("minecraft:the_end"),
         piglinSafe = false,
         natural = false,
         ambientLight = 0.0f,
@@ -159,10 +176,6 @@ public abstract class Dimension(
         coordinateScale = 1.0,
         ultraWarm = false,
         hasCeiling = false
-    ) {
-        
-        override val id: Int = 3
-        
-    }
+    )
     
 }

@@ -20,13 +20,11 @@ internal fun Server.setConsoleOutput() {
 }
 
 internal suspend fun Server.startConsoleInput() {
-    delay(1000L)
     runCatching {
         while (isActive) {
-            readlnOrNull()?.let {
-                Command.run(it, null)
-            }
-            delay(200L)
+            while (System.`in`.available() == 0) delay(50)
+            val command = System.`in`.readNBytes(System.`in`.available()).decodeToString()
+            Command.run(command, null)
         }
     }.onFailure {
         if (it.message?.contains("EOF") == true) {
