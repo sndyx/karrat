@@ -21,27 +21,27 @@ public value class Identifier internal constructor(private val value: String) {
 }
 
 public fun id(values: Pair<String, String>): Identifier {
-    check(!values.first.contains(':')) {
+    require(!values.first.contains(':')) {
         "':' character not allowed in namespace."
     }
-    check(!values.second.contains(':')) {
+    require(!values.second.contains(':')) {
         "':' character not allowed in id."
     }
     return Identifier("${values.second}:${values.first}")
 }
 
 public fun id(namespace: String, id: String): Identifier {
-    check(!namespace.contains(':')) {
+    require(!namespace.contains(':')) {
         "':' character not allowed in namespace."
     }
-    check(!id.contains(':')) {
+    require(!id.contains(':')) {
         "':' character not allowed in id."
     }
     return Identifier("$namespace:$id")
 }
 
 public fun id(identifier: String): Identifier {
-    check(identifier.matches(Regex("[^:]+:[^:]+"))) {
+    require(identifier.matches(Regex("[^:]+:[^:]+"))) {
         "Identifier must contain two strings separated by a colon."
     }
     return Identifier(identifier)

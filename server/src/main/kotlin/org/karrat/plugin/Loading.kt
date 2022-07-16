@@ -29,11 +29,19 @@ internal suspend fun Server.loadPlugins() {
             println("Loaded plugin ${plugin.name} in ${time}ms.")
             plugins.add(plugin)
         }.onFailure {
-            println("Failed to load plugin for jar ${jar.name}.")
+            println("Failed to load plugin for jar '${jar.name}'.")
         }
     }.awaitAll()
-    plugins.sorted().forEach {
-        it.init()
+    plugins.sorted().forEach { plugin ->
+        plugin.dependsOn?.let { dependants ->
+            val missing = dependants.filter { id -> plugins.none { it.id == id } }
+            if (missing.isNotEmpty()) println("Missing dependencies for ${plugin.name}: $missing.\nThis plugin may not work correctly.")
+        }
+        runCatching {
+            plugin.init()
+        }.onFailure {
+            throw PluginInitializationException("Failed to initialize plugin ${plugin.name} (${plugin.id}).", cause = it)
+        }
     }
 }
 
@@ -56,9 +64,9 @@ public fun Server.loadPlugin(jar: Path): LoadedPlugin {
  */
 private fun resolvePluginClass(jar: Path): String {
     ZipInputStream(jar.inputStream()).use { zip ->
-        var entry: ZipEntry
+        var entry: ZipEntry?
         while (zip.nextEntry.also { entry = it } != null) {
-            if (entry.isDirectory || !entry.name.endsWith(".class")) continue
+            if (entry!!.isDirectory || !entry!!.name.endsWith(".class")) continue
             pluginClassOrNull(zip.readBytes().toByteBuffer())?.let {
                 return it.replace('/', '.')
             }

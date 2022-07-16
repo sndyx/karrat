@@ -36,22 +36,13 @@ internal fun Server.generateKeyPair(): KeyPair {
 }
 
 private fun createCipherInstance(algorithm: String, key: PrivateKey): Cipher {
-    return runCatching {
-        val cipher = Cipher.getInstance(algorithm)
-        cipher.init(Cipher.DECRYPT_MODE, key)
-        cipher
-    }.getOrElse {
-        error(it)
-    }
+    val cipher = Cipher.getInstance(algorithm)
+    cipher.init(Cipher.DECRYPT_MODE, key)
+    return cipher
 }
 
-private fun decryptData(key: PrivateKey, bytes: ByteArray): ByteArray {
-    return runCatching {
-        createCipherInstance(key.algorithm, key).doFinal(bytes)
-    }.getOrElse {
-        error(it)
-    }
-}
+private fun decryptData(key: PrivateKey, bytes: ByteArray): ByteArray =
+    createCipherInstance(key.algorithm, key).doFinal(bytes)
 
 public fun EncryptionResponsePacket.decodeSharedSecret(key: PrivateKey): SecretKey {
     return SecretKeySpec(decryptData(key, sharedSecret), "AES")
@@ -72,15 +63,11 @@ internal fun NetHandlerLogin.generateAESInstance(opMode: Int, key: Key): Cipher 
 }
 
 internal fun NetHandlerLogin.getServerIdHash(serverId: String, publicKey: PublicKey, secretKey: SecretKey): ByteArray {
-    return runCatching {
-        BigInteger(
-            digestOperation(
-                serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
-            )
-        ).toByteArray()
-    }.getOrElse {
-        error("Digest creation failed!")
-    }
+    return BigInteger(
+        digestOperation(
+            serverId.toByteArray(Charsets.ISO_8859_1), secretKey.encoded, publicKey.encoded
+        )
+    ).toByteArray()
 }
 
 private fun digestOperation(vararg hashed: ByteArray): ByteArray {

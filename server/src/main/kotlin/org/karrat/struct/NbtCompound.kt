@@ -21,7 +21,7 @@ public class NbtCompound : LinkedHashMap<String, Any>() {
             }
             return
         }
-        check(value is Byte
+        require(value is Byte
                 || value is Short
                 || value is Int
                 || value is Long

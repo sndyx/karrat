@@ -5,23 +5,20 @@
 package org.karrat.server
 
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.flow
 import org.karrat.Server
 import kotlin.time.Duration
 
-public fun Server.schedule(wait: Duration, action: suspend () -> Unit) {
+public fun Server.schedule(after: Duration, action: suspend () -> Unit) {
     launch {
-        delay(wait)
+        delay(after)
         action()
     }
 }
 
-public fun Server.scheduleEvery(wait: Duration, action: suspend () -> Unit): Job {
+public fun Server.scheduleEvery(after: Duration, action: suspend () -> Unit): Job {
     return launch {
         while (isActive) {
-            delay(wait)
+            delay(after)
             action()
         }
     }

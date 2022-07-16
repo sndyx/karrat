@@ -92,7 +92,7 @@ public interface Command {
         override val list: MutableList<Command> get() = Root.nodes
         
         override fun register(value: Command) {
-            check(value is CommandNodeLiteral) { "Root node must be a literal node." }
+            require(value is CommandNodeLiteral) { "Root node must be a literal node." }
             Root.nodes.add(value)
         }
 

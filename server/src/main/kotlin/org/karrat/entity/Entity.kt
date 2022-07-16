@@ -9,6 +9,10 @@ import org.karrat.struct.Vec3d
 
 public abstract class Entity(loc: Location) {
 
+    public val id: Int = loc.world.entities
+        .map { it.id }
+        .foldRightIndexed<Int, Int?>(null) { index, id, acc -> if (acc == null && index != id) index else null } ?: 0
+
     internal var velocityChanged: Boolean = false
     internal var locationChanged: Boolean = false
 
@@ -29,7 +33,7 @@ public abstract class Entity(loc: Location) {
     public var invulnerable: Boolean = false
 
     public open fun remove() {
-        // location.world.entities.indexOfFirst { it.eid == eid }
+        location.world.entities.remove(this)
     }
 
 }

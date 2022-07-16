@@ -36,11 +36,11 @@ public fun Collection<Player>.getByUuid(uuid: Uuid): Player =
  * Returns the first [Entity] matching the given [id], or null if element was
  * not found.
  */
-public fun <T : Entity> Collection<T>.getByIdOrNull(id: Uuid): T? =
-    TODO()
+public fun <T : Entity> Collection<T>.getByIdOrNull(id: Int): T? =
+    firstOrNull { it.id == id }
 
 /**
  * Returns the first [Entity] matching the given [id].
  */
-public fun <T : Entity> Collection<T>.getById(id: Uuid): T =
+public fun <T : Entity> Collection<T>.getById(id: Int): T =
     getByIdOrNull(id) ?: throw NoSuchElementException("Collection contains no entity matching the given id.")

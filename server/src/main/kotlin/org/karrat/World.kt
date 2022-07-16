@@ -66,7 +66,7 @@ public class World(
      */
     public operator fun get(x: Int, y: Int, z: Int): Block =
         get(x / 16, z / 16)[x % 16, y, z % 16]
-    
+
     /**
      * Sets the [Block] at position [pos].
      */
@@ -82,8 +82,10 @@ public class World(
     /**
      * Gets the [Chunk] at the position [pos].
      */
-    public fun chunkAt(pos: Vec2i): Chunk =
-        chunks[pos] ?: run { generator.generateChunk(this, pos); chunks[pos]!! }
+    public fun chunkAt(pos: Vec2i): Chunk {
+        if (chunks[pos] == null) { chunks[pos] = generator.generateChunk(this, pos) }
+        return chunks[pos]!!
+    }
     
     /**
      * Gets the [Chunk] at the given [x] and [z] coordinates.

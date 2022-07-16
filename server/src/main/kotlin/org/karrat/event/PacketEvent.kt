@@ -17,12 +17,7 @@ import org.karrat.packet.Packet
  * The network side of Minecraft is fragile: Cancelling packets should be done
  * safely, as cancellation of packets can lead to horrific errors.
  */
-public class PacketEvent<T : Packet>(
+public data class PacketEvent<T : Packet>(
     public val session: Session,
     public val packet: T,
-) : CancellableEvent() {
-
-    override fun toString(): String =
-        "PacketEvent(session=$session, packet=$packet)"
-
-}
+) : CancellableEvent()

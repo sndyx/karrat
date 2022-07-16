@@ -15,7 +15,6 @@ import org.karrat.Server
 import org.karrat.World
 import org.karrat.struct.id
 
-@OptIn(ExperimentalSerializationApi::class)
 public object PrimitiveWorldSerializer : KSerializer<World> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("World", PrimitiveKind.STRING)

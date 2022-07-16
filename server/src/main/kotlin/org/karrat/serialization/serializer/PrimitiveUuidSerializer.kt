@@ -13,7 +13,6 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.karrat.struct.Uuid
 
-@OptIn(ExperimentalSerializationApi::class)
 public object PrimitiveUuidSerializer : KSerializer<Uuid> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Uuid", PrimitiveKind.STRING)

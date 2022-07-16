@@ -13,7 +13,7 @@ public abstract class EntityLiving(location: Location) : Entity(location) {
     public var health: Double by lazyMutable { maxHealth }
 
     public fun damage(amount: Double) {
-        check(amount >= 0) { "Damage must not be negative." }
+        require(amount >= 0) { "Damage must not be negative." }
         health -= amount
     }
 

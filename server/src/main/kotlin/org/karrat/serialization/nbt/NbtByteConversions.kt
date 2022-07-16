@@ -5,10 +5,6 @@
 package org.karrat.serialization.nbt
 
 import org.karrat.struct.*
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.DataInputStream
-import java.io.DataOutputStream
 
 internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
     buffer.apply {
@@ -24,9 +20,7 @@ internal fun writeNbt(buffer: MutableByteBuffer, value: Any) {
                 writeBytes(value)
             }
             is String -> {
-                val os = ByteArrayOutputStream()
-                DataOutputStream(os).use { it.writeUTF(value) }
-                val bytes = os.toByteArray()
+                val bytes = value.toByteArray(Charsets.MUTF_8)
                 writeUShort(bytes.size.toUShort())
                 writeBytes(bytes)
             }
@@ -88,8 +82,7 @@ internal fun readNbt(buffer: ByteBuffer, type: Int = -1): Any {
             8 -> {
                 val length = readUShort()
                 val bytes = readBytes(length.toInt())
-                val input = ByteArrayInputStream(bytes)
-                DataInputStream(input).use { it.readUTF() }
+                bytes.toString(Charsets.MUTF_8)
             }
             9 -> {
                 val innerType = read().toInt()

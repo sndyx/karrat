@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.play
+package org.karrat.server
 
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds

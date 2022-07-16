@@ -23,15 +23,14 @@ public interface VarArray<T : Number> {
  */
 public class VarArray64<T : Number>(public val size: Int, bitsPerValue: Int) : VarArray<T> {
     
-    public val chunkCapacity: Int = 64 / blockSize
+    public val chunkCapacity: Int get() = 64 / blockSize
     public val chunks: MutableList<Chunk> = MutableList((size - 1) / chunkCapacity + 1) { Chunk() }
     
     private var _blockSize: Int = bitsPerValue
     override var blockSize: Int
         get() = _blockSize
         set(value) {
-            _blockSize = value
-            resize()
+            resize(value)
         }
     
     override operator fun get(index: Int): T =
@@ -41,8 +40,22 @@ public class VarArray64<T : Number>(public val size: Int, bitsPerValue: Int) : V
         chunks[index / chunkCapacity][index.mod(chunkCapacity)] = value
     }
     
-    private fun resize() {
-        TODO("This is hard :( ...")
+    private fun resize(newBlockSize: Int) {
+        val newChunkCapacity: Int = 64 / newBlockSize
+        if (newBlockSize > blockSize) {
+            chunks.addAll(Array((size - 1) / newChunkCapacity - (size - 1) / chunkCapacity) { Chunk() })
+        }
+        val oldSize = _blockSize
+        for (index in if (newBlockSize > blockSize) (size - 1) downTo 0 else 0 until size) {
+            val data = get(index)
+            _blockSize = newBlockSize
+            chunks[index / newChunkCapacity][index.mod(newChunkCapacity)] = data
+            _blockSize = oldSize
+        }
+        if (newBlockSize < blockSize) {
+            repeat((size - 1) / chunkCapacity - (size - 1) / newChunkCapacity) { chunks.removeLast() }
+        }
+        _blockSize = newBlockSize
     }
     
     public inner class Chunk {

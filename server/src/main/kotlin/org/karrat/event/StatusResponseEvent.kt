@@ -12,12 +12,7 @@ import org.karrat.response.StatusResponse
  * When cancelled, the player will not receive any relevant information on the
  * server's status.
  */
-public class StatusResponseEvent(
+public data class StatusResponseEvent(
     public val session: Session,
     public var response: StatusResponse
-) : CancellableEvent() {
-
-    override fun toString(): String =
-        "StatusResponseEvent(session=$session, response=$response)"
-
-}
+) : CancellableEvent()
