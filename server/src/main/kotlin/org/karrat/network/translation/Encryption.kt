@@ -9,9 +9,11 @@ import org.karrat.Server
 import org.karrat.network.Session
 import org.karrat.network.handler.NetHandlerLogin
 import org.karrat.packet.login.EncryptionResponsePacket
+import org.karrat.packet.login.LoginStartPacket
 import org.karrat.struct.ByteBuffer
 import java.math.BigInteger
 import java.security.*
+import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
@@ -35,21 +37,26 @@ internal fun Server.generateKeyPair(): KeyPair {
     }
 }
 
-private fun createCipherInstance(algorithm: String, key: PrivateKey): Cipher {
+private fun createCipherInstance(algorithm: String, key: Key): Cipher {
     val cipher = Cipher.getInstance(algorithm)
     cipher.init(Cipher.DECRYPT_MODE, key)
     return cipher
 }
 
-private fun decryptData(key: PrivateKey, bytes: ByteArray): ByteArray =
+private fun decryptData(key: Key, bytes: ByteArray): ByteArray =
     createCipherInstance(key.algorithm, key).doFinal(bytes)
 
-public fun EncryptionResponsePacket.decodeSharedSecret(key: PrivateKey): SecretKey {
+// TODO verify that algorithm is correct
+public fun LoginStartPacket.getPublicKey(): PublicKey {
+    return KeyFactory.getInstance("RSA").generatePublic(X509EncodedKeySpec(publicKey))
+}
+
+public fun EncryptionResponsePacket.getSharedSecret(key: PrivateKey): SecretKey {
     return SecretKeySpec(decryptData(key, sharedSecret), "AES")
 }
 
-public fun EncryptionResponsePacket.decodeVerificationToken(key: PrivateKey): ByteArray {
-    return decryptData(key, verifyToken)
+internal fun NetHandlerLogin.checkDecryption(key: Key, encrypted: ByteArray, decrypted: ByteArray, lazyMessage: () -> Any) {
+    check(decryptData(key, encrypted) contentEquals decrypted, lazyMessage)
 }
 
 internal fun NetHandlerLogin.generateAESInstance(opMode: Int, key: Key): Cipher {

@@ -35,7 +35,7 @@ public class StatusResponse(
 
         public fun default(): StatusResponse = StatusResponse( // TODO: Change to actual values later
             Config.versionName,
-            756,
+            Config.protocolVersion,
             1,
             Server.players.size,
             listOf(DummyPlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),

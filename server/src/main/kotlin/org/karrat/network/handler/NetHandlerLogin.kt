@@ -11,8 +11,7 @@ import org.karrat.event.BannedPlayerLoginEvent
 import org.karrat.event.PlayerLoginEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.network.Session
-import org.karrat.network.translation.decodeSharedSecret
-import org.karrat.network.translation.decodeVerificationToken
+import org.karrat.network.translation.*
 import org.karrat.network.translation.generateAESInstance
 import org.karrat.network.translation.getServerIdHash
 import org.karrat.packet.ServerboundPacket
@@ -22,6 +21,9 @@ import org.karrat.packet.login.LoginStartPacket
 import org.karrat.packet.login.LoginSuccessPacket
 import org.karrat.struct.ByteBuffer
 import org.karrat.struct.Uuid
+import java.security.KeyFactory
+import java.security.PublicKey
+import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import kotlin.concurrent.thread
@@ -33,6 +35,8 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
     public lateinit var username: String
     public lateinit var uuid: Uuid
     public val verificationToken: ByteArray by lazy { Random.nextBytes(4) }
+
+    public lateinit var messageKey: PublicKey
 
     override fun read(
         id: Int,
@@ -60,15 +64,20 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
                 verificationToken
             )
         )
+
+        if (Config.chatReports) {
+            messageKey = packet.getPublicKey()
+        }
     }
 
     internal fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {
         check(state == LoginState.ReadyForEncryption) {
             "Unexpected Encryption Response Packet!" }
-        check(verificationToken contentEquals packet.decodeVerificationToken(Server.keyPair.private)) {
+        checkDecryption(Server.keyPair.private, packet.verifyToken, verificationToken) {
             "Invalid verification return!" }
+
         val sharedSecret: SecretKey =
-            packet.decodeSharedSecret(Server.keyPair.private)
+            packet.getSharedSecret(Server.keyPair.private)
 
         val encryptCipher: Cipher =
             generateAESInstance(1, sharedSecret)

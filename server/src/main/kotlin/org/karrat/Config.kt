@@ -31,7 +31,7 @@ public object Config {
     /**
      * The protocol version number used by the current version of Minecraft.
      */
-    public const val protocolVersion: Int = 758
+    public const val protocolVersion: Int = 760
     
     /**
      * The session server used by [Server.auth] to authenticate players.
@@ -62,7 +62,13 @@ public object Config {
     
     @LatchedValue
     public var isDevEnvironment: Boolean by latched { false }
-    
+
+    /**
+     * Should the server support 1.19.2 reporting?
+     */
+    @LatchedValue
+    public var chatReports: Boolean by latched { false }
+
     // Network
     
     /**
