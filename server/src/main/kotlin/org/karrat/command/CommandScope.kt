@@ -49,11 +49,11 @@ public class CommandArguments internal constructor(
     private val args: List<Any>, private val mappings: List<String?>
 ) : Iterable<Any> {
 
-    public fun <T> get(index: Int): T {
+    public operator fun <T> get(index: Int): T {
         return args[index] as T
     }
     
-    public fun <T> get(key: String): T {
+    public operator fun <T> get(key: String): T {
         return args[mappings.indexOf(key)] as T
     }
     

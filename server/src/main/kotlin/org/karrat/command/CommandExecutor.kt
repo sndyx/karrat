@@ -13,14 +13,19 @@ public open class CommandExecutor {
     public var playerExecutor: (PlayerCommandScope.() -> Unit)? = null
 
     public open fun execute(sender: CommandScope) {
-        if (sender is ConsoleCommandScope && consoleExecutor != null) {
-            consoleExecutor!!.invoke(sender)
-        } else if (sender is PlayerCommandScope && playerExecutor != null) {
-            playerExecutor!!.invoke(sender)
-        } else if (globalExecutor != null) {
-            globalExecutor!!.invoke(sender)
-        } else {
-            sender.respond("&cInvalid syntax".colored())
+        runCatching {
+            if (sender is ConsoleCommandScope && consoleExecutor != null) {
+                consoleExecutor!!.invoke(sender)
+            } else if (sender is PlayerCommandScope && playerExecutor != null) {
+                playerExecutor!!.invoke(sender)
+            } else if (globalExecutor != null) {
+                globalExecutor!!.invoke(sender)
+            } else {
+                sender.respond("&cInvalid syntax".colored())
+            }
+        }.onFailure {
+            sender.respond("&cError: ${it.message}")
+            it.printStackTrace()
         }
     }
 

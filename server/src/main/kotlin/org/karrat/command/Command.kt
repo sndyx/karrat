@@ -12,10 +12,9 @@ import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.elementDescriptors
 import kotlinx.serialization.serializer
 import org.karrat.command.generic.*
-import org.karrat.command.generic.installCommand
-import org.karrat.command.generic.killCommand
-import org.karrat.command.generic.stopCommand
 import org.karrat.entity.Player
+import org.karrat.plugin.Plugin
+import org.karrat.plugin.minecraft
 import org.karrat.serialization.command.CommandDecoder
 import org.karrat.server.Registry
 
@@ -67,7 +66,7 @@ public fun Command.eval(
 public fun Command.run(
     tokens: List<String>,
     sender: Player? = null
-): Result<Unit> = eval(tokens).map { it.run(sender) }
+): Result<Unit> = eval(tokens).map { it.run(sender) }.also { it.exceptionOrNull()?.printStackTrace() }
 
 @CommandDsl
 public interface Command {
@@ -90,24 +89,31 @@ public interface Command {
     public companion object CommandRegistry : Registry<Command> {
         
         override val list: MutableList<Command> get() = Root.nodes
-        
+
+        context(Plugin)
         override fun register(value: Command) {
             require(value is CommandNodeLiteral) { "Root node must be a literal node." }
             Root.nodes.add(value)
+            // TODO Context Receivers
         }
 
+        context(Plugin)
         override fun unregister(value: Command) {
             Root.nodes.remove(value)
+            // TODO Context Receivers
         }
 
         override fun load() {
-            register(killCommand())
-            register(installCommand())
-            register(stopCommand())
-            register(echoCommand())
-            register(complexCommand())
-            register(sudoCommand())
-            register(testCommand())
+            with(Plugin.minecraft) {
+                register(killCommand())
+                register(installCommand())
+                register(stopCommand())
+                register(echoCommand())
+                register(complexCommand())
+                register(sudoCommand())
+                register(testCommand())
+                register(executeCommand())
+            }
         }
         
         public fun eval(command: String): Result<EvaluatedCommand> =
@@ -144,7 +150,7 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
     override val executor: CommandExecutor = CommandExecutor()
 
     override fun matches(tokens: List<String>): Int =
-        if (literals.firstOrNull { it == tokens.first() } != null) 1 else -1
+        if (literals.any { it == tokens.first() }) 1 else -1
 
     override fun consume(
         consumedTokens: List<String>,
@@ -188,9 +194,10 @@ internal class CommandNodeArgument<T : Any> @PublishedApi internal constructor(
             val descriptor = serializer.descriptor.elementDescriptors.first()
             var matches = 0
             tokens.forEach {
-                if (checkMatch(descriptor, ArrayDeque(listOf(it)))) matches++
+                if (checkMatch(descriptor, ArrayDeque(listOf(it)))) { matches++ }
                 else return matches
             }
+            return matches
         }
         val descriptor = serializer.descriptor
         val size = decompiledElementsCount(descriptor)
