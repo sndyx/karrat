@@ -6,6 +6,7 @@ package org.karrat.configuration
 
 import org.karrat.Server
 import org.karrat.internal.exitProcessWithMessage
+import org.karrat.internal.resourceAsBytes
 import java.util.*
 import kotlin.io.path.*
 
@@ -17,15 +18,15 @@ public val Server.isFirstRun: Boolean get() {
 
 internal fun Server.genServerFiles() {
     val eulaFile = Path("EULA.txt")
-    val eula = getResource("defaults/EULA.txt")
+    val eula = resourceAsBytes("defaults/EULA.txt")
     eulaFile.takeIf { !it.exists() }?.writeBytes(eula)
 
     val settingsFile = Path("settings.server.kts")
-    val settings = getResource("defaults/settings.server.kts")
+    val settings = resourceAsBytes("defaults/settings.server.kts")
     settingsFile.takeIf { !it.exists() }?.writeBytes(settings)
     
     val iconFile = Path("icon.jpeg")
-    val icon = getResource("defaults/icon.jpeg")
+    val icon = resourceAsBytes("defaults/icon.jpeg")
     iconFile.takeIf { !it.exists() }?.writeBytes(icon)
     
     Path("plugins").createDirectory()
@@ -51,13 +52,8 @@ private fun isEulaSigned(): Boolean {
 
 private fun signEula() {
     val eulaFile = Path("EULA.txt")
-    val eula = getResource("defaults/EULA.txt")
+    val eula = resourceAsBytes("defaults/EULA.txt")
     val signedEula = "Agreed upon at ${Date()}.\n\n$eula"
     eulaFile.writeText(signedEula)
 }
 
-private fun getResource(path: String): ByteArray =
-    Thread.currentThread()
-        .contextClassLoader
-        .getResourceAsStream(path)!!
-        .readAllBytes()

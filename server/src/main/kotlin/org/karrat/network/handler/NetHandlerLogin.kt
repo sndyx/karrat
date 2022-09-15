@@ -10,8 +10,13 @@ import org.karrat.entity.Player
 import org.karrat.event.BannedPlayerLoginEvent
 import org.karrat.event.PlayerLoginEvent
 import org.karrat.event.dispatchEvent
+import org.karrat.internal.byteArrayToRSA
+import org.karrat.internal.checkSignature
+import org.karrat.internal.decryptData
 import org.karrat.network.Session
 import org.karrat.network.auth.MessageKeyInfo
+import org.karrat.network.auth.mojangPublicKey
+import org.karrat.network.auth.publicKey
 import org.karrat.network.translation.*
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.login.EncryptionRequestPacket
@@ -53,6 +58,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
 
     internal fun handleLoginStartPacket(packet: LoginStartPacket) {
         check(state == LoginState.Initial) { "Unexpected Login Start Packet!" }
+        // TODO check username
         username = packet.username
         state = LoginState.ReadyForEncryption
 
@@ -77,8 +83,20 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
     internal fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {
         check(state == LoginState.ReadyForEncryption) {
             "Unexpected Encryption Response Packet!" }
-        checkDecryption(Server.keyPair.private, packet.verifyToken, verificationToken) {
-            "Invalid verification return!" }
+
+        if (packet.hasVerifyToken) {
+            if (!(decryptData(Server.keyPair.private, packet.verifyToken) contentEquals verificationToken)) {
+                session.disconnect("Protocol error")
+            }
+        } else {
+            val toDigest = MutableByteBuffer(12)
+            toDigest.writeBytes(verificationToken)
+            toDigest.writeLong(packet.salt)
+
+            if (!checkSignature("SHA256withRSA", messageData.key, toDigest.bytes, packet.tokenSignature)) {
+                session.disconnect("Protocol error")
+            }
+        }
 
         val sharedSecret: SecretKey =
             packet.getSharedSecret(Server.keyPair.private)
@@ -89,13 +107,8 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
             generateAESInstance(2, sharedSecret)
         session.enableEncryption(encryptCipher, decryptCipher)
 
-        val hash = getServerIdHash(
-            "",
-            Server.keyPair.public, sharedSecret
-        )
-
         thread(name = "auth") {
-            val result = Server.auth.authenticate(hash, session.address, username)
+            val result = Server.auth.authenticate(sharedSecret, session.address, username)
             result.onSuccess { response ->
                 uuid = response.uuid
                 state = LoginState.ReadyToAccept
@@ -116,21 +129,13 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
 
                     val encodedKey: ByteArray = messageData.key.encoded
 
-                    // TODO cache or something
-                    val bytes: ByteArray =
-                        Thread.currentThread().contextClassLoader.getResourceAsStream("/yggdrasil_session_pubkey.der").readAllBytes()
-                    val mojangPublicKey = byteArrayToRSA(bytes)
-
                     // Input initial data
                     val toDigest = MutableByteBuffer(24 + encodedKey.size)
                     toDigest.writeUuid(uuid)
                     toDigest.writeLong(messageData.expiresAt)
                     toDigest.writeBytes(encodedKey)
 
-                    val signature: Signature = Signature.getInstance("SHA1withRSA")
-                    signature.initVerify(mojangPublicKey)
-                    signature.update(toDigest.bytes)
-                    if (!signature.verify(messageData.signature)) {
+                    if (!checkSignature("SHA1withRSA", mojangPublicKey, toDigest.bytes, messageData.signature)) {
                         session.disconnect("Invalid public key")
                     }
                 }

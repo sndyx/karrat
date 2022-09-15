@@ -7,12 +7,14 @@ package org.karrat.internal
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.DataInputStream
-import java.io.DataOutputStream
+import org.karrat.struct.MutableByteBuffer
+import org.karrat.struct.writeBytes
+import java.io.*
 import java.net.*
-import java.security.MessageDigest
+import java.security.*
+import java.security.spec.X509EncodedKeySpec
+import javax.crypto.Cipher
+import kotlin.math.sign
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 import kotlin.system.exitProcess
@@ -59,6 +61,49 @@ internal fun sha256(data: ByteArray): ByteArray {
     val digest = MessageDigest.getInstance("SHA-256")
     return digest.digest(data)
 }
+
+public fun digestOperation(vararg hashed: ByteArray): ByteArray {
+    return runCatching {
+        val digest = MessageDigest.getInstance("SHA-1")
+        hashed.forEach { digest.update(it) }
+        digest.digest()
+    }.getOrElse {
+        error("Digest creation failed!")
+    }
+}
+
+public fun byteArrayToRSA(array: ByteArray): PublicKey =
+    KeyFactory.getInstance("RSA").generatePublic(X509EncodedKeySpec(array))
+
+private fun createCipherInstance(algorithm: String, key: Key): Cipher {
+    val cipher = Cipher.getInstance(algorithm)
+    cipher.init(Cipher.DECRYPT_MODE, key)
+    return cipher
+}
+
+public fun decryptData(key: Key, bytes: ByteArray): ByteArray =
+    createCipherInstance(key.algorithm, key).doFinal(bytes)
+
+public fun checkSignature(algorithm: String, key: PublicKey, toDigest: ByteArray, toVerify: ByteArray): Boolean {
+    val signature = Signature.getInstance(algorithm)
+    signature.initVerify(key)
+
+    signature.update(toDigest)
+
+    return signature.verify(toVerify)
+}
+
+public fun resourceAsStream(path: String): InputStream? =
+    Thread.currentThread()
+        .contextClassLoader
+        .getResourceAsStream(path)
+
+
+public fun resourceAsBytes(path: String): ByteArray =
+    Thread.currentThread()
+        .contextClassLoader
+        .getResourceAsStream(path)!!
+        .readAllBytes()
 
 internal fun exitProcessWithMessage(message: String, status: Int) {
     println(message)
