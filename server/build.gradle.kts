@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    kotlin("plugin.serialization") version "1.5.21"
+    kotlin("plugin.serialization") version "1.7.10"
 }
 
 group = "org.karrat.server"
@@ -17,9 +17,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
     testImplementation(kotlin("test"))
 }
 
@@ -47,7 +47,8 @@ tasks {
             freeCompilerArgs = listOf(
                 "-opt-in=kotlin.RequiresOptIn",
                 "-Xexplicit-api=strict",
-                "-Xbackend-threads=0" // Multi-threaded compilation 😎
+                "-Xbackend-threads=0", // Multi-threaded compilation 😎
+                "-Xcontext-receivers"
             )
         }
     }

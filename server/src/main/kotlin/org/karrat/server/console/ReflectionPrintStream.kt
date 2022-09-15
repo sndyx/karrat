@@ -6,6 +6,8 @@ package org.karrat.server.console
 
 import org.karrat.Config
 import org.karrat.Server
+import org.karrat.plugin.plugins
+import org.karrat.plugin.surrogate
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,7 +26,7 @@ internal class ReflectionPrintStream(out: OutputStream) : PrefixedPrintStream(ou
             val caller = Thread.currentThread().stackTrace[4]
             val pkg = caller.className.substringBeforeLast('.')
             val pluginName = Server.plugins
-                .find { pkg.startsWith(it.pluginClass.packageName) }?.name
+                .find { pkg.startsWith(it.surrogate.java.packageName) }?.name
             val location = pluginName ?: caller.fileName
             val format = "$time <$location${
                 if (Thread.currentThread().id == Config.mainThreadId

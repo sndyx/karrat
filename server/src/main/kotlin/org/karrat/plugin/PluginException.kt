@@ -4,7 +4,7 @@
 
 package org.karrat.plugin
 
-public class PluginInitializationException(
+public open class PluginException(
     message: String? = null,
     cause: Throwable? = null
-) : PluginException(message, cause)
+) : RuntimeException(message, cause)

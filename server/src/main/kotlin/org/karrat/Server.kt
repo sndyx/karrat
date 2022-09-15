@@ -15,7 +15,6 @@ import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.auth.AuthServer
 import org.karrat.network.translation.generateKeyPair
-import org.karrat.plugin.LoadedPlugin
 import org.karrat.plugin.loadPlugins
 import org.karrat.server.console.startConsoleInput
 import org.karrat.server.console.setConsoleOutput
@@ -42,7 +41,6 @@ public object Server : CoroutineScope {
     public var worlds: MutableList<World> = mutableListOf()
     public var commands: MutableList<Command> = mutableListOf()
     public var sessions: MutableList<Session> = mutableListOf()
-    public var plugins: MutableList<LoadedPlugin> = mutableListOf()
     public val players: List<Player> get() = worlds.flatMap { it.players }
     
     internal var tickTimeMillis: Long = 0L

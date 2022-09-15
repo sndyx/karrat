@@ -5,6 +5,7 @@
 package org.karrat.plugin
 
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import org.karrat.Server
 import org.karrat.server.parallelize
 import org.karrat.struct.*
@@ -15,44 +16,41 @@ import java.util.zip.ZipInputStream
 import kotlin.io.path.*
 import kotlin.system.measureTimeMillis
 
-internal suspend fun Server.loadPlugins() {
+internal fun Server.loadPlugins(): Unit = runBlocking {
     val path = Path("plugins")
-    if (!path.exists()) return
-    @Suppress("BlockingMethodInNonBlockingContext")
+    if (!path.exists()) return@runBlocking
     val jars = path.listDirectoryEntries().filter { it.extension == "jar" }
     Server.parallelize(jars) { jar ->
         runCatching {
-            var plugin: LoadedPlugin
+            var loaded: PluginClass
             val time = measureTimeMillis {
-                plugin = loadPlugin(jar)
+                loaded = loadPlugin(jar)
             }
-            println("Loaded plugin ${plugin.name} in ${time}ms.")
-            plugins.add(plugin)
+            println("Loaded plugin ${loaded.plugin.name} in ${time}ms.")
+            loadedPlugins.add(loaded)
         }.onFailure {
             println("Failed to load plugin for jar '${jar.name}'.")
         }
     }.awaitAll()
-    plugins.sorted().forEach { plugin ->
-        plugin.dependsOn?.let { dependants ->
-            val missing = dependants.filter { id -> plugins.none { it.id == id } }
-            if (missing.isNotEmpty()) println("Missing dependencies for ${plugin.name}: $missing.\nThis plugin may not work correctly.")
-        }
+    Server.plugins.forEach { plugin ->
+        val missing = plugin.dependants.filter { id -> plugins.none { it.id == id } }
+        if (missing.isNotEmpty()) println("Missing dependencies for ${plugin.name}: $missing.\nThis plugin may not work correctly.")
         runCatching {
             plugin.init()
         }.onFailure {
-            throw PluginInitializationException("Failed to initialize plugin ${plugin.name} (${plugin.id}).", cause = it)
+            PluginInitializationException("Failed to initialize plugin ${plugin.name} (${plugin.id}).", cause = it).printStackTrace()
         }
     }
 }
 
-public fun Server.loadPlugin(jar: Path): LoadedPlugin {
+public fun Server.loadPlugin(jar: Path): PluginClass {
     val pluginClassName = resolvePluginClass(jar)
     val loader = URLClassLoader.newInstance(
         arrayOf(jar.toUri().toURL()),
         Server::class.java.classLoader
     )
     val instance = Class.forName(pluginClassName, true, loader)
-    return LoadedPlugin(instance)
+    return PluginClass(instance)
 }
 
 /**
