@@ -2,7 +2,7 @@
  * Copyright © Karrat - 2022.
  */
 
-package org.karrat.network
+package org.karrat.network.auth
 
 import org.karrat.Config
 import org.karrat.internal.request
@@ -21,5 +21,6 @@ public open class AuthServer {
         if (response.isFailure) return Result.failure(response.exceptionOrNull()!!)
         return Result.success(response.getOrThrow())
     }
+
     
 }

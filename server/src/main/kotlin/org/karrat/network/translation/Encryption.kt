@@ -46,10 +46,13 @@ private fun createCipherInstance(algorithm: String, key: Key): Cipher {
 public fun decryptData(key: Key, bytes: ByteArray): ByteArray =
     createCipherInstance(key.algorithm, key).doFinal(bytes)
 
+public fun byteArrayToRSA(array: ByteArray): PublicKey =
+    KeyFactory.getInstance("RSA").generatePublic(X509EncodedKeySpec(array))
+
 // TODO verify that algorithm is correct
-public fun LoginStartPacket.getPublicKey(): PublicKey {
-    return KeyFactory.getInstance("RSA").generatePublic(X509EncodedKeySpec(publicKey))
-}
+public val LoginStartPacket.publicKey: PublicKey
+    get() = byteArrayToRSA(publicKeyArray)
+
 
 public fun EncryptionResponsePacket.getSharedSecret(key: PrivateKey): SecretKey {
     return SecretKeySpec(decryptData(key, sharedSecret), "AES")

@@ -11,23 +11,21 @@ import org.karrat.event.BannedPlayerLoginEvent
 import org.karrat.event.PlayerLoginEvent
 import org.karrat.event.dispatchEvent
 import org.karrat.network.Session
+import org.karrat.network.auth.MessageKeyInfo
 import org.karrat.network.translation.*
-import org.karrat.network.translation.generateAESInstance
-import org.karrat.network.translation.getServerIdHash
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.login.EncryptionRequestPacket
 import org.karrat.packet.login.EncryptionResponsePacket
 import org.karrat.packet.login.LoginStartPacket
 import org.karrat.packet.login.LoginSuccessPacket
-import org.karrat.struct.ByteBuffer
-import org.karrat.struct.Uuid
-import java.security.KeyFactory
-import java.security.PublicKey
-import java.security.spec.X509EncodedKeySpec
+import org.karrat.struct.*
+import java.security.Signature
+import java.time.Instant
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import kotlin.concurrent.thread
 import kotlin.random.Random
+
 
 public open class NetHandlerLogin(private val session: Session) : NetHandler {
 
@@ -36,7 +34,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
     public lateinit var uuid: Uuid
     public val verificationToken: ByteArray by lazy { Random.nextBytes(4) }
 
-    public lateinit var messageKey: PublicKey
+    public lateinit var messageData: MessageKeyInfo
 
     override fun read(
         id: Int,
@@ -63,11 +61,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
                 session.disconnect("No public key.")
             }
 
-            messageKey = packet.getPublicKey()
-            val signature = packet.signatureArray
-            val expiresAt = packet.timestamp
-
-            println("$signature, $expiresAt, ${decryptData(messageKey, signature)}")
+            messageData = MessageKeyInfo(packet.publicKey, packet.signatureArray, packet.timestamp)
         }
 
         session.send(
@@ -114,7 +108,34 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
                     }
                 }
 
-                session.player = Player(session, uuid, username, location = Config.spawnLocation)
+                if (Config.chatReports) {
+                    // TODO check format is correct
+                    if (messageData.expiresAt > Instant.now().toEpochMilli()) {
+                        session.disconnect("Outdated public key")
+                    }
+
+                    val encodedKey: ByteArray = messageData.key.encoded
+
+                    // TODO cache or something
+                    val bytes: ByteArray =
+                        Thread.currentThread().contextClassLoader.getResourceAsStream("/yggdrasil_session_pubkey.der").readAllBytes()
+                    val mojangPublicKey = byteArrayToRSA(bytes)
+
+                    // Input initial data
+                    val toDigest = MutableByteBuffer(24 + encodedKey.size)
+                    toDigest.writeUuid(uuid)
+                    toDigest.writeLong(messageData.expiresAt)
+                    toDigest.writeBytes(encodedKey)
+
+                    val signature: Signature = Signature.getInstance("SHA1withRSA")
+                    signature.initVerify(mojangPublicKey)
+                    signature.update(toDigest.bytes)
+                    if (!signature.verify(messageData.signature)) {
+                        session.disconnect("Invalid public key")
+                    }
+                }
+
+                session.player = Player(session, uuid, username, messageData, location = Config.spawnLocation)
 
                 response.properties.firstOrNull { it.name == "textures" }
                     ?.let { session.player.skin = it.value }
@@ -126,6 +147,8 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
                 // session.enableCompression()
                 session.netHandler = NetHandlerPlay(session)
                 session.send(LoginSuccessPacket(uuid, username))
+
+
             }
             result.onFailure {
                 it.printStackTrace()
@@ -142,5 +165,4 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
         ReadyToAccept,
         Accepted;
     }
-
 }

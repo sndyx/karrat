@@ -8,6 +8,7 @@ import org.karrat.Server
 import org.karrat.World
 import org.karrat.network.Session
 import org.karrat.network.SocketChannel
+import org.karrat.network.auth.MessageKeyInfo
 import org.karrat.struct.Location
 import org.karrat.struct.Uuid
 import org.karrat.struct.id
@@ -16,9 +17,10 @@ public open class Player(
     public val session: Session,
     public val uuid: Uuid,
     public open var name: String,
+    public var messageKeyInfo: MessageKeyInfo?,
     public var skin: String = "",
     location: Location
-) : EntityLiving(location) {
+    ) : EntityLiving(location) {
 
     override var maxHealth: Double = 20.0
 
@@ -51,7 +53,8 @@ public class DummyPlayer(
     session = Session(SocketChannel.DummySocketChannel),
     uuid = uuid,
     name = name,
-    location = location
+    messageKeyInfo = null,
+    location = location,
 )
 
 public fun Player(uuid: Uuid): Player {
