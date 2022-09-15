@@ -138,14 +138,15 @@ public fun MutableByteBuffer.writeUuid(value: Uuid) {
 public fun ByteBuffer.readUuid(): Uuid = Uuid(readLong(), readLong())
 
 /**
- * Writes a [ChatComponent] to the buffer.
+ * Writes a [Message] to the buffer.
  */
-public fun MutableByteBuffer.writeChatComponent(value: ChatComponent): Unit = writeString(Json.encodeToString(value))
+public fun MutableByteBuffer.writeMessage(value: Message): Unit = writeString(Json.encodeToString(value))
+// TODO: HANDLE MESSAGE
 
 /**
- * Reads a [ChatComponent] from the buffer.
+ * Reads a [Message] from the buffer.
  */
-public fun ByteBuffer.readChatComponent(): ChatComponent = Json.decodeFromString(readString())
+public fun ByteBuffer.readMessage(): Message = Json.decodeFromString<StyledMessage>(readString())
 
 /**
  * Writes a [UByte] from the buffer.

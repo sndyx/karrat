@@ -5,17 +5,17 @@
 package org.karrat.packet.play
 
 import org.karrat.packet.ClientboundPacket
-import org.karrat.struct.ChatComponent
 import org.karrat.struct.DynamicByteBuffer
-import org.karrat.struct.writeChatComponent
+import org.karrat.struct.Message
+import org.karrat.struct.writeMessage
 
 public class DisconnectPacket(
-    private val message: ChatComponent,
+    private val message: Message,
 ) : ClientboundPacket {
 
     override val id: Int = 0x1A
 
     override fun write(data: DynamicByteBuffer): Unit =
-        data.writeChatComponent(message)
+        data.writeMessage(message)
 
 }

@@ -9,7 +9,7 @@ import org.karrat.Config
 import org.karrat.Server
 import org.karrat.entity.DummyPlayer
 import org.karrat.entity.Player
-import org.karrat.struct.TextComponent
+import org.karrat.struct.Message
 import org.karrat.struct.Uuid
 import java.util.*
 import kotlin.io.path.Path
@@ -27,7 +27,7 @@ public class StatusResponse(
     public var maxPlayers: Int,
     public var onlinePlayers: Int,
     public var samplePlayers: List<Player>,
-    public var description: TextComponent, // Edit later, accepts more primitive type of ChatComponent
+    public var description: Message, // Edit later, accepts more primitive type of ChatComponent
     public var image: ByteArray? = null
 ) {
 
@@ -39,7 +39,7 @@ public class StatusResponse(
             1,
             Server.players.size,
             listOf(DummyPlayer(Uuid("bf8c0810-3dda-48ec-a573-43e162c0e79a"), "sndy")),
-            TextComponent(Config.motd),
+            Config.motd,
             Path("icon.jpeg").takeIf { it.exists() }?.readBytes()
                 ?: StatusResponse::class.java.getResource("/defaults/icon.jpeg")?.readBytes()
         )
@@ -64,7 +64,7 @@ public class StatusResponse(
             }
         }
         putJsonObject("description") {
-            put("text", JsonPrimitive(description.text))
+            put("text", JsonPrimitive(description.toString()))
         }
 
         image?.let {

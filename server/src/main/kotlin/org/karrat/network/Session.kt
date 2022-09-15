@@ -61,8 +61,8 @@ public class Session(public val socket: SocketChannel) {
         socket.write(prefixedBuffer)
     }
 
-    public fun disconnect(reason: String) {
-        send(DisconnectPacket(TextComponent(reason)))
+    public fun disconnect(reason: Message) {
+        send(DisconnectPacket(reason))
         socket.close()
     }
 

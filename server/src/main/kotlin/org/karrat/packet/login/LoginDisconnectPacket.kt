@@ -6,16 +6,16 @@ package org.karrat.packet.login
 
 import org.karrat.packet.ClientboundPacket
 import org.karrat.struct.DynamicByteBuffer
-import org.karrat.struct.TextComponent
-import org.karrat.struct.writeChatComponent
+import org.karrat.struct.Message
+import org.karrat.struct.writeMessage
 
 public class LoginDisconnectPacket(
-    private val reason: TextComponent,
+    private val reason: Message,
 ) : ClientboundPacket {
 
     override val id: Int = 0x00
 
     override fun write(data: DynamicByteBuffer): Unit =
-        data.writeChatComponent(reason)
+        data.writeMessage(reason)
 
 }
