@@ -14,21 +14,19 @@ public class LoginStartPacket(data: ByteBuffer) : ServerboundPacket {
     // Optional
     public val hasSigData: Boolean = data.readBoolean()
     public var timestamp: Long = 0
-    public lateinit var publicKey: ByteArray
-    public lateinit var signature: ByteArray
-
-    init {
-        if (hasSigData) {
-            timestamp = data.readLong()
-            publicKey = data.readPrefixed()
-            signature = data.readPrefixed()
-        }
-    }
+    public lateinit var publicKeyArray: ByteArray
+    public lateinit var signatureArray: ByteArray
 
     public var hasPlayerUUID: Boolean = data.readBoolean()
     public lateinit var playerUUID: Uuid
 
     init {
+        if (hasSigData) {
+            timestamp = data.readLong()
+            publicKeyArray = data.readPrefixed()
+            signatureArray = data.readPrefixed()
+        }
+
         if (hasPlayerUUID) {
             playerUUID = data.readUuid()
         }

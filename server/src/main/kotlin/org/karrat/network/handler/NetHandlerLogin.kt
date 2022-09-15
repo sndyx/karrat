@@ -57,6 +57,19 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
         check(state == LoginState.Initial) { "Unexpected Login Start Packet!" }
         username = packet.username
         state = LoginState.ReadyForEncryption
+
+        if (Config.chatReports) {
+            if (!packet.hasSigData) {
+                session.disconnect("No public key.")
+            }
+
+            messageKey = packet.getPublicKey()
+            val signature = packet.signatureArray
+            val expiresAt = packet.timestamp
+
+            println("$signature, $expiresAt, ${decryptData(messageKey, signature)}")
+        }
+
         session.send(
             EncryptionRequestPacket(
                 "",
@@ -65,9 +78,6 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
             )
         )
 
-        if (Config.chatReports) {
-            messageKey = packet.getPublicKey()
-        }
     }
 
     internal fun handleEncryptionResponsePacket(packet: EncryptionResponsePacket) {

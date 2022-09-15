@@ -43,7 +43,7 @@ private fun createCipherInstance(algorithm: String, key: Key): Cipher {
     return cipher
 }
 
-private fun decryptData(key: Key, bytes: ByteArray): ByteArray =
+public fun decryptData(key: Key, bytes: ByteArray): ByteArray =
     createCipherInstance(key.algorithm, key).doFinal(bytes)
 
 // TODO verify that algorithm is correct
