@@ -10,6 +10,7 @@ import org.karrat.network.Session
 import org.karrat.network.SocketChannel
 import org.karrat.network.auth.MessageKeyInfo
 import org.karrat.struct.Location
+import org.karrat.struct.Message
 import org.karrat.struct.Uuid
 import org.karrat.struct.id
 
@@ -24,7 +25,7 @@ public open class Player(
 
     override var maxHealth: Double = 20.0
 
-    public fun sendMessage(message: String) {
+    public fun sendMessage(message: Message) {
         session.send(TODO())
     }
 

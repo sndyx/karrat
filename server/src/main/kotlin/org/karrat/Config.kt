@@ -7,6 +7,7 @@ package org.karrat
 import org.karrat.play.colored
 import org.karrat.server.LatchedValue
 import org.karrat.struct.Location
+import org.karrat.struct.Message
 import org.karrat.struct.Uuid
 import org.karrat.struct.id
 import kotlin.math.max
@@ -152,15 +153,15 @@ public object Config {
     /**
      * The text displayed on the client's server list.
      */
-    public var motd: String = "Hello Kevster109"
+    public var motd: Message = "Hello Kevster109"
     
-    private var legacyMotdValue: String? = null
+    private var legacyMotdValue: Message? = null
     
     /**
      * The [motd] displayed to any client below Minecraft version 1.6. If not
      * specified, will use the regular [motd].
      */
-    public var legacyMotd: String
+    public var legacyMotd: Message
     get() = legacyMotdValue ?: motd
     set(value) {
         legacyMotdValue = value
@@ -176,12 +177,12 @@ public object Config {
     /**
      * The message sent to the client upon the run of an unknown command.
      */
-    public var unknownCommandMessage: String = "&cUnknown command.".colored()
+    public var unknownCommandMessage: Message = "&cUnknown command.".colored()
     
     /**
      * The message sent to the client when a command is run with invalid syntax.
      */
-    public var invalidSyntaxMessage: String = "&cInvalid syntax.".colored()
+    public var invalidSyntaxMessage: Message = "&cInvalid syntax.".colored()
     
     public inline fun <T> latched(initializer: () -> T): ReadWriteProperty<Any?, T> =
         Delegates.vetoable(initializer.invoke()) { property, _, _ ->

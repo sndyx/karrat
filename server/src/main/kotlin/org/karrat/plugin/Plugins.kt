@@ -13,6 +13,9 @@ public val Server.plugins: List<Plugin> get() = loadedPlugins.map { it.plugin }
 public val Plugin.Companion.minecraft: Plugin get() =
     Plugin("minecraft", "Minecraft", Config.versionName)
 
+public val Plugin.Companion.karrat: Plugin get() =
+    Plugin("karrat", "Karrat", Config.versionName)
+
 public fun Plugin(id: String): Plugin =
     Server.plugins.first { it.id == id }
 

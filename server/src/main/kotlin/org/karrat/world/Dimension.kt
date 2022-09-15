@@ -18,7 +18,7 @@ import kotlin.io.path.writeBytes
 @Serializable
 public open class Dimension(
     @Transient
-    public val id: Identifier = id(""),
+    public val id: Identifier = id("minecraft:null"),
     @SerialName("piglin_safe")
     public val piglinSafe: Boolean,
     public val natural: Boolean,
