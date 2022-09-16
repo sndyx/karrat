@@ -8,9 +8,12 @@ import org.karrat.Server
 import org.karrat.network.Session
 import org.karrat.packet.ServerboundPacket
 import org.karrat.packet.play.JoinGamePacket
+import org.karrat.play.ChatType
 import org.karrat.play.GameMode
 import org.karrat.serialization.nbt.Nbt
 import org.karrat.struct.ByteBuffer
+import org.karrat.struct.nbtOf
+import org.karrat.world.Biome
 import org.karrat.world.Dimension
 
 public class NetHandlerPlay(private val session: Session) : NetHandler {
@@ -22,7 +25,11 @@ public class NetHandlerPlay(private val session: Session) : NetHandler {
             gameMode = GameMode.Survival,
             previousGameMode = GameMode.Survival,
             worlds = Server.worlds,
-            dimensionCodec = Dimension.codec,
+            registryCodec = nbtOf(
+                "minecraft:dimension_type" to Dimension.codec(),
+                "minecraft:worldgen/biome" to Biome.codec(),
+                "minecraft:chat_type" to ChatType.codec()
+            ),
             dimension = Nbt.encodeToNbt(Dimension.Overworld as Dimension), // ?? ???? ? ???
             world = Server.worlds.first(),
             viewDistance = 10,

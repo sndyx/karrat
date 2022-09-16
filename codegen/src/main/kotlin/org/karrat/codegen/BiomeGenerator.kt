@@ -25,8 +25,10 @@ fun generateBiomeClass() {
     
         import("kotlinx.serialization.Serializable")
         import("kotlinx.serialization.Transient")
-        import("org.karrat.struct.Loadable")
+        import("kotlinx.serialization.KSerializer")
         import("org.karrat.struct.Identifier")
+        import("org.karrat.struct.Identified")
+        import("org.karrat.struct.Codec")
 
         + """
         @Serializable
@@ -37,14 +39,16 @@ fun generateBiomeClass() {
             public val precipitation: BiomePrecipitation,
             public val temperature: Float,
             @Transient
-            public val id: Identifier = Identifier(""),
+            override val id: Identifier = Identifier("minecraft:null"),
             public val ordinal: Int,
             @Transient
             public val name: String = ""
-        ) {
+        ) : Identified {
             
-            public companion object BiomeRegistry : Loadable<Biome> {
+            public companion object BiomeRegistry : Codec<Biome>() {
 
+                override val id: Identifier = Identifier("minecraft:worldgen/biome")
+                override val serializer: KSerializer<Biome> = serializer()
                 override val list: MutableList<Biome> = mutableListOf()
 
                 public fun fromIdentifier(identifier: Identifier): Biome {

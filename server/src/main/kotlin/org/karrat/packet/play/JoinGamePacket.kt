@@ -15,7 +15,7 @@ public class JoinGamePacket(
     public val gameMode: GameMode,
     public val previousGameMode: GameMode,
     public val worlds: List<World>,
-    public val dimensionCodec: NbtCompound,
+    public val registryCodec: NbtCompound,
     public val dimension: NbtCompound,
     public val world: World,
     // public val maxPlayers: Int, **Unused by minecraft, ignore.**
@@ -38,7 +38,7 @@ public class JoinGamePacket(
         worlds.forEach {
             data.writeIdentifier(it.identifier)
         }
-        writeNbt(dimensionCodec)
+        writeNbt(registryCodec)
         writeNbt(dimension)
         writeIdentifier(world.identifier)
         writeLong(world.hashedSeed)

@@ -18,6 +18,13 @@ import kotlin.time.Duration.Companion.minutes
 
 public typealias Message = CharSequence
 
+public fun Message.unformatted(): String = toString()
+
+public fun Message.formatted(): String {
+    // TODO: json
+    TODO()
+}
+
 @Serializable
 public data class StyledText(
     val content: String,

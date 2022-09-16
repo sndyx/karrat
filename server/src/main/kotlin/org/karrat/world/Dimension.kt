@@ -4,21 +4,13 @@
 
 package org.karrat.world
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
-import org.karrat.serialization.nbt.Nbt
-import org.karrat.server.Registry
-import org.karrat.struct.Identifier
-import org.karrat.struct.NbtCompound
-import org.karrat.struct.id
-import kotlin.io.path.Path
-import kotlin.io.path.writeBytes
+import kotlinx.serialization.*
+import org.karrat.struct.*
 
 @Serializable
 public open class Dimension(
     @Transient
-    public val id: Identifier = id("minecraft:null"),
+    override val id: Identifier = id("minecraft:null"),
     @SerialName("piglin_safe")
     public val piglinSafe: Boolean,
     public val natural: Boolean,
@@ -47,11 +39,12 @@ public open class Dimension(
     public val ultraWarm: Boolean,
     @SerialName("has_ceiling")
     public val hasCeiling: Boolean,
-) {
+) : Identified {
 
-    public companion object : Registry<Dimension> {
+    public companion object : Codec<Dimension>() {
 
-        public val codec: NbtCompound = NbtCompound()
+        override val id: Identifier = id("minecraft:dimension_type")
+        override val serializer: KSerializer<Dimension> = serializer()
         override val list: MutableList<Dimension> = mutableListOf()
 
         public fun fromId(id: Int): Dimension = list[id]
@@ -69,27 +62,6 @@ public open class Dimension(
             register(OverworldCaves)
             register(Nether)
             register(End)
-            val dimensionNbt = NbtCompound()
-            dimensionNbt["type"] = "minecraft:dimension_type"
-            dimensionNbt["value"] = list.mapIndexed { index, value ->
-                val nbt = NbtCompound()
-                nbt["name"] = value.id.toString()
-                nbt["id"] = index
-                nbt["element"] = Nbt.encodeToNbt(value)
-                nbt
-            }
-            val biomeNbt = NbtCompound()
-            biomeNbt["type"] = "minecraft:worldgen/biome"
-            biomeNbt["value"] = Biome.list.mapIndexed { index, value ->
-                val nbt = NbtCompound()
-                nbt["name"] = value.id.toString()
-                nbt["id"] = index
-                nbt["element"] = Nbt.encodeToNbt(value)
-                nbt
-            }
-            codec["minecraft:dimension_type"] = dimensionNbt
-            codec["minecraft:worldgen/biome"] = biomeNbt
-            Path("new_codec.nbt").writeBytes(Nbt.encodeToBytes(codec))
         }
 
     }

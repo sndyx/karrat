@@ -19,7 +19,7 @@ fun generateMaterialClass() {
         generator("MaterialGenerator.kt")
         source("materials.json")
 
-        import("org.karrat.struct.Loadable")
+        import("org.karrat.server.Registry")
         import("org.karrat.struct.Identifier")
 
         + """
@@ -30,7 +30,7 @@ fun generateMaterialClass() {
             public val stackSize: Int
         ) {
                     
-            public companion object MaterialRegistry : Loadable<Material> {
+            public companion object MaterialRegistry : Registry<Material> {
 
                 override val list: MutableList<Material> = mutableListOf()
         
