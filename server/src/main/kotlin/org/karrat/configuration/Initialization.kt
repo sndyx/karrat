@@ -28,8 +28,13 @@ internal fun Server.genServerFiles() {
     val iconFile = Path("icon.jpeg")
     val icon = resourceAsBytes("defaults/icon.jpeg")
     iconFile.takeIf { !it.exists() }?.writeBytes(icon)
-    
-    Path("plugins").createDirectory()
+
+
+    Path("plugins").also {
+        if (!it.exists()) {
+            it.createDirectory()
+        }
+    }
 }
 
 internal fun Server.eulaPrompt() {

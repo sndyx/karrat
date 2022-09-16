@@ -14,7 +14,7 @@ import kotlinx.serialization.serializer
 import org.karrat.command.generic.*
 import org.karrat.entity.Player
 import org.karrat.plugin.Plugin
-import org.karrat.plugin.minecraft
+//import org.karrat.plugin.minecraft
 import org.karrat.serialization.command.CommandDecoder
 import org.karrat.server.Registry
 
@@ -90,21 +90,21 @@ public interface Command {
         
         override val list: MutableList<Command> get() = Root.nodes
 
-        context(Plugin)
+        //context(Plugin)
         override fun register(value: Command) {
             require(value is CommandNodeLiteral) { "Root node must be a literal node." }
             Root.nodes.add(value)
             // TODO Context Receivers
         }
 
-        context(Plugin)
+        //context(Plugin)
         override fun unregister(value: Command) {
             Root.nodes.remove(value)
             // TODO Context Receivers
         }
 
         override fun load() {
-            with(Plugin.minecraft) {
+            //with(Plugin.minecraft) {
                 register(killCommand())
                 register(installCommand())
                 register(stopCommand())
@@ -113,7 +113,7 @@ public interface Command {
                 register(sudoCommand())
                 register(testCommand())
                 register(executeCommand())
-            }
+            //}
         }
         
         public fun eval(command: String): Result<EvaluatedCommand> =

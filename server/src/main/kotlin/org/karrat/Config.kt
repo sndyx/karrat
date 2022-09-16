@@ -68,7 +68,7 @@ public object Config {
      * Should the server support 1.19.2 reporting?
      */
     @LatchedValue
-    public var chatReports: Boolean by latched { false }
+    public var chatReports: Boolean by latched { true }
 
     // Network
     
