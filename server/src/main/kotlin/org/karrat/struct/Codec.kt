@@ -22,7 +22,7 @@ public abstract class Codec<T : Identified> : Registry<T> {
         codec["value"] = list.mapIndexed { index, it ->
             NbtCompound().also { nbt ->
                 nbt["id"] = index
-                nbt["name"] = id.toString()
+                nbt["name"] = it.id.toString()
                 nbt["element"] = Nbt.encodeToNbt(it, serializer)
             }
         }
