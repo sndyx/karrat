@@ -1,6 +1,7 @@
+package org.karrat.world.generation
+
 import org.karrat.World
 import org.karrat.struct.Vec2i
-import org.karrat.world.Block
 import org.karrat.world.Chunk
 
 public interface WorldGenerator {

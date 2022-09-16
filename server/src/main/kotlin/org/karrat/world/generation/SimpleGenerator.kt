@@ -4,7 +4,6 @@
 
 package org.karrat.world.generation
 
-import WorldGenerator
 import org.karrat.World
 import org.karrat.struct.Vec2i
 import org.karrat.world.Block

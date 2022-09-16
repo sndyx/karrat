@@ -4,7 +4,6 @@
 
 package org.karrat
 
-import WorldGenerator
 import kotlinx.serialization.Serializable
 import org.karrat.entity.Entity
 import org.karrat.entity.Player
@@ -14,6 +13,7 @@ import org.karrat.struct.*
 import org.karrat.world.Block
 import org.karrat.world.Chunk
 import org.karrat.world.Dimension
+import org.karrat.world.generation.WorldGenerator
 
 /**
  * Represents a Minecraft world. Contains [chunks], [entities], and [players].
