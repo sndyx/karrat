@@ -39,7 +39,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
     public lateinit var uuid: Uuid
     public val verificationToken: ByteArray by lazy { Random.nextBytes(4) }
 
-    public var messageData: MessageKeyInfo? = null
+    public lateinit var messageData: MessageKeyInfo
 
     override fun read(
         id: Int,
@@ -93,7 +93,7 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
             toDigest.writeBytes(verificationToken)
             toDigest.writeLong(packet.salt)
 
-            if (!checkSignature("SHA256withRSA", messageData!!.key, toDigest.bytes, packet.tokenSignature)) {
+            if (!checkSignature("SHA256withRSA", messageData.key, toDigest.bytes, packet.tokenSignature)) {
                 session.disconnect("Protocol error")
             }
         }
@@ -123,24 +123,25 @@ public open class NetHandlerLogin(private val session: Session) : NetHandler {
 
                 if (Config.chatReports) {
                     // TODO check format is correct
-                    if (messageData!!.expiresAt > Instant.now().toEpochMilli()) {
+                    if (messageData.expiresAt > Instant.now().toEpochMilli()) {
                         session.disconnect("Outdated public key")
                     }
 
-                    val encodedKey: ByteArray = messageData!!.key.encoded
+
+                    val encodedKey: ByteArray = messageData.key.encoded
 
                     // Input initial data
                     val toDigest = MutableByteBuffer(24 + encodedKey.size)
                     toDigest.writeUuid(uuid)
-                    toDigest.writeLong(messageData!!.expiresAt)
+                    toDigest.writeLong(messageData.expiresAt)
                     toDigest.writeBytes(encodedKey)
 
-                    if (!checkSignature("SHA1withRSA", mojangPublicKey, toDigest.bytes, messageData!!.signature)) {
+                    if (!checkSignature("SHA1withRSA", mojangPublicKey, toDigest.bytes, messageData.signature)) {
                         session.disconnect("Invalid public key")
                     }
                 }
 
-                session.player = Player(session, uuid, username, messageData, location = Config.spawnLocation)
+                session.player = Player(session, uuid, username, if (Config.chatReports) messageData else null, location = Config.spawnLocation)
 
                 response.properties.firstOrNull { it.name == "textures" }
                     ?.let { session.player.skin = it.value }
