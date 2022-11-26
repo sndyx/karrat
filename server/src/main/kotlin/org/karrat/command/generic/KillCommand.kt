@@ -14,7 +14,7 @@ internal fun Command.CommandRegistry.killCommand(): Command =
     command("kill") {
         argument<String>().onRun {
             Server.players.firstOrNull { it.name == args.get<String>(0) }?.remove()
-            ?: respond("Can't find target of ${args.get<String>(0)}")
+            ?: respond("No targets found.")
         }
     }.onRunByPlayer {
         sender.remove()

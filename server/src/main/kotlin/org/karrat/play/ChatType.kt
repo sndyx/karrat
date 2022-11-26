@@ -15,8 +15,7 @@ public class ChatType {
 
     public companion object {
 
-        public fun codec(): NbtCompound {
-            return """
+        public val codec: NbtCompound = """
   {
     "value": [
       {
@@ -189,10 +188,8 @@ public class ChatType {
     "type": "minecraft:chat_type"
   }
             """.trimIndent().let {
-                Json.decodeFromString<Map<String, Any>>(it).toNbtCompound()
-            }
+            Json.decodeFromString<Map<String, Any>>(it).toNbtCompound()
         }
-
     }
 
 }

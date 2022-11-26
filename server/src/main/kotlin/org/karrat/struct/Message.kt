@@ -16,6 +16,18 @@ import org.karrat.server.schedule
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
+/**
+ * An alias for [CharSequence] intended for better readability.
+ *
+ * Messages come in one of three forms:
+ * - Unformatted Strings
+ * - Formatted Strings (eg: `"&eHello world!"`)
+ * - [Styled messages][StyledMessage]
+ *
+ * When displaying a Message, use [formatted] and [unformatted] to ensure a
+ * consistent output.
+ */
+// TODO document better lol
 public typealias Message = CharSequence
 
 public fun Message.unformatted(): String = toString()
@@ -179,7 +191,7 @@ public class TextBuilder(
 public fun Message(
     text: String
 ): Message {
-    return text
+    return text // TODO: Translate color codes.
 }
 
 public fun Message(

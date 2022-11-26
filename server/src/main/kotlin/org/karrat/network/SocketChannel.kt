@@ -32,10 +32,14 @@ public open class SocketChannel(private val socket: NioSocketChannel) : Closeabl
     }
 
     public open fun write(src: ByteBuffer) {
-        val buffer = NioByteBuffer.allocate(src.size)
+        // val buffer = NioByteBuffer.allocate(src.size)
+        // buffer.put(src.array())
+        // buffer.flip()
         buffer.put(src.array())
         buffer.flip()
         socket.write(buffer)
+        buffer.flip()
+        buffer.clear()
     }
 
     public override fun close() {

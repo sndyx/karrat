@@ -10,13 +10,13 @@ Commands are used by players and administrators to interact with the server in m
 
 `Command.run` runs the given command `String`.
 
-```
+```kotlin
 @Init
 fun init() {
 	Command.run("kill @a")
 }
 ```
-[//]: # (3..5)
+[//]: <> (3..5)
 
 ```kotlin
 command("kill") {

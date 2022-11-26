@@ -1,5 +1,5 @@
 # Gradle
-.gradle
+/.gradle/
 
 # Builds
 /build/
@@ -11,6 +11,9 @@
 /bukkit/out/
 /sided/build/
 /sided/out/
+
+# Misc
+/docs/.obsidian/
 
 # System
 .DS_STORE

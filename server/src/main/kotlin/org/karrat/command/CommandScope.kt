@@ -5,7 +5,8 @@
 package org.karrat.command
 
 import org.karrat.entity.Player
-import org.karrat.play.stripColor
+import org.karrat.struct.Message
+import org.karrat.struct.unformatted
 
 @CommandDsl
 public interface CommandScope {
@@ -19,7 +20,7 @@ public interface CommandScope {
         }
     }
 
-    public fun respond(value: String)
+    public fun respond(message: Message)
 
 }
 
@@ -27,8 +28,8 @@ public class ConsoleCommandScope(
     override val args: CommandArguments,
 ) : CommandScope {
 
-    override fun respond(value: String) {
-        println(value.stripColor())
+    override fun respond(message: Message) {
+        println(message.unformatted())
     }
 
 }
@@ -38,8 +39,8 @@ public class PlayerCommandScope(
     public val sender: Player,
 ) : CommandScope {
 
-    override fun respond(value: String) {
-        sender.sendMessage(value)
+    override fun respond(message: Message) {
+        sender.sendMessage(message)
     }
 
 }

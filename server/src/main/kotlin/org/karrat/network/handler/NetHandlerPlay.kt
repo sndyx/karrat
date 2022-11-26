@@ -26,9 +26,9 @@ public class NetHandlerPlay(private val session: Session) : NetHandler {
             previousGameMode = GameMode.Survival,
             worlds = Server.worlds,
             registryCodec = nbtOf(
-                "minecraft:dimension_type" to Dimension.codec(),
-                "minecraft:worldgen/biome" to Biome.codec(),
-                "minecraft:chat_type" to ChatType.codec()
+                "minecraft:dimension_type" to Dimension.codec,
+                "minecraft:worldgen/biome" to Biome.codec,
+                "minecraft:chat_type" to ChatType.codec
             ),
             dimension = Nbt.encodeToNbt(Dimension.Overworld as Dimension), // ?? ???? ? ???
             world = Server.worlds.first(),

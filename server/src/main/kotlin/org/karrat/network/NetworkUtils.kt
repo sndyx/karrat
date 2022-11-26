@@ -11,9 +11,9 @@ import org.karrat.network.handler.NetHandlerStatus
 
 public val Session.state: SessionState
     get() = when (netHandler) {
-        is NetHandlerHandshake -> SessionState.HANDSHAKE
-        is NetHandlerStatus -> SessionState.STATUS
-        is NetHandlerPlay -> SessionState.PLAY
-        is NetHandlerLogin -> SessionState.LOGIN
-        else -> SessionState.HANDSHAKE
+        is NetHandlerHandshake -> SessionState.Handshake
+        is NetHandlerStatus -> SessionState.Status
+        is NetHandlerPlay -> SessionState.Play
+        is NetHandlerLogin -> SessionState.Login
+        else -> SessionState.Handshake
     }

@@ -4,8 +4,8 @@
 
 package org.karrat.struct
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.*
+import kotlin.test.Test
+import kotlin.test.assertContentEquals
 
 internal class ByteBufferKtTest {
     
@@ -26,8 +26,8 @@ internal class ByteBufferKtTest {
         buffer.writeVarInt(1329)
         buffer.writeVarLong(37129387L)
         buffer.writeIdentifier(Identifier("minecraft:test"))
-        buffer.writeString("abcdefghjklmnopqrstuvwxyz")
-        //buffer.writeUuid(Uuid("bf8c08103dda48eca57343e162c0e79a"))
+        buffer.writeString("Warning! This string is based as heck")
+        buffer.writeUuid(Uuid("bf8c08103dda48eca57343e162c0e79a"))
         //buffer.writeChatComponent(ChatComponent("S"))
         buffer.writeBytes(byteArrayOf(32, 10, 40, 32, 18))
         buffer.writePrefixed(byteArrayOf(32, 10, 40, 32, 18))
@@ -46,11 +46,11 @@ internal class ByteBufferKtTest {
         assert(buffer.readVarInt() == 1329)
         assert(buffer.readVarLong() == 37129387L)
         assert(buffer.readIdentifier() == Identifier("minecraft:test"))
-        assert(buffer.readString() == "abcdefghjklmnopqrstuvwxyz")
-        //assert(buffer.readUuid() == Uuid("bf8c08103dda48eca57343e162c0e79a"))
+        assert(buffer.readString() == "Warning! This string is based as heck")
+        assert(buffer.readUuid() == Uuid("bf8c08103dda48eca57343e162c0e79a"))
         //assert(buffer.readChatComponent() == ChatComponent("S"))
-        assertArrayEquals(buffer.readBytes(5), byteArrayOf(32, 10, 40, 32, 18))
-        assertArrayEquals(buffer.readPrefixed(), byteArrayOf(32, 10, 40, 32, 18))
+        assertContentEquals(buffer.readBytes(5), byteArrayOf(32, 10, 40, 32, 18))
+        assertContentEquals(buffer.readPrefixed(), byteArrayOf(32, 10, 40, 32, 18))
     }
     
 }

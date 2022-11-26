@@ -8,8 +8,8 @@ import kotlinx.coroutines.*
 import org.karrat.Server
 import kotlin.time.Duration
 
-public fun Server.schedule(after: Duration, action: suspend () -> Unit) {
-    launch {
+public fun Server.schedule(after: Duration, action: suspend () -> Unit): Job {
+    return launch {
         delay(after)
         action()
     }

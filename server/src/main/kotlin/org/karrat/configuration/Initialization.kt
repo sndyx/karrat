@@ -21,9 +21,9 @@ internal fun Server.genServerFiles() {
     val eula = resourceAsBytes("defaults/EULA.txt")
     eulaFile.takeIf { !it.exists() }?.writeBytes(eula)
 
-    val settingsFile = Path("settings.server.kts")
-    val settings = resourceAsBytes("defaults/settings.server.kts")
-    settingsFile.takeIf { !it.exists() }?.writeBytes(settings)
+    // val settingsFile = Path("settings.server.kts")
+    // val settings = resourceAsBytes("defaults/settings.server.kts")
+    // settingsFile.takeIf { !it.exists() }?.writeBytes(settings)
     
     val iconFile = Path("icon.jpeg")
     val icon = resourceAsBytes("defaults/icon.jpeg")

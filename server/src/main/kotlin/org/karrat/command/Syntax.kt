@@ -10,6 +10,9 @@ import kotlinx.serialization.descriptors.StructureKind
 public fun Command.syntax(): String {
     val builder = StringBuilder()
     when (this) {
+        is CommandNodeRoot -> {
+            builder.append(command.literals[0])
+        }
         is CommandNodeLiteral -> {
             builder.append(literals[0])
         }
@@ -18,6 +21,9 @@ public fun Command.syntax(): String {
         }
         is CommandNodeRedirect -> {
             builder.append("-> ").append(when (redirectNode) {
+                is CommandNodeRoot -> {
+                    redirectNode.command.literals[0]
+                }
                 is CommandNodeLiteral -> {
                     redirectNode.literals[0]
                 }

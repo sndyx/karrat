@@ -71,6 +71,7 @@ public object Server : CoroutineScope {
         println("Creating fixed thread pool with ${Config.threadCount} threads.")
         loadPlugins()
         launch { startConsoleInput() }
+        println("Server started.")
         launch {
             while (isActive) {
                 tickTimeMillis =
@@ -96,7 +97,7 @@ public object Server : CoroutineScope {
 
     public fun stop() {
         sessions
-            .filter { it.state == SessionState.PLAY }
+            .filter { it.state == SessionState.Play }
             .forEach { it.disconnect("Server shutting down.") }
         exitProcess(0)
     }

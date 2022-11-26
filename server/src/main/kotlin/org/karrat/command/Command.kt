@@ -14,6 +14,8 @@ import kotlinx.serialization.serializer
 import org.karrat.command.generic.*
 import org.karrat.entity.Player
 import org.karrat.plugin.Plugin
+import org.karrat.plugin.karrat
+import org.karrat.plugin.minecraft
 //import org.karrat.plugin.minecraft
 import org.karrat.serialization.command.CommandDecoder
 import org.karrat.server.Registry
@@ -60,13 +62,17 @@ public fun Command.eval(
     return resolveNextNode(tokens)?.let {
         it.first.consume(tokens.take(it.second), args, mappings)
         it.first.eval(tokens.drop(it.second), args, mappings)
-    } ?: Result.failure(IllegalArgumentException("Invalid command syntax."))
+    } ?: Result.failure(IllegalArgumentException("Unknown command."))
 }
 
 public fun Command.run(
     tokens: List<String>,
     sender: Player? = null
-): Result<Unit> = eval(tokens).map { it.run(sender) }.also { it.exceptionOrNull()?.printStackTrace() }
+): Result<Unit> = eval(tokens).map { it.run(sender) }.also {
+    it.exceptionOrNull()?.message?.let { message ->
+        sender?.sendMessage(message) ?: println(message)
+    }
+}
 
 @CommandDsl
 public interface Command {
@@ -90,30 +96,35 @@ public interface Command {
         
         override val list: MutableList<Command> get() = Root.nodes
 
-        //context(Plugin)
+        context(Plugin)
         override fun register(value: Command) {
             require(value is CommandNodeLiteral) { "Root node must be a literal node." }
-            Root.nodes.add(value)
-            // TODO Context Receivers
+            val root = CommandNodeRoot(this@Plugin, value)
+            Root.nodes.add(root)
         }
 
-        //context(Plugin)
+        context(Plugin)
         override fun unregister(value: Command) {
-            Root.nodes.remove(value)
-            // TODO Context Receivers
+            require(value is CommandNodeLiteral) { "Root node must be a literal node." }
+            val root = CommandNodeRoot(this@Plugin, value)
+            Root.nodes.remove(root)
         }
 
         override fun load() {
-            //with(Plugin.minecraft) {
+            with(Plugin.minecraft) {
                 register(killCommand())
-                register(installCommand())
                 register(stopCommand())
                 register(echoCommand())
                 register(complexCommand())
                 register(sudoCommand())
                 register(testCommand())
                 register(executeCommand())
-            //}
+                register(listCommand())
+                register(syntaxCommand())
+            }
+            with(Plugin.karrat) {
+                register(installCommand())
+            }
         }
         
         public fun eval(command: String): Result<EvaluatedCommand> =
@@ -141,6 +152,20 @@ public interface Command {
     
 }
 
+@CommandDsl
+internal class CommandNodeRoot(
+    val plugin: Plugin,
+    val command: CommandNodeLiteral
+) : Command by command {
+
+    override fun matches(tokens: List<String>): Int =
+        if (command.literals.any {  // pretty sure this works
+                it == tokens.first() || "${plugin.id}:$it" == tokens.first()
+        }) 1 else -1
+
+}
+
+@CommandDsl
 @PublishedApi
 internal class CommandNodeLiteral @PublishedApi internal constructor(
     val literals: List<String>,
@@ -163,6 +188,7 @@ internal class CommandNodeLiteral @PublishedApi internal constructor(
     }
 }
 
+@CommandDsl
 @PublishedApi
 internal class CommandNodeRedirect @PublishedApi internal constructor(
     val redirectNode: Command,
@@ -173,6 +199,7 @@ internal class CommandNodeRedirect @PublishedApi internal constructor(
 }
 
 
+@CommandDsl
 @PublishedApi
 @OptIn(ExperimentalSerializationApi::class)
 internal class CommandNodeArgument<T : Any> @PublishedApi internal constructor(

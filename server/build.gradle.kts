@@ -6,11 +6,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    kotlin("plugin.serialization") version "1.7.10"
+    kotlin("plugin.serialization") version "1.7.20"
 }
 
 group = "org.karrat.server"
-version = "1.18.2"
+version = "1.19.2"
 
 repositories {
     mavenCentral()
@@ -30,6 +30,7 @@ tasks {
     }
     
     jar {
+        archiveBaseName.set("Karrat")
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest {
             attributes["Main-Class"] = "org.karrat.RunKt"
@@ -58,7 +59,7 @@ tasks {
 task<Copy>("copyJar") {
     group = "server"
     dependsOn("build")
-    from("build/libs/server-1.18.2.jar")
+    from("build/libs/Karrat-1.19.2.jar")
     into("build/server")
 }
 
@@ -72,6 +73,6 @@ task<JavaExec>("run") {
     group = "server"
     dependsOn("copyJar")
     workingDir = file("build/server")
-    classpath = files("build/server/server-1.18.2.jar")
+    classpath = files("build/server/Karrat-1.19.2.jar")
     args = listOf("--dev-env")
 }

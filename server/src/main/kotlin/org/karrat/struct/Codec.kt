@@ -12,11 +12,8 @@ public abstract class Codec<T : Identified> : Registry<T> {
 
     public abstract val id: Identifier
     public abstract val serializer: KSerializer<T>
-
-    private var cachedCodec: NbtCompound? = null
-
-    public fun codec(): NbtCompound {
-        if (cachedCodec != null) return cachedCodec!!
+    
+    public val codec: NbtCompound = run {
         val codec = NbtCompound()
         codec["type"] = id.toString()
         codec["value"] = list.mapIndexed { index, it ->
@@ -26,8 +23,7 @@ public abstract class Codec<T : Identified> : Registry<T> {
                 nbt["element"] = Nbt.encodeToNbt(it, serializer)
             }
         }
-        cachedCodec = codec
-        return codec
+        codec
     }
 
 }

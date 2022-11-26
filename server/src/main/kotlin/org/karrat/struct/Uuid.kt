@@ -107,4 +107,15 @@ public class Uuid {
         return (value and mask).toString(16).padStart(digits, '0')
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (null == other || other !is Uuid) return false
+        return mostSignificantBits == other.mostSignificantBits &&
+                leastSignificantBits == other.leastSignificantBits
+    }
+
+    override fun hashCode(): Int {
+        val hilo: Long = mostSignificantBits xor leastSignificantBits
+        return (hilo shr 32).toInt() xor hilo.toInt()
+    }
+
 }

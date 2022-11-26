@@ -29,7 +29,7 @@ example-plugin
     └── test
 ```
 
-Inside of the the `settings.gradle.kts` file, you must add the Karrat server
+Inside of the the `build.gradle.kts` file, you must add the Karrat server
  artifact, located in the Maven Central Repository.
 
 ```gradle
@@ -44,4 +44,4 @@ dependencies {
 
 ---
 
-Next: [Plugin Declaration](plugin-declaration.md)
+Next: [Plugin Declaration](basic-plugin.md)

@@ -20,6 +20,7 @@ public value class Color(private val color: Int) {
 
         public val white: Color = Color(0xffffff)
         public val black: Color = Color(0x000000)
+        public val red: Color = Color(0xff5555)
 
     }
 

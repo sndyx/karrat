@@ -4,10 +4,6 @@
 
 package org.karrat.struct
 
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.DataInputStream
-import java.io.DataOutputStream
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
 import java.nio.charset.Charset
@@ -28,20 +24,50 @@ private object Utf8Mod : Charset("mutf-8", emptyArray()) {
 private object Utf8ModDecoder : CharsetDecoder(Utf8Mod, 0.4f, 1f) {
 
     override fun decodeLoop(data: ByteBuffer, out: CharBuffer): CoderResult {
-        val input = ByteArrayInputStream(data.array())
-        val result = DataInputStream(input).use { it.readUTF() }
-        out.put(result)
+        while (data.remaining() >= 2) {
+            val c = data.char.code
+            if (c >= 127) break
+            out.put(c.toChar())
+        }
+        var c2 = 0
+        var c3 = 0
+        while (data.remaining() >= 2) {
+            val c = data.char.code and 0xff
+            when (c shr 4) {
+                0, 1, 2, 3, 4, 5, 6, 7 -> out.put(c.toChar())
+                12, 13 -> out.put((c and 0x1f shl 6 or c2 and 0x3f).toChar())
+                14 -> out.put((c and 0x0F shl 12 or (c2 and 0x3F shl 6) or (c3 and 0x3F shl 0)).toChar())
+                else -> CoderResult.malformedForLength(data.position())
+            }
+            c2 = c
+            c3 = c2
+        }
         return CoderResult.UNDERFLOW
     }
 
 }
 
-private object Utf8ModEncoder : CharsetEncoder(Utf8Mod, 0.4f, 1f) {
+private object Utf8ModEncoder : CharsetEncoder(Utf8Mod, 1.1f, 3.0f) {
 
     override fun encodeLoop(data: CharBuffer, out: ByteBuffer): CoderResult {
-        val os = ByteArrayOutputStream()
-        DataOutputStream(os).use { it.writeUTF(data.toString()) }
-        out.put(os.toByteArray())
+        while (data.hasRemaining()) {
+            val c = data.get().code
+            if (c >= 0x80 || c == 0) break
+            out.put(c.toByte())
+        }
+        while (data.hasRemaining()) {
+            val c = data.get().code
+            if (c < 0x80 && c != 0) {
+                out.put(c.toByte())
+            } else if (c >= 0x800) {
+                out.put(((0xE0 or (c shr 12 and 0x0F)).toByte()))
+                out.put(((0x80 or (c shr 6 and 0x3F)).toByte()))
+                out.put(((0x80 or (c shr 0 and 0x3F)).toByte()))
+            } else {
+                out.put(((0xC0 or (c shr 6 and 0x1F)).toByte()))
+                out.put(((0x80 or (c shr 0 and 0x3F)).toByte()))
+            }
+        }
         return CoderResult.UNDERFLOW
     }
 

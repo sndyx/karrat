@@ -4,7 +4,7 @@
 
 package org.karrat.command
 
-import org.karrat.play.colored
+import org.karrat.struct.Message
 
 public open class CommandExecutor {
 
@@ -21,7 +21,7 @@ public open class CommandExecutor {
             } else if (globalExecutor != null) {
                 globalExecutor!!.invoke(sender)
             } else {
-                sender.respond("&cInvalid syntax".colored())
+                sender.respond(Message("&cInvalid syntax."))
             }
         }.onFailure {
             sender.respond("&cError: ${it.message}")

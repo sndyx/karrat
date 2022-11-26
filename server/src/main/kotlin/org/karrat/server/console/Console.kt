@@ -24,7 +24,7 @@ internal suspend fun Server.startConsoleInput() {
         while (isActive) {
             while (System.`in`.available() == 0) delay(50)
             val command = System.`in`.readNBytes(System.`in`.available()).decodeToString()
-            Command.run(command, null)
+            Command.run(command.dropLast(1), null) // dropLast for newline ?
         }
     }.onFailure {
         if (it.message?.contains("EOF") == true) {

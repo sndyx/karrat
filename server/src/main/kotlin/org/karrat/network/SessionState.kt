@@ -5,8 +5,8 @@
 package org.karrat.network
 
 public enum class SessionState {
-    HANDSHAKE,
-    STATUS,
-    LOGIN,
-    PLAY
+    Handshake,
+    Status,
+    Login,
+    Play;
 }
