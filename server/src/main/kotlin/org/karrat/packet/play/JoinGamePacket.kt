@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.packet.play

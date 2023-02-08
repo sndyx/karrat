@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.struct
@@ -17,7 +17,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 /**
- * An alias for [CharSequence] intended for better readability.
+ * An alias for [CharSequence] intended for better code readability.
  *
  * Messages come in one of three forms:
  * - Unformatted Strings
@@ -27,13 +27,79 @@ import kotlin.time.Duration.Companion.minutes
  * When displaying a Message, use [formatted] and [unformatted] to ensure a
  * consistent output.
  */
-// TODO document better lol
 public typealias Message = CharSequence
 
 public fun Message.unformatted(): String = toString()
 
 public fun Message.formatted(): String {
     // TODO: json
+    TODO()
+}
+
+private const val COLORS = "0123456789abcdef"
+private const val OTHER = "klmnor"
+
+public fun Message.toStyledMessage(): StyledMessage {
+    if (this is StyledMessage) return this
+    val list = mutableListOf<StyledText>()
+    var textFlag = false
+    var formattingFlag = false
+    var nonColorFlag = false
+    var builder = TextBuilder("")
+    var text = StringBuilder()
+    this.forEach {
+        if (formattingFlag) {
+            formattingFlag = false
+            when (it) {
+                'a' -> builder.color(Color.red)
+                'f' -> builder.color(Color.white)
+                'k' -> builder.obfuscated()
+                'l' -> builder.bold()
+                'm' -> builder.strikethrough()
+                'n' -> builder.underlined()
+                'o' -> builder.italic()
+                'r' -> {
+                    nonColorFlag = false
+                    builder.content = text.toString()
+                    list.add(builder.build())
+                    text = StringBuilder()
+                    builder = TextBuilder("")
+                }
+                else -> {
+                    textFlag = true // not a color code
+                    text.append(it)
+                }
+            }
+            when (it) {
+                in OTHER -> {
+                    nonColorFlag = true
+                }
+                in COLORS -> {
+                    if (nonColorFlag) {
+                        nonColorFlag = false
+                        builder.content = text.toString()
+                        list.add(builder.build())
+                        text = StringBuilder()
+                        builder = TextBuilder("")
+                    }
+                }
+            }
+        }
+        else if (it == '&' || it == '§') {
+            formattingFlag = true
+            if (textFlag) { // formatting after text, make new segment
+                textFlag = false
+                nonColorFlag = false
+                builder.content = text.toString()
+                list.add(builder.build())
+                text = StringBuilder()
+                builder = TextBuilder("")
+            }
+        } else {
+            textFlag = true
+            text.append(it)
+        }
+    }
     TODO()
 }
 
@@ -49,7 +115,7 @@ public data class StyledText(
     val insertion: String? = null,
     val clickEvent: ClickEvent? = null,
     val hoverEvent: HoverEvent? = null
-)
+) : Message by content
 
 @Serializable
 public data class ClickEvent(val action: ClickAction, val value: String)
@@ -111,7 +177,7 @@ public class MessageBuilder {
 }
 
 public class TextBuilder(
-    public val content: String,
+    public var content: String,
 ) {
     public var bold: Boolean? = null
     public var italic: Boolean? = null

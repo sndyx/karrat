@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.world
@@ -15,8 +15,8 @@ public class ChunkSection : Iterable<Block> {
         data[x + y * 16 + z * 256]
     
     public operator fun set(x: Int, y: Int, z: Int, value: Block) {
-        if (get(x, y, z) == Block.Air && value != Block.Air) airBlocks--
-        else if (value == Block.Air) airBlocks++
+        if (get(x, y, z) is Block.Air && value !is Block.Air) airBlocks--
+        else if (value is Block.Air) airBlocks++
         data[x + y * 16 + z * 256] = value
     }
     

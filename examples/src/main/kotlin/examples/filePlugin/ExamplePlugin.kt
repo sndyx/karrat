@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 @file:Plugin("example-plugin", "ExamplePlugin", "1.18.1")
 @file:DependsOn("essentials", "worldedit")
@@ -16,7 +16,12 @@ import org.karrat.server.scheduleEvery
 
 @Init
 fun init() {
-    Server.scheduleEvery(20.ticks) {
+    Server.scheduleEvery(200.ticks) {
         println(Server.mtps())
+        Server.worlds.single().chunks.values.forEach {
+            it.sections.forEach {
+                println(it.data.data.toList())
+            }
+        }
     }
 }

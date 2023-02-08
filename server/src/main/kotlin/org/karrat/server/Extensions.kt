@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.server
@@ -8,6 +8,7 @@ import org.karrat.Config
 import org.karrat.Server
 import org.karrat.command.Command
 import org.karrat.play.Material
+import org.karrat.plugin.Plugin
 import org.karrat.world.Biome
 import org.karrat.world.Dimension
 import kotlin.system.measureTimeMillis
@@ -44,4 +45,7 @@ internal fun Server.loadResources() {
     measureTimeMillis {
         Material.load()
     }.let { println("Loaded ${Material.list.size} materials in ${it}ms.") }
+    measureTimeMillis {
+        Plugin.load()
+    }.let { println("Loaded ${Plugin.list.size} plugins in ${it}ms.") }
 }

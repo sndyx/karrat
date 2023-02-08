@@ -1,12 +1,11 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.server.console
 
 import org.karrat.Config
 import org.karrat.Server
-import org.karrat.plugin.plugins
 import org.karrat.plugin.surrogate
 import java.io.OutputStream
 import java.text.SimpleDateFormat

@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.entity
@@ -9,6 +9,8 @@ import org.karrat.World
 import org.karrat.network.Session
 import org.karrat.network.SocketChannel
 import org.karrat.network.auth.MessageKeyInfo
+import org.karrat.play.Container
+import org.karrat.play.Inventory
 import org.karrat.struct.Location
 import org.karrat.struct.Message
 import org.karrat.struct.Uuid
@@ -24,6 +26,9 @@ public open class Player(
     ) : EntityLiving(location) {
 
     override var maxHealth: Double = 20.0
+
+    public val inventory: Inventory = Inventory()
+    public var container: Container? = null
 
     public fun sendMessage(message: Message) {
         session.send(TODO())

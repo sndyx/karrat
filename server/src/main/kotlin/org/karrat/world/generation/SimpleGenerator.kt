@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.world.generation
@@ -17,7 +17,7 @@ public class SimpleGenerator : WorldGenerator {
         repeat(16) { x ->
             repeat(16) { z ->
                 val noise = Perlin.noise(x.toDouble(), 0.0, z.toDouble())
-                chunk[x, noise.toInt(), z] = Block.Stone
+                chunk[x, noise.toInt(), z] = Block.Stone()
             }
         }
         return chunk

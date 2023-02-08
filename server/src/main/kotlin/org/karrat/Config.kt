@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat
@@ -153,7 +153,7 @@ public object Config {
     /**
      * The text displayed on the client's server list.
      */
-    public var motd: Message = "Hello Kevster109"
+    public var motd: Message = "Farrrdding josepeh mrtaigh"
     
     private var legacyMotdValue: Message? = null
     

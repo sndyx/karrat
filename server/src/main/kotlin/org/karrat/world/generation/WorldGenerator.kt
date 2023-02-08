@@ -1,3 +1,7 @@
+/*
+ * Copyright © Karrat - 2023.
+ */
+
 package org.karrat.world.generation
 
 import org.karrat.World

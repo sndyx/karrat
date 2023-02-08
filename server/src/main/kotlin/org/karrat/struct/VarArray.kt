@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.struct
@@ -7,21 +7,29 @@ package org.karrat.struct
 /**
  * An array of variable-length numbers.
  */
-public interface VarArray<T : Number> {
-    
+public interface VarArray<T : Number> : Iterable<T> {
+
+    public val size: Int
     public var blockSize: Int
     
     public operator fun get(index: Int): T
     
     public operator fun set(index: Int, value: T)
-    
+
+    override fun iterator(): Iterator<T> =
+        iterator {
+            repeat(size) {
+                yield(get(it))
+            }
+        }
+
 }
 
 /**
  * A low-memory-impact [VarArray] implementation where data is stored in 64-bit
  * chunks.
  */
-public class VarArray64<T : Number>(public val size: Int, bitsPerValue: Int) : VarArray<T> {
+public class VarArray64<T : Number>(override val size: Int, bitsPerValue: Int) : VarArray<T> {
     
     public val chunkCapacity: Int get() = 64 / blockSize
     public val chunks: MutableList<Chunk> = MutableList((size - 1) / chunkCapacity + 1) { Chunk() }
@@ -35,7 +43,7 @@ public class VarArray64<T : Number>(public val size: Int, bitsPerValue: Int) : V
     
     override operator fun get(index: Int): T =
         chunks[index / chunkCapacity][index.mod(chunkCapacity)]
-    
+
     override operator fun set(index: Int, value: T) {
         chunks[index / chunkCapacity][index.mod(chunkCapacity)] = value
     }

@@ -1,7 +1,9 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 @file:Suppress("BlockingMethodInNonBlockingContext")
+// kotlin when """"""""blocking"""""""" method:
+// https://www.youtube.com/watch?v=lmbJP1yObZc
 
 package org.karrat
 
@@ -15,7 +17,7 @@ import org.karrat.internal.exitProcessWithMessage
 import org.karrat.network.*
 import org.karrat.network.auth.AuthServer
 import org.karrat.network.translation.generateKeyPair
-import org.karrat.plugin.loadPlugins
+import org.karrat.plugin.Plugin
 import org.karrat.server.console.startConsoleInput
 import org.karrat.server.console.setConsoleOutput
 import org.karrat.server.loadResources
@@ -39,10 +41,11 @@ public object Server : CoroutineScope {
     internal val keyPair: KeyPair by lazy { generateKeyPair() }
     
     public var worlds: MutableList<World> = mutableListOf()
-    public var commands: MutableList<Command> = mutableListOf()
     public var sessions: MutableList<Session> = mutableListOf()
     public val players: List<Player> get() = worlds.flatMap { it.players }
-    
+    public val commands: List<Command> get() = Command.list
+    public val plugins: List<Plugin> get() = Plugin.list
+
     internal var tickTimeMillis: Long = 0L
     
     public fun start(): Unit = runBlocking {
@@ -59,7 +62,6 @@ public object Server : CoroutineScope {
         if (!Config.isDevEnvironment) {
             eulaPrompt()
         }
-        loadResources()
         socket = ServerSocketChannel.open()
         runCatching {
             socket.bind(InetSocketAddress(Config.port))
@@ -69,7 +71,7 @@ public object Server : CoroutineScope {
         socket.configureBlocking(false)
         println("Bound to ip ${socket.localAddress}.")
         println("Creating fixed thread pool with ${Config.threadCount} threads.")
-        loadPlugins()
+        loadResources()
         launch { startConsoleInput() }
         println("Server started.")
         launch {
@@ -83,7 +85,7 @@ public object Server : CoroutineScope {
         }
         launch {
             while (isActive) {
-                // you dummy you moron you IDIOT !!!! its called NONBLOCKING IO for a reason !!!!!
+                // you dummy you moron you IDIOT !!!! its NONBLOCKING IO !!!!!
                 socket.accept()?.let {
                     it.configureBlocking(false)
                     val session = Session(SocketChannel(it))

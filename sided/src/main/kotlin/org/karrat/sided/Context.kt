@@ -18,9 +18,9 @@ public fun exclusiveScope(player: Player): ExclusiveScope {
 }
 
 public fun test() {
-    val player = Server.players.first()
-    runExclusively(player) {
+    // val player = Server.players.first()
+    // runExclusively(player) {
 
-    }
-    val scope = exclusiveScope(player)
+    // }
+    // val scope = exclusiveScope(player)
 }

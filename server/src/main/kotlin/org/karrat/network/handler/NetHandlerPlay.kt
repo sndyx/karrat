@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.network.handler
@@ -26,8 +26,8 @@ public class NetHandlerPlay(private val session: Session) : NetHandler {
             previousGameMode = GameMode.Survival,
             worlds = Server.worlds,
             registryCodec = nbtOf(
-                "minecraft:dimension_type" to Dimension.codec,
-                "minecraft:worldgen/biome" to Biome.codec,
+                "minecraft:dimension_type" to Dimension.codec(),
+                "minecraft:worldgen/biome" to Biome.codec(),
                 "minecraft:chat_type" to ChatType.codec
             ),
             dimension = Nbt.encodeToNbt(Dimension.Overworld as Dimension), // ?? ???? ? ???

@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.struct
@@ -13,7 +13,7 @@ public abstract class Codec<T : Identified> : Registry<T> {
     public abstract val id: Identifier
     public abstract val serializer: KSerializer<T>
     
-    public val codec: NbtCompound = run {
+    public fun codec(): NbtCompound = run {
         val codec = NbtCompound()
         codec["type"] = id.toString()
         codec["value"] = list.mapIndexed { index, it ->

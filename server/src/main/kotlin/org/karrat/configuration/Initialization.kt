@@ -1,5 +1,5 @@
 /*
- * Copyright © Karrat - 2022.
+ * Copyright © Karrat - 2023.
  */
 
 package org.karrat.configuration
@@ -45,7 +45,7 @@ internal fun Server.eulaPrompt() {
         if (response.equals("yes", true) || response.equals("y", true)) {
             signEula()
         } else {
-            exitProcessWithMessage("You need to sign the EULA", 1)
+            exitProcessWithMessage("EULA must be signed to continue.", 1)
         }
     }
 }
@@ -61,4 +61,3 @@ private fun signEula() {
     val signedEula = "Agreed upon at ${Date()}.\n\n$eula"
     eulaFile.writeText(signedEula)
 }
-
